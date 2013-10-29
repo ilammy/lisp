@@ -1,0 +1,214 @@
+\def\NodeContent#1{\node [anchor = mid] at(1.25em, -0.5em) {#1};}
+\def\NodeTitle#1{\NodeContent{\textsf{#1}}}
+\def\NodePtr{\filldraw (1.25em, -0.5em) circle(0.8pt);}
+\def\Box{\draw [semithick] (0, 0) rectangle (2.5em, -1.0em);}
+
+\def\InList{%
+  \begin{scope}[xshift = +0.5em, yshift = +1.5em]
+    \draw [semithick] (0.0em, +0.4em) rectangle (3.0em, -0.4em)
+                      (1.5em, +0.4em) -- (1.5em, -0.4em);
+    \filldraw (0.75em, 0.0em) circle(0.65pt)
+              (2.25em, 0.0em) circle(0.65pt);
+  \end{scope}
+}
+
+\def\InListLast{%
+  \begin{scope}[xshift = +0.5em, yshift = +1.5em]
+    \draw [semithick] (0.0em, +0.4em) rectangle (3.0em, -0.4em)
+                      (1.5em, +0.4em) -- (1.5em, -0.4em);
+    \filldraw (0.75em, 0.0em) circle(0.65pt);
+    \node [anchor = mid] at(2.25em, 0.0em) {\ic{()}};
+  \end{scope}
+}
+
+\def\PullListLink{\draw [->] (-2.25em, 1.5em) -- (0.30em, 1.5em);}
+
+\def\InBotList{%
+  \begin{scope}[xshift = +0.5em, yshift = -1.5em]
+    \draw [semithick] (0.0em, +0.4em) rectangle (3.0em, -0.4em)
+                      (1.5em, +0.4em) -- (1.5em, -0.4em);
+    \filldraw (0.75em, 0.0em) circle(0.65pt)
+              (2.25em, 0.0em) circle(0.65pt);
+  \end{scope}
+}
+
+\def\InBotListLast{%
+  \begin{scope}[xshift = +0.5em, yshift = -1.5em]
+    \draw [semithick] (0.0em, +0.4em) rectangle (3.0em, -0.4em)
+                      (1.5em, +0.4em) -- (1.5em, -0.4em);
+    \filldraw (0.75em, 0.0em) circle(0.65pt);
+    \node [anchor = mid] at(2.25em, 0.0em) {\ic{()}};
+  \end{scope}
+}
+
+\def\PullBotListLink{\draw [->] (-2.25em, -1.5em) -- (0.30em, -1.5em);}
+
+\def\PullLinkUp{\draw    [->] ( 1.25em,  1.50em) -- ( 1.25em,  0.20em);}
+\def\PullLinkLeft{\draw  [->] (-3.75em, -0.50em) -- (-0.20em, -0.50em);}
+\def\PullLinkDown{\draw  [->] ( 1.25em, -1.50em) -- ( 1.25em, -0.20em);}
+\def\PullLinkRight{\draw [->] ( 6.25em, -0.50em) -- ( 2.70em, -0.50em);}
+
+\def\NoArgNode{%
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{NoArg}
+  \end{scope}
+}
+
+\def\NoFreeNode{%
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{NoFree}
+  \end{scope}
+}
+
+\def\PtrNodeU#1{%
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+}
+
+\def\ContentNode#1#2{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodeContent{#2}
+  \end{scope}
+}
+
+\def\PtrNodeD#1{%
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+}
+
+\def\ContentNodeD#1#2#3{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodeContent{#2}
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodeContent{#3}
+  \end{scope}
+}
+
+\def\PtrNodeDS#1{%
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \begin{scope}[xshift = +0.35em]
+      \NodePtr
+    \end{scope}
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \begin{scope}[xshift = -0.35em]
+      \NodePtr
+    \end{scope}
+  \end{scope}
+}
+
+\def\PtrNodeT#1{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{#1}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -3.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+}
+
+\def\LocVarNode#1#2#3{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{LocVar}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodeContent{#1}
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodeContent{#2}
+  \end{scope}
+  \begin{scope}[yshift = -3.0em]
+    \Box
+    \NodeContent{#3}
+  \end{scope}
+}
+
+\def\ClosureNode#1{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{Closure}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodeContent{#1}
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -3.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+}
+
+\def\FunDefNode#1{
+  \begin{scope}[yshift = -0.0em]
+    \Box
+    \NodeTitle{FunDef}
+  \end{scope}
+  \begin{scope}[yshift = -1.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -2.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -3.0em]
+    \Box
+    \NodePtr
+  \end{scope}
+  \begin{scope}[yshift = -4.0em]
+    \Box
+    \NodeContent{#1}
+  \end{scope}
+}

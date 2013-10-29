@@ -1,0 +1,146 @@
+% -*- coding: utf-8 -*-
+% Принцип работы \protect\ic{import}
+\begin{tikzpicture}
+  \def\var#1{\footnotesize $\langle\,\text{\ic{#1}}\,\rangle$}
+  \tikzstyle{every node}=[font=\small]
+
+  \draw (0.0em, 0.1em) node[anchor = south west] {\ii{записи активаций}};
+
+  \draw [semithick] (0.0em,  0.00em) rectangle (4.0em, -3.75em);
+  \draw             (0.0em, -1.25em) -- (4.0em, -1.25em);
+  \draw [dashed]    (0.0em, -2.50em) -- (4.0em, -2.50em);
+
+  \filldraw  (2.0em, -0.625em) circle(1.0pt);
+  \draw [->] (2.0em, -0.625em) -- (7.25em, -0.625em);
+
+  \draw [semithick] (7.5em,  0.00em) rectangle (11.5em, -2.50em);
+  \draw             (7.5em, -1.25em) -- (11.5em, -1.25em);
+
+  \filldraw  (9.5em, -0.625em) circle(1.0pt);
+  \draw [->] (9.5em, -0.625em) -- (13.50em, -0.625em);
+
+  \draw (13.3em, -0.55em) node[right] {\ii{nil}};
+
+  \filldraw  (2.0em, -3.125em) circle(1.0pt);
+  \draw [->] ( 2.0em,   -3.125em) -- ( 2.00em,  -6.525em) --
+             (-8.75em,  -6.525em) -- (-8.75em, -11.125em) --
+             (-7.75em, -11.125em);
+
+  \draw (9.5em, -1.875em) node {\ic{11}};
+  \draw (2.0em, -1.875em) node {\ic{22}};
+
+  \draw (7.75em, -1.875em) node[left] {\var{x}};
+  \draw (0.25em, -1.875em) node[left] {\var{z}};
+  \draw (0.25em, -3.125em) node[left] {\var{env}};
+
+
+
+  \draw (18.5em, 0.1em) node[above, text width = 5.5em, align = left]
+        {\ii{глобальное окружение}};
+
+  \draw [semithick] (16.0em,  0.0em) rectangle (20.0em, -10.0em);
+  \draw             (16.0em, -7.0em)  -- (20.0em, -7.0em);
+  \draw             (16.0em, -8.25em) -- (20.0em, -8.25em);
+
+  \draw (18.0em, -6.875em) node[above] {$\vdots$};
+  \draw (18.0em, -7.875em) node[below] {$\vdots$};
+
+  \draw (18.0em, -7.625em) node {\var{y}};
+  \draw (20.0em, -7.625em) node[right] {\footnotesize\ic{23}};
+
+
+
+  \draw (-8.00em, 0.1em) node[above, text width = 5.5em, align = left]
+          {\ii{псевдозапись активации}};
+
+  \draw [semithick] (-11.0em, 0.0em) rectangle (-4.5em, -5.0em);
+  \draw             (-11.0em, -1.25em) -- (-4.5em, -1.25em);
+  \draw             (-11.0em, -2.50em) -- (-4.5em, -2.50em);
+  \draw [dashed]    (-11.0em, -3.75em) -- (-4.5em, -3.75em);
+
+  \filldraw  (-7.75em, -0.625em) circle(1.0pt);
+  \draw [->] (-7.75em, -0.625em) -- (-0.25em, -0.625em);
+
+  \filldraw  (-7.75em, -1.875em) circle(1.0pt);
+  \draw [->] (-7.75em, -1.875em) -- (-3.25em,  -1.875em) --
+             (-3.25em, -5.750em);
+  \draw      (-3.25em, -3.000em) -- (-3.25em,  -8.200em);
+  \draw      (-3.25em, -8.800em) -- (-3.25em, -11.125em);
+
+  \draw (-7.75em, -3.125em) node {\ic{(local 1 . 0)}};
+  \draw (-7.75em, -4.375em) node {\ic{(global 23)}};
+
+
+
+  \draw (3.0em, -10.4em) node[anchor = south west] {\ii{запись активации}};
+
+  \draw [semithick] (3.0em, -10.5em) rectangle (7.0em, -13.0em);
+  \draw             (3.0em, -11.75em) -- (7.0em, -11.75em);
+
+  \filldraw  (5.0em, -11.125em) circle(1.0pt);
+  \draw      (5.0em, -11.125em) -- (5.0em,-10.125em);
+  \draw [->] (5.0em,  -9.250em) -- (5.0em, -5.250em);
+  \draw      (5.0em,  -7.000em) -- (5.0em, -0.625em);
+
+  \draw (5.00em, -12.375em) node {\ic{33}};
+  \draw (3.25em, -12.375em) node[left] {\var{z}};
+
+
+
+  \draw (-6.0em, -10.4em) node[above, text width = 4.5em, align = left]
+          {\ii{реифицированное окружение}};
+
+  \draw [semithick] (-7.5em, -10.5em) rectangle (-4.5em, -13.0em);
+  \draw             (-7.5em, -11.75em) -- (-4.5em, -11.75em);
+
+  \filldraw  (-6.0em, -11.125em) circle(1.0pt);
+  \draw [->] (-6.0em, -11.125em) -- (2.75em, -11.125em);
+
+  \filldraw  (-6.0em, -12.375em) circle(1.0pt);
+  \draw [->] (-6.0em, -12.375em) -- (-6.0em, -14.0em);
+
+  \draw (-8.0em, -13.5em) node[rectangle, anchor = north west] {%
+\begin{code:lisp}
+( (z (local 0 . 0))
+  (x (local 1 . 0)) )
+\end{code:lisp}};
+
+
+
+  \draw [semithick] ( 0.00em, 7.75em) -- (  0.0em, 3.25em);
+  \draw [semithick] (11.50em, 7.75em) -- (11.50em, 3.25em);
+
+  \draw (-0.125em, 7.00em) node[right] {\ic{(SHADOWABLE-SET! 0 . 0)}};
+  \draw (-0.125em, 5.50em) node[right] {\ic{(SHADOWABLE-REF 0 . 1)}};
+  \draw (-0.125em, 4.00em) node[right] {\ic{(LOCAL-REF 1 . 0)}};
+
+  \draw (11.50em, 7.00em) node[right] {\var{x}};
+  \draw (11.50em, 5.50em) node[right] {\var{y}};
+  \draw (11.50em, 4.00em) node[right] {\var{z}};
+
+  \draw (-11.95em, -3.125em) node[left] {\var{x}};
+  \draw (-10.95em, -4.375em) node[left] {\var{y}};
+
+  \draw [semithick, dotted] (-11.0em, -2.50em) -- (-14.0em, -2.50em) --
+                            (-14.0em, -5.00em) -- (-11.0em, -5.00em);
+  \draw [semithick, dotted] (-14.0em, -3.75em) -- (-11.0em, -3.75em);
+
+% <x>
+  \draw [dashed, ->] ( -0.25em,   7.000em) -- (-13.00em,   7.000em) --
+                     (-13.00em,   3.500em);
+  \draw [dashed]     (-13.00em,   3.750em) -- (-13.00em,  -2.750em);
+  \draw [dashed, ->] (-13.00em,  -3.600em) -- (-13.00em, -18.500em) --
+                     ( -3.00em, -18.500em);
+  \draw [dashed, ->] ( -3.25em, -18.500em) -- ( 13.25em, -18.500em) --
+                     ( 13.25em,  -1.875em) -- ( 11.75em,  -1.875em);
+
+% <y>
+  \draw [dashed, ->] ( -0.25em,   5.500em) -- (-12.00em,   5.500em) --
+                     (-12.00em,   2.250em);
+  \draw [dashed]     (-12.00em,   2.500em) -- (-12.00em,  -4.000em);
+  \draw [dashed, ->] (-12.00em,  -5.000em) -- (-12.00em, -17.500em) --
+                     ( -4.00em, -17.500em);
+  \draw [dashed, ->] ( -4.25em, -17.500em) -- ( 14.25em, -17.500em) --
+                     ( 14.25em,  -7.625em) -- ( 15.75em,  -7.625em);
+
+\end{tikzpicture}

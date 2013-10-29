@@ -1,0 +1,2456 @@
+# -*- coding: utf-8 -*-
+
+--------------------------------------------------------------------------------
+Это не совсем удачная попытка использовать BiBTeX для формаирования библиографии
+
+Для вывода используется файл z1_bibliography.tex, где всё набрано вручную. Этот
+файл содержит устаревшую информацию, опечатки и прочее, поэтому его не следует
+использовать без должной доводки.
+
+Он оставлен тут, чтобы не выполнять работу по переводу форматов дважды, когда
+у меня (или кого-то другого) найдётся время написать нормальную программу для
+BiBTeX, формирующую библиографические ссылки в соответствии с ГОСТ.
+--------------------------------------------------------------------------------
+
+Journals:
+
+@STRING(acm-comm         = "Communications of the {ACM}")
+@STRING(acm-tpls         = "{ACM} Trans. on Programming Languages and Systems")
+@STRING(bigre            = "{BIGRE+Globule}")
+@STRING(comp-lang        = "Computer Languages")
+@STRING(ieee-tse         = "{IEEE} Trans. on Software Engineering")
+@STRING(ieee-tc          = "{IEEE} Trans. on Computers")
+@STRING(ipl              = "Information Processing Letters")
+@STRING(jacm             = "Journal of the {ACM}")
+@STRING(jcl              = "Computer Languages")
+@STRING(jclt             = "Journal of {C} Language Translation")
+@STRING(ngc              = "New Generation Computing")
+@STRING(lsc              = "Lisp and Symbolic Computation")
+@STRING(oops-messenger   = "{ACM SIGPLAN} {OOPS} Messenger")
+@STRING(sigforth-news    = "{ACM SIGFORTH} Newsletter")
+@STRING(sigplan-pointers = "{ACM SIGPLAN} Lisp Pointers")
+@STRING(sigplan-notices  = "{ACM SIGPLAN} Notices")
+@STRING(sigsam-bulletin  = "{ACM SIGSAM} Bulletin")
+@STRING(tcs              = "Theoretical Computer Science")
+
+
+Proceedings (meta):
+
+@PROCEEDINGS { acm-ccc-1984,
+  key       = "CCC",
+  title     = "Proc. of the 1984 {SIGPLAN} Symp. on Compiler Construction",
+  booktitle = "Proc. of the 1984 {SIGPLAN} Symp. on Compiler Construction",
+  year      = 1984
+}
+
+@PROCEEDINGS { acm-conf-1972,
+  key       = "ACM",
+  title     = "Proc. of the {ACM} Annual Conference",
+  booktitle = "Proc. of the {ACM} Annual Conference",
+  year      = 1972
+}
+
+@PROCEEDINGS { acm-icfp-1996,
+  key       = "ICFP",
+  title     = "Proc. of the 1996 {ACM SIGPLAN} Intern. Conf. on Functional
+               Programming",
+  booktitle = "Proc. of the 1996 {ACM SIGPLAN} Intern. Conf. on Functional
+               Programming",
+  year      = 1996
+}
+
+@PROCEEDINGS { acm-lfp-1980,
+  key       = "LFP",
+  title     = "Proc. of the 1980 {ACM} {LISP} Conference",
+  booktitle = "Proc. of the 1980 {ACM} {LISP} Conference",
+  year      = 1980
+}
+
+@PROCEEDINGS { acm-lfp-1982,
+  key       = "LFP",
+  title     = "Proc. of the 1982 {ACM} Symp. on {LISP} and Functional
+               Programming",
+  booktitle = "Proc. of the 1982 {ACM} Symp. on {LISP} and Functional
+               Programming",
+  year      = 1982
+}
+
+@PROCEEDINGS { acm-lfp-1984,
+  key       = "LFP",
+  title     = "Proc. of the 1984 {ACM} Symp. on {LISP} and Functional
+               Programming",
+  booktitle = "Proc. of the 1984 {ACM} Symp. on {LISP} and Functional
+               Programming",
+  year      = 1984
+}
+
+@PROCEEDINGS { acm-lfp-1986,
+  key       = "LFP",
+  title     = "Proc. of the 1986 {ACM} Conf. on {LISP} and Functional
+               Programming",
+  booktitle = "Proc. of the 1986 {ACM} Conf. on {LISP} and Functional
+               Programming",
+  year      = 1986
+}
+
+@PROCEEDINGS { acm-lfp-1988,
+  key       = "LFP",
+  title     = "Proc. of the 1988 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  booktitle = "Proc. of the 1988 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  year      = 1988
+}
+
+@PROCEEDINGS { acm-lfp-1990,
+  key       = "LFP",
+  title     = "Proc. of the 1990 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  booktitle = "Proc. of the 1990 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  year      = 1990
+}
+
+@PROCEEDINGS { acm-lfp-1992,
+  key       = "LFP",
+  title     = "Proc. of the 1992 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  booktitle = "Proc. of the 1992 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  year      = 1992
+}
+
+@PROCEEDINGS { acm-lfp-1994,
+  key       = "LFP",
+  title     = "Proc. of the 1994 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  booktitle = "Proc. of the 1994 {ACM} Conf. on {Lisp} and Functional
+               Programming",
+  year      = 1994
+}
+
+@PROCEEDINGS { acm-pldi-1990,
+  key       = "PLDI",
+  title     = "Proc. of the {ACM SIGPLAN'90} Conf. on Programming Language
+               Design and Implementation",
+  booktitle = "Proc. of the {ACM SIGPLAN'90} Conf. on Programming Language
+               Design and Implementation",
+  year      = 1990
+}
+
+@PROCEEDINGS { acm-popl-1977,
+  key       = "POPL",
+  title     = "Proc. of the 4th {ACM SIGACT-SIGPLAN} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 4th {ACM SIGACT-SIGPLAN} Symp. on
+               Principles of Programming Languages",
+  year      = 1977
+}
+
+@PROCEEDINGS { acm-popl-1988,
+  key       = "POPL",
+  title     = "Proc. of the 15th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 15th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  year      = 1988
+}
+
+@PROCEEDINGS { acm-popl-1989,
+  key       = "POPL",
+  title     = "Proc. of the 16th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 16th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  year      = 1989
+}
+
+@PROCEEDINGS { acm-popl-1991,
+  key       = "POPL",
+  title     = "Proc. of the 18th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 18th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  year      = 1991
+}
+
+@PROCEEDINGS { acm-popl-1993,
+  key       = "POPL",
+  title     = "Proc. of the 20th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 20th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  year      = 1993
+}
+
+@PROCEEDINGS { acm-popl-1994,
+  key       = "POPL",
+  title     = "Proc. of the 21th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  booktitle = "Proc. of the 21th {ACM SIGPLAN-SIGACT} Symp. on
+               Principles of Programming Languages",
+  year      = 1994
+}
+
+@PROCEEDINGS { acm-ppopp-1990,
+  key       = "PPOPP",
+  title     = "Proc. of the 2nd {ACM SIGPLAN} Symp. on Principles {\&}
+               Practice of Parallel Programming",
+  booktitle = "Proc. of the 2nd {ACM SIGPLAN} Symp. on Principles {\&}
+               Practice of Parallel Programming",
+  year      = 1990
+}
+
+@PROCEEDINGS { acm-siit-1987,
+  key       = "SIIT",
+  title     = "Proc. of the {ACM SIGPLAN'87} Symp. on Interpreters and
+               Interpretive Techniques",
+  booktitle = "Proc. of the {ACM SIGPLAN'87} Symp. on Interpreters and
+               Interpretive Techniques",
+  year      = 1987
+}
+
+@PROCEEDINGS { ecoop-1987,
+  key       = "ECOOP",
+  title     = "Proc. of the {ECOOP'87} European Conf. on Object-Oriented
+               Programming",
+  booktitle = "Proc. of the {ECOOP'87} European Conf. on Object-Oriented
+               Programming",
+  year      = 1987
+}
+
+@PROCEEDINGS { ecoop-1993-l,
+  key       = "ECOOP",
+  title     = "{ECOOP'93} Workshop on Object-Oriented Programming in {Lisp}:
+               Languages and Applications",
+  booktitle = "{ECOOP'93} Workshop on Object-Oriented Programming in {Lisp}:
+               Languages and Applications",
+  year      = 1993
+}
+
+@PROCEEDINGS { ecoop-1994,
+  key       = "ECOOP",
+  title     = "Proc. of the 8th European Conf. on Object-Oriented Programming",
+  booktitle = "Proc. of the 8th European Conf. on Object-Oriented Programming",
+  year      = 1994
+}
+
+@PROCEEDINGS { epit-1979,
+  key       = "EPIT",
+  title     = "Lambda calcul et s{\'e}mantique formelle des langages de
+               programmation",
+  booktitle = "Actes de la 6e {\'e}cole de printemps d'informatique
+               th{\'e}orique",
+  year      = 1979
+}
+
+@PROCEEDINGS { esop-1988,
+  key       = "ESOP",
+  title     = "Proc. of the 2nd European Symposium on Programming",
+  booktitle = "Proc. of the 2nd European Symposium on Programming",
+  year      = 1988
+}
+
+@PROCEEDINGS { esop-1990,
+  key       = "ESOP",
+  title     = "ESOP'90 Selected Papers from the Symp. on the 3rd European
+               Symposium on Programming",
+  booktitle = "ESOP'90 Selected Papers from the Symp. on the 3rd European
+               Symposium on Programming",
+  year      = 1990
+}
+
+@PROCEEDINGS { gdrp-1993,
+  key       = "GDRP",
+  title     = "Actes des journ{\'e}es du {GDR} de Programmation",
+  booktitle = "Actes des journ{\'e}es du {GDR} de Programmation",
+  year      = 1993
+}
+
+@PROCEEDINGS { hppc-1990,
+  key       = "HPPC",
+  title     = "High Performance and Parallel Computing in {Lisp}",
+  booktitle = "High Performance and Parallel Computing in {Lisp}",
+  year      = 1990
+}
+
+@PROCEEDINGS { icalp-76,
+  key       = "ICALP",
+  title     = "Proc. of the 3rd Intern. Colloquium on Automata, Languages
+               and Programming",
+  booktitle = "Proc. of the 3rd Intern. Colloquium on Automata, Languages
+               and Programming",
+  year      = 1976
+}
+
+@PROCEEDINGS { ifip-wcc-1986,
+  key       = "IFIP",
+  title     = "Proc. of the {IFIP} 10th World Computer Congress",
+  booktitle = "Proc. of the {IFIP} 10th World Computer Congress",
+  year      = 1986
+}
+
+@PROCEEDINGS { ijcai-1987,
+  key       = "IJCAI",
+  title     = "Intern. Joint Conf. on Artificial Intelligence",
+  booktitle = "Intern. Joint Conf. on Artificial Intelligence",
+  year      = 1987
+}
+
+@PROCEEDINGS { iwmm-1992,
+  key       = "IWMM",
+  title     = "Proc. of the {IWMM'92} Intern. Workshop on Memory Management",
+  booktitle = "Proc. of the {IWMM'92} Intern. Workshop on Memory Management",
+  year      = 1992
+}
+
+@PROCEEDINGS { jfla-1990,
+  key       = "JFLA",
+  title     = "Actes des {JFLA} 90 -- Journ{\'e}es Francophones des Langages
+               Applicatifs",
+  booktitle = "Actes des {JFLA} 90 -- Journ{\'e}es Francophones des Langages
+               Applicatifs",
+  year      = 1990
+}
+
+@PROCEEDINGS { jtaspefl-1991,
+  key       = "JTASPEFL",
+  title     = "Journ{\'e}es de Travail sur l'Analyse Statique en Programmation
+               {\'E}quationnelle, Fonctionnelle et Logique",
+  booktitle = "Journ{\'e}es de Travail sur l'Analyse Statique en Programmation
+               {\'E}quationnelle, Fonctionnelle et Logique",
+  year      = 1991
+}
+
+@PROCEEDINGS { mlar-1987,
+  key       = "MLAR",
+  title     = "Workshop on Meta-Level Architecture and Reflection",
+  booktitle = "Workshop on Meta-Level Architecture and Reflection",
+  year      = 1987
+}
+
+@PROCEEDINGS { oopsla-1986,
+  key       = "OOPSLA",
+  title     = "{OOPSLA'86} Conf. Proc. on Object-Oriented Programming Systems,
+               Languages, and Applications",
+  booktitle = "{OOPSLA'86} Conf. Proc. on Object-Oriented Programming Systems,
+               Languages, and Applications",
+  year      = 1986
+}
+
+@PROCEEDINGS { oopsla-1992,
+  key       = "OOPSLA",
+  title     = "{OOPSLA'92} Conf. Proc. on Object-Oriented Programming Systems,
+               Languages, and Applications",
+  booktitle = "{OOPSLA'92} Conf. Proc. on Object-Oriented Programming Systems,
+               Languages, and Applications",
+  year      = 1992
+}
+
+@PROCEEDINGS { parle-1987,
+  key       = "PARLE",
+  title     = "Parallel Architectures and Languages {Europe}",
+  booktitle = "Parallel Architectures and Languages {Europe}",
+  year      = 1987
+}
+
+@PROCEEDINGS { parle-1992,
+  key       = "PARLE",
+  title     = "Proc. of the 4th Intern. Conf. on Parallel Architectures and
+               Languages {Europe}",
+  booktitle = "Proc. of the 4th Intern. Conf. on Parallel Architectures and
+               Languages {Europe}",
+  year      = 1992
+}
+
+@PROCEEDINGS { psls-1995,
+  key       = "PSLS",
+  title     = "Proc. of the Intern. Workshop {PSLS'95} on Parallel Symbolic
+               Languages and Systems",
+  booktitle = "Proc. of the Intern. Workshop {PSLS'95} on Parallel Symbolic
+               Languages and Systems",
+  year      = 1995
+}
+
+@PROCEEDINGS { plilp-1994,
+  key       = "PLILP",
+  title     = "Proc. of the 6th Intern. Symp. on Programming Language
+               Implementation and Logic Programming",
+  booktitle = "Proc. of the 6th Intern. Symp. on Programming Language
+               Implementation and Logic Programming",
+  year      = 1994
+}
+
+@PROCEEDINGS { sccc-1991,
+  key       = "SCCC",
+  title     = "The 11th Intern. Conf. of the {Chilean} Computer
+               Science Society",
+  booktitle = "The 11th Intern. Conf. of the {Chilean} Computer
+               Science Society",
+  year      = 1991
+}
+
+@PROCEEDINGS { stacs-1987,
+  key       = "STACS",
+  title     = "Proc. of the 4th Annual Symp. on Theoretical Aspects
+               of Computer Science",
+  booktitle = "Proc. of the 4th Annual Symp. on Theoretical Aspects
+               of Computer Science",
+  year      = 1987
+}
+
+@PROCEEDINGS { wmla-1994,
+  key       = "WMLA",
+  title     = "Record of the 1994 {ACM SIGPLAN} Workshop on {ML} and Its
+               Applications",
+  booktitle = "Record of the 1994 {ACM SIGPLAN} Workshop on {ML} and Its
+               Applications",
+  year      = 1994
+}
+
+@PROCEEDINGS { wplls-1989,
+  key       = "PLLS",
+  title     = "Proc. of the {US/Japan} Workshop on Parallel {Lisp}:
+               Languages and Systems",
+  booktitle = "Proc. of the {US/Japan} Workshop on Parallel {Lisp}:
+               Languages and Systems",
+  year      = 1989
+}
+
+@PROCEEDINGS { wpsc-1993,
+  key       = "PSCLSA",
+  title     = "Proc. of the {US/Japan} Workshop on Parallel Symbolic Computing:
+               Languages, Systems, and Applications",
+  booktitle = "Proc. of the {US/Japan} Workshop on Parallel Symbolic Computing:
+               Languages, Systems, and Applications",
+  year      = 1993
+}
+
+@PROCEEDINGS { wsa-1992,
+  key       = "WSA",
+  title     = "Proc. of the 2nd Intern. Workshop on Static Analysis",
+  booktitle = "Proc. of the 2nd Intern. Workshop on Static Analysis",
+  year      = 1992
+}
+
+@PROCEEDINGS { wsa-1992-b,
+  key       = "WSA-B",
+  title     = "Actes {WSA'92} Workshop on Static Analysis {(Bordeaux)}",
+  booktitle = "Actes {WSA'92} Workshop on Static Analysis {(Bordeaux)}",
+  year      = 1992
+}
+
+
+== PAGE 1 ==
+
+@MANUAL { 85m85,
+  key          = "85M",
+  title        = "{Macscheme} Reference Manual",
+  organization = "Semantic Microsystems",
+  address      = "Sausalito, California",
+  year         = 1985
+}
+
+@BOOK { all78,
+  author    = "John Allen",
+  title     = "Anatomy of {Lisp}",
+  series    = "Computer Science Series",
+  publisher = "McGraw-Hill",
+  year      = 1978,
+  numpages  = 464
+}
+
+@ARTICLE { alq95,
+  author  = "Sophie Anglade and Jean-Jacques Lacrampe and Christian Queinnec",
+  title   = "Semantics of Combinations in {Scheme}",
+  journal = sigplan-pointers,
+  volume  = 7,
+  number  = 4,
+  pages   = {15--20},
+  year    = 1994
+}
+
+@ARTICLE { app87,
+  author  = "Andrew Appel",
+  title   = "Garbage Collection Can Be Faster Than Stack Allocation",
+  journal = ipl,
+  volume  = 25,
+  number  = 4,
+  pages   = {275--279},
+  year    = 1987
+}
+
+@BOOK { app92a,
+  author    = "Andrew Appel",
+  title     = "Compiling with Continuations",
+  publisher = "Cambridge Press",
+  year      = 1992,
+  numpages  = 272
+}
+
+@MANUAL { app92b,
+  key       = "App",
+  author    = "Apple Computer Eastern Research {\&} Technology",
+  title     = "{Dylan}, an Object-Oriented Dynamic Language",
+  publisher = "Apple Computer, Inc.",
+  year      = 1992
+}
+
+@INPROCEEDINGS { ar88,
+  author   = "Norman Adams and Johnatan Rees",
+  title    = "Object-Oriented Programming in {Scheme}",
+  pages    = {277--288},
+  crossref = {acm-lfp-1988}
+}
+
+@BOOK { as85,
+  key       = "AS",
+  author    = "Harold Abelson and Gerald Jay Sussman and Julie Sussman",
+  title     = "Structure and Interpretation of Computer Programs",
+  publisher = "MIT Press",
+  year      = 1985,
+  numpages  = 400
+}
+
+@TECHREPORT { as94,
+  author      = "Andrew Appel and Zhong Shao",
+  title       = "An Empirical and Analitical Study of Stack vs Heap Cost
+                 for Languages with Closures",
+  institution = "Princeton University, Dept. of Computer Science",
+  number      = "CS-TR-450-94",
+  year        = 1994
+}
+
+@ARTICLE { att95,
+  author  = "Giuseppe Attardi",
+  title   = "The Embeddable {Common Lisp}",
+  journal = sigplan-pointers,
+  volume  = 8,
+  number  = 1,
+  pages   = {30--41},
+  year    = 1995
+}
+
+@ARTICLE { bak95,
+  author  = "Henry G. Baker",
+  title   = "{CONS} Should Not {CONS} Its Arguments,
+             {Part~II}: {Cheney} on the {M.T.A.}",
+  journal = sigplan-notices,
+  volume  = 30,
+  number  = 9,
+  pages   = {17--20},
+  year    = 1995
+}
+
+@ARTICLE { bak78,
+  author  = "Henry G. Baker",
+  title   = "List Processing in Real Time on a Serial Computer",
+  journal = acm-comm,
+  volume  = 21,
+  number  = 4,
+  pages   = {280--294},
+  year    = 1978
+}
+
+@ARTICLE { bak92a,
+  author  = "Henry G. Baker",
+  title   = "The Buried Binding and Dead Binding Problems of {Lisp~1.5}",
+  journal = sigplan-pointers,
+  volume  = 5,
+  number  = 2,
+  pages   = {11--19},
+  year    = 1992
+}
+
+@ARTICLE { bak92b,
+  author  = "Henry G. Baker",
+  title   = "Inlining Semantics for Subroutines Which Are Recursive",
+  journal = sigplan-pointers,
+  volume  = 27,
+  number  = 12,
+  pages   = {39--46},
+  year    = 1992
+}
+
+@ARTICLE { bak92c,
+  author  = "Henry G. Baker",
+  title   = "Metacircular Semantics for {Common Lisp} Special Forms",
+  journal = sigplan-pointers,
+  volume  = 5,
+  number  = 4,
+  pages   = {11--12},
+  year    = 1992
+}
+
+
+== PAGE 2 ==
+
+@ARTICLE { bak93,
+  author  = "Henry G. Baker",
+  title   = "Equal Rights for Functional Objects or,
+             The More Things Change, The More They Are the Same",
+  journal = oops-messenger,
+  volume  = 4,
+  number  = 4,
+  pages   = {2--27},
+  year    = 1993
+}
+
+@INCOLLECTION { bar84,
+  author    = "Hendrik Pieter Barendregt",
+  title     = "The Lambda Calculus, Its Syntax and Semantics",
+  booktitle = "Studies in Logic and the Foundations of Mathematics",
+  volume    = 103,
+  publisher = "North Holland",
+  year      = 1984
+}
+
+@TECHREPORT { bar89,
+  author      = "Joel F. Bartlett",
+  title       = "{Scheme$\to$C}, a Portable {Scheme-to-C} Compiler",
+  type        = "Research report",
+  institution = "DEC Western Research Laboratory",
+  number      = "WRL-89-1",
+  year        = 1989
+}
+
+@INPROCEEDINGS { baw88,
+  author   = "Andrew Bawden",
+  title    = "Reification without Evaluation",
+  pages    = {342--349},
+  crossref = {acm-lfp-1988},
+}
+
+@INPROCEEDINGS { bc87,
+  author   = "Jean-Pierre Briot and Pierre Cointe",
+  title    = "A Uniform Model for Object-Oriented Languages
+              Using the Class Abstraction",
+  volume   = 1,
+  pages    = {40--43},
+  year     = 1987,
+  crossref = {ijcai-1987}
+}
+
+@ARTICLE { bcsj86,
+  author    = "Jean-Pierre Briot and Pierre Cointe and Emmanuel Saint-James",
+  title     = "Re{\'e}criture et r{\'e}cursion dans une fermeture,
+               etude dans un {Lisp} {\`a} liason superficielle
+               et application aux objets",
+  journal   = bigre,
+  volume    = 48,
+  pages     = {90--100},
+  year      = 1986,
+  language  = {french}
+}
+
+@ARTICLE { bdg+88,
+  author   = "Daniel G. Bobrow and Linda G. DeMichiel and Richard P. Gabriel
+              and Sonya E. Keene and Gregor Kiczales and David A. Moon",
+  title    = "{Common Lisp Object System} Specification",
+  journal  = sigplan-notices,
+  volume   = 23,
+  numpages = 142,
+  year     = 1988,
+  note     = "Spec. iss."
+}
+
+@ARTICLE { bel73,
+  author  = "James R. Bell",
+  title   = "Threaded Code",
+  journal = acm-comm,
+  volume  = 16,
+  number  = 6,
+  pages   = {370--372},
+  year    = 1973
+}
+
+@MISC { bet91,
+  author  = "David M. Betz",
+  title   = "{XSCHEME}: An Object-Oriented {Scheme}",
+  address = "{P.O. Box 144}, {Peterborough}, {NH 03458} (USA)",
+  year    = 1991,
+  note    = "version 0.28"
+}
+
+@BOOK { bg94,
+  author    = "Henri Elle Bal and Dick Grune",
+  title     = "Programming Language Essentials",
+  publisher = "Addison-Wesley",
+  year      = 1994,
+  numpages  = 288
+}
+
+@ARTICLE { bhy88,
+  author  = "Adrienne Bloss and Paul Hundak and Jonathan Young",
+  title   = "Code Optimizations for Lazy Evaluation",
+  journal = lsc,
+  volume  = 1,
+  number  = 2,
+  pages   = {147--164},
+  year    = 1988
+}
+
+@INPROCEEDINGS { bj86,
+  author   = "David H. Bartley and John C. Jensen",
+  title    = "The Implementation of {PC~Scheme}",
+  pages    = {86--93},
+  crossref = {acm-lfp-1986}
+}
+
+@INPROCEEDINGS { bkk+86,
+  author   = "Daniel G. Bobrow and Kenneth Kahn and Gregor Kiczales
+              and Larry Masinter and Mark Stefik and Frank Zdybel",
+  title    = "{CommonLoops}: Merging {Lisp} and Object-Oriented Programming",
+  pages    = {17--29},
+  crossref = {oopsla-1986}
+}
+
+@TECHREPORT { bm82,
+  author      = "Robert S. Boyer and J S. Moore",
+  title       = "A Mechanical Proof of the Unsolvability
+                 of the Halting Problem",
+  institution = "Institute for Computing Science and Computer Applications",
+  number      = "ICSCA-CMP-28",
+  year        = 1982
+}
+
+@INPROCEEDINGS { br88,
+  author   = "Alan Bawden and Jonathan Rees",
+  title    = "Syntactic Closures",
+  pages    = {86--95},
+  crossref = {acm-lfp-1988}
+}
+
+@ARTICLE { bw88,
+  author  = "Hans-Juergen Boehm and Mark Weiser",
+  title   = "Garbage Collection in an Uncooperative Environment",
+  journal = "Software---Practice {\&} Experience",
+  volume  = 18,
+  number  = 9,
+  pages   = {807--820},
+  year    = 1988
+}
+
+@TECHREPORT { car93,
+  author      = "Luca Cardelli",
+  title       = "An implementation of {$F_{<\colon}$}",
+  type        = "Research report",
+  institution = "DEC Systems Research Center",
+  number      = 97,
+  year        = 1993
+}
+
+@MISC { car94,
+  author = "George J. Carrette",
+  title  = "{SIOD}: {Scheme} in One Defun",
+  url    = "http://www.cs.indiana.edu/scheme-repository/imp/siod.html",
+  year   = 1994
+}
+
+
+== PAGE 3 ==
+
+@BOOK { cay83,
+  author    = "Michel Cayrol",
+  title     = "Le langage {Lisp}",
+  publisher = "Cepadues Editions",
+  year      = 1983,
+  numpages  = 143
+}
+
+@INPROCEEDINGS { cc77,
+  author   = "Patrick Cousot and Radhia Cousot",
+  title    = "Abstract Interpretation: A Unified Lattice Model
+              for Static Analisys of Programs by Construction
+              or Approximation of Fixpoints",
+  pages    = {238--252},
+  crossref = {acm-popl-1977}
+}
+
+@MANUAL { cdd+91,
+  author       = "J. Chailloux and M. Devin and F. Dupont and J.-M. Hullot
+                  and B. Serpette and J. Vuillemin",
+  title        = "Le-Lisp version 15.24, Le manuel de r{\'e}f{\'e}rence",
+  organization = "INRIA",
+  year         = 1991,
+  language     = {french}
+}
+
+@MANUAL { cek+89,
+  author = "L. W. Cannon and R. A. Elliot and L. W. Kirchhoff and J. H. Miller
+            and J. M. Milner and R. W. Mitze and E. P. Schan
+            and N. O. Whittington and H. Spencer and D. Keppel",
+  title  = "Recommended {C} Style and Coding Standards",
+  year   = 1989
+}
+
+@ARTICLE { cg77,
+  author  = "Douglas W. Clark and C. Cordell Green",
+  title   = "An Empirical Study of List Structure in {LISP}",
+  journal = acm-comm,
+  volume  = 20,
+  number  = 2,
+  pages   = {78--87},
+  year    = 1977
+}
+
+@INPROCEEDINGS { ch94,
+  author   = "William D. Clinger and Lars Thomas Hansen",
+  title    = "Lambda, the Ultimate Label, or
+              A Simple Optimizing Compiler for {Scheme}",
+  pages    = {128--139},
+  crossref = {acm-lfp-1994}
+}
+
+@PHDTHESIS { cha80,
+  author   = "J{\'e}r{\^o}me Chailloux",
+  title    = "Le mod{\`e}le {VLISP}\,: description, impl{\'e}mentation
+              et {\'e}valuation",
+  type     = "Th{\`e}se de troisi{\`e}me cycle",
+  school   = "Unversit{\'e} Paris-VIII",
+  year     = 1980,
+  language = {french}
+}
+
+@ARTICLE { cha96,
+  author  = "Gregory J. Chaitin",
+  title   = "The Limits of Mathematics",
+  journal = "Journal of Universal Computer Science",
+  volume  = 2,
+  number  = 5,
+  pages   = {270--305},
+  year    = 1996
+}
+
+@INPROCEEDINGS { cho88,
+  author   = "William D. Clinger and Anne H. Hartheimer and Eric M. Ost",
+  title    = "Implementation Strategies for Continuations",
+  pages    = {124--131},
+  crossref = {acm-lfp-1988}
+}
+
+@BOOK { chr95,
+  author    = "Christophe",
+  title     = "La Famille {Fenouillard}",
+  publisher = "Armand Colin",
+  year      = 1895,
+  language  = {french}
+}
+
+@ARTICLE { cla79,
+  author  = "Douglas W. Clark",
+  title   = "Measurements of Dynamic List Structure Use in {Lisp}",
+  journal = ieee-tse,
+  volume  = 5,
+  number  = 1,
+  pages   = {51--59},
+  year    = 1979
+}
+
+@INPROCEEDINGS { cli84,
+  author   = "William D. Clinger",
+  title    = "The {Scheme} 311 compiler: An Exercise in Denotational Semantics",
+  pages    = {356--364},
+  crossref = {acm-lfp-1984}
+}
+
+@INPROCEEDINGS { coi87,
+  author   = "Pierre Cointe",
+  title    = "The {ObjVlisp} Kernel: A Reflexive Architecture to Define
+              a Uniform Object-Oriented System",
+  crossref = {mlar-1987},
+  note     = "Was not published"
+}
+
+@BOOK { com84,
+  author    = "Douglas Comer",
+  title     = "Operating System Design: The {XINU} Approach",
+  publisher = "Prentice-Hall",
+  year      = 1984,
+  numpages  = 496
+}
+
+@INPROCEEDINGS { cr91a,
+  author   = "William Clinger and Johnatan Rees",
+  title    = "Macros that Work",
+  pages    = {155--162},
+  crossref = {acm-popl-1991}
+}
+
+@ARTICLE { cr91b,
+  editor   = "William Clinger and Jonathan Rees",
+  title    = "Revised\textsuperscript{4} Report on the Algorithmic
+              Language {Scheme}",
+  journal  = sigplan-pointers,
+  volume   = 4,
+  number   = 3,
+  numpages = 55,
+  year     = 1991
+}
+
+@ARTICLE { cur89,
+  author  = "Pavel Curtis",
+  title   = "{(Algorithms)}",
+  journal = sigplan-pointers,
+  volume  = 3,
+  number  = 1,
+  pages   = {48--61},
+  year    = 1989
+}
+
+@INPROCEEDINGS { dan87,
+  author   = "Olivier Danvy",
+  title    = "Memory Allocation and Higher-Order Functions",
+  pages    = {241--252},
+  crossref = {acm-siit-1987}
+}
+
+
+== PAGE 4 ==
+
+@ARTICLE { del89,
+  author   = "Vincent Delacour",
+  title    = "Picolo expresso",
+  journal  = bigre,
+  number   = 65,
+  pages    = {30--42},
+  year     = 1989,
+  language = {french}
+}
+
+@INPROCEEDINGS { deu80,
+  author   = "L P. Deutsch",
+  title    = "{ByteLisp} and Its {Alto} Implemenatation",
+  pages    = {231--242},
+  crossref = {acm-lfp-1980}
+}
+
+@TECHREPORT { deu89,
+  author      = "Alain Deutsch",
+  title       = "G{\'e}n{\'e}ration automatique d'interpreteurs et compilation
+                 {\`a} partir de sp{\'e}cifications d{\'e}notationnelles",
+  type        = "Rapport de DEA-LAP",
+  institution = "Laboratoire d'Informatique Th{\'e}orique et Programmation",
+  number      = "LITP-RXF 89-17",
+  year        = 1989,
+  language    = {french}
+}
+
+@TECHREPORT { dev85,
+  author      = "Matthieu Devin",
+  title       = "Le portage du syst\`{e}me Le-Lisp",
+  type        = "Rapport technique",
+  institution = "INRIA-Rocquencourt",
+  number      = 50,
+  year        = 1985,
+  language    = {french}
+}
+
+@INPROCEEDINGS { df90,
+  author   = "Olivier Danvy and Andrzej Filinski",
+  title    = "Abstracting Control",
+  pages    = {151--160},
+  crossref = {acm-lfp-1990}
+}
+
+@INPROCEEDINGS { dfh86,
+  author   = "R. Kent Dybvig and Daniel P. Friedman and Christopher T. Haynes",
+  title    = "Expansion-Passing Style: Beyond Conventional Macros",
+  pages    = {143--150},
+  crossref = {acm-lfp-1986}
+}
+
+@ARTICLE { dfh88,
+  author  = "R. Kent Dybvig and Daniel P. Friedman and Christopher T. Haynes",
+  title   = "Expansion-Passing Style: A General Macro Mechanism",
+  journal = lsc,
+  volume  = 1,
+  number  = 1,
+  pages   = {53--76},
+  year    = 1988
+}
+
+@INPROCEEDINGS { dh92,
+  author   = "Olivier Danvy and John Hatcliff",
+  title    = "Thunks (continued)",
+  pages    = {3--11},
+  crossref = {wsa-1992},
+  note     = "See also technical report CIS-92-28, Kansas State University"
+}
+
+@ARTICLE { dhb93,
+  author  = "R. Kent Dybvig and Robert G. Hieb and Carl T. Bruggerman",
+  title   = "Syntactic Abstaction in {Scheme}",
+  journal = lsc,
+  volume  = 5,
+  number  = 4,
+  pages   = {295--326},
+  year    = 1993
+}
+
+@INPROCEEDINGS { dhhm92,
+  author   = "Ronald Ducournau and Michel Habib and
+              Marianne Huchard and Marie Laure Mugnier",
+  title    = "Monotonic Conflict Resolution Mechanisms for Inheritance",
+  pages    = {16--24},
+  crossref = {oopsla-1992}
+}
+
+@BOOK { dil88,
+  author    = "Antoni Diller",
+  title     = "Compiling Functional Languages",
+  publisher = "John Wiley {\&} Sons",
+  year      = 1988,
+  numpages  = 322
+}
+
+@TECHREPORT { dm88,
+  author      = "Olivier Danvy and Karoline Malmkj{\ae}r",
+  title       = "A Blond Primer",
+  type        = "Rapport",
+  institution = "University of Copenhagen",
+  number      = "DIKU 88/21",
+  year        = 1988
+}
+
+@PHDTHESIS { dm95,
+  author   = "Antione Dumesnil de Maricourt",
+  title    = "Macro-expansion en {Lisp}, s{\'e}mantique et r{\'e}lisation",
+  type     = "Th{\`e}se d'universit{\'e}",
+  school   = "Universit{\'e} Paris-VII",
+  year     = 1995,
+  language = {french}
+}
+
+@INPROCEEDINGS { dps94a,
+  author   = "Harley Davis and Pierre Parquier and Nitsan S{\'e}niak",
+  title    = "Sweet Harmony: The {Talk/C++} Connection",
+  pages    = {121--127},
+  crossref = {acm-lfp-1994}
+}
+
+@INPROCEEDINGS { dps94b,
+  author   = "Harley Davis and Pierre Parquier and Nitsan S{\'e}niak",
+  title    = "Talking About Modules and Delivery",
+  pages    = {113--120},
+  crossref = {acm-lfp-1994}
+}
+
+@INPROCEEDINGS { dr87,
+  author   = "Jim des Rivi{\`e}res",
+  title    = "Control-Related Meta-Level Facilities in {Lisp}",
+  pages    = {101--110},
+  crossref = {mlar-1987}
+}
+
+@INPROCEEDINGS { drs84,
+  author   = "Jim des Rivi{\`e}res and Brian Cantwell Smith",
+  title    = "The Implemenatation of Procedurally Reflective Languages",
+  pages    = {331--347},
+  crossref = {acm-lfp-1984}
+}
+
+
+== PAGE 5 ==
+
+@BOOK { dyb87,
+  author    = "R. Kent Dybvig",
+  title     = "The {SCHEME} Programming Language",
+  publisher = "Prentice-Hall",
+  year      = 1987,
+  numpages  = 242
+}
+
+@ARTICLE { es70,
+  author  = "Jay Earley and Howard Sturgis",
+  title   = "A Formalism for Translator Interaction",
+  journal = acm-comm,
+  volume  = 13,
+  number  = 10,
+  pages   = {607--617},
+  year    = 1970
+}
+
+@INPROCEEDINGS { fel88,
+  author   = "Matthias Felleisen",
+  title    = "The Theory and Practice of First-Class Prompts",
+  pages    = {180--190},
+  crossref = {acm-popl-1988}
+}
+
+@INPROCEEDINGS { fel90,
+  author   = "Matthias Felleisen",
+  title    = "On the Expressive Power of Programming Languages",
+  pages    = {134--151},
+  crossref = {esop-1990}
+}
+
+@INPROCEEDINGS { ff87,
+  author   = "Matthias Felleisen and Daniel Paul Friedman",
+  title    = "A Reduction Semantics for Imperative Higher-Order Languages",
+  pages    = {206-223},
+  volume   = "{II}",
+  crossref = {parle-1987}
+}
+
+@ARTICLE { ff89,
+  author  = "Matthias Felleisen and Daniel Paul Friedman",
+  title   = "A Syntactic Theory of Sequential State",
+  journal = tcs,
+  volume  = 69,
+  number  = 3,
+  pages   = {243--287},
+  year    = 1989
+}
+
+@TECHREPORT { ffdm87,
+  author      = "Matthias Felleisen and Daniel Paul Friedman and
+                 Bruce Duba and John Merrill",
+  title       = "Beyond Continuations",
+  institution = "Indiana University, Computer Science Dept.",
+  number      = "TR216",
+  year        = 1987
+}
+
+@TECHREPORT { fh89,
+  author      = "Matthias Felleisen and Robert Hieb",
+  title       = "The Revised Report on the Syntactic Theories of
+                 Sequential Control and State",
+  institution = "Rice University",
+  number      = "100-89",
+  year        = 1989
+}
+
+@ARTICLE { fl87,
+  author  = "Marc Feeley and Guy LaPalme",
+  title   = "Using Closures for Code Generation",
+  journal = jcl,
+  volume  = 12,
+  number  = 1,
+  pages   = {47--66},
+  year    = 1987
+}
+
+@INPROCEEDINGS { fm90,
+  author   = "Marc Feeley and James S. Miller",
+  title    = "A Parallel Virtual Machine for Efficient {Scheme} Compilation",
+  pages    = {119--130},
+  crossref = {acm-lfp-1990}
+}
+
+@INPROCEEDINGS { fw76,
+  author   = "Daniel Paul Friedman and David Stephen Wise",
+  title    = "{CONS} Should Not Evaluate Its Arguments",
+  pages    = {257--284},
+  crossref = {icalp-76}
+}
+
+@INPROCEEDINGS { fw84,
+  author   = "Daniel Paul Friedman and Mitchell Wand",
+  title    = "Reification: Reflection Without Metaphysics",
+  pages    = {348--355},
+  crossref = {acm-lfp-1984}
+}
+
+@INPROCEEDINGS { fwfd88,
+  author   = "Matthias Felleisen and Mitchell Wand and
+              Daniel Paul Friedman and Bruce Duba",
+  title    = "Abstract Continuations: A Mathematical Semantics for
+              Handling Functional Jumps",
+  pages    = {52--62},
+  crossref = {acm-lfp-1988}
+}
+
+@BOOK { fwh92,
+  author    = "Daniel P. Friedman and Mitchell Wand and Christopher T. Haynes",
+  title     = "Essentials of Programming Languages",
+  publisher = "{MIT Press and McGraw-Hill}",
+  year      = 1992,
+  numpages  = 536
+}
+
+@ARTICLE { gab88,
+  author  = "Richard P. Gabriel",
+  title   = "The Why of {Y}",
+  journal = sigplan-pointers,
+  volume  = 2,
+  number  = 2,
+  pages   = {15--25},
+  year    = 1988
+}
+
+@INPROCEEDINGS { gbm82,
+  author   = "Martin L. Griss and Eric Benson and Maguire, Jr., Gerald Q.",
+  title    = "{PSL}: A Portable {LISP} System",
+  pages    = {88--97},
+  crossref = {acm-lfp-1982}
+}
+
+
+== PAGE 6 ==
+
+@TECHREPORT { gor75,
+  author      = "Michael Gordon",
+  title       = "Operational Reasoning and Denotational Semantics",
+  type        = "Research report",
+  institution = "Stanford University, Computer Science Dept.",
+  number      = "STAN-CS-506",
+  year        = 1975
+}
+
+@BOOK { gor88,
+  author    = "Michael Gordon",
+  title     = "Programming Language Theory and its Implemenatation",
+  series    = "International Series in Computer Science",
+  publisher = "Prentice-Hall",
+  year      = 1988,
+  numpages  = 255
+}
+
+@ARTICLE { gp88,
+  author  = "Richard P. Gabriel and Kent M. Pitman",
+  title   = "Technical Issues of Separation in Function Cells and Value Cells",
+  journal = lsc,
+  volume  = 1,
+  number  = 1,
+  pages   = {81--101},
+  year    = 1988
+}
+
+@BOOK { gr83,
+  author    = "Ad{\`e}le Goldberg and David Robson",
+  title     = "{Smalltalk-80}: The Language and its Implemenatation",
+  publisher = "Addison-Wesley",
+  year      = 1983,
+  numpages  = 714
+}
+
+@BOOK { gra93,
+  author    = "Paul Graham",
+  title     = "On {Lisp}: Advanced Techniques for {Common Lisp}",
+  publisher = "Prentice-Hall",
+  year      = 1993,
+  numpages  = 413
+}
+
+@PHDTHESIS { gre77,
+  author   = "Patrick Greussay",
+  title    = "Contribution {\`a} la d{\'e}finiton interpr{\`e}tative
+              et {\`a} l'impl{\'e}mentation des Lambda-langages",
+  type     = "Th{\`e}se d'{\'e}tat",
+  school   = "Unversit{\'e} Paris-VI",
+  year     = 1977,
+  language = {french}
+}
+
+@TECHREPORT { gud93,
+  author      = "David Gudeman",
+  title       = "Representing Type Information in Dynamically Typed Languages",
+  institution = "University of Arizona, Dept. of Computer Science",
+  number      = "93-27",
+  year        = 1993
+}
+
+@INPROCEEDINGS { han90,
+  author   = "Chris Hanson",
+  title    = "Efficient Stack Allocation for Tail-Recursive Languages",
+  pages    = {106--118},
+  crossref = {acm-lfp-1990}
+}
+
+@INPROCEEDINGS { hd90,
+  author   = "Robert Hieb and R. Kent Dybvig",
+  title    = "Continuations and Concurrency",
+  pages    = {128--136},
+  crossref = {acm-ppopp-1990}
+}
+
+@INPROCEEDINGS { hdb90,
+  author   = "Robert Hieb and R. Kent Dybvig and Carl Bruggerman",
+  title    = "Representing Control in the Presence
+              of First-Class Continuations",
+  pages    = {66--77},
+  crossref = {acm-pldi-1990}
+}
+
+@BOOK { hen80,
+  author    = "Peter Henderson",
+  title     = "Functional Programming: Application and Implementation",
+  series    = "International Series in Computer Science",
+  publisher = "Prentice-Hall",
+  year      = 1980,
+  numpages  = 350
+}
+
+@INPROCEEDINGS { hen92a,
+  author   = "Fritz Henglein",
+  title    = "Global Tagging Optimizations by Type Inference",
+  pages    = {205--215},
+  crossref = {acm-lfp-1992}
+}
+
+@INPROCEEDINGS { hen92b,
+  author   = "Wade Henessey",
+  title    = "{WCL}: Delivering Efficient {Common Lisp} Applications
+              Under {Unix}",
+  pages    = {260-269},
+  crossref = {acm-lfp-1992}
+}
+
+@INPROCEEDINGS { hfw84,
+  author   = "Christopher T. Haynes and Daniel P. Friedman and Mitchell Wand",
+  title    = "Continuations and Coroutines",
+  pages    = {293-298},
+  crossref = {acm-lfp-1984}
+}
+
+@ARTICLE { hof93,
+  author  = "Ulrich Hoffmann",
+  title   = "Using {C} as Target Code for Translating High-Level
+             Programming Languages",
+  journal = jclt,
+  volume  = 5,
+  number  = 2,
+  pages   = {70--90},
+  year    = 1993
+}
+
+@ARTICLE { hon93,
+  author  = "P. Joseph Hong",
+  title   = "Threaded Code Designs for {Forth} Interpreters",
+  journal = sigforth-news,
+  volume  = 4,
+  number  = 2,
+  pages   = {11--16},
+  year    = 1993
+}
+
+
+== PAGE 7 ==
+
+@ARTICLE { hs75,
+  author  = "Carl Hewitt and Brian Smith",
+  title   = "Towards a Programming Apprentice",
+  journal = ieee-tse,
+  volume  = 1,
+  number  = 1,
+  pages   = {26--45},
+  year    = 1975
+}
+
+@BOOK { hs91,
+  author    = "Samuel P. Harbison and Guy Lewis {Steele Jr.}",
+  title     = "{C}: A Reference Manual",
+  edition   = "3rd edition",
+  publisher = "Prentice-Hall",
+  year      = 1991,
+  numpages  = 392
+}
+
+@STANDARD { iee91,
+  key          = "IEE",
+  title        = "{IEEE} Standard for the {Scheme} Programming Language",
+  number       = "{IEEE} 1178-1990",
+  organization = "Institute of Electical and Electronic Engineers",
+  year         = 1991
+}
+
+@MANUAL { ilo94,
+  key          = "ILO",
+  title        = "{Ilog Talk} Reference Manual",
+  organization = "ILOG",
+  year         = 1994
+}
+
+@INPROCEEDINGS { im89,
+  author   = "Takayasu Ito and Manabu Matsui",
+  title    = "A Parallel {Lisp} Language PaiLisp and Its Kernel Specification",
+  pages    = {58--100},
+  crossref = {wplls-1989},
+  names    = {no-abbrev}
+}
+
+@INPROCEEDINGS { imy92,
+  author   = "Yuuju Ichisugi and Satoshi Matsuoka and Akinori Yonezawa",
+  title    = "{RbCL}: A Reflective Object-Oriented Concurrent Language
+              without a Run-Time Kernel",
+  pages    = {24--35},
+  crossref = {ys92},
+  names    = {no-abbrev}
+}
+
+@STANDARD { iso90,
+  key          = "ISO",
+  title        = "Programming Languages~-- {C}",
+  number       = "{ISO/IEC} 9899:1990",
+  organization = "International Organization for Standardization",
+  year         = 1990
+}
+
+@STANDARD { iso94,
+  key          = "ISO",
+  title        = "Programming Language {ISLISP}",
+  number       = "{ISO/IEC} {JTC1/SC22/WG16}",
+  organization = "International Organization for Standardization",
+  year         = 1994
+}
+
+@INPROCEEDINGS { itw86,
+  author   = "Takayasu Ito and Takashi Tamura and Shinichi Wada",
+  title    = "Theoretical Comparisons of Interpreted/Compiled Executions
+              of {Lisp} on Sequential and Parallel Machine Models",
+  pages    = {349--354},
+  crossref = {ifip-wcc-1986},
+  names    = {no-abbrev}
+}
+
+@MANUAL { jaf94,
+  author = "Aubrey Jaffer",
+  title  = "Reference Manual for {SCM}",
+  year   = 1994
+}
+
+@INPROCEEDINGS { jf92,
+  author   = "Stanley Jefferson and Daniel P. Friedman",
+  title    = "A Simple Reflective Interpreter",
+  pages    = {48--58},
+  crossref = {ys92},
+}
+
+@BOOK { jgs93,
+  author    = "Neil D. Jones and Carsten K. Gomard and Peter Sestoft",
+  title     = "Partial Evaluation and Automatic Program Generation",
+  series    = "International Series in Computer Science",
+  publisher = "Prentice-Hall",
+  year      = 1993,
+  numpages  = 400,
+  notes     = "With chapters by L. O. Andersen and T. Mogensen"
+}
+
+@INPROCEEDINGS { kah87,
+  author   = "Gilles Kahn",
+  title    = "Natural Semantics",
+  pages    = {22--39},
+  crossref = {stacs-1987},
+}
+
+@BOOK { kam90,
+  author    = "Samuel N. Kamin",
+  title     = "Programming Languages: An Interpreter-Based Approach",
+  publisher = "Addison-Wesley",
+  year      = 1990,
+  numpages  = 640
+}
+
+@BOOK { kdrb92,
+  author    = "Gregor Kiczales and Jim des Rivi{\`e}res and Daniel G. Bobrow",
+  title     = "The Art of the Metaobject Protocol",
+  publisher = "MIT Press",
+  year      = 1992,
+  numpages  = 345
+}
+
+@BOOK { kes88,
+  author    = "Robert R. Kessler",
+  title     = "{Lisp}, Objects, and Symbolic Programming",
+  publisher = "Scott Foresman {\&} Co",
+  year      = 1988,
+  numpages  = 644
+}
+
+@INPROCEEDINGS { kffd86,
+  author   = "Eugene E. Kohlbecker and Daniel P. Friedman and
+              Matthias Felleisen and Bruce Duba",
+  title    = "Hygienic Macro Expansion",
+  pages    = {151--161},
+  crossref = {acm-lfp-1986},
+}
+
+@INPROCEEDINGS { kh89,
+  author   = "Richard Kelsey and Paul Hudak",
+  title    = "Realistic Compilation by Program Transformation",
+  pages    = {281--292},
+  crossref = {acm-popl-1989},
+}
+
+
+== PAGE 8 ==
+
+@BOOK { knu84,
+  author    = "Donald Ervin Knuth",
+  title     = "The {\TeX}book",
+  publisher = "Addison-Wesley",
+  year      = 1984,
+  numpages  = 496
+}
+
+@BOOK { kr78,
+  author    = "Brian W. Kernighan and Dennis M. Ritchie",
+  title     = "The {C} Programming Language",
+  publisher = "Prentice-Hall",
+  year      = 1978,
+  numpages  = 228
+}
+
+@INPROCEEDINGS { kr90,
+  author   = "Gregor Kiczales and Luis Rodriguez",
+  title    = "Efficient Method Dispatch in {PCL}",
+  pages    = {99--105},
+  crossref = {acm-lfp-1990},
+}
+
+@INPROCEEDINGS { kw90,
+  author   = "Morry Katz and Daniel Weise",
+  title    = "Continuing into the Future: On the Interaction of Futures
+              and First-Class Continuations",
+  pages    = {176--184},
+  crossref = {acm-lfp-1990}
+}
+
+@INPROCEEDINGS { lak80,
+  author   = "Fred H. Lakin",
+  title    = "Computing with Text-Graphical Forms",
+  pages    = {100--106},
+  crossref = {acm-lfp-1980}
+}
+
+@ARTICLE { lan65,
+  author  = "Peter J. Landin",
+  title   = "Correspondence between {ALGOL 60} and {Church's} Lambda-notation",
+  journal = acm-comm,
+  volume  = 8,
+  pages   = {89--101 and 158--165},
+  year    = 1965
+}
+
+@BOOK { leb05,
+  author    = "Maurice Leblanc",
+  title     = "813",
+  publisher = "{\'E}ditions Pierre Lafitte",
+  year      = 1905
+}
+
+@ARTICLE { lf88,
+  author  = "Henry Lieberman and Christopher Fry",
+  title   = "Common {EVAL}",
+  journal = sigplan-pointers,
+  volume  = 2,
+  number  = 1,
+  pages   = {23--33},
+  year    = 1988
+}
+
+@INPROCEEDINGS { lf93,
+  author   = "Shinn-Der Lee and Daniel P. Friedman",
+  title    = "Quasi-Static Scoping: Sharing Variable Bindings
+              Across Multiple Lexical Scopes",
+  pages    = {479--492},
+  crossref = {acm-popl-1993}
+}
+
+@INPROCEEDINGS { lie87,
+  author   = "Henry Lieberman",
+  title    = "Reversible Object-Oriented Interpreters",
+  pages    = {11--19},
+  crossref = {ecoop-1987}
+}
+
+@MANUAL { llst93,
+  author       = "Bil Lewis and Dan LaLiberte and Richard Stallman
+                  and {GNU Manual Group}",
+  title        = "{GNU} {Emacs Lisp} Reference Manual",
+  edition      = "2nd edition",
+  organization = "Free Software Foundation",
+  year         = 1993
+}
+
+@INPROCEEDINGS { lp86,
+  author   = "Kevin J. Lang and Barak A. Pearlmutter",
+  title    = "{Oaklisp}: An Object-Oriented {Scheme} with First Class Types",
+  pages    = {30--37},
+  crossref = {oopsla-1986}
+}
+
+@ARTICLE { lp88,
+  author  = "Kevin J. Lang and Barak A. Pearlmutter",
+  title   = "{Oaklisp}: An Object-Oriented Dialect of {Scheme}",
+  journal = lsc,
+  volume  = 1,
+  number  = 1,
+  pages   = {39--51},
+  year    = 1988
+}
+
+@BOOK { lw93,
+  author    = "Xavier Leroy and Pierre Weis",
+  title     = "Manuel de r{\'e}f{\'e}rence du langage {Caml}",
+  publisher = "Inter{\'E}ditions",
+  year      = 1993,
+  language  = {french}
+}
+
+@BOOK { mae+62,
+  author    = "John McCarthy and Paul W. Abrahams and Daniel J. Edwards and
+               Timothy P. Hart and Michael I. Levin",
+  title     = "{LISP 1.5} Programmer's Manual",
+  publisher = "MIT Press",
+  year      = 1962,
+  numpages  = 112
+}
+
+@BOOK { man74,
+  author    = "Zohar Manna",
+  title     = "Mathematical Theory of Computation",
+  series    = "Computer Science Series",
+  publisher = "McGraw-Hill",
+  year      = 1974,
+  numpages  = 448
+}
+
+@BOOK { mas86,
+  author    = "Ian A. Mason",
+  title     = "The Semantics of Destructive {LISP}",
+  series    = "Lecture notes",
+  publisher = "CSLI",
+  year      = 1986,
+  numpages  = 300
+}
+
+
+== PAGE 9 ==
+
+@INPROCEEDINGS { mat92,
+  author   = "Luis Mateu",
+  title    = "An Efficient Implemenatation of Coroutines",
+  pages    = {230--247},
+  crossref = {iwmm-1992}
+}
+
+@PHDTHESIS { mb93,
+  key      = "MB",
+  author   = "Luis Mateu-Brule",
+  title    = "Strat{\'e}gies avanc{\'e}es pour la gestion de blocs
+              de contr{\^o}le",
+  type     = "Th{\`e}se de doctorat d'universit{\'e}",
+  school   = "Unversit{\'e} Paris-VI",
+  year     = 1993,
+  language = {french}
+}
+
+@ARTICLE { mcc60,
+  author  = "John McCarthy",
+  title   = "Recursive Functions of Symbolic Expressions and Their
+             Computation by Machine, {Part I}",
+  journal = acm-comm,
+  volume  = 3,
+  number  = 1,
+  pages   = {184--195},
+  year    = 1960
+}
+
+@ARTICLE { mcc78a,
+  author  = "John McCarthy",
+  title   = "History of {LISP}",
+  journal = sigplan-notices,
+  volume  = 13,
+  number  = 8,
+  pages   = {217--223},
+  year    = 1978,
+  notes   = "Special issue: History of programming languages conference"
+}
+
+@ARTICLE { mcc78b,
+  author  = "John McCarthy",
+  title   = "A micro-manual for {LISP}~-- Not the whole truth",
+  journal = sigplan-notices,
+  volume  = 13,
+  number  = 8,
+  pages   = {215--216},
+  year    = 1978,
+  notes   = "Special issue: History of programming languages conference"
+}
+
+@TECHREPORT { mcd93,
+  author      = "Raymond McDowell",
+  title       = "The Relatedness and Comparative Utility of Various Approaches
+                 to Operational Semantics",
+  institution = "University of Pennsylvaina, CIS Dept.",
+  number      = "MS-CIS-93-16",
+  year        = 1993
+}
+
+@BOOK { mnc+89,
+  author    = "G{\'e}rald Masini and Amedeo Napoli and Dominique Colnet and
+               Daniel L{\'e}onard and Karl Tombre",
+  title     = "Les langages {\`a} objets",
+  publisher = "Inter{\'E}ditions",
+  year      = 1989,
+  language  = {french}
+}
+
+@INPROCEEDINGS { mor92,
+  author   = "Luc Moreau",
+  title    = "An Operational Semantics for a Parallel Functional Language
+              with Continuations",
+  pages    = {415--420},
+  crossref = {parle-1992}
+}
+
+@PHDTHESIS { mor94,
+  author   = "Luc Moreau",
+  title    = "Sound Evaluation of Parallel Functional Programs with
+              First-Class Continuations",
+  type     = "PhD thesis",
+  school   = "University of Li{\`e}ge",
+  year     = 1994
+}
+
+@ARTICLE { mos70,
+  author  = "Joel Moses",
+  title   = "The Function of FUNCTION in {LISP}, or Why the {FUNARG} Problem
+             Should be Called the Environment Problem",
+  journal = sigsam-bulletin,
+  number  = 15,
+  pages   = {13--27},
+  year    = 1970
+}
+
+@BOOK { moz87,
+  key    = "Moz",
+  author = "Wolfgang Amadeus Mozart",
+  title  = "Don Giovanni",
+  year   = 1787
+}
+
+@INPROCEEDINGS { mp80,
+  author   = "Steven S. Muchnick and Uwe F. Pleban",
+  title    = "A Semantic Comparison of {LISP} and {Scheme}",
+  pages    = {56--65},
+  crossref = {acm-lfp-1980}
+}
+
+@INPROCEEDINGS { mq94,
+  author   = "Luc Moreau and Christian Queinnec",
+  title    = "Partial Continuations as the Difference of Continuations~--
+              A Duumvirate of Control Operators",
+  pages    = {182--197},
+  crossref = {plilp-1994}
+}
+
+@ARTICLE { mr91,
+  author  = "James S. Miller and Guillermo Juan Rozas",
+  title   = "Free Variables and First-Class Environments",
+  journal = lsc,
+  volume  = 4,
+  number  = 2,
+  pages   = {107--141},
+  year    = 1991
+}
+
+@INPROCEEDINGS { ms80,
+  author   = "F. Lockwood Morris and Jerald S. Schwarz",
+  title    = "Computing Cyclic List Structures",
+  pages    = {144--153},
+  crossref = {acm-lfp-1980}
+}
+
+
+== PAGE 10 ==
+
+@ARTICLE { mul92,
+  author  = "Robert Muller",
+  title   = "{M-Lisp}: A Representation-Independent Dialect of {Lisp} with
+             Reduction Semantics",
+  journal = acm-tpls,
+  volume  = 14,
+  number  = 4,
+  pages   = {589--615},
+  year    = 1992
+}
+
+@PHDTHESIS { nei84,
+  author   = "Eugen Neidl",
+  title    = "{\'E}tude des relations avec l'interpr{\`e}te dans
+              la compilation de {Lisp}",
+  type     = "Th{\`e}se de troisi{\`e}me cycle",
+  school   = "Unversit{\'e} Paris-VI",
+  year     = 1984,
+  language = {french}
+}
+
+@TECHREPORT { nor72,
+  author      = "Eric J. Norman",
+  title       = "{1100 LISP} Reference Manual",
+  institution = "University of Wisconsin",
+  year        = 1972
+}
+
+@TECHREPORT { nq89,
+  author      = "Greg Nuyens and Christian Queinnec",
+  title       = "Identifier Semantics: A Matter of References",
+  institution = "Laboratoire d'Informatique de l'{\'E}cole Polytechnique",
+  number      = "LIX RR 89 02, P.~67--80",
+  year        = 1989
+}
+
+@MISC { pe92,
+  key    = "PE",
+  editor = "Julian Padget and Greg Nuyens",
+  title  = "The \textsc{EuLisp} Definition",
+  year   = 1992
+}
+
+@INPROCEEDINGS { per79,
+  author   = "Jean-Fran{\c c}ois Perrot",
+  title    = "{Lisp} et $\lambda$-calcul",
+  pages    = {277--301},
+  crossref = {epit-1979},
+  language = {french}
+}
+
+@INPROCEEDINGS { pit80,
+  author   = "Kent Pitman",
+  title    = "Special Forms in {LISP}",
+  pages    = {179--187},
+  crossref = {acm-lfp-1980},
+}
+
+@BOOK { pj87,
+  author    = "Simon L. Peyton-Jones",
+  title     = "The Implemenatation of Functional Programming Languages",
+  series    = "International Series in Computer Science",
+  publisher = "Prentice-Hall",
+  year      = 1987,
+  numpages  = 500
+}
+
+@ARTICLE { pnb93,
+  author  = "Julian Padget and Greg Nuyens and Harry Bretthauer",
+  title   = "An Overview of \textsc{EuLisp}",
+  journal = lsc,
+  volume  = 6,
+  number  = {1/2},
+  pages   = {9--98},
+  year    = 1993
+}
+
+@INPROCEEDINGS { qc88,
+  author   = "Christian Queinnec and Pierre Cointe",
+  title    = "An Open-Ended Data Representation Model for \textsc{EuLisp}",
+  pages    = {298--308},
+  crossref = {acm-lfp-1988},
+}
+
+@INPROCEEDINGS { qd93,
+  author   = "Christian Queinnec and David DeRoure",
+  title    = "Design of a concurrent and distributed language",
+  pages    = {234--259},
+  crossref = {wpsc-1993},
+}
+
+@INPROCEEDINGS { qd96,
+  author   = "Christian Queinnec and David DeRoure",
+  title    = "Sharing Code through First-Class Environments",
+  pages    = {251--261},
+  crossref = {acm-icfp-1996},
+}
+
+@INPROCEEDINGS { qg92,
+  author   = "Christian Queinnec and Jean-Marie Geffroy",
+  title    = "Partial Evaluation Applied to Symbolic Pattern Matching with
+              Intelligent Backtrack",
+  pages    = {109--117},
+  crossref = {wsa-1992-b},
+}
+
+@TECHREPORT { qp90,
+  author      = "Christian Queinnec and Julian Padget",
+  title       = "A Deterministic Model for Modules and Macros",
+  institution = "University of Bath, Bath Computing Group",
+  number      = "90-36",
+  year        = 1990
+}
+
+@INPROCEEDINGS { qp91a,
+  author   = "Christian Queinnec and Julian Padget",
+  title    = "A Proposal for a Modular {Lisp} with Macros and Dynamic
+              Evaluation",
+  pages    = {1--8},
+  crossref = {jtaspefl-1991}
+}
+
+
+== PAGE 11 ==
+
+@INPROCEEDINGS { qp91b,
+  author   = "Christian Queinnec and Julian Padget",
+  title    = "Modules, Macros and {Lisp}",
+  pages    = {111--123},
+  crossref = {sccc-1991}
+}
+
+@INPROCEEDINGS { qs91,
+  author   = "Christian Queinnec and Bernard Serpette",
+  title    = "A Dynamic Extent Control Operator for Partial Continuations",
+  pages    = {174--184},
+  crossref = {acm-popl-1991}
+}
+
+@BOOK { que82,
+  author    = "Christian Queinnec",
+  title     = "Langage d'un autre type\,: {LISP}",
+  publisher = "Eyrolles",
+  year      = 1982,
+  numpages  = 184,
+  language  = {french}
+}
+
+@TECHREPORT { que89,
+  author      = "Christian Queinnec",
+  title       = "{Lisp}~-- Almost a whole Truth!",
+  institution = "Laboratoire d'Informatique de l'{\'E}cole Polytechnique",
+  number      = "LIX RR 89 03, P.~79--105",
+  year        = 1989
+}
+
+@INPROCEEDINGS { que90a,
+  author   = "Christian Queinnec",
+  title    = "A Framework for Data Aggregates",
+  pages    = {21--32},
+  crossref = {jfla-1990}
+}
+
+@BOOK { que90b,
+  author    = "Christian Queinnec",
+  title     = "Le filtrage\,: une application de (et pour) {Lisp}",
+  publisher = "Inter{\'E}ditions",
+  year      = 1990,
+  numpages  = 201,
+  language  = {french}
+}
+
+@INPROCEEDINGS { que90c,
+  author   = "Christian Queinnec",
+  title    = "{PolyScheme}: A Semantics for a Concurrent {Scheme}",
+  crossref = {hppc-1990}
+}
+
+@ARTICLE { que92a,
+  author  = "Christian Queinnec",
+  title   = "Compiling Syntactically Recursive Programs",
+  journal = sigplan-pointers,
+  volume  = 5,
+  number  = 4,
+  pages   = {2--10},
+  year    = 1992
+}
+
+@INPROCEEDINGS { que92b,
+  author   = "Christian Queinnec",
+  title    = "A Concurrent and Distributed Extension of {Scheme}",
+  pages    = {431--446},
+  crossref = {parle-1992}
+}
+
+@ARTICLE { que93a,
+  author  = "Christian Queinnec",
+  title   = "Continuation Conscious Compilation",
+  journal = sigplan-pointers,
+  volume  = 6,
+  number  = 1,
+  pages   = {2--14},
+  year    = 1993
+}
+
+@INPROCEEDINGS { que93b,
+  author   = "Christian Queinnec",
+  title    = "Designing {\textsc{Meroon} V3}",
+  crossref = {ecoop-1993-l}
+}
+
+@ARTICLE { que93c,
+  author  = "Christian Queinnec",
+  title   = "A Library of High-Level Control Operators",
+  journal = sigplan-pointers,
+  volume  = 6,
+  number  = 4,
+  pages   = {11--26},
+  year    = 1993
+}
+
+@TECHREPORT { que93d,
+  author      = "Christian Queinnec",
+  title       = "Literate Programming from {Scheme} to {\TeX}",
+  type        = "Research report",
+  institution = "Laboratoire d'Informatique de l'{\'E}cole Polytechnique",
+  number      = "LIX RR 93 05, P.~79--105",
+  year        = 1993
+}
+
+@INPROCEEDINGS { que94,
+  author   = "Christian Queinnec",
+  title    = "Locality, Causality and Continuations",
+  pages    = {91--102},
+  crossref = {acm-lfp-1994}
+}
+
+@INPROCEEDINGS { que95,
+  author   = "Christian Queinnec",
+  title    = "\textsc{DMeroon}. Overview of a Distributed Class-based
+              Causality-coherent Data Model",
+  pages    = {297--309},
+  crossref = {psls-1995}
+}
+
+
+== PAGE 12 ==
+
+@ARTICLE { r3r86,
+  key     = "R3R",
+  editor  = "William Clinger and Jonathan Rees",
+  title   = "Revised\textsuperscript{3} Report on the Algorithmic
+             Language {Scheme}",
+  journal = sigplan-notices,
+  volume  = 21,
+  number  = 12,
+  pages   = {37--79},
+  year    = 1986
+}
+
+@INPROCEEDINGS { ra82,
+  author   = "Jonathan A. Rees and Norman I. Adams",
+  title    = "{T}: A Dialect of {Lisp} or,
+              {LAMBDA}: The Ultimate Software Tool",
+  pages    = {114--122},
+  crossref = {acm-lfp-1982}
+}
+
+@MANUAL { ram84,
+  author       = "Jonathan A. Rees and Norman I. Adams and James R. Meehan",
+  title        = "The {T} Manual",
+  edition      = "4th edition",
+  organization = "Yale University, Computer Science Dept.",
+  year         = 1984
+}
+
+@BOOK { ray91,
+  author    = "Eric Raymond",
+  title     = "The New Hacker's Dictionary",
+  publisher = "MIT Press",
+  year      = 1991
+}
+
+@INPROCEEDINGS { rey72,
+  author   = "John C. Reynolds",
+  title    = "Definitional Interpreters for Higher-Order Programming Languages",
+  pages    = {717--740},
+  crossref = {acm-conf-1972}
+}
+
+@BOOK { rib69,
+  author    = "Daniel Ribbens",
+  title     = "Programmation non num{\'e}rique\,: {LISP~1.5}",
+  series    = "Monographies d'Informatique",
+  publisher = "Dunod",
+  year      = 1969,
+  language  = {french}
+}
+
+@INPROCEEDINGS { rm92,
+  author   = "John R. Rose and Hans Muller",
+  title    = "Integrating the {Scheme} and {C} Languages",
+  pages    = {247--259},
+  crossref = {acm-lfp-1992}
+}
+
+@INPROCEEDINGS { row80,
+  author   = "William Rowan",
+  title    = "A {LISP} Compiler Producing Compact Code",
+  pages    = {216--222},
+  crossref = {acm-lfp-1980}
+}
+
+@INPROCEEDINGS { roz92,
+  author   = "Guillermo Juan Rozas",
+  title    = "Taming the {Y} Operator",
+  pages    = {226--234},
+  crossref = {acm-lfp-1992}
+}
+
+@ARTICLE { sam79,
+  author  = "Hanan Sammet",
+  title   = "Deep and Shallow Binding: The Assignment Operation",
+  journal = comp-lang,
+  volume  = 4,
+  pages   = {187--198},
+  year    = 1979
+}
+
+@BOOK { sch86,
+  author    = "David Schmidt",
+  title     = "Denotational Semantics: A Methodology for Language Development",
+  publisher = "{Allyn and Bacon}",
+  year      = 1986,
+  numpages  = 348
+}
+
+@ARTICLE { sco76,
+  author  = "Dana Scott",
+  title   = "Data Types as Lattices",
+  journal = "SIAM Journal on Computing",
+  volume  = 5,
+  number  = 3,
+  pages   = {522--587},
+  year    = 1976
+}
+
+@ARTICLE { sen89,
+  author   = "Nitsan S{\'e}niak",
+  title    = "Compilation de Scheme par sp{\'e}cialisation explicite",
+  journal  = bigre,
+  number   = 65,
+  pages    = {160--170},
+  year     = 1989,
+  language = {french}
+}
+
+@PHDTHESIS { sen91,
+  author   = "Nitsan S{\'e}niak",
+  title    = "Th{\'e}orie et practique de {Sqil}, un langage interm{\'e}diare
+              pour la compilation des langages fonctionnels",
+  type     = "Th{\`e}se de doctorat d'universit{\'e}",
+  school   = "Unversit{\'e} Paris-VI",
+  year     = 1991,
+  language = {french}
+}
+
+@INPROCEEDINGS { ser93,
+  author   = "Manuel Serrano",
+  title    = "De l'utilisation des analyses de flot de contr{\^o}le dans
+              la compilation des langages fonctionnels",
+  pages    = {226--234},
+  crossref = {gdrp-1993},
+  language = {french},
+  note     = "See also PLILP'94 proc., P.~447--448."
+}
+
+@MANUAL { ser94,
+  author = "Manuel Serrano",
+  title  = "{Bigloo's} User Manual",
+  year   = 1994
+}
+
+@BOOK { sf89,
+  author    = "George Springer and Daniel P. Friedman",
+  title     = "{Scheme} and the Art of Programming",
+  publisher = "MIT Press",
+  year      = 1989,
+  numpages  = 600
+}
+
+@INPROCEEDINGS { sf92,
+  author   = "Amr Sabry and Matthias Felleisen",
+  title    = "Reasoning About Programs in Continuation-Passing Style",
+  pages    = {288--298},
+  crossref = {acm-lfp-1992}
+}
+
+@ARTICLE { sg93,
+  author   = "Guy L. {Steele Jr.} and Richard P. Gabriel",
+  title    = "The Evolution of {Lisp}",
+  journal  = sigplan-notices,
+  volume   = 28,
+  number   = 3,
+  pages    = {231--270},
+  year     = 1993,
+}
+
+
+== PAGE 13 ==
+
+@INCOLLECTION { shi91,
+  author    = "Olin Shivers",
+  chapter   = "Data-flow Analysis and Type Recovery in {Scheme}",
+  editor    = "Peter Lee",
+  title     = "Topics in Advanced Language Implemenatation",
+  publisher = "MIT Press",
+  year      = 1991
+}
+
+@PHDTHESIS { sj87,
+  author   = "Emmanuel Saint-James",
+  title    = "De la m{\'e}ta-r{\'e}cursivit{\'e} comme outil
+              d'impl{\'e}mentation",
+  type     = "Th{\`e}se d'{\'e}tat",
+  school   = "Unversit{\'e} Paris-VI",
+  year     = 1987,
+  language = {french}
+}
+
+@BOOK { sj93,
+  author    = "Emmanuel Saint-James",
+  title     = "La programmation applicative (de {LISP} {\`a} la machine en
+               passant par le lambda-calcul)",
+  publisher = "Herm{\`e}s",
+  year      = 1993,
+  numpages  = 411,
+  language  = {french}
+}
+
+@PHDTHESIS { sla61,
+  author   = "James R. Slagle",
+  title    = "A Heuristic Program that Solves Symbolic Integration Problems
+              in Freshman Calculus, Symbolic Automatic Integration {(SAINT)}",
+  type     = "PhD thesis",
+  school   = "MIT, Dept. of Mathematics",
+  year     = 1961
+}
+
+@BOOK { spi90,
+  author    = "{\'E}ric Spir",
+  title     = "Gestion dynamique de la m{\'e}moire dans les langages de
+               programmation, application {\`a} {Lisp}",
+  series    = "Science informatique",
+  publisher = "Inter{\'E}ditions",
+  year      = 1990,
+  numpages  = 156,
+  language  = {french}
+}
+
+@TECHREPORT { ss75,
+  author      = "Gerald Jay Sussman and Guy Lewis {Steele Jr.}",
+  title       = "{Scheme}: An Interpreter for Extended Lambda Сalculus",
+  type        = "AI Memo",
+  number      = "349",
+  institution = "Massachusetts Institute of Technology",
+  year        = 1975
+}
+
+@TECHREPORT { ss78a,
+  author      = "Guy Lewis {Steele Jr.} and Gerald Jay Sussman",
+  title       = "The Art of the Interpreter or,
+                 The Modularity Complex (Parts Zero, One, and Two)",
+  type        = "AI Memo",
+  number      = "453",
+  institution = "Massachusetts Institute of Technology",
+  year        = 1978
+}
+
+@TECHREPORT { ss78b,
+  author      = "Guy Lewis {Steele Jr.} and Gerald Jay Sussman",
+  title       = "The Revised Report on {SCHEME}, a Dialect of {LISP}",
+  type        = "AI Memo",
+  number      = "452",
+  institution = "Massachusetts Institute of Technology",
+  year        = 1978
+}
+
+@INPROCEEDINGS { ss80,
+  author   = "Guy Lewis {Steele Jr.} and Gerald Jay Sussman",
+  title    = "The Dreams of Lifetime: A Lazy Variable Extent Mechanism",
+  pages    = {163--172},
+  crossref = {acm-lfp-1980}
+}
+
+@TECHREPORT { ste78,
+  author      = "Guy Lewis {Steele Jr.}",
+  title       = "{RABBIT}: A Compiler for {SCHEME}",
+  type        = "AI Memo",
+  number      = "474",
+  institution = "Massachusetts Institute of Technology",
+  year        = 1978
+}
+
+@BOOK { ste84,
+  author    = "Guy Lewis {Steele Jr.}",
+  title     = "\textsc{Common Lisp}. The Language",
+  publisher = "Digital Press",
+  year      = 1984,
+  numpages  = 465
+}
+
+@BOOK { ste90,
+  author    = "Guy Lewis {Steele Jr.}",
+  title     = "\textsc{Common Lisp}. The Language",
+  edition   = "2nd edition",
+  publisher = "Digital Press",
+  year      = 1990,
+  numpages  = 1029
+}
+
+@BOOK { sto77,
+  author    = "Joseph E. Stoy",
+  title     = "Denotational Semantics: The {Scott-Strachey} Approach to
+               Programming Language Theory",
+  publisher = "MIT Press",
+  year      = 1977,
+  numpages  = 414
+}
+
+@BOOK { str86,
+  author    = "Bjarne Stroustrup",
+  title     = "The {C++} Programming Language",
+  publisher = "Addison-Wesley",
+  year      = 1986,
+  numpages  = 326
+}
+
+@INPROCEEDINGS { sw94,
+  author   = "Manual Serrano and Pierre Weis",
+  title    = "$1 + 1 = 1$: An Optimizing {Caml} Compiler",
+  pages    = {101--111},
+  crossref = {wmla-1994}
+}
+
+@ARTICLE { tak88,
+  author  = "Masato Takeichi",
+  title   = "Lambda-Hoisting: A Transformation Technique for Fully Lazy
+             Evaluation of Functional Programs",
+  journal = ngc,
+  volume  = 5,
+  number  = 4,
+  pages   = {377--391},
+  year    = 1988,
+  names   = {no-abbrev}
+}
+
+@MANUAL { tei74,
+  author       = "Warren Teitelman",
+  title        = "{InterLISP} Reference Manual",
+  organization = "Xerox Palo Alto Research Center",
+  year         = 1974
+}
+
+@ARTICLE { tei76,
+  author  = "Warren Teitelman",
+  title   = "{CLisp}: Coversational {LISP}",
+  journal = ieee-tc,
+  volume  = 25,
+  number  = 4,
+  pages   = {354--357},
+  year    = 1976
+}
+
+
+== PAGE 14 ==
+
+@INPROCEEDINGS { vh94,
+  author   = "Jan Vitek and R. Nigel Horspool",
+  title    = "Taming Message Passing: Efficient Method Look-Up for Dynamically
+              Typed Languages",
+  pages    = {432--449},
+  crossref = {ecoop-1994}
+}
+
+@INPROCEEDINGS { wad88,
+  author   = "Philip Wadler",
+  title    = "Deforestation: Transforming Programs to Eliminate Trees",
+  pages    = {344--358},
+  crossref = {esop-1988}
+}
+
+@INPROCEEDINGS { wan80a,
+  author   = "Mitchell Wand",
+  title    = "Continuation-Based Multiprocessing",
+  pages    = {19--28},
+  crossref = {acm-lfp-1980}
+}
+
+@ARTICLE { wan80b,
+  author  = "Mitchell Wand",
+  title   = "Continuation-Based Program Transformation Strategies",
+  journal = jacm,
+  volume  = 27,
+  number  = 1,
+  pages   = {164--180},
+  year    = 1980
+}
+
+@INPROCEEDINGS { wan84,
+  author   = "Mitchell Wand",
+  title    = "A Semantic Prototyping System",
+  pages    = {213--221},
+  crossref = {acm-ccc-1984}
+}
+
+@INPROCEEDINGS { wan86,
+  key      = "Wan",
+  author   = "Mitchell Wand and Daniel P. Friedman",
+  title    = "The Mystery of the Tower Revealed: A Non-Reflective Description
+              of the Reflective Tower",
+  pages    = {298--307},
+  crossref = {acm-lfp-1986}
+}
+
+@ARTICLE { wat93,
+  author  = "Richard C. Waters",
+  title   = "\textsc{Macroexpand-All}: An Example of a Simple {Lisp}
+             Code Walker",
+  journal = sigplan-pointers,
+  volume  = 6,
+  number  = 1,
+  pages   = {25--32},
+  year    = 1993
+}
+
+@INPROCEEDINGS { wc94,
+  author   = "Andrew K. Wright and Robert Cartwright",
+  title    = "A Practical Soft Type System for {Scheme}",
+  pages    = {250--262},
+  crossref = {acm-lfp-1994}
+}
+
+@BOOK { wh89,
+  author    = "Patrick H. Winston and Berthold K. Horn",
+  title     = "{LISP}",
+  edition   = "3rd edition",
+  publisher = "Addison-Wesley",
+  year      = 1989,
+  numpages  = 611
+}
+
+@INPROCEEDINGS { wil92,
+  author   = "Paul R. Wilson",
+  title    = "Uniprocessor Garbage Collection Techniques",
+  pages    = {1--42},
+  crossref = {iwmm-1992}
+}
+
+@BOOK { wl93,
+  author    = "Pierre Weis and Xavier Leroy",
+  title     = "Le langage {Caml}",
+  publisher = "Inter{\'E}ditions",
+  year      = 1993
+}
+
+@BOOK { ws91,
+  author    = "Larry Wall and Randal L. Schwartz",
+  title     = "Programming {Perl}",
+  publisher = "O'Reilly Media",
+  year      = 1991,
+  numpages  = 482
+}
+
+@INPROCEEDINGS { ws94,
+  author   = "Mitchell Wand and Paul Steckler",
+  title    = "Selective and Lightweight Closure Conversion",
+  pages    = {435--445},
+  crossref = {acm-popl-1994}
+}
+
+@TECHREPORT { yh85,
+  author      = "Taiichi Yuasa and Masami Hagiya",
+  title       = "{Kyoto Common Lisp} Report",
+  institution = "Kyoto University",
+  year        = 1985,
+  names       = {no-abbrev}
+}
+
+@PROCEEDINGS { ys92,
+  editors   = "Akinori Yonezawa and Brian C. Smith",
+  title     = "Reflection and Meta-Level Architecture",
+  booktitle = "Proc. of Intern. Workshop on New Models for
+               Software Architecture",
+  year      = 1992,
+  names     = {no-abbrev}
+}

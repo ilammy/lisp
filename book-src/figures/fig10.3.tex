@@ -1,0 +1,92 @@
+% -*- coding: utf-8 -*-
+% (lambda (i) (lambda x (cons i x)))
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\tiny]
+
+\input{figures/fig10.macros}
+
+\begin{scope}[xshift = 0.0em]
+    \begin{scope}[yshift = -0.0em]
+        \PtrNodeT{FlatFun}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkUp
+        \NoFreeNode
+    \end{scope}\end{scope}
+\end{scope}
+
+% FlatFun -> (LocVar : I)
+\draw [->] (1.25em, -1.50em) -- (10.30em, -1.50em);
+
+\begin{scope}[xshift = 5.0em]
+    \begin{scope}[yshift = -2.0em]
+        \PullLinkLeft
+        \PtrNodeT{FlatFun}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkUp
+        \PtrNodeD{Free{\kern-0.03em}E{\kern-0.04em}n{\kern-0.05em}v}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \NoFreeNode
+    \end{scope}\end{scope}\end{scope}
+\end{scope}
+
+% FlatFun -> (LocVar : X)
+\draw [->] (6.25em,  -3.50em) -- ( 8.75em,  -3.50em) --
+           (8.75em, -10.50em) -- (10.30em, -10.50em);
+
+% FlatFun -> P.Appl
+\draw      ( 6.25em,  -4.50em) -- ( 9.90em,  -4.50em);
+\draw [->] (12.60em,  -4.50em) -- (14.80em,  -4.50em);
+
+% FreeEnv -> LocVar : I
+\draw [->] (6.25em, -8.50em) -- (11.25em, -8.50em) -- (11.25em, -7.20em);
+
+\begin{scope}[xshift = 10.0em]
+    \begin{scope}[yshift = -3.0em]
+        \InListLast
+        \PullLinkUp
+        \LocVarNode{\ic{I}}{\ic{\#f}}{\ic{\#f}}
+    \begin{scope}[yshift = -9.0em]
+        \InListLast
+        \PullLinkUp
+        \LocVarNode{\ic{X}}{\ic{\#f}}{\ic{\#t}}
+    \end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 15.0em]
+    \begin{scope}[yshift = -4.0em]
+        \PtrNodeD{P.Appl}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \NoArgNode
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 20.0em]
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkLeft
+        \ContentNode{PrVar}{\ic{CONS}}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkLeft
+        \PtrNodeU{FreeRef}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkLeft
+        \PtrNodeU{LocRef}
+    \end{scope}\end{scope}\end{scope}
+\end{scope}
+
+% FreeRef -> LocVar : I
+\draw [->] (21.25em, -10.50em) -- (23.75em, -10.50em) --
+           (23.75em,  -3.50em) -- (12.70em,  -3.50em);
+
+% LocRef -> LocVar : X
+\draw [->] (21.25em, -14.50em) -- (21.25em, -18.25em) --
+           (11.25em, -18.25em) -- (11.25em, -16.20em);
+\end{tikzpicture}

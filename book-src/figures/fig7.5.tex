@@ -1,0 +1,70 @@
+% -*- coding: utf-8 -*-
+% Состояние стека до и после инструкции \protect\ic{DYNAMIC-PUSH}
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+  \draw (-1.0em, 18.25em) node[above] {\ic{*stack-index*}};
+  \draw [->] (-1.0em, 18.50em) -- (-1.0em, 10.25em) -- (-0.25em, 10.25em);
+
+  \draw [semithick] (0.0em, 0.0em) rectangle (5.5em, 18.0em);
+
+  \draw (0.0em, 10.00em) -- (5.5em, 10.00em);
+  \draw (0.0em,  7.50em) -- (5.5em,  7.50em);
+  \draw (0.0em,  6.25em) -- (5.5em,  6.25em);
+  \draw (0.0em,  5.00em) -- (5.5em,  5.00em);
+  \draw (0.0em,  3.75em) -- (5.5em,  3.75em);
+
+  \draw (0.0em,  2.50em) -- (5.5em,  2.50em);
+  \draw (0.0em,  0.00em) -- (5.5em,  0.00em);
+
+  \draw [densely dashed] (-0.15em, 2.35em) rectangle (5.65em, 7.65em);
+
+  \draw     (2.75em, 9.000em) node {$\vdots$};
+  \draw     (2.75em, 6.875em) node {\ic{(*dynenv*)}};
+  \draw     (2.75em, 5.625em) node {\ii{индекс}};
+  \draw     (2.75em, 4.375em) node {\ii{значение}};
+  \filldraw (2.75em, 3.125em) circle(1.0pt);
+  \draw     (2.75em, 1.500em) node {$\vdots$};
+
+  \draw [->] (2.75em, 3.125em) -- (6.5em, 3.125em) -- (6.5em, -1.0em);
+
+
+
+  \draw (20.5em, 18.25em) node[above] {\ic{*stack-index*}};
+  \draw [->] (20.5em, 18.50em) -- (20.5em, 15.25em) -- (19.75em, 15.25em);
+
+  \draw [semithick] (14.0em, 0.0em) rectangle (19.5em, 18.0em);
+
+  \draw (14.0em, 15.00em) -- (19.5em, 15.00em);
+  \draw (14.0em, 13.75em) -- (19.5em, 13.75em);
+  \draw (14.0em, 12.50em) -- (19.5em, 12.50em);
+  \draw (14.0em, 11.25em) -- (19.5em, 11.25em);
+  \draw (14.0em, 10.00em) -- (19.5em, 10.00em);
+  
+  \draw (14.0em,  7.50em) -- (19.5em,  7.50em);
+  \draw (14.0em,  6.25em) -- (19.5em,  6.25em);
+  \draw (14.0em,  5.00em) -- (19.5em,  5.00em);
+  \draw (14.0em,  3.75em) -- (19.5em,  3.75em);
+
+  \draw (14.0em,  2.50em) -- (19.5em,  2.50em);
+  \draw (14.0em,  0.00em) -- (19.5em,  0.00em);
+
+  \draw [densely dashed] (13.85em, 2.35em) rectangle (19.65em,  7.65em);
+  \draw [densely dashed] (13.85em, 9.85em) rectangle (19.65em, 15.15em);
+
+  \draw     (16.75em, 14.375em) node {\ic{(*dynenv*)}};
+  \draw     (16.75em, 13.125em) node {\ii{индекс}};
+  \draw     (16.75em, 11.875em) node {\ii{значение}};
+  \filldraw (16.75em, 10.625em) circle(1.0pt);
+  \draw     (16.75em,  9.000em) node {$\vdots$};
+  \draw     (16.75em,  6.875em) node {\ic{(*dynenv*)}};
+  \draw     (16.75em,  5.625em) node {\ii{индекс}};
+  \draw     (16.75em,  4.375em) node {\ii{значение}};
+  \filldraw (16.75em,  3.125em) circle(1.0pt);
+  \draw     (16.75em,  1.500em) node {$\vdots$};
+
+  \draw [->] (16.75em,  3.125em) -- (20.50em,  3.125em) -- (20.5em, -1.0em);
+  \draw [->] (16.75em, 10.625em) -- (13.00em, 10.625em) --
+             (13.00em,  5.625em) -- (13.75em,  5.625em);
+
+\end{tikzpicture}

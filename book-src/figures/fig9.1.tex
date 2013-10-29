@@ -1,0 +1,55 @@
+% -*- coding: utf-8 -*-
+% Два варианта экзогенной компиляции.
+% Пятиугольники обозначают исполнимые бинарные файлы.
+\begin{tikzpicture}
+
+\tikzstyle{every node}=[font=\small]
+
+\input{figures/fig9.macros}
+
+\begin{scope}[xshift = 0.0em, yshift = 11.00em]
+  \source{file.scm}{1}
+\begin{scope}[xshift = 3.0em]
+  \draw [->] (0.25em, 0.0em) -- (2.25em, 0.0em);
+\begin{scope}[xshift = 2.5em]
+  \begin{scope}[xshift = 2.35em]
+    \binaryright{expand.so}{3.5em}
+  \end{scope}
+\begin{scope}[xshift = 5.5em]
+  \draw [->] (0.25em, 0.0em) -- (2.25em, 0.0em);
+\begin{scope}[xshift = 2.5em]
+  \source{}{2}
+\begin{scope}[xshift = 3.0em]
+  \draw [->] (0.25em, 0.0em) -- (2.25em, 0.0em);
+\begin{scope}[xshift = 2.5em]
+  \begin{scope}[xshift = 2.35em]
+    \binaryright{compile.so}{3.5em}
+  \end{scope}
+\begin{scope}[xshift = 5.5em]
+  \draw [->] (0.25em, 0.0em) -- (2.25em, 0.0em);
+\begin{scope}[xshift = 2.5em]
+  \begin{scope}[xshift = 2.55em]
+    \binaryup{file.so}{3.5em}
+  \end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 7.00em]
+  \source{file.scm}{}
+\begin{scope}[xshift = 3.0em]
+  \draw [->] (0.25em, 0.0em) -- (3.25em, 0.0em);
+\begin{scope}[xshift = 3.5em]
+  \begin{scope}[xshift = 1.75em]
+    \binarydouble{compile.so}{expand.so}{3.5em}
+  \end{scope}
+\begin{scope}[xshift = 3.5em]
+  \draw [->] (0.25em, 0.0em) -- (3.25em, 0.0em);
+\begin{scope}[xshift = 3.5em]
+  \begin{scope}[xshift = 2.55em]
+    \binaryup{file.so}{3.5em}
+  \end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\end{tikzpicture}

@@ -1,0 +1,7 @@
+% -*- coding: utf-8 -*-
+
+% Определение набора костылей для вёрстки
+\makeatletter
+\newcommand{\DefineLayout}[1]{\expandafter\def\csname lisp@layout#1\endcsname{}}
+\newcommand{\ForLayout}[2]{\ifcsname lisp@layout#1\endcsname\relax#2\fi}
+\makeatother

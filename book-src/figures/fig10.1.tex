@@ -1,0 +1,157 @@
+% -*- coding: utf-8 -*-
+% Объектифицированный код
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\tiny]
+
+\input{figures/fig10.macros}
+
+\begin{scope}[xshift = 0.0em]
+    \begin{scope}[yshift = -0.0em]
+        \PtrNodeD{Seq}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeT{FixLet}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkUp
+        \PtrNodeDS{Seq}
+        \draw [dashed] (1.6em, -1.5em) -- (1.6em, -5.75em)
+                       (0.9em, -2.5em) -- (0.9em, -5.75em);
+    \end{scope}\end{scope}\end{scope}
+\end{scope}
+
+% FixLet -> LocVarList
+\draw [->] (1.25em, -5.50em) -- (20.30em, -5.50em);
+
+\begin{scope}[xshift = 5.0em]
+    \begin{scope}[yshift = -1.0em]
+        \PullLinkLeft
+        \PtrNodeD{GlAsgn}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkLeft
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \NoArgNode
+    \begin{scope}[yshift = -4.0em]
+        \InListLast
+        \PullLinkUp
+        \LocVarNode{\ic{F}}{\ic{\#f}}{\ic{\#f}}
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}\end{scope}
+\end{scope}
+
+% GlAsgn -> Const
+\draw [->] (6.25em, -2.50em) -- (29.8em, -2.50em);
+
+% Args -> Func
+\draw [->] (6.25em, -7.50em) -- (14.8em, -7.50em);
+
+% (LocalVar) <- Func
+\draw [->] (16.25em,  -8.50em) -- (13.75em,  -8.50em) --
+           (13.75em, -16.50em) -- ( 8.80em, -16.50em);
+% LocalVar <- GlRef
+\draw [->] (21.25em, -17.50em) -- (18.75em, -17.50em) --
+           (18.75em, -17.50em) -- (18.75em, -25.25em) --
+           (13.75em, -25.25em) -- (13.75em, -18.50em) --
+            (7.70em, -18.50em);
+
+\begin{scope}[xshift = 10.0em]
+    \begin{scope}[yshift = -3.0em]
+        \PullLinkLeft
+        \ContentNode{Const}{\ic{1}}
+    \begin{scope}[yshift = -8.0em]
+        \PullLinkLeft
+        \ContentNode{Const}{\ic{FOO}}
+    \end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 15.0em]
+    \begin{scope}[yshift = -7.0em]
+        \PtrNodeD{Func}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Seq}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{R.Appl}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \NoArgNode
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 20.0em]
+    \begin{scope}[yshift = -7.0em]
+        \InList
+        \PullLinkUp
+        \LocVarNode{\ic{CNTER}}{\ic{\#f}}{\ic{\#f}}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkLeft
+        \PtrNodeD{GlAsgn}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkLeft
+        \PtrNodeU{LocRef}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkLeft
+        \PtrNodeU{GlRef}
+    \end{scope}\end{scope}
+    \end{scope}\end{scope}
+\end{scope}
+
+% Const <= GlAsgn
+\draw [->] (21.25em,  -13.50em) --  (23.625em, -13.50em)  --
+           (23.625em, -12.375em) -- (31.125em, -12.375em) -- (31.125em, -4.20em);
+% Const <= GlRef
+\draw [->] (21.25em,  -21.50em) --  (23.875em, -21.50em)  --
+           (23.875em, -12.625em) -- (31.375em, -12.625em) -- (31.375em, -4.20em);
+
+\begin{scope}[xshift = 25.0em]
+    \begin{scope}[yshift = -7.0em]
+        \InListLast
+        \PullLinkUp
+        \PullListLink
+        \LocVarNode{\ic{TMP}}{\ic{\#t}}{\ic{\#t}}
+    \begin{scope}[yshift = -7.0em]
+        \PullLinkLeft
+        \PtrNodeD{P.Appl}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Args}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \NoArgNode
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 30.0em]
+    \begin{scope}[yshift =  -2.0em]
+        \ContentNode{GlVar}{\ic{INDEX}}
+    \begin{scope}[yshift = -13.0em]
+        \PullLinkLeft
+        \ContentNode{PrVar}{\ic{+}}
+    \begin{scope}[yshift =  -4.0em]
+        \PullLinkLeft
+        \ContentNode{Const}{\ic{1}}
+    \begin{scope}[yshift =  -4.0em]
+        \PullLinkLeft
+        \PtrNodeU{GlRef}
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}
+\end{scope}
+
+% GlRef -> Const
+\draw [->] (31.25em, -24.5em) -- (33.75em, -24.5em) --
+           (33.75em,  -2.5em) -- (32.70em,  -2.5em);
+
+\end{tikzpicture}

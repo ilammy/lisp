@@ -1,0 +1,598 @@
+% -*- coding: utf-8 -*-
+
+% Требования по пакетам
+% \RequirePackage{amssymb}
+% \RequirePackage{calc}
+% \RequirePackage{enumitem}
+% \RequirePackage{lstlistings}
+% \RequirePackage{pscyr}
+% \RequirePackage{tikz}
+
+
+% == Шрифты ==
+
+% Отменяем дефолтные установки PSCyr, возвращая Computer Modern
+\def\rmdefault{cmr}
+\def\sfdefault{cmss}
+\def\ttdefault{cmtt}
+
+
+
+% == Шрифтовые выделения ==
+
+% LaTeX так построен, что \texttt запрещает переносы, не определяя \hyphenchar.
+% Данное заклинание определяет аналогичный \textcd, в котором переносы есть.
+\DeclareRobustCommand\ttcodefamily
+  {\not@math@alphabet\ttfamily\mathtt
+   \fontfamily\ttdefault\selectfont
+   \hyphenchar\font=`\-}
+\DeclareTextFontCommand{\textcd}{\ttcodefamily}
+
+% Полужирный нерасширенный шрифт
+\newcommand{\textbc}[1]{{\fontseries{b}\selectfont\relax#1}}
+
+% Семантическая, лол, разметка
+\newcommand{\ic}[1]{\textnormal{\textcd{\noimplicithyp{#1}}}}
+\newcommand{\dc}[1]{{\small\ic{#1}}}
+\newcommand{\ii}[1]{\nohyp{\textnormal{\textit{#1}}}}
+\newcommand{\icc}[1]{{\normalfont\textrm{#1}}}
+
+% Обозначения доменов и комбинаторов
+\newcommand{\Vset}[1]{\text{\textbc{#1}}}
+\newcommand{\comb}[1]{\text{\textsf{#1}}}
+
+
+
+% == Переносы ==
+
+% Запрет переносов в фрагменте текста.
+% Хак: язык по умолчанию не имеет таблицы переносов.
+\newlanguage\nohyphens
+\newcommand{\nohyp}[1]{{\language\nohyphens\relax#1}}
+
+% Переносы в исходниках не нужны, за исключением явных дефисов.
+% Исходников на русском не будет, поэтому его можно использовать
+% как запретительный язык.
+\newcommand{\noimplicithyp}[1]{\foreignlanguage{russian}{#1}}
+
+% Термины нежелательно разрывать переносами и *очень* нежелательно разрывать
+% сменой страниц. Но, по-видимому, оставясь в рамках Латеха и его вёрстки
+% абзацами, этого никак нельзя добиться, если только не разбивать *все* слова
+% на слоги вручную (или запретить все переносы между страницами), поэтому
+% данная команда (пока) ничего не делает.
+\newcommand{\term}[1]{\emph{#1}}
+
+
+
+% == Рубрикация, нумерация и проч. ==
+
+% Нумеровать рубрики только до подразделов (1.2.3)
+\setsecnumdepth{subsection}
+\maxsecnumdepth{subsection}
+\setcounter{tocdepth}{2}
+
+% Нумеровать уравнения в каждой главе отдельно
+\numberwithin{equation}{chapter}
+\renewcommand{\theequation}{\arabic{equation}}
+
+
+
+% == Стилизация стандартных заголовков ==
+
+% Главы
+\makechapterstyle{lisp}{
+  \aliaspagestyle{chapter}{empty}
+  \setlength{\beforechapskip}{20pt}
+  \setlength{\midchapskip}{15pt}
+  \setlength{\afterchapskip}{50pt}
+  \renewcommand*{\chapnamefont}{\normalfont\Large\scshape}
+  \renewcommand*{\chapnumfont}{\normalfont\Large\scshape}
+  \renewcommand*{\chaptitlefont}{\normalfont\Huge\bfseries}
+  \renewcommand*{\printchaptername}{\raggedleft\chapnamefont\relax\@chapapp}
+  \renewcommand{\printchaptertitle}[1]{\raggedleft\chaptitlefont\relax##1\par\nobreak}
+}
+\chapterstyle{lisp}
+
+% Правильная пунктуация
+\captiondelim{. }
+\setsecnumformat{\csname the#1\endcsname.\quad}
+\renewcommand{\cftsectionaftersnum}{.}
+\renewcommand{\cftsubsectionaftersnum}{.}
+
+% Немного потеснить содержание
+\renewcommand{\tocheadstart}{\chapterheadstart\vskip-3\baselineskip}
+\renewcommand{\aftertoctitle}{\afterchaptertitle\vskip-1\baselineskip}
+\addtolength{\cftbeforechapterskip}{-0.2\baselineskip}
+
+% Переименовать библиографию
+\AtBeginDocument{\renewcommand{\bibname}{Библиография}}
+
+
+
+% == Предметный указатель ==
+
+% Реализация красивого продолжения индекса на следующей странице.
+%
+% Отсустствующая.
+%
+% repeatindex в чистом виде не работает, если в тексте встречаются команды.
+% Применение аналогичного подхода без проверок работает более-менее, за
+% исключением записей вида
+%
+%    апельсины
+%       по три рубля
+%
+% которые без костылей выводятся как
+%
+%    апельсины (прод.)
+%    апельсины
+%       по три рубля
+%
+% Кроме того, в пакете afterpage, испоьзуемом для реализации вывода текста,
+% есть баг при двухколоночной вёрстке, который приводит к появлению НЕВЕРОЯТНО
+% ОМЕРЗИТЕЛЬНОГО махонького вертикального пробела после второй строки текста
+% в каждой колонке. Причина и фикс для него так и не были найдены.
+%
+% Похоже, единственное рабочее решение -- это хардкод продолжений на этапе
+% формирования индекса. Автоматически это сделать вряд ли возможно, так как
+% сторонний скрипт не способен предсказать, когда запись не влезет в строку
+% и произойдёт перенос.
+%
+% Хотя, если заставить LaTeX измерять длину строки и выводить её в idx-файл, то
+% после тщательного подбора граничных значений, по идее, это сделать возможно.
+% Нужно только передать скрипту всю необходимую информацию: количество строк
+% на странице, количество строк на буквицу, ширину запятой, цифер и т. п.
+%
+\newcommand{\metaitem}[2]{\item #1 #2\relax}
+\newcommand{\metasubitem}[2]{\subitem #1 #2\relax}
+\newcommand{\metasubsubitem}[2]{\subsubitem #1 #2\relax}
+
+% Двуязычные индексы, сокращения для индексации функций и прочего кода
+\newcommand{\indexR}[1]{\index{#1}}
+\newcommand{\indexE}[1]{\index[lisp-eng]{#1}}
+
+\newcommand{\indexC}{\@ifstar\indexC@custom\indexC@normal}
+  \newcommand{\indexC@normal}[1]{\indexE{#1@\protect\ic{#1}}}
+  \newcommand{\indexC@custom}[2]{\indexE{#1@\protect\ic{#2}}}
+
+\newcommand{\indexCS}{\@ifstar\indexCS@custom\indexCS@normal}
+  \newcommand{\indexCS@normal}[2]{\indexE{#1@\protect\ic{#1}!#2}}
+  \newcommand{\indexCS@custom}[3]{\indexE{#1@\protect\ic{#2}!#3}}
+
+
+
+% == Списки ==
+
+% Фикс русскоязычных списков в enumitem
+\AddEnumerateCounter{\Asbuk}{\@Asbuk}{\CYRM}
+\AddEnumerateCounter{\asbuk}{\@asbuk}{\cyrm}
+
+% Традиционная иерархия нумерованных списков для русскоязычных книг:
+\setlist[enumerate,1]{label=\arabic*)}
+\setlist[enumerate,2]{label=\asbuk*)}
+
+% И немого подправленные отступы:
+\setlist{labelindent=\parindent,leftmargin=*}
+
+
+
+% == Сноски ==
+
+% Небольшой дополнительный пробел между номером и текстом сноски.
+\footmarkstyle{\textsuperscript{#1}\kern0.1em}
+
+% Задание стиля абзаца внутри сносок.
+\newcommand{\fnstyle}[1]{\renewcommand{\@makefntext}[1]{\makefootmark#1##1}}
+
+% Примечания переводчика.
+% Отображаются вместе со всеми сносками, но имеют личную нумерацию.
+\newcounter{trnote@counter}[page]
+\newcommand{\trnote}[1]{{%
+  \renewcommand{\thefootnote}{\fnsymbol{trnote@counter}}%
+  \addtocounter{trnote@counter}{1}%
+  \footnote[1]{#1}%
+}}
+
+% Компактный звезданутый вариант надстрочных сносок перед знаками препинания.
+\newlength\@commawidth
+\newcommand{\@shift}{%
+  \settowidth\@commawidth{,}%
+  \addtolength{\@commawidth}{-0.1em}%
+  \kern-\@commawidth
+}
+
+\let\@oldfoot=\footnote
+\let\@oldtrnote=\trnote
+
+\renewcommand{\trnote}{\@ifstar{\@shift\@oldtrnote}{\@oldtrnote}}
+\renewcommand{\footnote}{\@ifstar{\@shift\@oldfoot}{\@oldfoot}}
+
+
+
+% == Инлайн-макросы ==
+
+% Нормальное (не такое: .   .   .) многоточие для текста
+\newcommand{\textdots}{\hbox{.\kern0.0833em.\kern0.0833em.}}
+
+% Упаковка в коробку (4 глава)
+\newcommand{\boxit}[2][v]{\ensuremath{\overline{\hbox{#2}}^{\kern0.06em #1}}}
+
+% Заголовки листингов файлов
+\newcommand{\snippet}[1]{\textsf{#1}}
+
+% Продолжения форм
+% \cont* - для просто k
+% \cont - для k с индексом (k_0)
+\newcommand{\cont}{\@ifstar\cont@wider\cont@regular}
+  \newcommand{\cont@wider}[1]{\ensuremath{{}_{#1}\kern-0.1em}}
+  \newcommand{\cont@regular}[1]{\ensuremath{{}_{#1}\kern-0.2em}}
+
+% Перекрёстные ссылки на страницы и упражнения
+\newcommand{\@bbox}[1]{$[\hbox{\bfseries #1}]$}
+\newcommand{\seePage}{\@ifstar\seePageStarred\seePageNormal}
+  \newcommand{\seePageNormal}[1][FORGOT]{\@bbox{см.~стр.~\pageref{#1}}}
+  \newcommand{\seePageStarred}{\@bbox{см.~стр.~\phantom{42}}}
+
+\newcommand{\seeEx}{\@ifstar\seeExStarred\seeExNormal}
+  \newcommand{\seeExNormal}[1][FORGOT]{\@bbox{см.~упр.~\ref{#1}}}
+  \newcommand{\seeExStarred}{\@bbox{см.~упр.~\phantom{6.9}}}
+
+% Диалект языка в исходниках
+\newcommand{\dialect}[1]{\hfill\hbox{\normalfont #1}}
+
+% Переносы для иностранных фрагментов:
+\newcommand{\english}[1]{\foreignlanguage{english}{#1}}
+\newcommand{\french}[1]{\foreignlanguage{french}{#1}}
+
+% Разнообразные логотипы, значки, сокращения
+\newcommand{\UNIX}{\textsc{Un$\star$x}}
+\newcommand{\Meroon}{\textsc{Meroon}}
+\newcommand{\Meroonet}{\textsc{Meroonet}}
+\newcommand{\MeroonMeroonet}{\textsc{Meroon(et)}}
+\newcommand{\TELOS}{\ensuremath{\mathrm{TE\Lambda\kern-0.9ptO\kern-1.1pt\Sigma}}}
+\newcommand{\CommonLisp}{\textsc{Common Lisp}}
+\newcommand{\LISP}{\textsc{Lisp}}
+\newcommand{\LeLisp}{Le\_Lisp}
+\newcommand{\EuLisp}{\textsc{EuLisp}}
+\newcommand{\ISLisp}{\textsc{ISLisp}}
+\newcommand{\ZetaLisp}{\textsc{ZetaLisp}}
+\newcommand{\nya}{\begingroup
+  \fontsize{6pt}{6pt}\selectfont
+  \raisebox{0.75em}{/\!\textbackslash}\_\!\_\!\_\raisebox{0.75em}{/\!\textbackslash}%
+  \endgroup
+}
+
+\def\sub#1{\textsubscript{#1}}
+\def\sup#1{\textsuperscript{#1}}
+\newcommand{\Lisp}[1]{Lisp\textsubscript{#1}}
+\newcommand{\RnRS}[1][5]{R\textsuperscript{#1}RS}
+\newcommand{\itp}{\hbox{и т.\,п.}}
+\newcommand{\itd}{\hbox{и т.\,д.}}
+
+\newcommand{\is}{\ensuremath{\to}}
+\newcommand{\equals}{\ensuremath{\equiv}}
+\newcommand{\Equals}{\hbox to 0pt{\equals}}
+
+\let\eq=\equals
+\let\bslash=\textbackslash
+
+
+
+% == Блочные макросы ==
+
+% Упражнения
+\newcommand{\exercisename}{Упражнение}
+\begingroup
+  \theorembodyfont{\upshape}
+  \newtheorem{exercise}{\exercisename}[chapter]
+\endgroup
+\newenvironment{project}{%
+  \renewcommand{\exercisename}{Проект}%
+  \begin{exercise}}{\end{exercise}}
+
+% Ответы на упражнения
+\newcommand{\exanswer}[1]{\paragraph{\exercisename\ \protect\ref{#1}}}
+\setafterparaskip{0.7ex plus 0.2ex}
+
+% Взаимодействие с консолькой
+\newenvironment{shell}{\small\quote\verbatim}{\endverbatim\endquote}
+
+% Теорема
+\newenvironment{theorem}[1]{\begin{quote}\textbf{#1:}\ }{\end{quote}}
+
+% Табличка свойств окружений
+\newenvironment{envtable}%
+  {\begin{center}\smallskip\begin{tabular}{|l|l|}\hline}%
+  {\hline\end{tabular}\smallskip\end{center}}
+
+% Стек вызовов с продолжениями для третьей главы.
+\newenvironment{eval-stack}%
+  {\begin{center}\def\-{\hfill}%
+   \begin{tabular}{@{}>{\small\ttfamily}l@{}}}%
+  {\end{tabular}\end{center}}
+
+% Метка для конкретных абзацев
+\newcommand{\phantomlabel}[1]{\phantomsection\label{#1}}
+
+
+
+% == Разнообразные приблуды для пятой главы ==
+
+% Ручной кернинг имён функций для \fn
+\newlength{\fnkern}
+\setlength\fnkern{-1pt}
+
+% Костыль для криво работающего \NOD
+\let\NOD\undefined
+\DeclareMathOperator*{\NOD}{\text{НОД}}
+
+% Много всякой всячины
+\def\ChapterFiveSpecials{%
+  \newcommand{\Bind}{\mathcal{B}}
+  \newcommand{\Lain}{\mathcal{L}}
+  \newcommand{\Eval}{\mathcal{E}}
+  \newcommand{\Noir}{\mathcal{N}}
+  \newcommand{\Dana}{\mathcal{D}}
+
+  \newcommand{\seq}[2][]{##1\langle{##2}##1\rangle}
+
+  \newcommand{\Inj}[1]{\Vset{##1}}
+  \newcommand{\Prj}[1]{\ensuremath{|_{\Vset{##1}}}}
+
+  % \to*{\beta} — удобная стрелка с кастомной хренью над ней
+  \let\@oldto=\to
+  \renewcommand{\to}{\@ifstar\toStarred\toNormal}
+    \let\toNormal=\@oldto
+    \newcommand{\toStarred}[1]{\stackrel{##1}{\longrightarrow}}
+
+  % Семантические [[скобки]]
+  \newcommand{\sem}{\@ifstar\semStarred\semNormal}
+    \newcommand{\semNormal}[2][]{##1[\!##1[{##2}##1]\!##1]}
+    \newcommand{\semStarred}[2][]{##1[\!##1[\hbox{\ic{##2}}##1]\!##1]}
+
+  % Правильные математические классы для автомагически правильных пробелов
+  \newcommand{\switch}{\mathrel{[]}}
+  \newcommand{\car}[1]{\mathclose{\downarrow_{##1}}}
+  \newcommand{\cdr}[1]{\mathclose{\uparrow_{##1}}}
+  \newcommand{\append}{\mathbin{\S}}
+
+  \newcommand{\IF}{\mathrel{\mathbf{if}}}
+  \newcommand{\THEN}{\mathrel{\mathbf{then}}}
+  \newcommand{\ELSE}{\mathrel{\mathbf{else}}}
+  \newcommand{\ENDIF}{\mathrel{\mathbf{endif}}}
+  \newcommand{\WHERE}{\mathrel{\mathbf{where}}}
+  \newcommand{\AND}{\mathrel{\mathbf{and}}}
+  \newcommand{\LET}{\mathrel{\mathbf{let}}}
+  \newcommand{\IN}{\mathrel{\mathbf{in}}}
+
+  % Математические функции:
+  \newcommand{\fn}[1]{\ifmmode\kern\fnkern\fi\textit{##1}}
+
+  \let\s=\sigma
+  \let\r=\rho
+  \let\k=\kappa
+  \let\e=\epsilon
+  \let\n=\nu
+  \let\p=\pi
+  \let\a=\alpha
+  \let\f=\phi
+  \let\d=\delta
+  \let\g=\gamma
+}
+
+% Магия структурированной записи денотаций.
+% Фактически, DSL для окружения tabbing.
+% \. устанавливает новую левую границу в точке применения
+% \* устанавливает новую левую границу в точке применения + \denoteindent
+% \- забывает одну установку границы
+% \/ забывает одну установку границы + переход на новую строку
+% \| переход на новую строку + небольшой вертикальный пробел
+% \~ переход на новую строку + вертикальный пробел побольше
+\newcommand{\denote@do@indent}{\indent\=\+\kill}
+\newlength{\denote@padding}
+\setlength{\denote@padding}{\medskipamount}
+\newlength{\denote@indent}
+\setlength{\denote@indent}{0.5em}
+\newenvironment{denotation}{%
+  \setlength{\topsep}{0pt}\setlength{\partopsep}{0pt}%
+  \def\pomf##1{\hskip\denote@indent##1\hskip-\denote@indent}%
+  \def\.{\=\+}%
+  \def\*{\pomf{\=\+}}%
+  \def\/{\-\\}%
+  \def\|{\\[\smallskipamount]}%
+  \def\~{\\[\medskipamount]}%
+  \vskip\denote@padding\begin{tabbing}\denote@do@indent}%
+{\end{tabbing}\vskip\denote@padding}
+
+% Большая таблица с денотациями в рамочке на всю страницу.
+\newlength{\semantic@len}
+\newenvironment{semantic}{%
+  \vbox\bgroup\hbox\bgroup\vrule width 0.4pt\vbox\bgroup\hrule height 0.4pt%
+  \setlength{\semantic@len}{\textwidth - 2.0pt}%
+  \vskip1em\hbox to \semantic@len\bgroup\hskip1em%
+  \renewcommand{\denote@do@indent}{}%
+  \setlength{\denote@padding}{0pt}%
+  \begin{minipage}[c]{\textwidth - 1em - 1.6pt}}%
+{\end{minipage}\egroup
+ \vskip1em\hrule height 1.2pt\egroup
+ \vrule width 1.2pt\egroup\egroup}
+
+
+% == Разнообразные костыли для исходников ==
+
+% Длина для костыля к listings в таблицах (не помню, где она нужна)
+\newlength{\codestrut}
+
+% Далее следует адская магия седьмого уровня для окружений в исходниках
+\newsavebox{\@codebox}
+\newsavebox{\@semfbox}
+\newsavebox{\@continued}
+\newlength{\@boxshift}
+\newlength{\@space@}
+
+% Стрелка с многоточием для переноса аннотаций, не влезающих по ширине.
+\sbox{\@continued}{\hbox{\vbox{\hbox{\ }\hbox{$\vdots$}\hbox{$\hookleftarrow$}}}}
+\setboxdepth{\@continued}{\totalheight}
+\setboxheight{\@continued}{0pt}
+\setboxlower{\@continued}{\totalheight}
+
+\def\@resetListParams{%
+  \setlength{\topsep}{0pt}      \setlength{\rightmargin}{0pt}
+  \setlength{\partopsep}{0pt}   \setlength{\leftmargin}{0pt}
+  \setlength{\itemsep}{0pt}     \setlength{\listparindent}{0pt}
+  \setlength{\parsep}{0pt}      \setlength{\itemindent}{0pt}
+  \setlength{\labelsep}{0pt}    \setlength{\labelwidth}{0pt}
+}
+
+% Идея в том, чтобы сделать список, положить его в minipage, которую положить
+% в коробку, к которой пришлёпнуть линейку слева. Потом коробке выставляются
+% такие размеры, чтобы она аккуратно стала на своё место в строке.
+\newenvironment{where}{%
+  \setbox\@codebox\hbox\bgroup\kern1pt\vrule depth 1pt%
+  \kern-1pt\ \begin{minipage}[b]{\textwidth}%
+  \def\-{\item}%
+  \begin{list}{}{\@resetListParams}\item\strut}%
+{\end{list}\end{minipage}\egroup%
+  \setboxwidth{\@codebox}{2cm}%
+  \setboxlower{\@codebox}{\height - \baselineskip + 0.45em}%
+  \usebox\@codebox}
+
+% Аннотация в аннотации. Аннотации многострочные (как минимум две строки),
+% а линейка слева в where свою высоту высчитывает по высоте коробки с текстом.
+% Поэтому если просто сделать вложенные where, то линейка внешнего окружения
+% будет иметь неправильную высоту.
+% complex выставляет высоту коробки так, чтобы where ничего не заподозрила.
+\newenvironment{complex}{%
+  \setbox\@codebox\hbox\bgroup\begin{minipage}[b]{\textwidth}%
+  \settowidth{\@space@}{ }%
+  \def\-{\item\obeyspaces\ \kern-\@space@}
+  \begin{list}{}{\@resetListParams}}%
+{\end{list}\end{minipage}\egroup%
+  \setboxwidth{\@codebox}{1cm}%
+  \setboxlower{\@codebox}{\height - 0.666em}%
+  \setboxheight{\@codebox}{0.666em}%
+  \usebox\@codebox}
+
+% Тот же complex, но сдвинутый на #1 влево.
+% И ещё справа пришлёпнута стрелочка с многоточием.
+\newenvironment{complex*}[1]{%
+  \setlength{\@boxshift}{#1}%
+  \setbox\@codebox\hbox\bgroup\begin{minipage}[b]{\textwidth}%
+  \settowidth{\@space@}{ }%
+  \def\-{\item\obeyspaces\ \kern-\@space@}
+  \begin{list}{}{\@resetListParams}}%
+{\end{list}\end{minipage}\egroup%
+  \setboxwidth{\@codebox}{1cm}%
+  \setboxmoveleft{\@codebox}{\@boxshift}%
+  \setboxlower{\@codebox}{\height - 0.666em + 1.666em}%
+  \setboxheight{\@codebox}{0.666em}%
+  \usebox\@continued\usebox\@codebox}
+
+
+
+% == Доводки ==
+
+
+% Замена различных математических символов
+% на более привычные для русского набора
+\renewcommand{\phi}{\varphi}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\renewcommand{\ge}{\geqslant}
+\renewcommand{\le}{\leqslant}
+\renewcommand{\emptyset}{\varnothing}
+
+% Различые верстальные твики
+\clubpenalty=9000   % Висячие строки - это плохо
+\widowpenalty=9000
+
+
+
+% == Картинки ==
+
+% Настройка TiKZ
+\usetikzlibrary{arrows, calc, decorations.pathreplacing}
+\tikzset{>=latex}
+
+% Окружение для картинки-врезки из четвёртой главы
+\newsavebox{\@floatfig}
+\newenvironment{float:right}{%
+  \def\correct##1##2{\gdef\@correctX{##1}\gdef\@correctY{##2}}%
+  \correct{0pt}{0pt}%
+  \noindent\setbox\@floatfig\vbox\bgroup\hbox\bgroup}%
+{\egroup\egroup%
+  \setboxheight\@floatfig{0pt}\setboxdepth\@floatfig{0pt}%
+  \setboxmoveright\@floatfig{\textwidth - \width}%
+  \setboxmoveleft\@floatfig{\@correctX}\setboxlower\@floatfig{\@correctY}%
+  \usebox\@floatfig\vskip-\baselineskip\relax}
+
+
+
+% == Буквицы ==
+
+% Буквица на первые две строки
+\newcommand{\initial}[4]{\InitialParShape{#1}{#2}\InitialLetter{#3}\InitialCont{#4}}
+
+\newcommand{\LowerLetter}[1]{\raisebox{-1.15\baselineskip}[0pt][0pt]{#1}}
+\newcommand{\InitialLetter}[1]{\llap{\LowerLetter{\InitialLetterStyle{#1}}}}
+\newcommand{\InitialLetterStyle}[1]{\fontsize{7ex}{7ex}\svfamily\itshape\bfseries\relax#1}
+\newcommand{\InitialCont}[1]{\textsc{#1}}
+
+\newlength{\L@i}\newlength{\L@ii}\newlength{\L@@}
+\newlength{\D@i}\newlength{\D@ii}\newlength{\D@@}
+\setlength{\L@@}{2\baselineskip}
+\setlength{\D@@}{\textwidth - \L@@}
+
+\newcommand{\InitialParShape}[2]{%
+\setlength{\L@i}{\L@@ - #1}\setlength{\L@ii}{\L@@ - #2}
+\setlength{\D@i}{\D@@ + #1}\setlength{\D@ii}{\D@@ + #2}
+\parshape=3
+      \L@i  \D@i
+      \L@ii \D@ii
+      0pt   \textwidth
+\noindent}
+
+
+% == Форматирование исходного кода ==
+
+\lstset{inputencoding=utf8,
+        extendedchars=\true,
+        texcl=true,
+        basicstyle=\small\ttfamily,
+        commentstyle=\normalfont\small,
+        columns=[l]fixed,
+        showstringspaces=false,
+        basewidth={0.5em},
+        xleftmargin=\parindent}
+
+% Код на Scheme
+\definecolor{highlightColor}{HTML}{2506D0}
+
+\lstnewenvironment{code:lisp}[1][]{%
+  \lstset{language=lisp,morecomment=[l]{;;},morecomment=[l]{;;;},
+          escapeinside=||,
+          moredelim=[is][\color{highlightColor}]{[}{]},#1}}{}
+
+\lstnewenvironment{code:lisp-framed}[1][]{%
+  \lstset{language=lisp,morecomment=[l]{;;},morecomment=[l]{;;;},
+          commentstyle={\ttfamily},
+          escapeinside=||,frame=tb,
+          moredelim=[is][\color{highlightColor}]{[}{]},#1}}{}
+
+% Код на Си
+\lstdefinestyle{linenumbers}{firstnumber=1, stepnumber=5,
+                             numbersep=0.75em, numberstyle={\sffamily\tiny}}
+
+\lstdefinestyle{cdefault}{commentstyle={\ttfamily}, style=linenumbers}
+
+\lstnewenvironment{code:c}[1][]{%
+  \lstset{language=c, style=cdefault,
+          escapeinside=``,#1}}{}
+
+\lstnewenvironment{code:c-frame}[1][]{%
+  \lstset{language=c, style=cdefault,
+          escapeinside=``,frame=tb,#1}}{}
+
+% Универсальный код
+\lstnewenvironment{code}[1][]{\lstset{#1}}{}

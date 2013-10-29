@@ -1,0 +1,59 @@
+% -*- coding: utf-8 -*-
+% Представление значений Scheme в~Си
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\footnotesize]
+
+\def\Memory#1{%
+  \begin{scope}
+    \draw (0.0em, +0.5em) rectangle ({0.55em * #1}, -0.5em);
+    \pgfmathsetmacro\lim{int(#1-1)}
+    \foreach \i in {1,...,\lim} {
+      \draw ({\i * 0.55em}, +0.5em) -- ({\i * 0.55em}, +0.4em)
+            ({\i * 0.55em}, -0.5em) -- ({\i * 0.55em}, -0.4em);
+    }    
+  \end{scope}
+}
+
+\def\Field#1{%
+  \begin{scope}
+    \Memory{4}
+    \node at(1.1em, 0.0em) {\emph{#1}};
+  \end{scope}
+}
+
+\def\Pointer#1#2{
+  \begin{scope}
+    \Memory{16}
+    \draw (8.25em, +0.5em) -- (8.25em, -0.5em);
+    \node at(4.125em, 0.0em) {\emph{#1}};
+    \node at(8.525em, 0.0em) {\ic{#2}};
+  \end{scope}
+}
+
+\begin{scope}[xshift = 0em]
+  \Pointer{число $n$}{1}
+\end{scope}
+
+\begin{scope}[xshift = 16.2em]
+  \Pointer{адрес значения}{0}
+\end{scope}
+
+\filldraw  (17.0em,  0.0em) circle(1.0pt);
+\draw [->] (17.0em,  0.0em) -- (17.0em, -2.00em) --
+           ( 9.5em, -2.0em) -- ( 9.5em, -3.75em);
+
+\begin{scope}[xshift = 7.0em, yshift = -4.5em]
+  \Field{тип}
+\begin{scope}[xshift = 2.2em]
+  \draw (0.0em, +0.75em) -- (0.0em, -0.75em);
+  \Field{поле}
+\begin{scope}[xshift = 2.2em]
+  \Field{поле}
+\begin{scope}[xshift = 2.2em]
+  \Field{поле}
+\begin{scope}[xshift = 2.2em]
+  \Field{поле}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\end{tikzpicture}

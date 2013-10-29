@@ -1,0 +1,83 @@
+\def\file{%
+  \draw [semithick] (0.00em, 0.00em) -- (3.00em, 0.00em) -- (3.00em, 3.75em)
+                 -- (2.51em, 4.24em) -- (0.00em, 4.24em) -- cycle;
+  \draw [semithick] (3.00em, 3.75em) -- (2.51em, 3.75em) -- (2.51em, 4.24em);
+}
+
+\def\source#1#2{%
+  \begin{scope}[yshift = -2.12em]
+    \file
+    \draw (1.50em, 2.121em) node {\Large\ic{#2}};
+    \draw (1.50em, 0.000em) node[below] {\emph{#1}};
+  \end{scope}
+}
+
+\def\sourceEx#1{%
+  \begin{scope}[yshift = -2.12em]
+    \file
+    \draw (1.50em, 2.121em) node {\tiny\ic{#1}};
+  \end{scope}
+}
+
+\def\module#1#2#3{%
+  \begin{scope}[yshift = -2.12em]
+    \file
+    \draw (1.50em, 2.121em) node {\Large\ic{#1}};
+    \node [anchor = east, align = right, text width = #2]
+          at (1.10em, 2.121em) {\nohyp{#3}};
+  \end{scope}%
+}
+
+\def\binaryup#1#2{%
+  \node [anchor = mid] at (0, 0) {\textsf{#1}};
+
+  \draw [thick] ($0.5*(#2,0)-0.666*(0,#2)$)
+                -- ++(72 : #2) -- ++(144 : #2) --
+                  ++(216 : #2) -- ++(288 : #2) -- cycle;
+}
+
+\def\binarydown#1#2{%
+  \node [anchor = mid] at (0, 0) {\textsf{#1}};
+
+  \draw [thick] ($0.5*(#2,0)+0.666*(0,#2)$)
+                -- ++(-72 : #2) -- ++(-144 : #2) --
+                  ++(-216 : #2) -- ++(-288 : #2) -- cycle;
+}
+
+\def\binaryright#1#2{%
+  \node [anchor = mid] at ($0.02*(#2,0)$) {\textsf{#1}};
+
+  \draw [thick] ($0.5*(0,#2)-0.666*(#2,0)$)
+                -- ++(-90 : #2) -- ++(-18 : #2) --
+                   ++( 54 : #2) -- ++(126 : #2) -- cycle;
+}
+
+\def\binaryleft#1#2{%
+  \node [anchor = mid] at ($-0.02*(#2,0)$) {\textsf{#1}};
+
+  \draw [thick] ($-0.5*(0,#2)+0.666*(#2,0)$)
+                -- ++( 90 : #2) -- ++(162: #2) --
+                   ++(234 : #2) -- ++(306: #2) -- cycle;
+}
+
+\def\binarydouble#1#2#3{
+  \node [anchor = mid] at ($ 0.666*(0, #3)$) {\textsf{#1}};
+  \node [anchor = mid] at ($-0.666*(0, #3)$) {\textsf{#2}};
+
+  \draw [thick] ($0.5*(#3,0)$)
+                -- ++(-72 : #3) -- ++(-144 : #3) --
+                  ++(-216 : #3) -- ++(-288 : #3) -- cycle;
+  \draw [thick] ($0.5*(#3,0)$)
+                -- ++(72 : #3) -- ++(144 : #3) --
+                  ++(216 : #3) -- ++(288 : #3) -- cycle;
+}
+
+\def\framenode#1#2{%
+  \draw [semithick, rounded corners]
+        ($-1*(#1,0)+(0,#2)$) rectangle ($+1*(#1,0)-(0,#2)$);
+  \node [anchor = mid] at(0.0em, 0.125em)
+}
+
+\def\MeroonlibD#1#2{\vbox to 2ex{\hbox{\Meroon}\hbox{\kern#2\hbox to 0em{#1}}}}
+\def\MeroonlibU#1#2{\vbox to 2.6ex{\hbox{\Meroon}\hbox{\kern#2\hbox to 0em{#1}}}}
+

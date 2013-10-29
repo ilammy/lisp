@@ -1,0 +1,68 @@
+% -*- coding: utf-8 -*-
+\documentclass[a4paper, 12pt, oneside]{memoir}
+
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage{type1ec}
+\usepackage[T2A]{fontenc}
+\usepackage[russian]{babel}
+\usepackage[final]{listings}
+\usepackage[pdftitle={Lisp in Small Pieces},
+            pdfauthor={Christian Queinnec},
+            pdfcreator={LaTeX},
+            pdfproducer={pdfLaTeX},
+            pdflang=ru-RU,
+            hyperfootnotes=false,
+            bookmarksnumbered=true,
+            breaklinks=true,
+            unicode]{hyperref}
+\usepackage[protrusion=true,
+            expansion=false,
+            kerning=true,
+            spacing=true,
+            babel=true,
+            final]{microtype}
+\usepackage{nccmath, amssymb, theorem,
+            indentfirst, latexsym, enumitem,
+            ifthen, calc, settobox, ragged2e,
+            verbatim, pscyr}
+\usepackage{tikz}
+
+\input{layout/macros}
+\input{layout/display}
+
+% Стилевой файл.
+% Подключать почти в самом конце.
+\usepackage{zz_lisp}
+
+\input{zz_hyphenation}
+
+\makeindex
+\makeindex[lisp-eng]
+
+\begin{document}
+  \input{+title_page}
+  \input{-cc_note}
+
+\frontmatter*
+  \input{00_toc}
+  \input{01_preface}
+
+\mainmatter*
+  \input{ch01_basics}
+  \input{ch02_lisp_1_2_omega}
+  \input{ch03_escape_and_return}
+  \input{ch04_assignment_and_side_effects}
+  \input{ch05_denotational_semantics}
+  \input{ch06_fast_interpretation}
+  \input{ch07_compilation}
+  \input{ch08_evaluation_and_reflection}
+  \input{ch09_macros}
+  \input{ch10_compiling_into_c}
+  \input{ch11_essence_of_an_object_system}
+
+\backmatter
+  \input{z0_answers_to_exercises}
+  \input{z1_bibliography}
+  \input{z2_index}
+\end{document}

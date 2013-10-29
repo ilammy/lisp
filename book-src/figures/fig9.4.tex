@@ -1,0 +1,35 @@
+% -*- coding: utf-8 -*-
+% Истинно единый мир
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+\input{figures/fig9.macros}
+
+\begin{scope}[xshift = +10.25em]
+  \node [anchor = south west] at(-10.0em, +5.0em) {Интерактивная сессия};
+  \draw [semithick] (-10.25em, +5.00em) -- (-10.25em, -5.25em);
+  \draw [semithick] (+14.25em, +5.00em) -- (+14.25em, +1.25em);
+  \draw [semithick] (+14.25em, -3.25em) -- (+14.25em, -5.25em);
+  \node at(0.0em, 0.0em) {\begin{code:lisp}
+(define (fact ...) ...)
+(define-abbreviation (factorial ...) ...)
+(compile-file ...)
+
+
+
+
+(factorial 5) |\is| 120
+  \end{code:lisp}};
+\end{scope}
+
+\draw [->] (7.85em, 1.125em) -- (7.85em, 0.0em) -- (13.75em, 0.0em);
+
+\begin{scope}[xshift = 14em, yshift = -1em]
+  \begin{scope}[xshift = 6.375em]
+    \framenode{6.375em}{2.25em} {\begin{code:lisp}
+(define (some-facts) ...)
+    \end{code:lisp}};
+  \end{scope}
+\end{scope}
+
+\end{tikzpicture}

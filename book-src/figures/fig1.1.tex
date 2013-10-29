@@ -1,0 +1,31 @@
+% -*- coding: utf-8 -*-
+% Уровни сложности
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+  
+  \draw [->, thick] (0em, 0em) -- (0.0em, 15.5em) node[above=0.5em] {\emph{Определяемый язык}};
+  \draw [->, thick] (0em, 0em) -- (15.5em, 0.0em) node[right=0.5em] {\emph{Язык определения}};
+  
+  \draw (-0.25em, 14.0em) -- (0.25em, 14.0em) node[left=0.5em] {Лисп + объекты};
+  \draw (-0.25em, 10.5em) -- (0.25em, 10.5em) node[left=0.5em] {Scheme};
+  \draw (-0.25em,  7.0em) -- (0.25em,  7.0em) node[left=0.5em] {чистый Лисп};
+  \draw (-0.25em,  3.5em) -- (0.25em,  3.5em) node[left=0.5em] {$\lambda$-исчисление};
+  
+  \draw (14.0em, 0.25em) -- (14.0em, -1.65em) node[below=0.25em] {Лисп + объекты\kern-1.375em};
+  \draw (10.5em, 0.25em) -- (10.5em, -0.25em) node[below=0.25em] {Scheme};
+  \draw ( 7.0em, 0.25em) -- ( 7.0em, -1.65em) node[below=0.25em] {чистый Лисп};
+  \draw ( 3.5em, 0.25em) -- ( 3.5em, -0.25em) node[below=0.25em] {$\lambda$-исчисление};
+  
+  \filldraw ( 3.50em,  3.50em) circle(0.12em) node[right] {\cite{sto77}};
+  \filldraw ( 7.00em,  5.25em) circle(0.12em) node[right] {\cite{gor75}};
+  \filldraw ( 7.00em,  7.00em) circle(0.12em) node[right] {\cite{mcc78b}};
+  \filldraw (14.00em,  5.83em) circle(0.12em) node[right] {\cite{kes88}};
+  \filldraw ( 8.75em,  8.26em) circle(0.12em) node[right] {\cite{sj93}};
+  \filldraw (10.50em,  9.92em) circle(0.12em) node[right] {\cite{dyb87}};
+  \filldraw ( 3.50em, 10.50em) circle(0.12em) node[right] {\cite{r3r86}};
+  \filldraw ( 3.50em, 13.13em) circle(0.12em) node[right] {\cite{mp80}};
+  \filldraw (14.00em, 14.00em) circle(0.12em) node[right] {\cite{lf88}};
+  
+  \draw [->, thick] (14.00em, 10.50em) -- (4.08em, 15.52em);
+
+\end{tikzpicture}

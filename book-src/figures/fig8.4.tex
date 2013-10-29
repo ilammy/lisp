@@ -1,0 +1,48 @@
+% -*- coding: utf-8 -*-
+% Рефлексивная абстракция
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+  \draw [semithick] (0.000em, 2.25em) -- (0.000em, -11.25em);
+  \draw [semithick] (9.375em, 2.25em) -- (9.375em, -11.25em);
+  
+  \draw (0.0em,   1.75em) node[right] {\quad$\vdots$};
+  \draw (0.0em,   0.00em) node[right] {\ic{(CREATE-CLOSURE -)}};
+  \draw (0.0em,  -1.50em) node[right] {\ic{(GOTO -)}};
+  \draw (0.0em,  -3.00em) node[right] {\ic{(CONSTANT -)}};
+  \draw (0.0em,  -4.50em) node[right] {\ic{(CONSTANT -)}};
+  \draw (0.0em,  -6.00em) node[right] {\ic{(ARITY=? -)}};
+  \draw (0.0em,  -7.25em) node[right] {\quad$\vdots$};
+  \draw (0.0em,  -9.00em) node[right] {\ic{(RETURN)}};
+  \draw (0.0em, -10.25em) node[right] {\quad$\vdots$};
+
+  \draw [semithick, decorate, decoration = {brace, amplitude = 4pt}]
+        (-0.35em, -9.50em) -- (-0.35em, -5.50em);
+
+  \draw (-0.60em, -7.50em) node[left] {\ii{тело}};
+
+% CREATE-CLOSURE
+  \draw [->] (8.30em, -0.30em) -- (8.30em, -6.0em) -- (5.75em, -6.0em);
+
+% GOTO
+  \draw [->] (4.25em, -1.5em) -- (10.25em, -1.5em) --
+             (10.25em, -10.5em) -- (1.75em, -10.5em);
+
+% CONSTANT 1
+  \draw [->] (6.25em, -3.0em) -- (15.0em, -3.0em);
+  \draw (14.75em, -1.75em) node[anchor = north west, rectangle] {%
+\begin{code:lisp}
+(lambda (x y) ...)
+\end{code:lisp}};
+
+% CONSTANT 2
+  \draw [->] (6.25em, -4.5em) -- (15.0em, -4.5em);
+  \draw (14.75em, -3.25em) node[anchor = north west, rectangle] {%
+\begin{code:lisp}
+((z   (local 0 . 0))
+ (foo (local 0 . 1))
+ (bar (local 1 . 0))
+ ... )
+\end{code:lisp}};
+
+\end{tikzpicture}

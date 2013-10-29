@@ -1,0 +1,66 @@
+% -*- coding: utf-8 -*-
+% Состояние стека до и после инструкции \protect\ic{PUSH-ESCAPER}
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+  \draw [semithick] (0em, 0em) rectangle (32.5em, 1.25em);
+  \draw (16.25em, 1.33em) node[below]
+        {\ic{... (PUSH-ESCAPER \ii{смещение})\ \,... \ \ ...\,(RETURN) (POP-ESCAPER) ...}};
+
+
+  \draw [->] (3.375em, 2.50em) -- (3.375em, 1.35em);
+  \draw (3.375em, 2.25em) node[above] {\ic{*pc*}};  
+
+
+  \draw [semithick] (5.5em, 3.5em) rectangle (11.0em, 14.5em);
+  \draw             (5.5em, 5em) -- (11.0em, 5em);
+
+  \draw (8.25em, 4.50em) node {$\vdots$};
+
+  \draw (2.0em, 13em) node[above] {\ic{*stack-index*}};
+  \draw [->] (2.0em, 13.25em) -- (2.0em, 5.25em) -- (5.25em, 5.25em);
+
+
+
+  \draw (14.25em, 15em) node[anchor = south east] {\ii{до}};
+  \draw [dashed, dash phase = 0.125em] (14.50em, -0.5em) -- (14.50em, 15.5em);
+  \draw (14.75em, 15em) node[anchor = south west] {\ii{после}};
+
+
+
+  \draw [->] (15.625em, 2.50em) -- (15.625em, 1.35em);
+  \draw (15.625em, 2.25em) node[above] {\ic{*pc*}};
+
+
+  \draw [semithick] (22em, 3.5em) rectangle (27.5em, 14.5em);
+
+  \draw (22em, 10.0em) -- (27.5em, 10.0em);
+  \draw (22em, 8.75em) -- (27.5em, 8.75em);
+  \draw (22em, 7.50em) -- (27.5em, 7.50em);
+  \draw (22em, 6.25em) -- (27.5em, 6.25em);
+  \draw (22em, 5.00em) -- (27.5em, 5.00em);
+  
+  \draw     (24.75em, 9.325em) node {\ic{*pc*}};
+  \draw     (24.75em, 8.125em) node {\ic{(*ESCAPE*)}};
+  \filldraw (24.75em, 6.875em) circle(1.0pt);
+  \draw     (24.75em, 5.550em) node {\ic{*env*}};
+  \draw     (24.75em, 4.500em) node {$\vdots$};
+
+  \draw [->] (18.5em, 13em) -- (18.5em, 10.25em) -- (21.75em, 10.25em);
+  \draw (18.5em, 13.25em) node[above] {\ic{*stack-index*}};
+
+
+  \filldraw  (23.00em, 9.325em) circle(1.0pt);
+  \draw [->] (23.00em, 9.325em) -- (20.50em, 9.325em) --
+             (20.50em, 2.500em) -- (24.25em, 2.500em) -- (24.25em, 1.350em);
+  
+  
+  \draw [semithick] (30.0em, 6.125em) rectangle (33.0em, 7.625em);
+  \draw             (31.5em, 6.025em) node[below] {\ii{переход}};
+
+  \draw [->] (24.75em, 6.875em) -- (29.75em, 6.875em);
+
+  \filldraw  (31.5em, 6.875em) circle(1.0pt);
+  \draw [->] (31.5em, 6.875em) -- (31.5em, 10.25em) -- (27.75em, 10.25em);
+
+\end{tikzpicture}

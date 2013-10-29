@@ -1,0 +1,63 @@
+% -*- coding: utf-8 -*-
+% Раскрутка \protect\Meroon
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+\input{figures/fig9.macros}
+
+\begin{scope}[yshift = +9em]
+  \source{libexp2}{}
+\begin{scope}[xshift = 3em]
+  \draw (0.25em, 0.0em) -- (4.50em, 0.0em);
+\begin{scope}[xshift = 6.50em]
+  \binaryright{prepare}{3.0em}
+\begin{scope}[xshift = 2.625em]
+  \draw [->] (0.0em, 0.0em) -- (4.00em, 0.0em);
+\begin{scope}[xshift = 4.25em]
+  \begin{scope}[xshift = 2.25em]
+    \binaryup{libexp2}{3.0em}
+  \end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[yshift = 0.25em]
+  \source{libexp3}{}
+\begin{scope}[xshift = 3em]
+  \draw (0.25em, 0.0em) -- (1.85em, 0.0em);
+\begin{scope}[xshift = 4.50em]
+  \binaryleft{libexp2}{3.0em}
+\begin{scope}[xshift = 4.00em]
+  \binaryright{prepare}{3.0em}
+\begin{scope}[xshift = 2.625em]
+  \draw [->] (0.0em, 0.0em) -- (2.00em, 0.0em);
+\begin{scope}[xshift = 2.25em]
+  \begin{scope}[xshift = 2.25em]
+    \binaryup{libexp3}{3.0em}
+  \end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}\end{scope}
+
+\begin{scope}[yshift = -9em]
+  \source{librun}{}
+\begin{scope}[xshift = 3em]
+  \draw (0.25em, 0.0em) -- (5.925em, 0.0em);
+\begin{scope}[xshift = 8.625em]
+  \binaryleft{prepare}{3.0em}
+  \begin{scope}[xshift = -3.48em]
+    \begin{scope}[yshift = +2.42em]
+      \binaryright{libexp2}{3.0em}
+    \end{scope}
+    \begin{scope}[yshift = -2.42em]
+      \binaryright{libexp3}{3.0em}
+    \end{scope}
+  \end{scope}
+\begin{scope}[xshift = 2.00em]
+  \draw [->] (0.0em, 0.0em) -- (2.50em, 0.0em);
+\begin{scope}[xshift = 2.75em]
+  \begin{scope}[xshift = 2.25em]
+    \binaryup{librun}{3.0em}
+  \end{scope}
+\end{scope}\end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\end{tikzpicture}

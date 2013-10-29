@@ -1,0 +1,13 @@
+% -*- coding: utf-8 -*-
+%\chapter{Ссылка на индекс из предисловия всё равно хреновая}
+\begingroup
+
+\small
+
+\newcommand{\itemgroup}[1]{\vskip1\baselineskip plus 1\baselineskip\par\raisebox{0pt}[0pt][0pt]{\Large\bfseries\relax#1}\nopagebreak}
+\newcommand{\IndexFileSeparator}{\nopagebreak\vskip1em minus 0.5em\nopagebreak\centerline{\rule{5em}{0.4pt}}\pagebreak}
+\renewcommand{\preindexhook}{\phantomlabel{chapter:index}}
+
+{\ChapterFiveSpecials\printindex}
+
+\endgroup

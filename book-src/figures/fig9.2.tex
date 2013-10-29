@@ -1,0 +1,42 @@
+% -*- coding: utf-8 -*-
+% Экзогенное (слева) и эндогенное (справа) раскрытие макросов
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+\begin{scope}
+  \draw (0.5em,   2.5em) node[left] {\ii{директивы}};
+  \draw (0.55em, -0.1em) node[left] {\ii{выражение}};
+
+  \draw [thick] (3.5em, 0.65em) rectangle (7.5em, -0.65em);
+  \draw (5.5em, -0.65em) node[below] {\ii{макроэкспандер}};
+
+  \draw [->] (0.50em, 0.00em) -- ( 3.25em, 0.00em);
+  \draw [->] (0.50em, 2.50em) -- ( 5.50em, 2.50em) -- (5.50em, 0.90em);
+  \draw [->] (7.75em, 0.00em) -- (10.00em, 0.00em);
+\end{scope}
+
+\begin{scope}[xshift = +19.5em]
+  \draw (-0.95em, -0.1em) node[left] {\ii{выражение}};
+
+  \draw [thick] (3.5em, 0.65em) rectangle (7.5em, -0.65em);
+  \draw (5.5em, -0.02em) node {\ic{expand}};
+
+  \draw [thick] (5.5em, 2.5em) ellipse[x radius = 2.0em, y radius = 0.65em];
+  \draw (5.5em, 2.54em) node {\ic{eval}};
+
+  \begin{scope}[xshift = +1.125em, yshift = +0.5em]
+  \begin{scope}[rotate = -90]
+    \draw [semithick] (0.0em, 0.0em) -- ++(0 : 1em) -- ++(120 : 1em) -- cycle;
+  \end{scope}
+  \end{scope}
+
+  \draw     (-1.00em, 0.00em) -- (1.125em, 0.00em);
+  \draw [->] (2.00em, 0.00em) -- (3.250em, 0.00em);
+
+  \draw [->] (1.50em, 0.27em) -- (1.50em, 2.50em) -- (3.25em, 2.50em);
+
+  \draw [->] (5.50em, 1.85em) -- ( 5.50em, 0.90em);
+  \draw [->] (7.75em, 0.00em) -- (10.00em, 0.00em);
+\end{scope}
+
+\end{tikzpicture}

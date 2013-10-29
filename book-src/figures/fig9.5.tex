@@ -1,0 +1,35 @@
+% -*- coding: utf-8 -*-
+% Истинно единый мир с~эндогенной компиляцией
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+\input{figures/fig9.macros}
+
+\begin{scope}[xshift = +5.875em]
+  \draw [semithick] ( -5.875em, +4.50em) -- ( -5.875em, -4.75em);
+  \draw [semithick] (+14.875em, +4.50em) -- (+14.875em, +1.75em);
+  \draw [semithick] (+14.875em, -2.75em) -- (+14.875em, -4.75em);
+  \node at(0.0em, 0.0em) {\begin{code:lisp}
+(define (fact ...) ...)
+(compile-file ...)
+
+
+
+
+(factorial 5) |\is| 120 |\ii{или}| #<|\ic{ошибка}|>
+  \end{code:lisp}};
+\end{scope}
+
+\draw [->] (7.80em, 1.625em) -- (7.80em, 0.5em) -- (13.75em, 0.5em);
+
+\begin{scope}[xshift = 14em, yshift = -0.5em]
+  \begin{scope}[xshift = 10.25em]
+    \framenode{10.25em}{2.25em} {\begin{code:lisp}
+(define-abbreviation (factorial ...) ...)
+
+(define (some-facts) ...)
+    \end{code:lisp}};
+  \end{scope}
+\end{scope}
+
+\end{tikzpicture}

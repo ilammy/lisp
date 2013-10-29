@@ -1,0 +1,97 @@
+% -*- coding: utf-8 -*-
+% \protect{\ic(lambda (cnter~.~tmp) (set! tmp ...) (if ... (...~tmp) ...))}
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\tiny]
+
+\input{figures/fig10.macros}
+
+\begin{scope}[xshift = 0.0em]
+    \begin{scope}[yshift = -0.0em]
+        \PtrNodeD{Seq}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeT{FixLet}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkUp
+        \PtrNodeD{Seq}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeD{Seq}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkUp
+        \PtrNodeT{Altern}
+    \end{scope}\end{scope}\end{scope}
+    \end{scope}\end{scope}
+\end{scope}
+
+% Seq ->
+\draw [dashed] (1.25em,  -1.50em) -- (4.00em,  -1.50em);
+
+% FixLet -> LocVarList
+\draw [->] (1.25em, -5.50em) -- (10.30em, -5.50em);
+
+% FixLet ->
+\draw [dashed] (1.25em,  -6.50em) -- (4.00em,  -6.50em);
+
+% Altern -> 
+\draw [dashed] (1.25em, -18.50em) -- (4.00em, -18.50em);
+\draw [dashed] (1.25em, -20.50em) -- (1.25em, -23.00em);
+
+\begin{scope}[xshift = 5.0em]
+    \begin{scope}[yshift = -10.0em]
+        \PullLinkLeft
+        \PtrNodeU{BoxCr}
+    \begin{scope}[yshift = -4.0em]
+        \PullLinkLeft
+        \PtrNodeD{BoxWr}
+    \begin{scope}[yshift = -5.0em]
+        \PullLinkLeft
+        \PtrNodeD{R.Appl}
+    \end{scope}\end{scope}\end{scope}
+\end{scope}
+
+% BoxCr -> TMP
+\draw [->] ( 6.25em, -11.50em) -- (13.875em, -11.50em);
+\draw      (13.50em, -11.50em) -- (18.750em, -11.50em);
+
+% BoxWr -> TMP
+\draw [->] ( 6.25em, -15.50em) -- (13.875em, -15.50em);
+\draw      (13.50em, -15.50em) -- (18.750em, -15.50em);
+
+% BoxWr ->
+\draw [dashed] (6.25em, -16.50em) -- (9.00em, -16.50em);
+
+% R.Appl ->
+\draw [dashed] (6.25em, -20.50em) -- (9.00em, -20.50em);
+
+\begin{scope}[xshift = 10.0em]
+    \begin{scope}[yshift =  -7.0em]
+        \InList
+        \PullLinkUp
+        \LocVarNode{\ic{CNTER}}{\ic{\#f}}{\ic{\#f}}
+    \begin{scope}[yshift = -14.0em]
+        \PullLinkLeft
+        \PtrNodeD{Args}
+    \begin{scope}[yshift =  -4.0em]
+        \PullLinkUp
+        \NoArgNode
+    \end{scope}\end{scope}\end{scope}
+\end{scope}
+
+\begin{scope}[xshift = 15.0em]
+    \begin{scope}[yshift =  -7.0em]
+        \InListLast
+        \PullLinkUp
+        \PullListLink
+        \LocVarNode{\ic{TMP}}{\ic{\#t}}{\ic{\#t}}
+    \begin{scope}[yshift = -15.0em]
+        \PullLinkLeft
+        \PtrNodeU{BoxRd}
+    \end{scope}\end{scope}
+\end{scope}
+
+% BoxRd -> TMP
+\draw [->] (16.25em, -23.50em) -- (18.75em, -23.50em) --
+           (18.75em,  -7.50em) -- (17.70em,  -7.50em);
+
+\end{tikzpicture}

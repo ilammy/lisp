@@ -1,0 +1,145 @@
+% -*- coding: utf-8 -*-
+% Процесс обработки исключения
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\small]
+
+  \draw (-1.0em, 28.25em) node[above] {\ic{*stack-index*}};
+  \draw [->] (-1.0em, 28.50em) -- (-1.0em, 17.75em) -- (-0.25em, 17.75em);
+
+  \draw [semithick] (0.0em, 0.0em) rectangle (5.5em, 28.0em);
+
+  \draw (0.0em, 17.50em) -- (5.5em, 17.50em);
+  \draw (0.0em, 15.00em) -- (5.5em, 15.00em);
+  \draw (0.0em, 13.75em) -- (5.5em, 13.75em);
+  \draw (0.0em, 12.50em) -- (5.5em, 12.50em);
+  \draw (0.0em, 11.25em) -- (5.5em, 11.25em);
+  \draw (0.0em, 10.00em) -- (5.5em, 10.00em);
+
+  \draw (0.0em,  7.50em) -- (5.5em,  7.50em);
+  \draw (0.0em,  6.25em) -- (5.5em,  6.25em);
+  \draw (0.0em,  5.00em) -- (5.5em,  5.00em);
+  \draw (0.0em,  3.75em) -- (5.5em,  3.75em);
+
+  \draw (0.0em,  2.50em) -- (5.5em,  2.50em);
+  \draw (0.0em,  0.00em) -- (5.5em,  0.00em);
+
+  \draw [densely dashed] (-0.15em, 2.35em) rectangle (5.65em,  7.65em);
+  \draw [densely dashed] (-0.15em, 9.85em) rectangle (5.65em, 15.15em);
+
+  \draw     (2.75em, 16.500em) node {$\vdots$};
+  \draw     (2.75em, 14.375em) node {\ic{(*dynenv*)}};
+  \draw     (2.75em, 13.125em) node {\ic{0}};
+  \filldraw (2.75em, 11.875em) circle(1.0pt);
+  \filldraw (2.75em, 10.625em) circle(1.0pt);
+  \draw     (2.75em,  9.000em) node {$\vdots$};
+  \draw     (2.75em,  6.875em) node {\ic{(*dynenv*)}};
+  \draw     (2.75em,  5.625em) node {\ic{0}};
+  \filldraw (2.75em,  4.375em) circle(1.0pt);
+  \filldraw (2.75em,  3.125em) circle(1.0pt);
+  \draw     (2.75em,  1.500em) node {$\vdots$};
+
+  \draw [->] ( 2.75em,  3.125em) -- ( -1.0em,  3.125em) -- (-1.0em, -1.0em);
+  \draw [->] ( 2.75em, 10.625em) -- ( -1.0em, 10.625em) --
+             (-1.00em,  5.625em) -- (-0.25em,  5.625em);
+
+
+
+  \draw [->] ( 2.75em, 11.875em) -- ( 6.95em, 11.875em);
+  \draw [->] (17.75em, 11.875em) -- (13.55em, 11.875em);
+
+  \draw (17.75em,  21.875em) -- (12.538em, 21.875em) --
+        (12.538em, 12.50em);
+  \draw (12.538em, 11.25em) --
+        (12.538em, 10.50em);
+  \draw [->] (12.538em, 9.25em) -- (12.538em, 5.10em);
+
+  \draw [semithick] ( 7.20em, 11.25em) rectangle (13.30em, 12.50em);
+  \draw [semithick] (10.25em, 11.25em) -- (10.25em, 12.50em);
+
+  \filldraw  (8.725em, 11.875em) circle(1.0pt);
+  \draw [->] (8.725em, 11.875em) -- (8.725em, 10.60em);
+
+  \filldraw  (11.775em, 11.875em) circle(1.0pt);
+  \draw      (11.775em, 11.875em) -- (11.775em, 10.50em);
+  \draw [->] (11.775em,  9.250em) -- (11.775em,  5.10em);
+
+  \draw [semithick] ( 7.20em, 9.25em) rectangle (13.30em, 10.50em);
+  \draw (10.25em, 9.825em) node {\ii{обработчик 1}};
+  
+
+  \draw [->] ( 2.75em, 4.375em) -- ( 6.95em, 4.375em);
+  \draw [->] (17.75em, 4.375em) -- (13.55em, 4.375em);
+
+  \draw [semithick] ( 7.20em, 3.75em) rectangle (13.30em, 5.00em);
+  \draw [semithick] (10.25em, 3.75em) -- (10.25em, 5.00em);
+
+  \filldraw  (8.725em, 4.375em) circle(1.0pt);
+  \draw [->] (8.725em, 4.375em) -- (8.725em, 3.10em);
+
+  \filldraw  (11.775em, 4.375em) circle(1.0pt);
+  \draw      (11.775em, 4.375em) -- (11.775em,  3.00em);
+  \draw [->] (11.775em, 1.750em) -- (11.775em, -1.00em);
+
+  \draw [semithick] ( 7.20em, 1.75em) rectangle (13.30em, 3.00em);
+  \draw (10.25em, 2.325em) node {\ii{обработчик 2}};
+  
+
+
+  \draw (21.5em, 28.25em) node[above] {\ic{*stack-index*}};
+  \draw [->] (21.5em, 28.50em) -- (21.5em, 26.50em) -- (20.75em, 26.50em);
+
+  \draw [semithick] (15.0em, 0.0em) rectangle (20.5em, 28.0em);
+
+  \draw (15.0em, 26.25em) -- (20.5em, 26.25em);
+  \draw (15.0em, 25.00em) -- (20.5em, 25.00em);
+  \draw (15.0em, 23.75em) -- (20.5em, 23.75em);
+  \draw (15.0em, 22.50em) -- (20.5em, 22.50em);
+  \draw (15.0em, 21.25em) -- (20.5em, 21.25em);
+  \draw (15.0em, 20.00em) -- (20.5em, 20.00em);
+  \draw (15.0em, 18.75em) -- (20.5em, 18.75em);
+
+  \draw (15.0em, 17.50em) -- (20.5em, 17.50em);
+  \draw (15.0em, 15.00em) -- (20.5em, 15.00em);
+
+  \draw (15.0em, 13.75em) -- (20.5em, 13.75em);
+  \draw (15.0em, 12.50em) -- (20.5em, 12.50em);
+  \draw (15.0em, 11.25em) -- (20.5em, 11.25em);
+  \draw (15.0em, 10.00em) -- (20.5em, 10.00em);
+
+  \draw (15.0em,  7.50em) -- (20.5em,  7.50em);
+  \draw (15.0em,  6.25em) -- (20.5em,  6.25em);
+  \draw (15.0em,  5.00em) -- (20.5em,  5.00em);
+  \draw (15.0em,  3.75em) -- (20.5em,  3.75em);
+
+  \draw (15.0em,  2.50em) -- (20.5em,  2.50em);
+  \draw (15.0em,  0.00em) -- (20.5em,  0.00em);
+
+  \draw [densely dashed] (14.85em,  2.35em) rectangle (20.65em,  7.65em);
+  \draw [densely dashed] (14.85em,  9.85em) rectangle (20.65em, 15.15em);
+  \draw [densely dashed] (14.85em, 19.85em) rectangle (20.65em, 25.15em);
+
+  \draw     (17.75em, 25.675em) node {\ic{0} \ii{или} \ic{2}};
+  \draw     (17.75em, 24.375em) node {\ic{(*dynenv*)}};
+  \draw     (17.75em, 23.125em) node {\ic{0}};
+  \filldraw (17.75em, 21.875em) circle(1.0pt);
+  \filldraw (17.75em, 20.625em) circle(1.0pt);
+  \draw     (17.75em, 19.375em) node {\ic{*env*}};
+  \draw     (17.75em, 18.125em) node {\ic{*pc*}};
+  \draw     (17.75em, 16.500em) node {$\vdots$};
+  \draw     (17.75em, 14.375em) node {\ic{(*dynenv*)}};
+  \draw     (17.75em, 13.125em) node {\ic{0}};
+  \filldraw (17.75em, 11.875em) circle(1.0pt);
+  \filldraw (17.75em, 10.625em) circle(1.0pt);
+  \draw     (17.75em,  9.000em) node {$\vdots$};
+  \draw     (17.75em,  6.875em) node {\ic{(*dynenv*)}};
+  \draw     (17.75em,  5.625em) node {\ic{0}};
+  \filldraw (17.75em,  4.375em) circle(1.0pt);
+  \filldraw (17.75em,  3.125em) circle(1.0pt);
+  \draw     (17.75em,  1.500em) node {$\vdots$};
+
+  \draw [->] (17.75em,  3.125em) -- (21.50em,  3.125em) -- (21.5em, -1.0em);
+  \draw [->] (17.75em, 10.625em) -- (21.50em, 10.625em) --
+             (21.50em,  5.625em) -- (20.75em,  5.625em);
+  \draw [->] (17.75em, 20.625em) -- (21.50em, 20.625em) --
+             (21.50em, 13.125em) -- (20.75em, 13.125em);
+\end{tikzpicture}

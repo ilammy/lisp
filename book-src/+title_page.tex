@@ -1,0 +1,155 @@
+% -*- coding: utf-8 -*-
+\begingroup
+\thispagestyle{empty}
+
+\newcommand{\titletitle}[1]{\fontsize{55pt}{48pt}\hafamily\bfseries\relax#1}
+\newcommand{\titlename}[1]{\fontsize{35pt}{35pt}\aqfamily\itshape\relax#1}
+
+\hskip0pt
+\vskip-2.5em
+\centerline{\titletitle{Интерпретация}}
+\centerline{\titletitle{Лиспа и Scheme}}
+\vskip 3em
+
+\centering
+
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\fontsize{8pt}{8pt}]
+
+  % cons cell
+\makeatletter
+\pgfdeclareshape{cons}{
+  \savedanchor{\car}{\pgfpoint{-5.40pt}{0.00pt}}
+  \savedanchor{\cdr}{\pgfpoint{+5.40pt}{0.00pt}}
+
+  \savedanchor{\origin}{\pgfpoint{0.00pt}{0.00pt}}
+  \savedanchor{\east}{\pgfpoint{+12.00pt}{0.00pt}}
+  \savedanchor{\top}{\pgfpoint{0.00pt}{+6.00pt}}
+  \savedanchor{\border}{\pgfpointscale{1.25}{\pgfpoint{+12.00pt}{+6.00pt}}}
+
+  \savedanchor{\clipTop}{\pgfpoint{-14.50pt}{+40.00pt}}
+  \savedanchor{\clipMid}{\pgfpoint{+ 1.25pt}{  0.00pt}}
+  \savedanchor{\clipBot}{\pgfpoint{-14.50pt}{-40.00pt}}
+
+  \anchor{center}{\origin}
+  \anchor{car}{\car}
+  \anchor{cdr}{\cdr}
+
+  \foregroundpath{
+    \begin{pgfscope}
+      \pgfpathellipse{\origin}{\east}{\top}
+      \pgfstroke
+      \pgfpathellipse{\origin}{\east}{\top}
+      \pgfclip
+      \pgfpathmoveto{\clipTop}
+      \pgfpathlineto{\clipMid}
+      \pgfpathlineto{\clipBot}
+      \pgfclosepath
+      \pgfstroke
+    \end{pgfscope}
+  }
+
+  \anchorborder{
+    \@tempdima=\pgf@x
+    \@tempdimb=\pgf@y
+    \pgfpointborderellipse{\pgfpoint{\@tempdima}{\@tempdimb}}{\border}
+  }
+}
+\makeatother
+
+  % cons links
+  \newcommand{\carnil}[1]{\fill (#1.car) circle(1.1pt);}
+  \newcommand{\cdrnil}[1]{\fill (#1.cdr) circle(1.1pt);}
+  \newcommand{\carlink}[2]{\carnil{#1} \draw [->] (#1.car) -- (#2);}
+  \newcommand{\cdrlink}[2]{\cdrnil{#1} \draw [->] (#1.cdr) -- (#2);}
+
+
+  \node (1)  [cons, semithick, rotate =  -90.0] at(105.0mm, 207.0mm) {};
+
+  \node (l1) [cons, semithick, rotate = -160.0] at( 78.0mm,  61.5mm) {};
+  \node (r1) [cons, semithick, rotate =  -20.0] at(132.0mm,  61.5mm) {};
+
+  \node (l2) [cons, semithick, rotate = -120.0] at( 92.7mm,  71.3mm) {};
+  \node (r2) [cons, semithick, rotate =  -60.0] at(117.3mm,  71.3mm) {};
+
+  \node (l3) [cons, semithick, rotate =  -75.0] at( 96.5mm,  85.0mm) {};
+  \node (r3) [cons, semithick, rotate = -105.0] at(113.5mm,  85.0mm) {};
+
+  \node (l4) [cons, semithick, rotate = +120.0] at( 80.1mm,  88.8mm) {};
+  \node (r4) [cons, semithick, rotate =  +60.0] at(129.9mm,  88.8mm) {};
+
+  \node (l5) [cons, semithick, rotate =  -80.0] at( 75.5mm, 106.8mm) {};
+  \node (r5) [cons, semithick, rotate = -100.0] at(134.5mm, 106.8mm) {};
+
+  \node (l6) [cons, semithick, rotate =  -35.0] at( 91.9mm, 100.3mm) {};
+  \node (r6) [cons, semithick, rotate = -145.0] at(118.1mm, 100.3mm) {};
+
+  \coordinate (l7)                              at( 75.5mm, 207.0mm);
+  \coordinate (r7)                              at(134.5mm, 207.0mm);
+
+  \begin{scope}[yshift=-2mm]
+  \path ( 93.1mm, 185.9mm)
+        .. controls (103.0mm, 203.6mm) and (108.7mm, 186.6mm) ..
+            node (ls1) [cons, semithick, sloped, rotate = 180, pos = 0.00] {}
+            node (ls2) [cons, semithick, sloped,               pos = 0.30] {}
+            node (ls3) [cons, semithick, sloped, rotate = 180, pos = 0.64] {}
+            node (ls4) [cons, semithick, sloped,               pos = 0.86] {}
+        (112.4mm, 163.8mm)
+        .. controls (113.7mm, 153.8mm) and (121.1mm, 131.8mm) ..
+        (126mm,125.5mm)
+            node (ls5) [cons, semithick, sloped, rotate = 180, pos = 0.08] {}
+            node (ls6) [cons, semithick, sloped,               pos = 0.39] {}
+            node (ls7) [cons, semithick, sloped,               pos = 0.66] {}
+            node (ls8) [cons, semithick, sloped,               pos = 1.00] {};
+
+  \path ( 85.3mm, 125.0mm)
+        .. controls ( 85.3mm, 125.0mm) and ( 97.9mm, 156.2mm) ..
+        (112.7mm, 163.4mm)
+            node (ll1) [cons, semithick,         rotate = 247, pos = 0.00] {}
+            node (ll2) [cons, semithick, sloped,               pos = 0.46] {}
+            node (ll3) [cons, semithick, sloped, rotate = 180, pos = 0.73] {};
+  \end{scope}
+
+  % lambda
+  \carlink{ls2}{ls1}\cdrlink{ls2}{ls3}\carlink{ls3}{ls4}\cdrlink{ls4}{ls5}
+  \carlink{ls5}{ls6}\cdrlink{ls6}{ls7}\cdrlink{ls7}{ls8}\cdrlink{ls5}{ll3}
+  \cdrlink{ll3}{ll2}\carlink{ll2}{ll1}\cdrlink{1}{ls2}  \cdrlink{ll1}{l6}
+
+  % entwine
+  % хитрость
+  \coordinate (r6e) at (intersection of l6.cdr--r6.cdr and r3.cdr--ls6.cdr);
+  \cdrlink{l6}{r6e}
+  \carlink{l6}{l5}\cdrlink{l5}{l4}\carlink{l4}{l3}\cdrlink{l3}{l2}
+  \cdrlink{l2}{l1}\carlink{r6}{r5}\cdrlink{r5}{r4}\carlink{r4}{r3}
+  \cdrlink{r3}{r2}\cdrlink{r2}{r1}
+
+  \draw [->, rounded corners = 25pt] (l5.car) -- (l7) -- (1);
+  \draw [->, rounded corners = 25pt] (r5.car) -- (r7) -- (1);
+
+  % data
+  \cdrnil{ls1}\cdrnil{ls3}\cdrnil{ls8}\cdrnil{ll2}\cdrnil{l1}\cdrnil{r1}
+  \cdrnil{l4}\cdrnil{r4}\carnil{l5}\carnil{r5}\cdrnil{r6}
+
+  \node at(1.car) {$\lambda$};
+  \node at(ls1.car) {\texttt{n}};
+  \node at(ls4.car) {\texttt{if}};
+  \node at(ls6.car) {\texttt{<}};
+  \node at(ls7.car) {\texttt{n}};
+  \node at(ls8.car) {\texttt{2}};
+  \node at(ll3.car) {\texttt{1}};
+  \node at(ll1.car) {\texttt{+}};
+  \node at(l3.car)  {\texttt{-}};
+  \node at(l2.car)  {\texttt{n}};
+  \node at(l1.car)  {\texttt{1}};
+  \node at(r3.car)  {\texttt{-}};
+  \node at(r2.car)  {\texttt{n}};
+  \node at(r1.car)  {\texttt{2}};
+\end{tikzpicture}
+
+\vskip 3em
+
+\centerline{\titlename{Кристиан Кеннек}}
+
+\endgroup
+
+\clearpage

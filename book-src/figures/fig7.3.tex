@@ -1,0 +1,92 @@
+% -*- coding: utf-8 -*-
+% Архитектура целевой виртуальной машины
+\begin{tikzpicture}
+  \tikzstyle{every node}=[font=\footnotesize]
+
+  \draw (0.00em,  0.00em) node[right] {\small\ic{*env*}};
+  \draw (0.00em, -2.00em) node[right] {\small\ic{*val*}};
+  \draw (0.00em, -4.00em) node[right] {\small\ic{*fun*}};
+  \draw (0.00em, -6.00em) node[right] {\small\ic{*arg1*}};
+  \draw (0.00em, -8.00em) node[right] {\small\ic{*arg2*}};
+
+  \draw (0.00em,-10.00em) node[right] {\small\ic{*stack*}};
+  \draw (0.00em,-11.25em) node[right] {\small\ic{*stack-index*}};
+
+  \draw (0.00em,-13.25em) node[right] {\small\ic{*pc*}};
+
+% *env*
+  \draw [->] (3.00em, 0.00em) -- (5.75em, 0.00em);
+
+  \draw             (6.15em, 0.00em) node[right] {\ic{next}};
+  \draw [semithick] (6.00em, 0.50em) rectangle (9.00em, -3.50em);
+  \draw             (6.00em,-0.50em) --  (9.00em, -0.50em);
+
+  \filldraw  (8.50em, 0.00em) circle(1.0pt);
+  \draw [->] (8.50em, 0.00em) -- (10.75em, 0.00em);
+
+  \draw             (11.00em, 0.00em) node[right] {\ic{next}};
+  \draw [semithick] (11.00em, 0.50em) rectangle (14.00em, -2.25em);
+  \draw             (11.00em,-0.50em) --  (14.00em, -0.50em);
+
+  \filldraw  (13.50em, 0.00em) circle(1.0pt);
+  \draw [->] (13.50em, 0.00em) -- (15.75em, 0.00em);
+
+  \draw             (16.00em, 0.00em) node[right] {\ic{next}};
+  \draw [semithick] (16.00em, 0.50em) rectangle (19.00em, -5.00em);
+  \draw             (16.00em,-0.50em) --  (19.00em, -0.50em);
+
+  \filldraw  (18.50em, 0.00em) circle(1.0pt);
+  \draw [->] (18.50em, 0.00em) -- (20.75em, 0.00em);
+  
+  \draw (20.75em, 0.10em) node[right] {\ii{nil}};
+
+% *fun*
+  \draw [->] (3.00em, -4.00em) -- (4.50em, -4.00em) --
+             (4.50em, -5.75em) -- (22.75em, -5.75em);
+
+  \draw [semithick] (23.00em, -5.00em) rectangle (29.00em, -6.50em);
+  \draw [semithick] (26.25em, -5.00em) -- (26.25em, -6.50em);
+
+  \draw (26.00em, -5.75em) node[left]  {\ic{code}};
+  \draw (26.40em, -5.82em) node[right] {\ic{env}};
+  \draw (29.25em, -7.10em) node[left] {\ii{замыкание}};
+  
+  \filldraw  (23.50em, -5.75em) circle(1.0pt);
+  \draw [->] (23.50em, -5.75em) -- (23.50em, -19.00em) --
+              (7.1em, -19.00em) --  (7.10em, -16.85em);
+
+  \filldraw  (28.50em, -5.75em) circle(1.0pt);
+  \draw [->] (28.50em, -5.75em) -- (28.50em, 1.50em) --
+             (12.5em,   1.50em) -- (12.50em, 0.75em);
+  
+% *stack*
+  \draw [semithick] (12.5em, -7.50em) rectangle (18.5em, -17.50em);
+  \draw [loosely dashed, dash phase = 0.20em]
+                    (12.5em, -10.50em) -- (18.5em, -10.50em);
+
+  \draw [->] (4.00em, -10.00em) --  (7.50em, -10.00em) --
+             (7.50em, -8.00em) -- (12.25em, -8.00em);
+  \draw [->] (7.00em, -11.25em) -- (12.25em, -11.25em);
+
+  \draw (15.5em,  -9.00em) node {\ii{используется}};
+  \draw (15.5em, -13.75em) node {\ii{свободно}};
+
+% *pc*
+  \draw [->] (2.50em, -13.25em) -- (4.35em, -13.25em) -- (4.35em, -15.40em);
+
+  \draw [semithick] (0.50em, -15.50em) rectangle (10.50em, -16.75em);
+  \draw             (5.5em, -16.125em) node {\ic{... 34 250 41 4 34 ...}};
+
+  \draw (0.25em, -17.35em) node[right] {\ii{байт-код}};
+
+% *constants*
+  \draw (29.75em, -9.90em) node[above] {\small\ic{*constants*}};
+  \draw [semithick] (27.50em, -10.00em) rectangle (32.0em, -18.75em);
+  \draw             (27.50em, -11.25em) -- (32.0em, -11.25em);
+  \draw             (27.50em, -12.50em) -- (32.0em, -12.50em);
+  \draw             (27.50em, -13.75em) -- (32.0em, -13.75em);
+  \draw             (27.50em, -15.00em) -- (32.0em, -15.00em);
+  \draw             (27.50em, -16.25em) -- (32.0em, -16.25em);
+  \draw             (27.50em, -17.50em) -- (32.0em, -17.50em);
+
+\end{tikzpicture}
