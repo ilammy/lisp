@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf"
+         unique-identifier="lisp-in-small-pieces-ru">
+  <metadata>
+    <identifier></identifier>
+    <language></language>
+
+    <title></title>
+    <creator></creator>
+
+    <contributor></contributor>
+    <source></source>
+
+    <rights></rights>
+  </metadata>
+  <manifest>
+    <item id="01_preface" href="01_preface.xhtml"
+          media-type="application/xhtml+xml"/>
+<!--
+    <item id="ch_01" href="ch01_basics.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_02" href="ch02_lisp_1_2_omega.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_03" href="ch03_escape_and_return.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_04" href="ch04_assignment_and_side_effects.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_05" href="ch05_denotational_sematics.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_06" href="ch06_fast_interpretation.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_07" href="ch07_compilation.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_08" href="ch08_evaluation_and_reflection.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_09" href="ch09_macros.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_10" href="ch10_compiling_into_c.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="ch_11" href="ch11_essence_of_an_object_system.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="z0_ans" href="z0_answers_to_exercises.xhtml"
+          media-type="application/xhtml+xml"/>
+    <item id="z1_bib" href="z1_bibliography.xhtml"
+          media-type="application/xhtml+xml"/>
+
+    <item id="footnotes" href="zz_footnotes"
+          media-type="application/xhtml+xml"/>
+    <item id="style" href="zz_lisp.css"
+          media-type="text/css"/>
+    <item id="00_toc" href="00_toc.ncx"
+          media-type="application/x-dtbncx+xml"/>
+-->
+  </manifest>
+  <spine toc="00_toc">
+    <itemref idref="01_preface"/>
+<!--
+    <itemref idref="ch_01"/>
+    <itemref idref="ch_02"/>
+    <itemref idref="ch_03"/>
+    <itemref idref="ch_04"/>
+    <itemref idref="ch_05"/>
+    <itemref idref="ch_06"/>
+    <itemref idref="ch_07"/>
+    <itemref idref="ch_08"/>
+    <itemref idref="ch_09"/>
+    <itemref idref="ch_10"/>
+    <itemref idref="ch_11"/>
+    <itemref idref="z0_ans"/>
+    <itemref idref="z1_bib"/>
+    <itemref idref="footnotes" linear="no"/>
+-->
+  </spine>
+</package>
+  
