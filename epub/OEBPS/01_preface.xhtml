@@ -13,7 +13,7 @@
 
 <p><span class="initial"><span class="letter">Н</span>есмотря на то</span> что
 литературы на тему Лиспа достаточно и она легкодоступна, эта книга имеет свою
-нишу. Программирование требует понимания фундаментальных основ языка; для 
+нишу. Программирование требует понимания фундаментальных основ языка; для
 и Scheme ими являются нетривиальные вещи вроде функций высшего порядка,
 объектов, продолжений и тому подобного. Их незнание и непонимание преграждает
 вам путь в будущее, так как то, что ещё сегодня считалось сложным, завтра уже
@@ -219,7 +219,7 @@ PowerBook) и вообще сделали эту книгу возможной: 
 
 <!--\indexC*{.->}{\protect\is}
 \indexC*{.=}{\protect\equals}-->
-<p>Знак → читается: «имеет значение», а знак ≡ обозначает
+<p>Знак <span class="math"><span class="binop">→</span></span> читается: «имеет значение», а знак <span class="math"><span class="binop">≡</span></span> обозначает
 эквивалентность, «имеет то же значение, что и». При разборе вычисления
 выражений после вертикальной черты мы будем записывать окружение, в котором
 проводятся вычисления. Вот пример, иллюстрирующий эти соглашения:</p>
@@ -227,27 +227,27 @@ PowerBook) и вообще сделали эту книгу возможной: 
 <pre>(<span class="special">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
   (<span class="special">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
     (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where">
-<span class="var">b</span> → <span class="num">3</span>
-<span class="var">foo</span> ≡ <span class="func">cons</span>
+<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
 </div>
 
-≡ (<span class="special">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
-<span class="var">a</span> → <span class="num">4</span>
-<span class="var">b</span> → <span class="num">3</span>
-<span class="var">foo</span> ≡ <span class="func">cons</span>
-<span class="var">f</span> ≡ (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> → <span class="num">4</span>
+<span class="math"><span class="binop">≡</span></span> (<span class="special">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
+<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
 </div>
 </div>
-≡ (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where">
-<span class="var">a</span> → <span class="num">4</span>
-<span class="var">b</span> → <span class="num">3</span>
-<span class="var">foo</span> ≡ <span class="func">cons</span>
-<span class="var">f</span> ≡ (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> → <span class="num">4</span>
+<span class="math"><span class="binop">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
 </div>
              </div>
-→ (<span class="num">4</span> . <span class="num">4</span>)</pre>
+<span class="math"><span class="binop">→</span></span> (<span class="num">4</span> . <span class="num">4</span>)</pre>
 
 <p>Все имена переменных и сообщения об ошибках в приводимых программах мы будем
 записывать на английском — «родном языке» Scheme.</p>
@@ -290,7 +290,7 @@ class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
 <p>Сейчас мы лишь набросаем основные характерные черты этого диалекта; те черты,
 которые потом будут подробно проанализированы по мере улучшения понимания языка.</p>
 
-<p>В Scheme можно использовать символы, знаки<span class="footref"><sup><a href="zz_footnotes.xhtml#foot0.tr-2">**</a></sup></span>, строки, списки, числа, логические значения,
+<p>В Scheme можно использовать символы, знаки<a class="footref" href="zz_footnotes.xhtml#foot0.tr-2"><sup>**</sup></a>, строки, списки, числа, логические значения,
 векторы, порты и функции (или процедуры, как их принято называть в Scheme).</p>
 
 <p>Каждый из этих типов данных имеет соответствующий предикат: <code><span
@@ -388,7 +388,7 @@ class="syntax">else</span></code>. Вот так можно переписать
 
 <pre>(<span class="special">case</span> <span class="var">x</span>
   ((<span class="var">flip</span>) '<span class="var">flop</span>)
-  ((<span class="var">flip</span>) '<span class="var">flip</span>)
+  ((<span class="var">flop</span>) '<span class="var">flip</span>)
   (<span class="syntax">else</span> (<span class="func">list</span> <span class="var">x</span> <span class="string">"neither flip nor flop"</span>)) )</pre>
 
 <!--\indexC{lambda}

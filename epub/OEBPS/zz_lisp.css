@@ -1,0 +1,31 @@
+div.where {
+    border-left: solid black 1pt;
+    display: inline-block;
+    white-space: pre-line;
+    margin-left: 0.1em;
+    padding-left: 0.5em;
+    vertical-align: top;
+}
+
+span { color: red; }
+
+span.logo {
+    font-family: serif; /* fix */
+    font-variant: small-caps;
+}
+
+pre span.logo {
+    float: right;
+}
+
+span.see {
+    font-weight: bolder;
+}
+
+span.see span.stub {
+    visibility: hidden;
+}
+
+/* HTML5 does not allow align attribute? Eat this. */
+table#pref-table-signatures td:nth-child(1) { text-align: center; }
+table#pref-table-signatures td:nth-child(2) { text-align: left; }

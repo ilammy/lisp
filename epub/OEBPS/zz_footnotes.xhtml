@@ -33,5 +33,56 @@
     Languages. — The MIT Press, 2008. — 1352 p. — <em>Прим. перев.</em></p>
 </div>
 
+
+<h1><span class="seq">Глава 1.</span> Основы интерпретации</h1>
+
+<div class="footnote" id="foot1.1">
+  <p><span class="num"><sup>1</sup></span>
+    Интерпретатор, описываемый в этой главе, занимает около 150 строк.</p>
+</div>
+
+<div class="footnote" id="foot1.2">
+  <p><span class="num"><sup>2</sup></span>
+    Как вы знаете, «родная» функция-вычислитель Scheme называется <code><span
+    class="func">eval</span></code>. Чтобы их
+    не путать, нашу функцию мы назовём <code><span class="func">evaluate</span></code>.
+    По тем же причинам местный аналог <code><span class="func">apply</span></code>
+    будет называться <code><span class="func">invoke</span></code>. Меньше перекрытий имён —
+    меньше проблем.</p>
+</div>
+
+<div class="footnote" id="foot1.3">
+  <p><span class="num"><sup>3</sup></span>
+    Лично я не люблю называть функции приведения типов
+    <code><span class="func"><i>x</i>-&gt;<i>y</i></span></code>,
+    потому что так сложнее понимать цепочки преобразований. Запись
+    <code>(<span class="func"><i>y</i>-&gt;<i>z</i></span>(<span class="func"><i>x</i>-&gt;<i>y</i></span> ...))}</code> не так очевидна, как <code>(<span class="func"><i>z</i>&lt;-<i>y</i></span>(<span class="func"><i>y</i>&lt;-<i>x</i></span> ...))</code>.
+    Хотя, с другой стороны, одиночная запись <code><span class="func"><i>z</i>&lt;-<i>y</i></span></code> не так легко читается, как <code><span class="func"><i>y</i>-&gt;<i>z</i></span></code>.
+    Приходится выбирать.</p>
+</div>
+
+<div class="footnote" id="foot1.4">
+  <p><span class="num"><sup>4</sup></span>
+    Заметьте, не «функцию <code><span class="func">wrong</span></code>». Варианты её
+    реализации подробнее рассматриваются в разделе <a href="ch7_compilation.xhtml#compilation/sect:exception">7.9</a>.</p>
+</div>
+
+<div class="footnote" id="foot1.5">
+  <p><span class="num"><sup>5</sup></span>
+    <code><span class="special">if</span></code> не обязательно принимает условие и ровно две
+    альтернативы. К примеру, в Scheme и <span class="logo">Common Lisp</span> <code><span
+    class="special">if</span></code> может принимать как
+    два, так и три аргумента; <code><span class="special">if</span></code> в
+    <span class="logo">EuLisp</span> и <span class="logo">ISLisp</span> исключительно
+    тернарный; Le_Lisp в случае, если условие ложно, вычисляет остаток
+    формы <code><span class="special">if</span></code>, обернув его в
+    <code><span class="special">begin</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot1.6">
+  <p><span class="num"><sup>6</sup></span>
+    Напомним: в Scheme запись <code>#(...)</code> означает процитированный вектор.</p>
+</div>
+
 </body>
 </html>
