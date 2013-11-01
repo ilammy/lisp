@@ -224,14 +224,14 @@ PowerBook) и вообще сделали эту книгу возможной: 
 выражений после вертикальной черты мы будем записывать окружение, в котором
 проводятся вычисления. Вот пример, иллюстрирующий эти соглашения:</p>
 
-<pre>(<span class="special">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
-  (<span class="special">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
+<pre>(<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
+  (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
     (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where">
 <span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
 <span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
 </div>
 
-<span class="math"><span class="binop">≡</span></span> (<span class="special">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
+<span class="math"><span class="binop">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
 <span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
 <span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
 <span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
@@ -358,7 +358,7 @@ class="num">2</span>) (<span class="func">newline</span>))</code>.</p>
 которая на Scheme так и записывается: <code>(<span class="special">if</span>
 <i>условие</i> <i>тогда</i>
 <i>иначе</i>)</code>. Если вариантов больше двух, то для этого случая в Scheme есть
-формы <code><span class="special">cond</span></code> и <code><span
+формы <code><span class="syntax">cond</span></code> и <code><span
 class="special">case</span></code>. Форма <code><span
 class="special">cond</span></code> содержит список утверждений, каждое из
 которых начинается с условия — выражения, возвращающего логическое значение,
@@ -367,26 +367,26 @@ class="special">cond</span></code> содержит список утвержд�
 пока одно из них не вернёт истину (а точнее: не ложь, не <code><span
 class="hash">#f</span></code>); затем
 вычисляется следствие данного утверждения, и результат его вычисления становится
-результатом всей формы <code><span class="special">cond</span></code>. Вот
+результатом всей формы <code><span class="syntax">cond</span></code>. Вот
 пример использования этой формы, который заодно показывает ключевое слово
 <code><span class="syntax">else</span></code>:</p>
 
-<pre>(<span class="special">cond</span> ((<span class="func">eq?</span> <span class="var">x</span> '<span class="var">flip</span>) '<span class="var">flop</span>)
+<pre>(<span class="syntax">cond</span> ((<span class="func">eq?</span> <span class="var">x</span> '<span class="var">flip</span>) '<span class="var">flop</span>)
       ((<span class="func">eq?</span> <span class="var">x</span> '<span class="var">flop</span>) '<span class="var">flip</span>)
       (<span class="syntax">else</span> (<span class="func">list</span> <span class="var">x</span> <span class="string">"neither flip nor flop"</span>)) )</pre>
 
 <!--\indexC{case}-->
-<p>Форма <code><span class="special">case</span></code> похожа на <code><span
+<p>Форма <code><span class="syntax">case</span></code> похожа на <code><span
 class="special">cond</span></code>, но она принимает первым параметром форму,
 на основе значения которой производится выбор между вариантами.
 Каждый из вариантов в начале содержит список значений, которые подходят для него.
 Как только найден подходящий вариант, он вычисляется и этот результат становится
-результатом всей формы <code><span class="special">case</span></code>.
+результатом всей формы <code><span class="syntax">case</span></code>.
 Аналогично, в конце может стоять универсальный вариант <code><span
 class="syntax">else</span></code>. Вот так можно переписать предыдущий пример
-с помощью <code><span class="special">case</span></code>:</p>
+с помощью <code><span class="syntax">case</span></code>:</p>
 
-<pre>(<span class="special">case</span> <span class="var">x</span>
+<pre>(<span class="syntax">case</span> <span class="var">x</span>
   ((<span class="var">flip</span>) '<span class="var">flop</span>)
   ((<span class="var">flop</span>) '<span class="var">flip</span>)
   (<span class="syntax">else</span> (<span class="func">list</span> <span class="var">x</span> <span class="string">"neither flip nor flop"</span>)) )</pre>
@@ -398,8 +398,8 @@ class="syntax">else</span></code>. Вот так можно переписать
 За словом <code><span class="special">lambda</span></code>
 следует список аргументов, а после него — последовательность выражений, которые
 описывают собственно вычисление функции. Формы <code><span
-class="special">let</span></code>, <code><span class="special">let*</span></code>
-и <code><span class="special">letrec</span></code> определяют локальные переменные
+class="syntax">let</span></code>, <code><span class="syntax">let*</span></code>
+и <code><span class="syntax">letrec</span></code> определяют локальные переменные
 (они отличаются тонкостями вычисления начальных значений определяемых переменных).
 Значения переменных в дальнейшем можно изменять с помощью формы <code><span
 class="special">set!</span></code>. Для записи литералов используется форма
@@ -411,11 +411,11 @@ class="special">set!</span></code>. Для записи литералов ис�
 <p>С помощью формы <code><span class="special">define</span></code> можно
 назначить имя любому значению. У неё есть особые возможности, которые мы будем
 использовать. В частности, возможность
-использовать её как подобие <code><span class="special">let</span></code>, а
+использовать её как подобие <code><span class="syntax">let</span></code>, а
 также вариант синтаксиса этой формы, позволяющий удобнее определять функции.
 Вот, что имеется ввиду:</p>
 
-<pre>(<span class="special">define</span> (<span class="var">rev</span> <span class="var">l</span>)
+<pre>(<span class="special">define</span> (<span class="func">rev</span> <span class="var">l</span>)
   (<span class="special">define</span> <span class="var">nil</span> <span class="hash">'()</span>)
   (<span class="special">define</span> (<span class="func">reverse</span> <span class="var">l</span> <span class="var">r</span>)
     (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">l</span>) (<span class="func">reverse</span> (<span class="func">cdr</span> <span class="var">l</span>) (<span class="func">cons</span> (<span class="func">car</span> <span class="var">l</span>) <span class="var">r</span>)) <span class="var">r</span>))
