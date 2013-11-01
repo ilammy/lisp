@@ -29,3 +29,35 @@ span.see span.stub {
 /* HTML5 does not allow align attribute? Eat this. */
 table#pref-table-signatures td:nth-child(1) { text-align: center; }
 table#pref-table-signatures td:nth-child(2) { text-align: left; }
+
+table#ch1-table-grammar td:nth-child(1) { text-align: right; }
+table#ch1-table-grammar td:nth-child(2) { text-align: center; }
+table#ch1-table-grammar td:nth-child(3) { text-align: left; }
+
+/* code */
+code span.special,
+pre span.special { color: #CC1212; font-size: 100%; }
+
+code span.syntax,
+pre span.syntax { color: #1212CC; font-size: 100%; }
+
+code span.func,
+pre span.func { color: #128812; font-size: 100%; }
+
+code span.var,
+pre span.var { color: #AA10CC; font-size: 100%; }
+
+code span.hash,
+pre span.hash { color: #10AAAA; font-size: 100%; }
+
+code span.num,
+pre span.num { color: #AAAA10; font-size: 100%; }
+
+code span.string,
+pre span.string { color: #70C070; font-size: 100%; }
+
+code span.comment,
+pre span.comment { color: #555555; font-size: 100%; }
+
+code span,
+pre span { font-size: 400%; }
