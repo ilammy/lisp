@@ -860,11 +860,9 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 
 
 <!--\indexC{invoke}-->
-<p>\begin{code:lisp}
-(define (invoke fn args)
+<pre>(define (invoke fn args)
   (if (procedure? fn) (fn args)
-      (wrong "Not a function" fn) ) )
-\end{code:lisp}</p>
+      (wrong "Not a function" fn) ) )</pre>
 
 <p>Проще некуда. Даже может возникнуть вопрос, зачем вообще нужна отдельная
 функция, когда весь этот код можно было встроить сразу в <code><span class="func">evaluate</span></code>. Причина,
@@ -951,11 +949,9 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 
 
 <!--\indexC{make-function}-->
-<p>\begin{code:lisp}
-(define (make-function variables body env)
+<pre>(define (make-function variables body env)
   (lambda (values)
-    (eprogn body (extend |\ii{env.init}| variables values)) ) )
-\end{code:lisp}</p>
+    (eprogn body (extend |\ii{env.init}| variables values)) ) )</pre>
 
 
 <!--\indexE{K@\protect\comb{K}, комбинатор}-->
@@ -965,9 +961,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 получив в результате вызова <code><span class="func">make-function</span></code> комбинатор \comb{K}, определяемый
 как <code><span class="func">(lambda (a b) a)</span></code>, мы можем его вызвать следующим образом:</p>
 
-<p>\begin{code:lisp}
-(K 1 2) |\is| 1
-\end{code:lisp}</p>
+<pre>(K 1 2) |\is| 1</pre>
 
 <p>Но есть и неприятность: функция может использовать только свои аргументы и
 локальные переменные, потому что мы определили \ii{env.init} как пустое
@@ -979,11 +973,9 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 
 <p>Хорошо, попробуем улучшить наше определение следующим образом:</p>
 
-<p>\begin{code:lisp}
-(define (make-function variables body env)
+<pre>(define (make-function variables body env)
   (lambda (values)
-    (eprogn body (extend |\ii{env.global}| variables values)) ) )
-\end{code:lisp}</p>
+    (eprogn body (extend |\ii{env.global}| variables values)) ) )</pre>
 
 <p>Замечательно, теперь наши функции имеют доступ к глобальному окружению и всем
 его функциям. А что если мы попробуем определить взаимно рекурсивные функции?
@@ -1001,8 +993,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 
 <p>Давайте рассмотрим по шагам, как вычисляется это выражение:</p>
 
-<p>\begin{code:lisp}
-((lambda (a) ((lambda (b) (list a b)) (+ 2 a))) 1)|\begin{where}
+<pre>((lambda (a) ((lambda (b) (list a b)) (+ 2 a))) 1)|\begin{where}
                                                    \- \ii{env.global}
                                                    \end{where}|
 |\equals| ((lambda (b) (list a b)) (+ 2 a))|\begin{where}
@@ -1012,8 +1003,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 |\equals| (list a b)|\begin{where}
                      \- b {\is} 3
                      \- \ii{env.global}
-                     \end{where}|
-\end{code:lisp}</p>
+                     \end{where}|</pre>
 
 <p>Тело внутренней функции <code><span class="func">(lambda (b) (list a b))</span></code> выполняется в окружении,
 полученном расширением глобального окружения переменной <code><span class="func">b</span></code>. Всё верно. Но
@@ -1032,8 +1022,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <!--\indexC{d.evaluate}-->
 <!--\indexC{d.invoke}-->
 <!--\indexC{d.make-function}-->
-<p>\begin{code:lisp}
-(define (d.evaluate e env)
+<pre>(define (d.evaluate e env)
   (if (atom? e) ...
       (case (car e)
         ...
@@ -1049,8 +1038,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 
 <p>(define (d.make-function variables body |\ii{def.env}|)
   (lambda (values |\ii{current.env}|)
-    (eprogn body (extend |\ii{current.env}| variables values)) ) )
-\end{code:lisp}</p>
+    (eprogn body (extend |\ii{current.env}| variables values)) ) )</pre>
 
 <p>В этом определении стоит заметить, что передача окружения определения <code><span class="func">env</span></code>
 через переменную \ii{def.env} бессмысленна, так как при вызове используется лишь
@@ -1061,8 +1049,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>Давайте теперь ещё раз рассмотрим пример, приведённый выше. Сейчас переменные
 не пропадают:</p>
 
-<p>\begin{code:lisp}
-((lambda (a) ((lambda (b) (list a b)) (+ 2 a))) 1)|\begin{where}
+<pre>((lambda (a) ((lambda (b) (list a b)) (+ 2 a))) 1)|\begin{where}
                                                    \- \ii{env.global}
                                                    \end{where}|
 |\equals| ((lambda (b) (list a b)) (+ 2 a))|\begin{where}
@@ -1073,8 +1060,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
                      \- b {\is} 3
                      \- a {\is} 1
                      \- \ii{env.global}
-                     \end{where}|
-\end{code:lisp}</p>
+                     \end{where}|</pre>
 
 <p>Заодно мы явно видим <em>стек вызовов</em>: каждая связывающая форма сначала
 укладывает свои новые переменные поверх текущего окружения, а потом убирает их
@@ -1086,12 +1072,10 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>Но даже при таком определении всё ещё есть проблемы. Рассмотрим следующий
 пример:</p>
 
-<p>\begin{code:lisp}
-(((lambda (a)
+<pre>(((lambda (a)
      (lambda (b) (list a b)) )
   1 )
- 2 )
-\end{code:lisp}</p>
+ 2 )</pre>
 
 <p>Функция <code><span class="func">(lambda (b) (list a b))</span></code> создаётся в окружении, где <code><span class="func">a</span></code> связана
 со значением <code><span class="func">1</span></code>, но в момент вызова в окружении будет присутствовать
@@ -1114,14 +1098,12 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>\begin{code:lisp}[label=basics/representing-functions/fixing/src:inject-current-env]
 (define (make-function variables body |\ii{env}|)
   (lambda (values)
-    (eprogn body (extend |\ii{env}| variables values)) ) )
-\end{code:lisp}</p>
+    (eprogn body (extend |\ii{env}| variables values)) ) )</pre>
 
 <p>Теперь все приведённые примеры работают нормально. В частности, пример выше
 вычисляется следующим образом:</p>
 
-<p>\begin{code:lisp}
-(((lambda (a) (lambda (b) (list a b))) 1) 2)|\begin{where}
+<pre>(((lambda (a) (lambda (b) (list a b))) 1) 2)|\begin{where}
                                              \- \ii{env.global}
                                              \end{where}|
 |\equals| ((lambda (b) (list a b))|\begin{where}
@@ -1135,8 +1117,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
                      \- b {\is} 2
                      \- a {\is} 1
                      \- \ii{env.global}
-                     \end{where}|
-\end{code:lisp}</p>
+                     \end{where}|</pre>
 
 
 <!--\indexR{абстракция!замыкание}-->
@@ -1226,10 +1207,8 @@ Emacs Lisp\trnote{Начиная с Emacs Lisp v.\,24 и Perl 5, эти язык
 область видимости в принципе не может быть ограничена функцией. Рассмотрим
 следующий пример:</p>
 
-<p>\begin{code:lisp}
-(define (foo x) (list x y))
-(define (bar y) (foo 1991))
-\end{code:lisp}</p>
+<pre>(define (foo x) (list x y))
+(define (bar y) (foo 1991))</pre>
 
 <p>В лексическом Лиспе переменная <code><span class="func">y</span></code> в <code><span class="func">foo</span></code>\footnote{О происхождении
 <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.xhtml#ray91">ray91</a>]</span>.} — это всегда ссылка на глобальную
@@ -1239,11 +1218,9 @@ Emacs Lisp\trnote{Начиная с Emacs Lisp v.\,24 и Perl 5, эти язык
 находилась в текущем окружении. Следовательно, если мы дадим глобальной <code><span class="func">y</span></code>
 значение <code><span class="func">0</span></code>, то получим следующие результаты:</p>
 
-<p>\begin{code:lisp}
-(define y 0)
+<pre>(define y 0)
 (list (bar 100) (foo 3)) |\is| ((1991 0) (3 0))   ; в динамическом Лиспе
-(list (bar 100) (foo 3)) |\is| ((1991 100) (3 0)) ; в лексическом Лиспе
-\end{code:lisp}</p>
+(list (bar 100) (foo 3)) |\is| ((1991 100) (3 0)) ; в лексическом Лиспе</pre>
 
 
 <!--\indexR{свободные переменные!и области видимости}-->
@@ -1290,11 +1267,9 @@ Emacs Lisp\trnote{Начиная с Emacs Lisp v.\,24 и Perl 5, эти язык
 Джон Маккарти осознал, что он ожидал получить от следующего выражения
 <code><span class="func">(2 3)</span></code>, а не <code><span class="func">(1 3)</span></code>:</p>
 
-<p>\begin{code:lisp}
-(let ((a 1))
+<pre>(let ((a 1))
   ((let ((a 2)) (lambda (b) (list a b)))
-   3 ) )
-\end{code:lisp}</p>
+   3 ) )</pre>
 
 
 <!--\indexCS{function}{для замыканий}-->
@@ -1341,8 +1316,7 @@ Emacs Lisp\trnote{Начиная с Emacs Lisp v.\,24 и Perl 5, эти язык
 
 <p>(define (d.make-closure fun env)
   (lambda (values current.env)
-    (fun values env) ) )
-\end{code:lisp}</p>
+    (fun values env) ) )</pre>
 
 
 <!--\indexR{переменные!специальные}-->
@@ -1367,9 +1341,7 @@ transparency}). Ссылочная прозрачность — это свой�
 поведение этой программы (оба варианта программы или вернут одно и то же
 значение, или вместе застрянут в бесконечном цикле). Например:</p>
 
-<p>\begin{code:lisp}
-(let ((x (lambda () 1))) (x)) |\eq| ((let ((x (lambda () 1))) x)) |\eq| 1
-\end{code:lisp}</p>
+<pre>(let ((x (lambda () 1))) (x)) |\eq| ((let ((x (lambda () 1))) x)) |\eq| 1</pre>
 
 <p>В общем случае ссылочная прозрачность теряется, если язык позволяет побочные
 эффекты. Чтобы она сохранилась и при наличии побочных эффектов, необходимо
@@ -1393,16 +1365,14 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 
 
 <!--\indexC{map}-->
-<p>\begin{code:lisp}
-(define (map fn l)  ; или <code><span class="func">mapcar</span></code>, как кому нравится
+<pre>(define (map fn l)  ; или <code><span class="func">mapcar</span></code>, как кому нравится
   (if (pair? l)
       (cons (fn (car l)) (map fn (cdr l)))
       '() ) )</p>
 
 <p>(let ((l '(a b c)))
   (map (lambda (x) (list-ref l x))
-       '(2 1 0)))
-\end{code:lisp}</p>
+       '(2 1 0)))</pre>
 
 <p>(Функция \ic{(list-ref $\ell$ \ii{n})} возвращает \ii{n}-й элемент
 списка $\ell$.)</p>
@@ -1481,8 +1451,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <!--\indexC{s.make-function}-->
 <!--\indexC{s.lookup}-->
 <!--\indexC{s.update"!}-->
-<p>\begin{code:lisp}
-(define (s.make-function variables body env)
+<pre>(define (s.make-function variables body env)
   (lambda (values current.env)
     (let ((old-bindings
            (map (lambda (var val)
@@ -1500,8 +1469,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
   (getprop id 'apval) )</p>
 
 <p>(define s.update! id env value
-  (putprop id 'apval value) )
-\end{code:lisp}</p>
+  (putprop id 'apval value) )</pre>
 
 
 <!--\indexC{putprop}-->
@@ -1580,8 +1548,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <!--\indexC{env.global}-->
 <!--\indexC{definitial}-->
 <!--\indexC{defprimitive}-->
-<p>\begin{code:lisp}
-(define env.global env.init)
+<pre>(define env.global env.init)
 |\ForLayout{display}{\vskip-0.4\baselineskip}|
 (define-syntax definitial
   (syntax-rules ()
@@ -1599,8 +1566,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
         (lambda (values)
           (if (= arity (length values))
               (apply value values)      ; Родная <code><span class="func">apply</span></code> Scheme
-              (wrong "Incorrect arity" (list 'name values)|\:|)|\:|)|\:|)|\:|)|\:|)|\:|)|\:|)
-\end{code:lisp}</p>
+              (wrong "Incorrect arity" (list 'name values)|\:|)|\:|)|\:|)|\:|)|\:|)|\:|)|\:|)</pre>
 
 
 <!--\indexC{the-false-value}-->
@@ -1609,11 +1575,9 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 а <code><span class="func">\#t</span></code> — это значение из определяющего Лиспа. Оно подходит, так как любое
 значение, не совпадающее с <code><span class="func">the-false-value</span></code>, является <em class="term">истиной</em>.</p>
 
-<p>\begin{code:lisp}
-(definitial t #t)
+<pre>(definitial t #t)
 (definitial f the-false-value)
-(definitial nil '())
-\end{code:lisp}</p>
+(definitial nil '())</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -1642,8 +1606,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <p>Существует много способов ввести такой синтаксис. Наиболее простой способ —
 это вшить значения <code><span class="func">t</span></code> и <code><span class="func">f</span></code> в вычислитель:</p>
 
-<p>\begin{code:lisp}
-(define (evaluate e env)
+<pre>(define (evaluate e env)
   (if (atom? e)
       (cond ((eq? e 't) #t)
             ((eq? e 'f) #f)
@@ -1651,8 +1614,7 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
             ((symbol? e) (lookup e env))
             ...
             (else (wrong "Cannot evaluate" exp)) )
-      ... ) )
-\end{code:lisp}</p>
+      ... ) )</pre>
 
 
 <!--\indexR{инлайнинг!функций}-->
@@ -1673,16 +1635,14 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 уверенным в том, что значение глобальной переменной <code><span class="func">car</span></code> никогда не менялось
 и не поменяется в будущем. Посмотрите, какая беда случается, если это не так:</p>
 
-<p>\begin{code:lisp}
-(set! my-global (cons 'c 'd))
+<pre>(set! my-global (cons 'c 'd))
    |\is| (c . d)
 (set! my-test (lambda () (car my-global)))
    |\is| #<MY-TEST procedure>
 (begin (set! car cdr)
        (set! my-global (cons 'a 'b))
        (my-test) )
-   |\is| |\ii{?????}|
-\end{code:lisp}</p>
+   |\is| |\ii{?????}|</pre>
 
 <p>К счастью, в результате может получиться только <code><span class="func">a</span></code> или <code><span class="func">b</span></code>. Если
 <code><span class="func">my-test</span></code> использует значение <code><span class="func">car</span></code> на момент определения, то мы
@@ -1707,12 +1667,10 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <p>%\ForLayout{display}{\begingroup
 %\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
 
-<p>\begin{code:lisp}
-(definitial foo)
+<pre>(definitial foo)
 (definitial bar)
 (definitial fib)
-(definitial fact)
-\end{code:lisp}</p>
+(definitial fact)</pre>
 
 <p>%\ForLayout{display}{\endgroup}</p>
 
@@ -1725,14 +1683,12 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <code><span class="func">invoke</span></code> «<code><span class="func">apply</span></code>».} Заметьте, что арность функций будет соблюдаться,
 так как мы включили проверку в определение макроса <code><span class="func">defprimitive</span></code>.</p>
 
-<p>\begin{code:lisp}
-(defprimitive cons cons 2)
+<pre>(defprimitive cons cons 2)
 (defprimitive car car 1)
 (defprimitive set-cdr! set-cdr! 2)
 (defprimitive + + 2)
 (defprimitive eq? eq? 2)
-(defprimitive < < 2)
-\end{code:lisp}</p>
+(defprimitive < < 2)</pre>
 
 <h2 id="basics/sect:starting-the-interpreter">Запускаем интерпретатор</h2>
 
@@ -1740,13 +1696,11 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 
 
 <!--\indexC{chapter1-scheme}-->
-<p>\begin{code:lisp}
-(define (chapter1-scheme)
+<pre>(define (chapter1-scheme)
   (define (toplevel)
     (display (evaluate (read) env.global))
     (toplevel) )
-  (toplevel) )
-\end{code:lisp}</p>
+  (toplevel) )</pre>
 
 <p>Поскольку наш интерпретатор ещё мал и неопытен, но подаёт большие надежды,
 предлагаем вам в качестве упражнения написать функцию, позволяющую из него
@@ -1786,10 +1740,8 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 <code><span class="func">evaluate</span></code>, <code><span class="func">evlis</span></code> и др.} проинтерпретировать сама себя. Следовательно,
 следующие выражения эквивалентны:</p>
 
-<p>\begin{code:lisp}
-(evaluate (quote |$\pi$|) env.global) |\eq|
-  |\eq| (evaluate (quote (evaluate (quote |$\pi$|) env.global)) env.global)
-\end{code:lisp}</p>
+<pre>(evaluate (quote |$\pi$|) env.global) |\eq|
+  |\eq| (evaluate (quote (evaluate (quote |$\pi$|) env.global)) env.global)</pre>
 
 <p>Есть ли ещё решения приведённого уравнения? Да, и их великое множество! Как мы
 видели раньше, определение <code><span class="func">evaluate</span></code> вовсе не обязательно указывает порядок
@@ -1822,10 +1774,8 @@ $\alpha$-конверсией.} функция, что и <code><span class="fun
 
 
 <!--\indexC{extend}-->
-<p>\begin{code:lisp}
-(define (extend env names values)
-  (cons (cons names values) env) )
-\end{code:lisp}</p>
+<pre>(define (extend env names values)
+  (cons (cons names values) env) )</pre>
 
 <p>Определите соответствующие функции <code><span class="func">lookup</span></code> и <code><span class="func">update!</span></code>. Сравните их
 с ранее рассмотренными.

@@ -56,8 +56,7 @@
 
 
 <!--\indexC{evaluate}-->
-<p>\begin{code:lisp}
-(define (evaluate e env)
+<pre>(define (evaluate e env)
   (if (atom? e)
       (cond ((symbol? e) (lookup e env))
             ((or (number? e)(string? e)(char? e)
@@ -74,8 +73,7 @@
         ((lambda) (make-function (cadr e) (cddr e) env))
         [((eval)   (evaluate (evaluate (cadr e) env) env))]
         (else     (invoke (evaluate (cadr e) env)
-                          (evlis (cdr e) env) )) ) ) )
-\end{code:lisp}</p>
+                          (evlis (cdr e) env) )) ) ) )</pre>
 
 <p>Специальная форма <code><span class="func">eval</span></code> вычисляет свой единственный аргумент (прямо как
 функция), а затем ещё раз вычисляет полученное в результате значение в текущем
@@ -201,8 +199,7 @@
 <!--\indexC{program"?}-->
 <!--\indexC{variables-list"?}-->
 <!--\indexC{quotation"?}-->
-<p>\begin{code:lisp}
-(define (program? e)
+<pre>(define (program? e)
   (define (program? e m)
     (if (atom? e)
         (or (symbol? e) (number? e) (string? e) (char? e) (boolean? e))
@@ -264,18 +261,15 @@
               (and (pair? e)
                    (quotation? (car e) m)
                    (quotation? (cdr e) m) ) ) ) ) )
-  (quotation? e '()) )
-\end{code:lisp}</p>
+  (quotation? e '()) )</pre>
 
 <p>Вооружившись предикатом <code><span class="func">program?</span></code>, можно уточнить определение специальной
 формы <code><span class="func">eval</span></code> следующим образом:</p>
 
-<p>\begin{code:lisp}
-... ((eval) (let ((v (evaluate (cadr e) env)))
+<pre>... ((eval) (let ((v (evaluate (cadr e) env)))
               (if (program? v)
                   (evaluate v env)
-                  (wrong "Illegal program" v) ) )) ...
-\end{code:lisp}</p>
+                  (wrong "Illegal program" v) ) )) ...</pre>
 
 
 <!--\indexR{смысл программ!по отношению к синтаксису}-->
@@ -294,8 +288,7 @@
 
 
 <!--\indexC{evaluate}-->
-<p>\begin{code:lisp}
-(define (evaluate e r s k)
+<pre>(define (evaluate e r s k)
   (if (atom? e)
       (if (symbol? e) (evaluate-variable e r s k)
           (evaluate-quote e r s k) )
@@ -314,8 +307,7 @@
       (let ((ee (transcode-back v s)))
         (if (program? ee)
             (evaluate ee r ss k)
-            (wrong "Illegal program" ee) ) ) ) ) )
-\end{code:lisp}</p>
+            (wrong "Illegal program" ee) ) ) ) ) )</pre>
 
 
 <!--\indexC{load}-->
@@ -344,8 +336,7 @@
 
 <!--\indexC{meaning}-->
 <!--\indexC{meaning-eval}-->
-<p>\begin{code:lisp}
-(define (meaning e r tail?)
+<pre>(define (meaning e r tail?)
   (if (atom? e)
       (if (symbol? e) (meaning-reference e r tail?)
                       (meaning-quotation e r tail?) )
@@ -366,8 +357,7 @@
         (if (program? v)
             (let ((mm (meaning v r tail?)))
               (mm) )
-            (wrong "Illegal program" v) ) ) ) ) )
-\end{code:lisp}</p>
+            (wrong "Illegal program" v) ) ) ) ) )</pre>
 
 <p>Вот теперь, на примере компилирующего интерпретатора, преобразующего программы
 в деревья из инструкций-замыканий, становится окончательно понятным, что
@@ -418,14 +408,12 @@
 вроде <code><span class="func">(eval '((lambda (x y) x) 1 2))</span></code> всегда будет <code><span class="func">1</span></code>. Однако,
 вычисляемая форма может иметь контекст в виде лексического окружения:</p>
 
-<p>\begin{code:lisp}
-((lambda (x) (eval 'x))
+<pre>((lambda (x) (eval 'x))
  3 )                       |\is| 3
 ((lambda (x y) (eval y))
  4 'x )                    |\is| 4
 ((lambda (x y z) (eval y))
- 5 (list 'eval 'z) 'x )    |\is| 5
-\end{code:lisp}</p>
+ 5 (list 'eval 'z) 'x )    |\is| 5</pre>
 
 
 <!--\indexR{лексическое окружение!и eval@и \protect<code><span class="func">eval</span></code>}-->
@@ -445,15 +433,13 @@
 
 
 <!--\indexC{EVAL/CE}-->
-<p>\begin{code:lisp}
-(define (meaning-eval e r tail?)
+<pre>(define (meaning-eval e r tail?)
   (let ((m (meaning e r #f)))
     (EVAL/CE m r) ) )</p>
 
 <p>(define (EVAL/CE m r)
   (append (PRESERVE-ENV) (CONSTANT r) (PUSH-VALUE)
-          m (COMPILE-RUN) (RESTORE-ENV) ) )
-\end{code:lisp}</p>
+          m (COMPILE-RUN) (RESTORE-ENV) ) )</pre>
 
 <p>Функция <code><span class="func">EVAL/CE</span></code> игнорирует <code><span class="func">tail?</span></code> и всегда сохраняет локальное
 окружение. Новая «простейшая» инструкция <code><span class="func">COMPILE-RUN</span></code> содержит в себе
@@ -467,8 +453,7 @@
 <!--\indexC{COMPILE-RUN}-->
 <!--\indexC{compile-and-run}-->
 <!--\indexC{compile-on-the-fly}-->
-<p>\begin{code:lisp}
-(define (COMPILE-RUN) (list 255))</p>
+<pre>(define (COMPILE-RUN) (list 255))</p>
 
 <p>(define-instruction (COMPILE-RUN) 255
   (let ((v *val*)
@@ -494,8 +479,7 @@
       (set! sg.current v) )
     (set! *constants* (apply vector *quotations*))
     (set! *dynamic-variables* *dynamic-variables*)
-    (install-code! code) ) )
-\end{code:lisp}</p>
+    (install-code! code) ) )</pre>
 
 
 <!--\indexR{компиляция!на лету}-->
@@ -598,13 +582,11 @@
 <p>С наивным интерпретатором из первой главы \seePage[basics/sect:basic-evaluator]
 всё просто:</p>
 
-<p>\begin{code:lisp}
-(defprimitive eval
+<pre>(defprimitive eval
   (lambda (v)
     (if (program? v)
         (evaluate v env.global)
-        (wrong "Illegal program" v) ) ) )
-\end{code:lisp}</p>
+        (wrong "Illegal program" v) ) ) )</pre>
 
 
 <!--\indexC{eval/at}-->
@@ -621,22 +603,18 @@
 
 <p>Для пояснения поведения <code><span class="func">eval/at</span></code> воспользуемся предыдущим примером:</p>
 
-<p>\begin{code:lisp}
-(set! x 2) (set! z 1)
+<pre>(set! x 2) (set! z 1)
 ((lambda (x) (eval/at 'x))
  3 )                          |\is| 2
 ((lambda (x y) (eval/at y))
  4 'x )                       |\is| 2
 ((lambda (x y z) (eval/at y))
- 5 (list 'eval/at 'z) 'x )    |\is| 1
-\end{code:lisp}</p>
+ 5 (list 'eval/at 'z) 'x )    |\is| 1</pre>
 
 <p>\noindent
 При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>:</p>
 
-<p>\begin{code:lisp}
-(define (eval/at x) (eval/ce x))
-\end{code:lisp}</p>
+<pre>(define (eval/at x) (eval/ce x))</pre>
 
 <p>\noindent
 К сожалению, в захватываемом <code><span class="func">eval/ce</span></code> окружении оказывается одна лишняя
@@ -648,8 +626,7 @@
 так как он уже был сохранён при вызове функции <code><span class="func">eval/at</span></code>. Как и в предыдущем
 случае, компиляция выполняется в единственно доступном окружении <code><span class="func">r.init</span></code>.</p>
 
-<p>\begin{code:lisp}
-(definitial eval
+<pre>(definitial eval
   (let* ((arity 1)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -660,18 +637,15 @@
                   (compile-and-run v r.init #t)
                   (signal-exception #t (list "Illegal program" v)) ) )
             (signal-exception #t
-              (list "Incorrect arity" 'eval) ) ) ) ) ) )
-\end{code:lisp}</p>
+              (list "Incorrect arity" 'eval) ) ) ) ) ) )</pre>
 
 <p>Не стоит понимать ограниченность <code><span class="func">eval/at</span></code> глобальным уровнем чересчур
 буквально, ведь ещё остаются динамические переменные. Совершенно не важно,
 реализована <code><span class="func">eval</span></code> как специальная форма или функция, — следующее
 выражение всегда будет работать так, как задумано:</p>
 
-<p>\begin{code:lisp}
-(dynamic-let (a 22)
-  (eval '(dynamic a)) ) |\is| 22
-\end{code:lisp}</p>
+<pre>(dynamic-let (a 22)
+  (eval '(dynamic a)) ) |\is| 22</pre>
 
 <p>Изначальный контракт <code><span class="func">eval</span></code>, выраженный
 уравнением \eqref{reflection/eq:eval-idemp}, не подразумевал какого-либо
@@ -734,11 +708,9 @@
 
 <p>\ForLayout{display}{\clearpage}</p>
 
-<p>\begin{code:lisp}
-(define (fib n)
+<pre>(define (fib n)
   (if (< n 2) (eval (read))
-      (+ (fib (- n 1)) (fib (- n 2))) ) )
-\end{code:lisp}</p>
+      (+ (fib (- n 1)) (fib (- n 2))) ) )</pre>
 
 <p>Не будем пока обращать внимание на другие возможные варианты поведения
 <code><span class="func">eval</span></code>, сконцентрируемся на том, что она способна изменить значение
@@ -794,20 +766,16 @@
 любых динамических вычислений должен быть пригоден для использования в основной
 программе, как в следующем примере:</p>
 
-<p>\begin{code:lisp}
-((eval '(lambda (x) (cons x x)))
- 33 )    |\is| (33 . 33)
-\end{code:lisp}</p>
+<pre>((eval '(lambda (x) (cons x x)))
+ 33 )    |\is| (33 . 33)</pre>
 
 <p>И наоборот, интерпретатор тоже должен уметь пользоваться функциями базового
 языка:</p>
 
-<p>\begin{code:lisp}
-(((eval '(lambda (f)
+<pre>(((eval '(lambda (f)
            (lambda (x) (f x)) ))
   list )
- 44 )    |\is| (44)
-\end{code:lisp}</p>
+ 44 )    |\is| (44)</pre>
 
 <p>Один из вариантов общего протокола вызова: всегда использовать функции
 с произвольной арностью: <code><span class="func">(lambda values ...)</span></code>, тогда достаточно научить
@@ -816,16 +784,14 @@
 
 
 <!--\indexC{invoke}-->
-<p>\begin{code:lisp}
-(define (invoke fn args)
+<pre>(define (invoke fn args)
   (if (procedure? fn)
       (apply fn args)
       (wrong "Not a function" fn) ) )</p>
 
 <p>(define (make-function variables body env)
   (lambda values
-    (eprogn body (extend env variables values)) ) )
-\end{code:lisp}</p>
+    (eprogn body (extend env variables values)) ) )</pre>
 
 <p>Кроме того, необходимо позаботиться об ошибках: внешний интерпретатор должен
 уметь понимать и обрабатывать ошибки, возникающие во внутреннем. Этот вопрос
@@ -844,11 +810,9 @@
 корректную синхронизацию его состояния. Что бы там ни было, следующая программа
 должна выполняться правильно и без ошибок:</p>
 
-<p>\begin{code:lisp}
-(begin (set! foo 128)
+<pre>(begin (set! foo 128)
        (eval '(set! bar (+ foo foo)))
-       bar )                          |\is| 256
-\end{code:lisp}</p>
+       bar )                          |\is| 256</pre>
 
 <p>
 \subsubsection{Автономные скомпилированные приложения}%
@@ -874,8 +838,7 @@
 
 <!--\indexC{global-value}-->
 <!--\indexC{set-global-value"!}-->
-<p>\begin{code:lisp}
-(define (global-value name)
+<pre>(define (global-value name)
   (case name
     ((car) car)
     ...
@@ -886,8 +849,7 @@
   (case name
     ((foo) (set! foo value))
     ...
-    (else (wrong "No such mutable global variable" name)) ) )
-\end{code:lisp}</p>
+    (else (wrong "No such mutable global variable" name)) ) )</pre>
 
 <p>Интерпретатор может создавать у себя внутри столько глобальных переменных,
 сколько ему нужно, но ни одна из них не будет видна внешней программе. Тем
@@ -906,14 +868,12 @@
 значение переменной, созданной внутренним интерпретатором, который запросил
 значение переменной, созданной системой:</p>
 
-<p>\begin{code:lisp}
-? (begin (set! foo 128)
+<pre>? (begin (set! foo 128)
          (eval '(set! bar (+ foo foo)))
          2001 )
 = 2001
 ? bar
-= 256
-\end{code:lisp}</p>
+= 256</pre>
 
 <p>Есть несколько вариантов реализации подобного сотрудничества.</p>
 
@@ -988,8 +948,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{lookup}-->
 <!--\indexC{update"!}-->
-<p>\begin{code:lisp}
-(define (lookup id env)
+<pre>(define (lookup id env)
   (if (pair? env)
       (if (eq? id (caar env))
           (cdar env)
@@ -1002,8 +961,7 @@ P-списков, но нередко в этой роли можно встре
           (begin (set-cdr! (car env) value)
                  value )
           (update! id (cdr env) value) )
-      (set-global-value! id value) ) )
-\end{code:lisp}</p>
+      (set-global-value! id value) ) )</pre>
 
 
 <!--\indexCS{global-value}{цена}-->
@@ -1093,8 +1051,7 @@ P-списков, но нередко в этой роли можно встре
 
 <p>\ForLayout{display}{\begingroup\lstset{aboveskip=\smallskipamount}}</p>
 
-<p>\begin{code:lisp}
-(let ((r (let ((x 3)) (export x))))
+<pre>(let ((r (let ((x 3)) (export x))))
   (eval/b 'x r) )                    |\is| 3</p>
 
 <p>(let ((f+r (let ((x 3))
@@ -1104,8 +1061,7 @@ P-списков, но нередко в этой роли можно встре
 
 <p>(let ((r (export car cons)))
   (let ((car cdr))
-    (eval/b '(car (cons 1 2)) r) ) ) |\is| 1
-\end{code:lisp}</p>
+    (eval/b '(car (cons 1 2)) r) ) ) |\is| 1</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -1124,9 +1080,7 @@ P-списков, но нередко в этой роли можно встре
 Как обычно, начинаем с добавления новой формы в синтаксический анализатор
 <code><span class="func">meaning</span></code>:</p>
 
-<p>\begin{code:lisp}
-... ((export) (meaning-export (cdr e) r tail?)) ...
-\end{code:lisp}</p>
+<pre>... ((export) (meaning-export (cdr e) r tail?)) ...</pre>
 
 <p>Естественно, захваченное окружение должно содержать не только список записей
 активаций, но также полный перечень имён и адресов переменных. Та же информация
@@ -1137,10 +1091,8 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{reified-environment}-->
-<p>\begin{code:lisp}
-(define-class reified-environment Object
-  ( sr r ) )
-\end{code:lisp}</p>
+<pre>(define-class reified-environment Object
+  ( sr r ) )</pre>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.2}
@@ -1156,8 +1108,7 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{meaning-export}-->
 <!--\indexC{CREATE-1ST-CLASS-ENV}-->
 <!--\indexC{create-first-class-environment}-->
-<p>\begin{code:lisp}
-(define (meaning-export n* r tail?)
+<pre>(define (meaning-export n* r tail?)
   (unless (every? symbol? n*)
           (static-wrong "Incorrect variables" n*) )
   (append (CONSTANT (extract-addresses n* r)) (CREATE-1ST-CLASS-ENV)) )</p>
@@ -1168,8 +1119,7 @@ P-списков, но нередко в этой роли можно встре
   (create-first-class-environment *val* *env*) )</p>
 
 <p>(define (create-first-class-environment r sr)
-  (set! *val* (make-reified-environment sr r)) )
-\end{code:lisp}</p>
+  (set! *val* (make-reified-environment sr r)) )</pre>
 
 <p>Список пар «имя — адрес» передаётся как цитата через регистр <code><span class="func">*val*</span></code>,
 его оттуда забирает новая инструкция <code><span class="func">CREATE-1ST-CLASS-ENV</span></code>, которая создаст
@@ -1190,8 +1140,7 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{compute-kind}-->
 <!--\indexC{r-extend*}-->
 <!--\indexC{bury-r}-->
-<p>\begin{code:lisp}
-(define (compute-kind r n)
+<pre>(define (compute-kind r n)
   (or (let ((var (assq n r)))
         (and (pair? var) (cadr var)) )
       (global-variable? g.current n)
@@ -1217,8 +1166,7 @@ P-списков, но нередко в этой роли можно встре
                      (j (cddr addr)) )
                 `(,name (,type ,(+ i offset) . ,j) . ,(cddr d)) ) )
              (else d) ) ) )
-       r ) )
-\end{code:lisp}</p>
+       r ) )</pre>
 
 <p>\ForLayout{display}{\begingroup
 \setlength{\abovedisplayskip}{\medskipamount}
@@ -1246,15 +1194,13 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{extract-addresses}-->
-<p>\begin{code:lisp}
-(define (extract-addresses n* r)
+<pre>(define (extract-addresses n* r)
   (if (null? n*) r
       (let scan ((n* n*))
         (if (pair? n*)
             (cons (list (car n*) (compute-kind r (car n*)))
                   (scan (cdr n*)) )
-            '() ) ) ) )
-\end{code:lisp}</p>
+            '() ) ) ) )</pre>
 
 <p>
 \subsection{\texorpdfstring{Функция \protect<code><span class="func">eval/b</span></code>}{Функция eval/b}}%
@@ -1271,8 +1217,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{eval/b}-->
 <!--\indexC{compile-and-evaluate}-->
-<p>\begin{code:lisp}
-(definitial eval/b
+<pre>(definitial eval/b
   (let* ((arity 2)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -1294,8 +1239,7 @@ P-списков, но нередко в этой роли можно встре
   (let ((r (reified-environment-r env))
         (sr (reified-environment-sr env)) )
     (set! *env* sr)
-    (set! *pc* (compile-on-the-fly v r)) ) )
-\end{code:lisp}</p>
+    (set! *pc* (compile-on-the-fly v r)) ) )</pre>
 
 <h3 id="reflection/reify-env/ssect:enrich">Расширяем окружения</h3>
 
@@ -1320,14 +1264,12 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{odd"?}-->
 <!--\indexC{even"?}-->
-<p>\begin{code:lisp}
-((lambda (e)
+<pre>((lambda (e)
    (set! e (enrich (export *) 'even? 'odd?))
    (eval/b '(set! even? (lambda (n) (if (= n 0) #t (odd? (- n 1))))) e)
    (eval/b '(set! odd? (lambda (n) (if (= n 0) #f (even? (- n 1))))) e)
    (eval/b '(even? 4) e) )
- 'ee )                     |\is| #t
-\end{code:lisp}</p>
+ 'ee )                     |\is| #t</pre>
 
 <p>Структура используемых окружений показана на
 рисунке \ref{reflection/reify-env/enrich/pic:subj}. Вначале создаётся запись
@@ -1353,8 +1295,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{enrich}-->
 <!--\indexC{checked-r-extend*}-->
-<p>\begin{code:lisp}
-(definitial enrich
+<pre>(definitial enrich
   (let ((arity+1 (+ 1 1)))
     (make-primitive
      (lambda ()
@@ -1390,8 +1331,7 @@ P-списков, но нередко в этой роли можно встре
     (let scan ((n* n*) (i 0))
       (cond ((pair? n*) (cons (list (car n*) `(checked-local 0 . ,i))
                               (scan (cdr n*) (+ i 1)) ))
-            ((null? n*) old-r) ) ) ) )
-\end{code:lisp}</p>
+            ((null? n*) old-r) ) ) ) )</pre>
 
 <p>\begin{figure}\centering
 \input{figures/fig8.3}
@@ -1406,8 +1346,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{meaning-reference}-->
 <!--\indexC{meaning-assignment}-->
-<p>\begin{code:lisp}
-(define (meaning-reference n r tail?)
+<pre>(define (meaning-reference n r tail?)
   (let ((kind (compute-kind r n)))
     (if kind (case (car kind)
                ((checked-local)
@@ -1444,19 +1383,16 @@ P-списков, но нередко в этой роли можно встре
              (GLOBAL-SET! i m) ) )
           ((predefined)
            (static-wrong "Immutable predefined variable" n) ) )
-        (static-wrong "No such variable" n) ) ) )
-\end{code:lisp}</p>
+        (static-wrong "No such variable" n) ) ) )</pre>
 
 <p>И, конечно же, не забываем о новой инструкции <code><span class="func">CHECKED-DEEP-REF</span></code>:</p>
 
 
 <!--\indexC{CHECKED-DEEP-REF}-->
-<p>\begin{code:lisp}
-(define-instruction (CHECKED-DEEP-REF i j) 253
+<pre>(define-instruction (CHECKED-DEEP-REF i j) 253
   (set! *val* (deep-fetch *env* i j))
   (when (eq? *val* undefined-value)
-    (signal-exception #t (list "Uninitialized local variable")) ) )
-\end{code:lisp}</p>
+    (signal-exception #t (list "Uninitialized local variable")) ) )</pre>
 
 <h3 id="reflection/reify-env/ssect:closed">Анатомия замыканий</h3>
 
@@ -1487,8 +1423,7 @@ P-списков, но нередко в этой роли можно встре
 и собирает из них новую унарную функцию, аналогичную исходной, но выводящую на
 экран свой аргумент и результат выполнения.</p>
 
-<p>\begin{code:lisp}
-(define (trace-procedure1 f)
+<pre>(define (trace-procedure1 f)
   (let* ((env (procedure->environment f))
          (definition (procedure->definition f))
          (variable (car (car definition)))
@@ -1499,8 +1434,7 @@ P-списков, но нередко в этой роли можно встре
                       (let ((result (begin . ,body)))
                         (display (list 'result 'is result))
                         result ) )
-              (enrich env variable) ) ) ) )
-\end{code:lisp}</p>
+              (enrich env variable) ) ) ) )</pre>
 
 <p>Если быть честным, эта программа немного жульничает. Встраиваемая функция вроде
 <code><span class="func">car</span></code> её сломает, а код, синтезируемый для <code><span class="func">eval/b</span></code>, не обязательно
@@ -1537,8 +1471,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{meaning-fix-abstraction}-->
 <!--\indexC{REFLECTIVE-FIX-CLOSURE}-->
-<p>\begin{code:lisp}
-(define (meaning-fix-abstraction n* e+ r tail?)
+<pre>(define (meaning-fix-abstraction n* e+ r tail?)
   (let* ((arity (length n*))
          (r2 (r-extend* r n*))
          (m+ (meaning-sequence e+ r2 #t)) )
@@ -1552,16 +1485,14 @@ P-списков, но нередко в этой роли можно встре
                           (EXPLICIT-CONSTANT r) ))
          (the-goto (GOTO (+ (length the-env) (length the-function)))) )
     (append (CREATE-CLOSURE (+ (length the-goto) (length the-env)))
-            the-goto the-env the-function ) ) )
-\end{code:lisp}</p>
+            the-goto the-env the-function ) ) )</pre>
 
 <p>Функция <code><span class="func">procedure->definition</span></code> извлекает определение замыкания,
 расположенное на две инструкции позади его кода.</p>
 
 
 <!--\indexC{procedure->definition}-->
-<p>\begin{code:lisp}
-(definitial procedure->definition
+<pre>(definitial procedure->definition
   (let* ((arity 1)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -1575,8 +1506,7 @@ P-списков, но нередко в этой роли можно встре
                    (set! *pc* (stack-pop)) )
                  (signal-exception #f (list "Not a procedure" proc)) ) )
            (signal-exception #t
-            (list "Incorrect arity" 'procedure->definition) ) ) ) ) ) )
-\end{code:lisp}</p>
+            (list "Incorrect arity" 'procedure->definition) ) ) ) ) ) )</pre>
 
 <p>Функция <code><span class="func">procedure->environment</span></code> извлекает замкнутое окружение и реифицирует
 его, устанавливая в нём соответствия между именами переменных и их адресами.
@@ -1584,8 +1514,7 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{procedure->environment}-->
-<p>\begin{code:lisp}
-(definitial procedure->environment
+<pre>(definitial procedure->environment
   (let* ((arity 1)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -1602,8 +1531,7 @@ P-списков, но нередко в этой роли можно встре
                    (set! *pc* (stack-pop)) )
                  (signal-exception #f (list "Not a procedure" proc)) ) )
            (signal-exception #t
-            (list "Incorrect arity" 'procedure->environment) ) ) ) ) ) )
-\end{code:lisp}</p>
+            (list "Incorrect arity" 'procedure->environment) ) ) ) ) ) )</pre>
 
 <p>Вкратце, <code><span class="func">procedure->definition</span></code> и <code><span class="func">procedure->environment</span></code> позволяют
 программам осознавать свой собственный код. Также их возможности полезны для
@@ -1624,10 +1552,8 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{reflective-lambda}-->
-<p>\begin{code:lisp}
-(reflective-lambda (|\ii{переменные}|) (|\ii{экспортируемые переменные}|)
-  |\ii{тело}| )
-\end{code:lisp}</p>
+<pre>(reflective-lambda (|\ii{переменные}|) (|\ii{экспортируемые переменные}|)
+  |\ii{тело}| )</pre>
 
 <p>Подобно <code><span class="func">lambda</span></code>-абстракциям, которые она обобщает, первым аргументом ей
 передаются локальные переменные, а в конце идёт тело функции, но между ними
@@ -1643,10 +1569,8 @@ P-списков, но нередко в этой роли можно встре
 функцией <code><span class="func">procedure->environment</span></code>. Какое именно окружение замыкает в себе
 следующая абстракция?</p>
 
-<p>\begin{code:lisp}
-(let ((x 1) (y 2))
-  (lambda (z) x) )
-\end{code:lisp}</p>
+<pre>(let ((x 1) (y 2))
+  (lambda (z) x) )</pre>
 
 <p>{\def\H{\discretionary{}{}{}}
 Это окружение однозначно содержит <code><span class="func">x</span></code>, так как она является свободной в теле
@@ -1675,10 +1599,8 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexR{специальные формы!import@\protect<code><span class="func">import</span></code>}-->
 <!--\indexC{import}-->
-<p>\begin{code:lisp}
-(import (|\ii{переменные}|...) |\ii{окружение}|
-  |\ii{формы}|... )
-\end{code:lisp}</p>
+<pre>(import (|\ii{переменные}|...) |\ii{окружение}|
+  |\ii{формы}|... )</pre>
 
 <p>\ii{Формы}, составляющие тело <code><span class="func">import</span></code>, вычисляются в специальном окружении.
 Свободные \ii{переменные}, присутствующие\footnote{Пустой список, подобно
@@ -1704,11 +1626,9 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{add-method"!}-->
-<p>\begin{code:lisp}
-(define (add-method! generic class method)
+<pre>(define (add-method! generic class method)
   (import (methods) (procedure->environment generic)
-    (vector-set! methods (Class-number class) method) ) )
-\end{code:lisp}</p>
+    (vector-set! methods (Class-number class) method) ) )</pre>
 
 
 <!--\indexR{квазистатические привязки}-->
@@ -1732,10 +1652,8 @@ P-списков, но нередко в этой роли можно встре
 <p>Итак, как же реализуется специальная форма <code><span class="func">import</span></code>? Прежде всего,
 конечно, в синтаксическом анализаторе <code><span class="func">meaning</span></code> появляется новая строка:</p>
 
-<p>\begin{code:lisp}
-...
-((import) (meaning-import (cadr e) (caddr e) (cdddr e) r tail?)) ...
-\end{code:lisp}</p>
+<pre>...
+((import) (meaning-import (cadr e) (caddr e) (cdddr e) r tail?)) ...</pre>
 
 
 <!--\indexR{плавающие переменные}-->
@@ -1748,15 +1666,13 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{meaning-import}-->
-<p>\begin{code:lisp}
-(define (meaning-import n* e e+ r tail?)
+<pre>(define (meaning-import n* e e+ r tail?)
   (let* ((m (meaning e r #f))
          (r2 (shadow-extend* r n*))
          (m+ (meaning-sequence e+ r2 #f)) )
     (append (CONSTANT n*) (PUSH-VALUE)
             m (CREATE-PSEUDO-ENV)
-            (if tail? m+ (append m+ (UNLINK-ENV))) ) ) )
-\end{code:lisp}</p>
+            (if tail? m+ (append m+ (UNLINK-ENV))) ) ) )</pre>
 
 
 <!--\indexR{записи активации!псевдозаписи активации}-->
@@ -1773,8 +1689,7 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{CREATE-PSEUDO-ENV}-->
 <!--\indexC{pseudo-activation-frame}-->
 <!--\indexC{create-pseudo-environment}-->
-<p>\begin{code:lisp}
-(define-instruction (CREATE-PSEUDO-ENV) 252
+<pre>(define-instruction (CREATE-PSEUDO-ENV) 252
   (create-pseudo-environment (stack-pop) *val* *env*) )</p>
 
 <p>(define-class pseudo-activation-frame environment
@@ -1793,8 +1708,7 @@ P-списков, но нередко в этой роли можно встре
     (set-pseudo-activation-frame-sr! frame
      (reified-environment-sr env) )
     (set-pseudo-activation-frame-next! frame sr)
-    (set! *env* frame) ) )
-\end{code:lisp}</p>
+    (set! *env* frame) ) )</pre>
 
 <p>Тело специальной формы <code><span class="func">import</span></code> следует компилировать с учётом новых
 плавающих переменных. Они помещаются в окружение компиляции <code><span class="func">r</span></code> с помощью
@@ -1806,13 +1720,11 @@ P-списков, но нередко в этой роли можно встре
 рисунке \ref{reflection/reify-env/import/pic:env-struct} приведена иллюстрация
 структуры окружений для следующей программы:</p>
 
-<p>\begin{code:lisp}
-(let ((x 11))
+<pre>(let ((x 11))
   (let ((z 22)
         (env (let ((z 33)) (export))) )
     (import (x y) env
-      (list (set! x y) z) ) ) )
-\end{code:lisp}</p>
+      (list (set! x y) z) ) ) )</pre>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.5}
@@ -1827,14 +1739,12 @@ P-списков, но нередко в этой роли можно встре
 
 
 <!--\indexC{shadow-extend*}-->
-<p>\begin{code:lisp}
-(define (shadow-extend* r n*)
+<pre>(define (shadow-extend* r n*)
   (let enum ((n* n*) (j 0))
     (if (pair? n*)
         (cons (list (car n*) `(shadowable 0 . ,j))
               (enum (cdr n*) (+ j 1)) )
-        (bury-r r 1) ) ) )
-\end{code:lisp}</p>
+        (bury-r r 1) ) ) )</pre>
 
 <p>Также необходимо дополнить определения <code><span class="func">meaning-reference</span></code> и
 <code><span class="func">meaning-assignment</span></code> предобработкой нового типа переменных. Помимо этого ещё
@@ -1848,8 +1758,7 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{SHADOW-REF}-->
 <!--\indexC{shadowable-fetch}-->
 <!--\indexC{variable-value-lookup}-->
-<p>\begin{code:lisp}
-(define (meaning-reference n r tail?)
+<pre>(define (meaning-reference n r tail?)
   (let ((kind (compute-kind r n)))
     (if kind
         (case (car kind)
@@ -1916,8 +1825,7 @@ P-списков, но нередко в этой роли можно встре
         ((predefined)
          (let ((i (cdr kind)))
            (set! *val* (predefined-fetch i)) ) ) )
-      (signal-exception #f (list "No such variable")) ) )
-\end{code:lisp}</p>
+      (signal-exception #f (list "No such variable")) ) )</pre>
 
 
 <!--\indexCS{import}{как макрос}-->
@@ -1933,11 +1841,9 @@ P-списков, но нередко в этой роли можно встре
 потенциально ошибочного цитирования присваиваемого значения, используется
 промежуточное замыкание, принимающее это значение.} следующей:</p>
 
-<p>\begin{code:lisp}
-(list ((eval/b '(lambda (v) (set! x v)) env)
+<pre>(list ((eval/b '(lambda (v) (set! x v)) env)
        (eval/b 'y env) )
-      z )
-\end{code:lisp}</p>
+      z )</pre>
 
 <p>Подведём некоторый итог, ещё раз взглянув на все типы привязок, с которыми мы
 встречались.</p>
@@ -2017,8 +1923,7 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 <code><span class="func">set-variable-value!</span></code> не приводится для краткости, но его довольно легко
 восстановить по имеющимся.</p>
 
-<p>\begin{code:lisp}
-(definitial variable-value
+<pre>(definitial variable-value
   (let* ((arity 2)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -2068,8 +1973,7 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
                  (signal-exception
                   #t (list "Not an environment" env) ) ) )
            (signal-exception
-            #t (list "Incorrect arity" 'variable-value) ) ) ) ) ) )
-\end{code:lisp}</p>
+            #t (list "Incorrect arity" 'variable-value) ) ) ) ) ) )</pre>
 
 <p>Функция <code><span class="func">variable-defined?</span></code> служит для исследования реифицированных
 окружений. Она определяет, можно ли пользоваться какой-либо переменной в данном
@@ -2144,17 +2048,13 @@ n'est plus de limite}». И правда, ограничения бессмыс�
 
 
 <!--\indexC{flambda}-->
-<p>\begin{code:lisp}
-(flambda (|\ii{переменные}|...) |\ii{формы}|...)
-\end{code:lisp}</p>
+<pre>(flambda (|\ii{переменные}|...) |\ii{формы}|...)</pre>
 
 <p>Первая переменная связывается с текущим лексическим окружением, а все остальные
 — с текстом аргументов, переданных при вызове. Например, вот так через
 <code><span class="func">flambda</span></code> определяется цитирование:</p>
 
-<p>\begin{code:lisp}
-(set! quote (flambda (r quotation) quotation))
-\end{code:lisp}</p>
+<pre>(set! quote (flambda (r quotation) quotation))</pre>
 
 <p>Естественно, рефлексивный интерпретатор должен позволять изменение и самого себя
 (захватывающая возможность, несомненно), поэтому мы сделаем все его внутренние
@@ -2167,8 +2067,7 @@ n'est plus de limite}». И правда, ограничения бессмыс�
 достаточно мало, чтобы с лёгкостью поместиться в стандартную библиотеку.
 Интерпретатор написан языком, доступным нашему компилятору в байт-код.</p>
 
-<p>\begin{code:lisp}
-(apply
+<pre>(apply
  (lambda (make-toplevel make-flambda flambda? flambda-apply)
    (set! make-toplevel
      (lambda (prompt-in prompt-out)
@@ -2285,8 +2184,7 @@ n'est plus de limite}». И правда, ограничения бессмыс�
     (list (lambda (behavior) (cons flambda-tag behavior))
           (lambda (o) (if (pair? o) (= (car o) flambda-tag) #f))
           (lambda (f r params) (apply (cdr f) r params)) ) )
-  98127634 ) )
-\end{code:lisp}</p>
+  98127634 ) )</pre>
 
 <p>Как сказала бы Юлия Кристева,\footnote*{Ну, она сказала нечто подобное на радио
 France Musique тем воскресным утром 19 сентября 1993 года, когда я писал эти
@@ -2348,16 +2246,12 @@ Dylan лишены такого удобства.} Данное продолже
 из-за его невероятной гибкости. Предположим, мы определили следующую нормальную
 функцию:</p>
 
-<p>\begin{code:lisp}
-(set! stammer (lambda (f x) (f f x)))
-\end{code:lisp}</p>
+<pre>(set! stammer (lambda (f x) (f f x)))</pre>
 
 <p>Теперь посмотрим, как она себя ведёт с рефлексивными абстракциями:</p>
 
-<p>\begin{code:lisp}
-(stammer (lambda (ff yy) yy) 33)  |\is| 33
-(stammer (flambda (ff yy) yy) 33) |\is| x
-\end{code:lisp}</p>
+<pre>(stammer (lambda (ff yy) yy) 33)  |\is| 33
+(stammer (flambda (ff yy) yy) 33) |\is| x</pre>
 
 <p>Получается, что первый вызов <code><span class="func">stammer</span></code> применяет переданную функцию саму
 к себе, а второй — реифицирует своё собственное тело и применяет функцию
@@ -2374,15 +2268,13 @@ Dylan лишены такого удобства.} Данное продолже
 <code><span class="func">quote</span></code>, <code><span class="func">if</span></code>, <code><span class="func">set!</span></code>, <code><span class="func">lambda</span></code>, <code><span class="func">flambda</span></code> и <code><span class="func">monitor</span></code>. Все
 остальные можно добавить потом:</p>
 
-<p>\begin{code:lisp}
-(set! global-env
+<pre>(set! global-env
       (enrich global-env 'begin 'the-environment) )
 (set! the-environment
       (flambda (r) r) )
 (set! begin
       (flambda (r . forms)
-        (eprogn forms r) ) )
-\end{code:lisp}</p>
+        (eprogn forms r) ) )</pre>
 
 
 <!--\indexC{global-env}-->
@@ -2397,12 +2289,10 @@ Dylan лишены такого удобства.} Данное продолже
 
 
 <!--\indexC{when}-->
-<p>\begin{code:lisp}
-(set! global-env (enrich global-env 'when))
+<pre>(set! global-env (enrich global-env 'when))
 (set! when
       (flambda (r condition . body)
-        (if (eval condition r) (eprogn body r) #f) ) )
-\end{code:lisp}</p>
+        (if (eval condition r) (eprogn body r) #f) ) )</pre>
 
 <p>Сначала глобальное окружение расширяется новой переменной, которая, конечно же,
 пока не имеет никакого значения. Сразу же после этого она инициализируется
@@ -2470,8 +2360,7 @@ Dylan лишены такого удобства.} Данное продолже
 (bar) ...) ...)</span></code>, а также остальные правила преобразования вложенных форм
 <code><span class="func">define</span></code>. (Серьёзно, <code><span class="func">define</span></code> — это сложно.)</p>
 
-<p>\begin{code:lisp}
-(set! global-env (enrich global-env 'define))
+<pre>(set! global-env (enrich global-env 'define))
 (set! define
       (flambda (r name form)
         (if (variable-defined? name r)
@@ -2479,8 +2368,7 @@ Dylan лишены такого удобства.} Данное продолже
             ((lambda (rr)
                (set! global-env rr)
                (set-variable-value! name rr (eval form rr)) )
-             (enrich r name) ) ) ) )
-\end{code:lisp}</p>
+             (enrich r name) ) ) ) )</pre>
 
 <p>Прежде всего <code><span class="func">define</span></code> проверяет, существует ли уже переменная. Если это так,
 то её (пере)определение, в соответствии с \RnRS, сводится к присваиванию нового

@@ -65,17 +65,14 @@
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-((lambda (fact) (fact 5 fact (lambda (x) x)))
+<pre>((lambda (fact) (fact 5 fact (lambda (x) x)))
  (lambda (n f k) (if (= n 0) (k 1)
-                     (f (- n 1) f (lambda (r) (k (* n r)))) )) )
-\end{code:lisp}</p>
+                     (f (- n 1) f (lambda (r) (k (* n r)))) )) )</pre>
 
 <p>\noindent
 После обработки она превращается в следующую:</p>
 
-<p>\begin{code:lisp}
-(TR-FIX-LET
+<pre>(TR-FIX-LET
  (STORE-ARGUMENT
   (FIX-CLOSURE
    (ALTERNATIVE
@@ -108,8 +105,7 @@
      (ALLOCATE-FRAME 3)
      2 )
     1 )
-   0 ) ) )
-\end{code:lisp}</p>
+   0 ) ) )</pre>
 
 <p>Не шедевр удобочитаемости, но очень точно выражает необходимые действия.
 Цель данной главы — показать, что данная форма ещё далека от окончательной.
@@ -183,10 +179,8 @@
 первыми. Давайте внимательно рассмотрим инструкцию <code><span class="func">GLOBAL-SET!</span></code>,
 определяемую следующим образом:</p>
 
-<p>\begin{code:lisp}
-(define (GLOBAL-SET! i m)
-  (lambda () (global-update! i (m))) )
-\end{code:lisp}</p>
+<pre>(define (GLOBAL-SET! i m)
+  (lambda () (global-update! i (m))) )</pre>
 
 
 <!--\indexC*{val}{*val*}-->
@@ -199,23 +193,19 @@
 
 
 <!--\indexC{CONSTANT}-->
-<p>\begin{code:lisp}
-(define (CONSTANT value)
+<pre>(define (CONSTANT value)
   (lambda ()
-    (set! *val* value) ) )
-\end{code:lisp}</p>
+    (set! *val* value) ) )</pre>
 
 <p>\noindent
 а потребители значений вроде <code><span class="func">GLOBAL-SET!</span></code> становятся такими:</p>
 
 
 <!--\indexC{GLOBAL-SET"!}-->
-<p>\begin{code:lisp}
-(define (GLOBAL-SET! i m)
+<pre>(define (GLOBAL-SET! i m)
   (lambda ()
     (m)
-    (global-update! i *val*) ) )
-\end{code:lisp}</p>
+    (global-update! i *val*) ) )</pre>
 
 <p>Итого, форма <code><span class="func">(m)</span></code> размещает новое значение переменной в регистре <code><span class="func">*val*</span></code>,
 затем его оттуда забирает <code><span class="func">global-update!</span></code> и переносит в глобальное
@@ -229,24 +219,20 @@
 
 
 <!--\indexC{SEQUENCE}-->
-<p>\begin{code:lisp}
-(define (SEQUENCE m m+)
-  (lambda () (m) (m+)) )
-\end{code:lisp}</p>
+<pre>(define (SEQUENCE m m+)
+  (lambda () (m) (m+)) )</pre>
 
 <p>\noindent
 а <code><span class="func">FIX-LET</span></code> принимает следующий вид:</p>
 
 
 <!--\indexC{FIX-LET}-->
-<p>\begin{code:lisp}
-(define (FIX-LET m* m+)
+<pre>(define (FIX-LET m* m+)
   (lambda ()
     (m*)
     (set! *env* (sr-extend* *env* *val*))
     (m+)
-    (set! *env* (activation-frame-next *env*)) ) )
-\end{code:lisp}</p>
+    (set! *env* (activation-frame-next *env*)) ) )</pre>
 
 <h3 id="compilation/bytes/ssect:stack">Изобретение стека</h3>
 
@@ -256,14 +242,12 @@
 
 
 <!--\indexC{STORE-ARGUMENT}-->
-<p>\begin{code:lisp}
-(define (STORE-ARGUMENT m m* index)
+<pre>(define (STORE-ARGUMENT m m* index)
   (lambda ()
     (m)
     (let ((v *val*))
       (m*)
-      (set-activation-frame-argument! *val* index v) ) ) )
-\end{code:lisp}</p>
+      (set-activation-frame-argument! *val* index v) ) ) )</pre>
 
 
 <!--\indexR{стек}-->
@@ -282,8 +266,7 @@
 <!--\indexC*{stack-push}{*stack-push*}-->
 <!--\indexC*{stack-pop}{*stack-pop*}-->
 <!--\indexC*{stack-index}{*stack-index*}-->
-<p>\begin{code:lisp}
-(define *stack* (make-vector 1000))
+<pre>(define *stack* (make-vector 1000))
 (define *stack-index* 0)</p>
 
 <p>(define (stack-push v)
@@ -292,8 +275,7 @@
 
 <p>(define (stack-pop)
   (set! *stack-index* (- *stack-index* 1))
-  (vector-ref *stack* *stack-index*) )
-\end{code:lisp}</p>
+  (vector-ref *stack* *stack-index*) )</pre>
 
 <p>Обретя данную революционную технологию, мы тут же используем её для радикального
 преобразования инструкции <code><span class="func">STORE-ARGUMENT</span></code>. Теперь временные значения можно
@@ -305,29 +287,25 @@
 
 
 <!--\indexC{STORE-ARGUMENT}-->
-<p>\begin{code:lisp}
-(define (STORE-ARGUMENT m m* index)
+<pre>(define (STORE-ARGUMENT m m* index)
   (lambda ()
     (m)
     (stack-push *val*)
     (m*)
-    (set-activation-frame-argument! *val* index (stack-pop)) ) )
-\end{code:lisp}</p>
+    (set-activation-frame-argument! *val* index (stack-pop)) ) )</pre>
 
 <p>Модификация <code><span class="func">REGULAR-CALL</span></code> аналогична, только здесь требуется хранить сразу
 два значения: саму функцию на время вычисления аргументов, а также текущее
 окружение на время выполнения функции. Сейчас эта инструкция выглядит так:</p>
 
-<p>\begin{code:lisp}
-(define (REGULAR-CALL m m*)
+<pre>(define (REGULAR-CALL m m*)
   (lambda ()
     (m)
     (let ((f *val*))
       (m*)
       (let ((sr *env*))
         (invoke f *val*)
-        (set! *env* sr) ) ) ) )
-\end{code:lisp}</p>
+        (set! *env* sr) ) ) ) )</pre>
 
 
 <!--\indexC*{fun}{*fun*}-->
@@ -337,8 +315,7 @@
 
 
 <!--\indexC{REGULAR-CALL}-->
-<p>\begin{code:lisp}
-(define (REGULAR-CALL m m*)
+<pre>(define (REGULAR-CALL m m*)
   (lambda ()
     (m)
     (stack-push *val*)
@@ -346,8 +323,7 @@
     (set! *fun* (stack-pop))
     (stack-push *env*)
     (invoke *fun*)
-    (set! *env* (stack-pop)) ) )
-\end{code:lisp}</p>
+    (set! *env* (stack-pop)) ) )</pre>
 
 <p>Заигравшись, мы мимоходом изменили протокол вызова функций. Теперь функции
 принимают свою запись активации не через аргумент, а ожидают её в регистре
@@ -355,8 +331,7 @@
 
 
 <!--\indexC{FIX-CLOSURE}-->
-<p>\begin{code:lisp}
-(define (FIX-CLOSURE m+ arity)
+<pre>(define (FIX-CLOSURE m+ arity)
   (let ((arity+1 (+ 1 arity)))
     (lambda ()
       (define (the-function sr)
@@ -364,8 +339,7 @@
             (begin (set! *env* (sr-extend* sr *val*))
                    (m+) )
             (wrong "Incorrect arity") ) )
-      (set! *val* (make-closure the-function *env*)) ) ) )
-\end{code:lisp}</p>
+      (set! *val* (make-closure the-function *env*)) ) ) )</pre>
 
 
 <!--\indexC*{arg1}{*arg1*}-->
@@ -379,8 +353,7 @@
 
 
 <!--\indexC*{CALL0}{CALL\protect\ii{n}}-->
-<p>\begin{code:lisp}
-(define (CALL3 address m1 m2 m3)
+<pre>(define (CALL3 address m1 m2 m3)
   (lambda (m)
     (m1)
     (stack-push *val*)
@@ -389,8 +362,7 @@
     (m3)
     (set! *arg2* (stack-pop))
     (set! *arg1* (stack-pop))
-    (set! *val* (address *arg1* *arg2* *val*)) ) )
-\end{code:lisp}</p>
+    (set! *val* (address *arg1* *arg2* *val*)) ) )</pre>
 
 <h3 id="compilation/bytes/ssect:customize">Дорабатываем инструкции</h3>
 
@@ -415,25 +387,21 @@
 <p>Рассмотрим для примера инструкцию <code><span class="func">SHALLOW-ARGUMENT-SET!</span></code>. Определялась она
 вот так:</p>
 
-<p>\begin{code:lisp}
-(define (SHALLOW-ARGUMENT-SET! j m)
+<pre>(define (SHALLOW-ARGUMENT-SET! j m)
   (lambda ()
     (m)
-    (set-activation-frame-argument! *env* j *val*) ) )
-\end{code:lisp}</p>
+    (set-activation-frame-argument! *env* j *val*) ) )</pre>
 
 <p>Чтобы разбить её на последовательность операций, введём вспомогательную функцию:</p>
 
 
 <!--\indexC{SHALLOW-ARGUMENT-SET"!}-->
 <!--\indexC{SET-SHALLOW-ARGUMENT"!}-->
-<p>\begin{code:lisp}
-(define (SHALLOW-ARGUMENT-SET! j m)
+<pre>(define (SHALLOW-ARGUMENT-SET! j m)
   (append m (SET-SHALLOW-ARGUMENT! j)) )</p>
 
 <p>(define (SET-SHALLOW-ARGUMENT! j)
-  (list (lambda () (set-activation-frame-argument! *env* j *val*))) )
-\end{code:lisp}</p>
+  (list (lambda () (set-activation-frame-argument! *env* j *val*))) )</pre>
 
 <p>Главная функция только возвращает список необходимых операций, расположенных
 в правильной последовательности. Вспомогательная же возвращает замыкание,
@@ -456,8 +424,7 @@
 <!--\indexC{PRESERVE-ENV}-->
 <!--\indexC{FUNCTION-INVOKE}-->
 <!--\indexC{RESTORE-ENV}-->
-<p>\begin{code:lisp}
-(define (REGULAR-CALL m m*)
+<pre>(define (REGULAR-CALL m m*)
   (append m (PUSH-VALUE)
           m* (POP-FUNCTION) (PRESERVE-ENV)
              (FUNCTION-INVOKE) (RESTORE-ENV) ) )</p>
@@ -475,8 +442,7 @@
   (list (lambda () (invoke *fun*))) )</p>
 
 <p>(define (RESTORE-ENV)
-  (list (lambda () (set! *env* (stack-pop)))) )
-\end{code:lisp}</p>
+  (list (lambda () (set! *env* (stack-pop)))) )</pre>
 
 
 <!--\indexR{исполнитель (\protect<code><span class="func">run</span></code>)}-->
@@ -486,13 +452,11 @@
 
 
 <!--\indexC{run}-->
-<p>\begin{code:lisp}
-(define (run)
+<pre>(define (run)
   (let ((instruction (car *pc*)))
     (set! *pc* (cdr *pc*))
     (instruction)
-    (run) ) )
-\end{code:lisp}</p>
+    (run) ) )</pre>
 
 
 <!--\indexE{pc@\protect<code><span class="func">*pc*</span></code>}-->
@@ -525,13 +489,11 @@
 
 <!--\indexC{JUMP-FALSE}-->
 <!--\indexC{GOTO}-->
-<p>\begin{code:lisp}
-(define (JUMP-FALSE i)
+<pre>(define (JUMP-FALSE i)
   (list (lambda () (if (not *val*) (set! *pc* (list-tail *pc* i))))) )</p>
 
 <p>(define (GOTO i)
-  (list (lambda () (set! *pc* (list-tail *pc* i)))) )
-\end{code:lisp}</p>
+  (list (lambda () (set! *pc* (list-tail *pc* i)))) )</pre>
 
 <p>\begin{figure}[t]\begin{center}
 \input{figures/fig7.1}
@@ -546,10 +508,8 @@
 
 
 <!--\indexC{ALTERNATIVE}-->
-<p>\begin{code:lisp}
-(define (ALTERNATIVE m1 m2 m3)
-  (append m1 (JUMP-FALSE (+ 1 (length m2))) m2 (GOTO (length m3)) m3) )
-\end{code:lisp}</p>
+<pre>(define (ALTERNATIVE m1 m2 m3)
+  (append m1 (JUMP-FALSE (+ 1 (length m2))) m2 (GOTO (length m3)) m3) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -580,8 +540,7 @@
 <!--\indexC{NARY-CLOSURE}-->
 <!--\indexC{CREATE-CLOSURE}-->
 <!--\indexC{PACK-FRAME"!}-->
-<p>\begin{code:lisp}
-(define (NARY-CLOSURE m+ arity)
+<pre>(define (NARY-CLOSURE m+ arity)
   (define the-function
     (append (ARITY>=? (+ arity 1)) (PACK-FRAME! arity)
             (EXTEND-ENV) m+ (RETURN) ) )
@@ -592,8 +551,7 @@
   (list (lambda () (set! *val* (make-closure (list-tail *pc* offset)
                                              *env* )))) )
 (define (PACK-FRAME! arity)
-  (list (lambda () (listify! *val* arity))) )
-\end{code:lisp}</p>
+  (list (lambda () (listify! *val* arity))) )</pre>
 
 <p>\begin{figure}[t]\centering
 \input{figures/fig7.2}%
@@ -619,14 +577,12 @@
 
 
 <!--\indexC{invoke}-->
-<p>\begin{code:lisp}
-(define (invoke f)
+<pre>(define (invoke f)
   (cond ((closure? f)
          (stack-push *pc*)
          (set! *env* (closure-closed-environment f))
          (set! *pc* (closure-code f)) )
-        ... ) )
-\end{code:lisp}</p>
+        ... ) )</pre>
 
 <p>Перед вызовом функции в стек заталкивается адрес инструкции, следующей за
 <code><span class="func">(FUNCTION-INVOKE)</span></code>. Затем извлекается сохранённое в замыкании окружение и
@@ -645,10 +601,8 @@
 
 
 <!--\indexC{RETURN}-->
-<p>\begin{code:lisp}
-(define (RETURN)
-  (list (lambda () (set! *pc* (stack-pop)))) )
-\end{code:lisp}</p>
+<pre>(define (RETURN)
+  (list (lambda () (set! *pc* (stack-pop)))) )</pre>
 
 <h4 id="compilation/bytes/sssect:jumps">О переходах</h4>
 
@@ -752,8 +706,7 @@
 <!--\indexC{TR-REGULAR-CALL}-->
 <!--\indexC{STORE-ARGUMENT}-->
 <!--\indexC{CONS-ARGUMENT}-->
-<p>\begin{code:lisp}
-(define (DEEP-ARGUMENT-SET! i j m)
+<pre>(define (DEEP-ARGUMENT-SET! i j m)
   (append m (SET-DEEP-ARGUMENT! i j)) )</p>
 
 <p>(define (GLOBAL-SET! i m)
@@ -803,8 +756,7 @@
 
 <p>(define (CONS-ARGUMENT m m* arity)
   (append m (PUSH-VALUE)
-          m* (POP-CONS-FRAME! arity) ) )
-\end{code:lisp}</p>
+          m* (POP-CONS-FRAME! arity) ) )</pre>
 
 <p>\phantomlabel{compilation/lang-and-target/par:slowpoke}
 <!--\indexR{однопроходная компиляция}-->
@@ -866,11 +818,9 @@
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-((lambda (fact) (fact 5 fact (lambda (x) x)))
+<pre>((lambda (fact) (fact 5 fact (lambda (x) x)))
  (lambda (n f k) (if (= n 0) (k 1)
-                     (f (- n 1) f (lambda (r) (k (* n r)))) )) )
-\end{code:lisp}</p>
+                     (f (- n 1) f (lambda (r) (k (* n r)))) )) )</pre>
 
 <p>Теперь, наконец, мы сможем увидеть, как она выглядит на настоящем машинном
 языке. Сложно не заметить сходство
@@ -954,8 +904,7 @@
 <!--\indexC{instruction-decode}-->
 <!--\indexC{run-clause}-->
 <!--\indexC{size-clause}-->
-<p>\begin{code:lisp}
-(define-syntax define-instruction-set
+<pre>(define-syntax define-instruction-set
   (syntax-rules (define-instruction)
     ((define-instruction-set
        (define-instruction (name . args) n . body) ... )
@@ -1008,8 +957,7 @@
   (syntax-rules ()
     ((size-clause ())    1)
     ((size-clause (a))   2)
-    ((size-clause (a b)) 3) ) )
-\end{code:lisp}</p>
+    ((size-clause (a b)) 3) ) )</pre>
 
 <p>Макрос <code><span class="func">define-instruction</span></code> одновременно определяет сразу три функции:
 функцию <code><span class="func">run</span></code>, исполняющую байт-коды; функцию <code><span class="func">instruction-size</span></code>,
@@ -1017,24 +965,20 @@
 переводящую байт-код обратно в символьную форму. Очевидно,
 <code><span class="func">instruction-decode</span></code>, будет весьма полезной при отладке. Рассмотрим пример:</p>
 
-<p>\begin{code:lisp}
-(define-instruction (SHALLOW-ARGUMENT-REF j) 5
-  (set! *val* (activation-frame-argument *env* j)) )
-\end{code:lisp}</p>
+<pre>(define-instruction (SHALLOW-ARGUMENT-REF j) 5
+  (set! *val* (activation-frame-argument *env* j)) )</pre>
 
 <p>Эта форма добавляет в определение <code><span class="func">run</span></code> обработку инструкции, кодируемой
 числом <code><span class="func">5</span></code>:</p>
 
-<p>\begin{code:lisp}
-(define (run)
+<pre>(define (run)
   (let ((instruction (fetch-byte)))
     (case instruction
       ...
       ((5) (let ((j (fetch-byte)))
              (set! *val* (activation-frame-argument *env* j)) ))
       ... ) )
-  (run) )
-\end{code:lisp}</p>
+  (run) )</pre>
 
 
 <!--\indexC{fetch-byte}-->
@@ -1042,12 +986,10 @@
 потока байтов. Она очень просто определяется и имеет один побочный эффект: сдвиг
 <code><span class="func">*pc*</span></code> на одну позицию вперёд.</p>
 
-<p>\begin{code:lisp}
-(define (fetch-byte)
+<pre>(define (fetch-byte)
   (let ((byte (vector-ref *code* *pc*)))
     (set! *pc* (+ 1 *pc*))
-    byte ) )
-\end{code:lisp}</p>
+    byte ) )</pre>
 
 
 <!--\indexR{счётчик команд}-->
@@ -1073,14 +1015,12 @@
 <code><span class="func">SHALLOW-ARGUMENT-REF</span></code> занимает два байта. Аналогично, здесь <code><span class="func">case</span></code> можно
 заменить вектором, хранящим те же самые числа.</p>
 
-<p>\begin{code:lisp}
-(define (instruction-size code pc)
+<pre>(define (instruction-size code pc)
   (let ((instruction (vector-ref code pc)))
     (case instruction
       ...
       ((5) 2)
-      ... ) ) )
-\end{code:lisp}</p>
+      ... ) ) )</pre>
 
 
 <!--\indexC{fetch-byte}-->
@@ -1089,8 +1029,7 @@
 <code><span class="func">instruction-decode</span></code> использует свою личную реализацию <code><span class="func">fetch-byte</span></code>,
 чтобы вести себя подобно <code><span class="func">run</span></code>, но не влиять на глобальный счётчик команд.</p>
 
-<p>\begin{code:lisp}
-(define (instruction-decode code pc)
+<pre>(define (instruction-decode code pc)
   (define (fetch-byte)
     (let ((byte (vector-ref code pc)))
       (set! pc (+ pc 1))
@@ -1100,8 +1039,7 @@
       ...
       ((5) (let ((j (fetch-byte)))
              (list 'SHALLOW-ARGUMENT-REF j) ))
-      ... ) ) )
-\end{code:lisp}</p>
+      ... ) ) )</pre>
 
 <h2 id="compilation/sect:instructions">Инструкции</h2>
 
@@ -1171,8 +1109,7 @@
 
 <!--\indexCS{SHALLOW-ARGUMENT-REF}{специализация}-->
 <!--\indexC{check-byte}-->
-<p>\begin{code:lisp}
-(define (SHALLOW-ARGUMENT-REF j)
+<pre>(define (SHALLOW-ARGUMENT-REF j)
   (check-byte j)
   (case j
     ((0 1 2 3) (list (+ 1 j)))
@@ -1180,14 +1117,12 @@
 
 <p>(define (check-byte j)
   (unless (<= 0 j 255)
-    (static-wrong "Cannot pack a number within a byte" j) ) )
-\end{code:lisp}</p>
+    (static-wrong "Cannot pack a number within a byte" j) ) )</pre>
 
 <p>А вот определения собственно пяти\footnote{Инструкции с кодом <code><span class="func">0</span></code>
 не существует — бедный ноль и без того особенный.} специализаций:</p>
 
-<p>\begin{code:lisp}
-(define-instruction (SHALLOW-ARGUMENT-REF0) 1
+<pre>(define-instruction (SHALLOW-ARGUMENT-REF0) 1
   (set! *val* (activation-frame-argument *env* 0)) )
 (define-instruction (SHALLOW-ARGUMENT-REF1) 2
   (set! *val* (activation-frame-argument *env* 1)) )
@@ -1196,8 +1131,7 @@
 (define-instruction (SHALLOW-ARGUMENT-REF3) 4
   (set! *val* (activation-frame-argument *env* 3)) )
 (define-instruction (SHALLOW-ARGUMENT-REF j) 5
-  (set! *val* (activation-frame-argument *env* j)) )
-\end{code:lisp}</p>
+  (set! *val* (activation-frame-argument *env* j)) )</pre>
 
 <p><code><span class="func">SET-SHALLOW-ARGUMENT!</span></code> тоже работает с локальными переменными, так что
 определяется аналогично. (Пропущенные здесь специализации легко определить
@@ -1205,8 +1139,7 @@
 
 
 <!--\indexCS{SET-SHALLOW-ARGUMENT"!}{специализация}-->
-<p>\begin{code:lisp}
-(define (SET-SHALLOW-ARGUMENT! j)
+<pre>(define (SET-SHALLOW-ARGUMENT! j)
   (case j
     ((0 1 2 3) (list (+ 21 j)))
     (else      (list 25 j)) ) )</p>
@@ -1214,8 +1147,7 @@
 <p>(define-instruction (SET-SHALLOW-ARGUMENT!2) 23
   (set-activation-frame-argument! *env* 2 *val*) )
 (define-instruction (SET-SHALLOW-ARGUMENT! j) 25
-  (set-activation-frame-argument! *env* j *val*) )
-\end{code:lisp}</p>
+  (set-activation-frame-argument! *env* j *val*) )</pre>
 
 
 <!--\indexCS{DEEP-ARGUMENT-REF}{специализация}-->
@@ -1227,15 +1159,13 @@
 доступа к ним.} что их индексы равновероятны, поэтому для них специализаций
 не будет:</p>
 
-<p>\begin{code:lisp}
-(define (DEEP-ARGUMENT-REF i j) (list 6 i j))
+<pre>(define (DEEP-ARGUMENT-REF i j) (list 6 i j))
 (define (SET-DEEP-ARGUMENT! i j) (list 26 i j))</p>
 
 <p>(define-instruction (DEEP-ARGUMENT-REF i j) 6
   (set! *val* (deep-fetch *env* i j)) )
 (define-instruction (SET-DEEP-ARGUMENT! i j) 26
-  (deep-update! *env* i j *val*) )
-\end{code:lisp}</p>
+  (deep-update! *env* i j *val*) )</pre>
 
 <h3 id="compilation/instructions/ssect:globals">Глобальные переменные</h3>
 
@@ -1255,8 +1185,7 @@
 <!--\indexCS{GLOBAL-REF}{специализация}-->
 <!--\indexCS{CHECKED-GLOBAL-REF}{специализация}-->
 <!--\indexCS{SET-GLOBAL"!}{специализация}-->
-<p>\begin{code:lisp}
-(define (GLOBAL-REF i) (list 7 i))
+<pre>(define (GLOBAL-REF i) (list 7 i))
 (define (CHECKED-GLOBAL-REF i) (list 8 i))
 (define (SET-GLOBAL! i) (list 27 i))</p>
 
@@ -1269,8 +1198,7 @@
     (signal-exception #t (list "Uninitialized global variable" i)) ) )</p>
 
 <p>(define-instruction (SET-GLOBAL! i) 27
-  (global-update! i *val*) )
-\end{code:lisp}</p>
+  (global-update! i *val*) )</pre>
 
 <p>Случай предопределённых неизменяемых переменных более интересен, так как доступ
 к наиболее часто используемым из них можно немного ускорить. В список таких
@@ -1282,8 +1210,7 @@
 
 
 <!--\indexCS{PREDEFINED}{специализация}-->
-<p>\begin{code:lisp}
-(define (PREDEFINED i)
+<pre>(define (PREDEFINED i)
   (check-byte i)
   (case i
     ;; <code><span class="func">0</span></code>${}={}$<code><span class="func">\#t</span></code>, <code><span class="func">1</span></code>${}={}$<code><span class="func">\#f</span></code>, <code><span class="func">2</span></code>${}={}$<code><span class="func">()</span></code>,%
@@ -1296,8 +1223,7 @@
 <p>(define-instruction (PREDEFINED0) 10    ; <code><span class="func">\#t</span></code>
   (set! *val* #t) )
 (define-instruction (PREDEFINED i) 19
-  (set! *val* (predefined-fetch i)) )
-\end{code:lisp}</p>
+  (set! *val* (predefined-fetch i)) )</pre>
 
 
 <!--\indexE{constants@\protect<code><span class="func">*constants*</span></code>}-->
@@ -1310,10 +1236,8 @@
 
 
 <!--\indexC{quotation-fetch}-->
-<p>\begin{code:lisp}
-(define (quotation-fetch i)
-  (vector-ref *constants* i) )
-\end{code:lisp}</p>
+<pre>(define (quotation-fetch i)
+  (vector-ref *constants* i) )</pre>
 
 <p>Комбинатор <code><span class="func">CONSTANT</span></code> собирает все цитаты в переменной <code><span class="func">*quotations*</span></code>
 во время компиляции. Перед исполнением программы все используемые цитаты
@@ -1329,8 +1253,7 @@
 <!--\indexCS{CONSTANT}{специализация}-->
 <!--\indexC{SHORT-NUMBER}-->
 <!--\indexC{EXPLICIT-CONSTANT}-->
-<p>\begin{code:lisp}
-(define (CONSTANT value)
+<pre>(define (CONSTANT value)
   (cond ((eq? value #t)    (list 10))
         ((eq? value #f)    (list 11))
         ((eq? value '())   (list 12))
@@ -1353,8 +1276,7 @@
 (define-instruction (CONSTANT0) 81
   (set! *val* 0) )
 (define-instruction (SHORT-NUMBER value) 79
-  (set! *val* value) )
-\end{code:lisp}</p>
+  (set! *val* value) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -1378,8 +1300,7 @@
 
 <!--\indexCS{GOTO}{специализация}-->
 <!--\indexCS{JUMP-FALSE}{специализация}-->
-<p>\begin{code:lisp}
-(define (GOTO offset)
+<pre>(define (GOTO offset)
   (cond ((< offset 256) (list 30 offset))
         ((< offset 65536)
          (let ((offset1 (modulo offset 256))
@@ -1403,8 +1324,7 @@
 
 <p>(define-instruction (LONG-GOTO offset1 offset2) 28
   (let ((offset (+ offset1 (* 256 offset2))))
-    (set! *pc* (+ *pc* offset)) ) )
-\end{code:lisp}</p>
+    (set! *pc* (+ *pc* offset)) ) )</pre>
 
 <h3 id="compilation/instruction/ssect:invocations">Вызовы функций</h3>
 
@@ -1415,8 +1335,7 @@
 
 
 <!--\indexCS{ALLOCATE-FRAME}{специализация}-->
-<p>\begin{code:lisp}
-(define (ALLOCATE-FRAME size)
+<pre>(define (ALLOCATE-FRAME size)
   (case size
     ((0 1 2 3 4) (list (+ 50 size)))
     (else        (list 55 (+ size 1))) ) )</p>
@@ -1424,16 +1343,14 @@
 <p>(define-instruction (ALLOCATE-FRAME1) 50
   (set! *val* (allocate-activation-frame 1)) )
 (define-instruction (ALLOCATE-FRAME size+1) 55
-  (set! *val* (allocate-activation-frame size+1)) )
-\end{code:lisp}</p>
+  (set! *val* (allocate-activation-frame size+1)) )</pre>
 
 <p>Раскладывание значений аргументов по записям тоже можно улучшить для небольших
 арностей:</p>
 
 
 <!--\indexCS{POP-FRAME"!}{специализация}-->
-<p>\begin{code:lisp}
-(define (POP-FRAME! index)
+<pre>(define (POP-FRAME! index)
   (case index
     ((0 1 2 3) (list (+ 60 index)))
     (else      (list 64 index)) ) )</p>
@@ -1441,8 +1358,7 @@
 <p>(define-instruction (POP-FRAME!0) 60
   (set-activation-frame-argument! *val* 0 (stack-pop)) )
 (define-instruction (POP-FRAME! index) 64
-  (set-activation-frame-argument! *val* index (stack-pop)) )
-\end{code:lisp}</p>
+  (set-activation-frame-argument! *val* index (stack-pop)) )</pre>
 
 
 <!--\indexR{функции!встраиваемые}-->
@@ -1455,8 +1371,7 @@
 
 
 <!--\indexE{INVOKE0@\protect<code><span class="func">INVOKE</span></code>\protect\ii{n}!специализация}-->
-<p>\begin{code:lisp}
-(define (INVOKE1 address)
+<pre>(define (INVOKE1 address)
   (case address
     ((car)     (list 90))
     ((cdr)     (list 91))
@@ -1469,8 +1384,7 @@
 <p>(define-instruction (CALL1-car) 90
   (set! *val* (car *val*)) )
 (define-instruction (CALL1-cdr) 91
-  (set! *val* (cdr *val*)) )
-\end{code:lisp}</p>
+  (set! *val* (cdr *val*)) )</pre>
 
 <p>Естественно, аналогичные действия выполняются также для арностей 0, 2 и 3.
 Функция <code><span class="func">display</span></code> сделана встраиваемой исключительно ради облегчения отладки.
@@ -1483,8 +1397,7 @@
 
 
 <!--\indexC{ARITY="?}-->
-<p>\begin{code:lisp}
-(define (ARITY=? arity+1)
+<pre>(define (ARITY=? arity+1)
   (case arity+1
     ((1 2 3 4) (list (+ 70 arity+1)))
     (else      (list 75 arity+1)) ) )</p>
@@ -1496,8 +1409,7 @@
 
 <p>(define-instruction (ARITY=? arity+1) 75
   (unless (= (activation-frame-argument-length *val*) arity+1)
-    (signal-exception #f (list "Incorrect arity") ) ) )
-\end{code:lisp}</p>
+    (signal-exception #f (list "Incorrect arity") ) ) )</pre>
 
 <p>Учитывая весьма небольшую долю функций с переменной арностью, для них особого
 выигрыша подобные специализации не дадут.</p>
@@ -1518,9 +1430,7 @@
 кодируемых одним-единственным байтом. Генераторы байт-кодов для них одинаковы,
 так что хватит и одного примера:</p>
 
-<p>\begin{code:lisp}
-(define (RESTORE-ENV) (list 38))
-\end{code:lisp}</p>
+<pre>(define (RESTORE-ENV) (list 38))</pre>
 
 <p>\noindent
 А вот и их определения:</p>
@@ -1538,8 +1448,7 @@
 <!--\indexC{POP-FUNCTION}-->
 <!--\indexC{PRESERVE-ENV}   -->
 <!--\indexC{RESTORE-ENV}-->
-<p>\begin{code:lisp}
-(define-instruction (EXTEND-ENV) 32
+<pre>(define-instruction (EXTEND-ENV) 32
   (set! *env* (sr-extend* *env* *val*)) )</p>
 
 <p>(define-instruction (UNLINK-ENV) 33
@@ -1573,21 +1482,18 @@
   (preserve-environment) )</p>
 
 <p>(define-instruction (RESTORE-ENV) 38
-  (restore-environment) )
-\end{code:lisp}</p>
+  (restore-environment) )</pre>
 
 <p>Сохранение и восстановление окружения реализуется следующей парой функций:</p>
 
 
 <!--\indexC{preserve-environment}-->
 <!--\indexC{restore-environment}-->
-<p>\begin{code:lisp}
-(define (preserve-environment)
+<pre>(define (preserve-environment)
   (stack-push *env*) )</p>
 
 <p>(define (restore-environment)
-  (set! *env* (stack-pop)) )
-\end{code:lisp}</p>
+  (set! *env* (stack-pop)) )</pre>
 
 
 <!--\indexR{вызов!хвостовой}-->
@@ -1609,26 +1515,22 @@
 
 <!--\indexC{invoke}-->
 <!--\indexCS{invoke}{<code><span class="func">closure</span></code>}-->
-<p>\begin{code:lisp}
-(define-generic (invoke (f) tail?)
+<pre>(define-generic (invoke (f) tail?)
   (signal-exception #f (list "Not a function" f)) )</p>
 
 <p>(define-method (invoke (f closure) tail?)
   (unless tail? (stack-push *pc*))
   (set! *env* (closure-closed-environment f))
-  (set! *pc* (closure-code f)) )
-\end{code:lisp}</p>
+  (set! *pc* (closure-code f)) )</pre>
 
 <p>Так как <code><span class="func">invoke</span></code> является обобщённой, это позволяет распространить её и на
 другие объекты: например, на примитивы, представляемые замыканиями.</p>
 
 
 <!--\indexCS{invoke}{<code><span class="func">primitive</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (invoke (f primitive) tail?)
+<pre>(define-method (invoke (f primitive) tail?)
   (unless tail? (stack-push *pc*))
-  ((primitive-address f)) )
-\end{code:lisp}</p>
+  ((primitive-address f)) )</pre>
 
 <p>Естественно, значение <code><span class="func">tail?</span></code> надо учитывать при любом вызове функции. Для
 примитивов тоже важно, прерываются ли данным вызовом вычисления или же наоборот,
@@ -1660,8 +1562,7 @@
 <!--\indexC{make-code-segment}-->
 <!--\indexC{code-prologue}-->
 <!--\indexC{standalone-producer-c7}-->
-<p>\begin{code:lisp}
-(define (chapter7-interpreter)
+<pre>(define (chapter7-interpreter)
   (define (toplevel)
     (display ((standalone-producer-c7 (read)) 100))
     (toplevel) )
@@ -1683,8 +1584,7 @@
 
 <p>(define (code-prologue)
   (set! finish-pc 0)
-  (FINISH) )
-\end{code:lisp}</p>
+  (FINISH) )</pre>
 
 
 <!--\indexR{виртуальная машина!остановка работы}-->
@@ -1700,10 +1600,8 @@
 
 
 <!--\indexC{FINISH}-->
-<p>\begin{code:lisp}
-(define-instruction (FINISH) 20
-  (*exit* *val*) )
-\end{code:lisp}</p>
+<pre>(define-instruction (FINISH) 20
+  (*exit* *val*) )</pre>
 
 <p>Её задачей будет остановить виртуальную машину и передать наверх значение
 регистра <code><span class="func">*val*</span></code> на момент завершения работы. Такого поведения мы добиваемся
@@ -1711,8 +1609,7 @@
 
 
 <!--\indexC{run-machine}-->
-<p>\begin{code:lisp}
-(define (run-machine stack-size pc code constants global-names)
+<pre>(define (run-machine stack-size pc code constants global-names)
   (set! sg.current (make-vector (length global-names) undefined-value))
   (set! sg.current.names global-names)
   (set! *constants*   constants)
@@ -1728,8 +1625,7 @@
   (set! *pc*          pc)
   (call/cc (lambda (exit)
              (set! *exit* exit)
-             (run) )) )
-\end{code:lisp}</p>
+             (run) )) )</pre>
 
 <h3 id="compilation/instruction/ssect:catch-breath">Передышка</h3>
 
@@ -1824,8 +1720,7 @@
 <!--\indexC{save-stack}-->
 <!--\indexC{restore-stack}-->
 <!--\indexC{vector-copy"!}-->
-<p>\begin{code:lisp}
-(define (save-stack)
+<pre>(define (save-stack)
   (let ((copy (make-vector *stack-index*)))
     (vector-copy! *stack* copy 0 *stack-index*)
     copy ) )</p>
@@ -1838,8 +1733,7 @@
   (let copy ((i start))
     (when (< i end)
           (vector-set! new i (vector-ref old i))
-          (copy (+ i 1)) ) ) )
-\end{code:lisp}</p>
+          (copy (+ i 1)) ) ) )</pre>
 
 <p>Продолжения имеют личный класс значений и особый протокол вызова. При
 активации продолжения следует восстановить стек, положить переданное значение
@@ -1853,8 +1747,7 @@
 
 <!--\indexC{continuation}-->
 <!--\indexCS{invoke}{<code><span class="func">continuation</span></code>}-->
-<p>\begin{code:lisp}
-(define-class continuation Object
+<pre>(define-class continuation Object
   ( stack ) )</p>
 
 <p>(define-method (invoke (f continuation) tail?)
@@ -1863,8 +1756,7 @@
         (restore-stack (continuation-stack f))
         (set! *val* (activation-frame-argument *val* 0))
         (set! *pc* (stack-pop)) )
-      (signal-exception #f (list "Incorrect arity" 'continuation)) ) )
-\end{code:lisp}</p>
+      (signal-exception #f (list "Incorrect arity" 'continuation)) ) )</pre>
 
 
 <!--\indexCS{call/cc}{огранизация стека}-->
@@ -1879,8 +1771,7 @@
 
 
 <!--\indexC{call/cc}-->
-<p>\begin{code:lisp}
-(definitial call/cc
+<pre>(definitial call/cc
   (let* ((arity 1)
          (arity+1 (+ 1 arity)) )
     (make-primitive
@@ -1894,8 +1785,7 @@
               (set! *fun* f)       ; полезно для отладки
               (invoke f #t) )
             (signal-exception #t (list "Incorrect arity"
-                                       'call/cc )) ) ) ) ) )
-\end{code:lisp}</p>
+                                       'call/cc )) ) ) ) ) )</pre>
 
 <p>Итого, каноническая реализация <code><span class="func">call/cc</span></code> выполняет одно полное копирование
 стека при своём вызове, а также по дополнительному копированию при каждой
@@ -1929,9 +1819,7 @@
 
 <p>Форма <code><span class="func">bind-exit</span></code> имеет следующий синтаксис:</p>
 
-<p>\begin{code:lisp}
-(bind-exit (|\ii{переменная}|) |\ii{формы}|...)
-\end{code:lisp}</p>
+<pre>(bind-exit (|\ii{переменная}|) |\ii{формы}|...)</pre>
 
 
 <!--\indexC{call/ep}-->
@@ -1956,29 +1844,23 @@
 
 
 <!--\indexC{escape}-->
-<p>\begin{code:lisp}
-(define-class escape Object
-  ( stack-index ) )
-\end{code:lisp}</p>
+<pre>(define-class escape Object
+  ( stack-index ) )</pre>
 
 <p>Для определения специальной формы сперва необходимо добавить соответствующую
 обработку в функцию <code><span class="func">meaning</span></code>, синтаксический анализатор компилируемых форм.
 Её задачей является распознавание наших нововведений:</p>
 
-<p>\begin{code:lisp}
-... ((bind-exit) (meaning-bind-exit (caadr e) (cddr e) r tail?)) ...
-\end{code:lisp}</p>
+<pre>... ((bind-exit) (meaning-bind-exit (caadr e) (cddr e) r tail?)) ...</pre>
 
 <p>Затем определяется способ предобработки данных форм:</p>
 
 
 <!--\indexC{meaning-bind-exit}-->
-<p>\begin{code:lisp}
-(define (meaning-bind-exit n e+ r tail?)
+<pre>(define (meaning-bind-exit n e+ r tail?)
   (let* ((r2 (r-extend* r (list n)))
          (m+ (meaning-sequence e+ r2 #t)) )
-    (ESCAPER m+) ) )
-\end{code:lisp}</p>
+    (ESCAPER m+) ) )</pre>
 
 <p>Обработка заключается в объединении форм, составляющих тело <code><span class="func">bind-exit</span></code>,
 в последовательность, которая вычисляется в лексическом окружении, расширенном
@@ -1991,8 +1873,7 @@
 <!--\indexC{PUSH-ESCAPER}-->
 <!--\indexC{POP-ESCAPER}-->
 <!--\indexC{escape-tag}-->
-<p>\begin{code:lisp}
-(define (ESCAPER m+)
+<pre>(define (ESCAPER m+)
   (append (PUSH-ESCAPER (+ 1 (length m+)))
           m+ (RETURN) (POP-ESCAPER)) )</p>
 
@@ -2014,8 +1895,7 @@
     (set! *env* (sr-extend* *env* frame))
     (stack-push escape)
     (stack-push escape-tag)
-    (stack-push (+ *pc* offset)) ) )
-\end{code:lisp}</p>
+    (stack-push (+ *pc* offset)) ) )</pre>
 
 <p>\ForLayout{display}{\smallskip}</p>
 
@@ -2059,8 +1939,7 @@
 
 <!--\indexCS{invoke}{<code><span class="func">escape</span></code>}-->
 <!--\indexC{escape-valid"?}-->
-<p>\begin{code:lisp}
-(define-method (invoke (f escape) tail?)
+<pre>(define-method (invoke (f escape) tail?)
   (if (= (+ 1 1) (activation-frame-argument-length *val*))
       (if (escape-valid? f)
           (begin (set! *stack-index* (escape-stack-index f))
@@ -2073,8 +1952,7 @@
   (let ((index (escape-stack-index f)))
     (and (>= *stack-index* index)
          (eq? f (vector-ref *stack* (- index 3)))
-         (eq? escape-tag (vector-ref *stack* (- index 2))) ) ) )
-\end{code:lisp}</p>
+         (eq? escape-tag (vector-ref *stack* (- index 2))) ) ) )</pre>
 
 <p>При выполнении перехода сначала проверяется арность соответствующей формы,
 затем стек откатывается до состояния, которое он имел при входе в форму
@@ -2126,10 +2004,8 @@
 
 <!--\indexC{dynamic}-->
 <!--\indexC{dynamic-let}-->
-<p>\begin{code:lisp}
-(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|)
-(dynamic |\ii{переменная}|)
-\end{code:lisp}</p>
+<pre>(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|)
+(dynamic |\ii{переменная}|)</pre>
 
 <p>Форма <code><span class="func">dynamic-let</span></code> связывает \ii{переменную} со \ii{значением} на время
 вычисления \ii{тела}. Текущее значение динамической переменной можно получить
@@ -2138,22 +2014,19 @@
 
 <p>Итак, добавляем две новые формы в синтаксический анализатор <code><span class="func">meaning</span></code>:</p>
 
-<p>\begin{code:lisp}
-...
+<pre>...
 ((dynamic)     (meaning-dynamic-reference (cadr e) r tail?))
 ((dynamic-let) (meaning-dynamic-let (car (cadr e))
                                     (cadr (cadr e))
                                     (cddr e) r tail? ))
-...
-\end{code:lisp}</p>
+...</pre>
 
 <p>Реализуем их обработку:</p>
 
 
 <!--\indexC{meaning-dynamic-let}-->
 <!--\indexC{meaning-dynamic-reference}-->
-<p>\begin{code:lisp}
-(define (meaning-dynamic-let n e e+ r tail?)
+<pre>(define (meaning-dynamic-let n e e+ r tail?)
   (let ((index (get-dynamic-variable-index n))
         (m (meaning e r #f))
         (m+ (meaning-sequence e+ r #f)) )
@@ -2161,8 +2034,7 @@
 
 <p>(define (meaning-dynamic-reference n r tail?)
   (let ((index (get-dynamic-variable-index n)))
-    (DYNAMIC-REF index) ) )
-\end{code:lisp}</p>
+    (DYNAMIC-REF index) ) )</pre>
 
 <p>В результате получаем три новых генератора:</p>
 
@@ -2170,24 +2042,20 @@
 <!--\indexC{DYNAMIC-PUSH}-->
 <!--\indexC{DYNAMIC-POP}-->
 <!--\indexC{DYNAMIC-REF}-->
-<p>\begin{code:lisp}
-(define (DYNAMIC-PUSH index) (list 242 index))
+<pre>(define (DYNAMIC-PUSH index) (list 242 index))
 (define (DYNAMIC-POP)        (list 241))
-(define (DYNAMIC-REF index)  (list 240 index))
-\end{code:lisp}</p>
+(define (DYNAMIC-REF index)  (list 240 index))</pre>
 
 <p>Эти генераторы соответствуют трём новым инструкциям виртуальной машины:</p>
 
-<p>\begin{code:lisp}
-(define-instruction (DYNAMIC-PUSH index) 242
+<pre>(define-instruction (DYNAMIC-PUSH index) 242
   (push-dynamic-binding index *val*) )</p>
 
 <p>(define-instruction (DYNAMIC-POP) 241
   (pop-dynamic-binding) )</p>
 
 <p>(define-instruction (DYNAMIC-REF index) 240
-  (set! *val* (find-dynamic-value index)) )
-\end{code:lisp}</p>
+  (set! *val* (find-dynamic-value index)) )</pre>
 
 
 <!--\indexR{принцип нулевых издержек}-->
@@ -2232,8 +2100,7 @@
 <!--\indexC{search-dynenv-index}-->
 <!--\indexC{pop-dynamic-binding}-->
 <!--\indexC{push-dynamic-binding}-->
-<p>\begin{code:lisp}
-(define dynenv-tag (list '*dynenv*))</p>
+<pre>(define dynenv-tag (list '*dynenv*))</p>
 
 <p>(define (search-dynenv-index)
   (let search ((i (- *stack-index* 1)))
@@ -2252,8 +2119,7 @@
   (stack-push (search-dynenv-index))
   (stack-push value)
   (stack-push index)
-  (stack-push dynenv-tag) )
-\end{code:lisp}</p>
+  (stack-push dynenv-tag) )</pre>
 
 
 <!--\indexR{символы!адреса при компиляции}-->
@@ -2267,16 +2133,14 @@
 
 <!--\indexC*{dynamic-variables}{*dynamic-variables*}-->
 <!--\indexC{get-dynamic-variable-index}-->
-<p>\begin{code:lisp}
-(define *dynamic-variables* '())</p>
+<pre>(define *dynamic-variables* '())</p>
 
 <p>(define (get-dynamic-variable-index n)
   (let ((where (memq n *dynamic-variables*)))
     (if where (length where)
         (begin
           (set! *dynamic-variables* (cons n *dynamic-variables*))
-          (length *dynamic-variables*) ) ) ) )
-\end{code:lisp}</p>
+          (length *dynamic-variables*) ) ) ) )</pre>
 
 <p>Каждой динамической переменной ставится в соответствие индекс, по которому её
 можно отыскать в окружении динамических переменных, располагаемом в стеке.
@@ -2382,16 +2246,12 @@
 время вычислений, представляемых её телом. Таким образом, она имеет следующий
 синтаксис:</p>
 
-<p>\begin{code:lisp}
-(monitor |\ii{обработчик}| |\ii{формы}|...)
-\end{code:lisp}</p>
+<pre>(monitor |\ii{обработчик}| |\ii{формы}|...)</pre>
 
 <p>Соответственно, в синтаксическом анализаторе <code><span class="func">meaning</span></code> появляется новое
 правило:</p>
 
-<p>\begin{code:lisp}
-... ((monitor) (meaning-monitor (cadr e) (cddr e) r tail?)) ...
-\end{code:lisp}</p>
+<pre>... ((monitor) (meaning-monitor (cadr e) (cddr e) r tail?)) ...</pre>
 
 <p>\ii{Обработчик} вычисляется и становится текущим обработчиком исключений.
 \ii{Формы}, составляющие тело <code><span class="func">meaning</span></code>, последовательно вычисляются
@@ -2436,22 +2296,18 @@
 
 
 <!--\indexC{meaning-monitor}-->
-<p>\begin{code:lisp}
-(define (meaning-monitor e e+ r tail?)
+<pre>(define (meaning-monitor e e+ r tail?)
   (let ((m (meaning e r #f))
         (m+ (meaning-sequence e+ r #f)) )
     (append m (PUSH-HANDLER) m+ (POP-HANDLER)) ) )</p>
 
 <p>(define (PUSH-HANDLER) (list 246))
-(define (POP-HANDLER)  (list 247))
-\end{code:lisp}</p>
+(define (POP-HANDLER)  (list 247))</pre>
 
 <p>Для обработки случаев возобновления невозобновляемого вводится дополнительная
 инструкция:</p>
 
-<p>\begin{code:lisp}
-(define (NON-CONT-ERR) (list 245))
-\end{code:lisp}</p>
+<pre>(define (NON-CONT-ERR) (list 245))</pre>
 
 <p>Инструкции <code><span class="func">PUSH-HANDLER</span></code> и <code><span class="func">POP-HANDLER</span></code> можно реализовать по-разному,
 так что сразу выделим их в отдельные функции:</p>
@@ -2459,13 +2315,11 @@
 
 <!--\indexC{PUSH-HANDLER}-->
 <!--\indexC{POP-HANDLER}-->
-<p>\begin{code:lisp}
-(define-instruction (PUSH-HANDLER) 246
+<pre>(define-instruction (PUSH-HANDLER) 246
   (push-exception-handler) )</p>
 
 <p>(define-instruction (POP-HANDLER) 247
-  (pop-exception-handler) )
-\end{code:lisp}</p>
+  (pop-exception-handler) )</pre>
 
 <p>Вот теперь примемся за работу. Определить, какой из обработчиков ближе всех
 к верхушке стека, не составляет проблем: это типичная задача, решаемая с помощью
@@ -2483,8 +2337,7 @@
 <!--\indexC{search-exception-handlers}-->
 <!--\indexC{push-exception-handler}-->
 <!--\indexC{pop-exception-handler}-->
-<p>\begin{code:lisp}
-(define (search-exception-handlers)
+<pre>(define (search-exception-handlers)
   (find-dynamic-value 0) )</p>
 
 <p>(define (push-exception-handler)
@@ -2492,8 +2345,7 @@
     (push-dynamic-binding 0 (cons *val* handlers)) ) )</p>
 
 <p>(define (pop-exception-handler)
-  (pop-dynamic-binding) )
-\end{code:lisp}</p>
+  (pop-dynamic-binding) )</pre>
 
 <p>Если вычисления проходят гладко, то находящиеся в стеке обработчики
 не вмешиваются в работу программы. Но при возникновении исключительной
@@ -2502,8 +2354,7 @@
 
 
 <!--\indexC{signal-exception}-->
-<p>\begin{code:lisp}
-(define (signal-exception continuable? exception)
+<pre>(define (signal-exception continuable? exception)
   (let ((handlers (search-exception-handlers))
         (v* (allocate-activation-frame (+ 2 1))) )
     (set-activation-frame-argument! v* 0 continuable?)
@@ -2515,8 +2366,7 @@
     (if continuable?
       (stack-push 2)   ; выполнится <code><span class="func">(POP-HANDLER)\,(RESTORE-ENV)\,(RETURN)</span></code>
       (stack-push 0) ) ; выполнится <code><span class="func">(NON-CONT-ERR)</span></code>
-    (invoke (car handlers) #t) ) )
-\end{code:lisp}</p>
+    (invoke (car handlers) #t) ) )</pre>
 
 
 <!--\indexR{исключения!дескрипторы}-->
@@ -2569,10 +2419,8 @@
 
 
 <!--\indexC{NON-CONT-ERR}-->
-<p>\begin{code:lisp}
-(define-instruction (NON-CONT-ERR) 245
-  (signal-exception #f (list "Non continuable exception continued")) )
-\end{code:lisp}</p>
+<pre>(define-instruction (NON-CONT-ERR) 245
+  (signal-exception #f (list "Non continuable exception continued")) )</pre>
 
 <p>Вот и всё, осталось только показать, как запускать виртуальную машину с учётом
 данных нововведений. Функция <code><span class="func">run-machine</span></code> теперь должна корректным образом
@@ -2583,8 +2431,7 @@
 
 <!--\indexC{run-machine}-->
 <!--\indexC{base-error-handler}-->
-<p>\begin{code:lisp}
-(define (run-machine stack-size pc code constants global-names dynamics)
+<pre>(define (run-machine stack-size pc code constants global-names dynamics)
   (define base-error-handler-primitive
     (make-primitive base-error-handler) )
   (set! sg.current (make-vector (length global-names) undefined-value))
@@ -2608,8 +2455,7 @@
 
 <p>(define (base-error-handler)
   (show-registers "Panic error! Contents of registers:")
-  (wrong "Abort") )
-\end{code:lisp}</p>
+  (wrong "Abort") )</pre>
 
 <p>Функция <code><span class="func">signal-exception</span></code> легко превращается в доступный пользователям языка
 примитив, что позволяет использовать её (вместе с <code><span class="func">monitor</span></code>) подобно
@@ -2629,14 +2475,12 @@
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-(monitor (lambda (c e) ((dynamic foo) 1))
+<pre>(monitor (lambda (c e) ((dynamic foo) 1))
   (let fact ((n 5))
     (if (= n 0) (/ 11 0)
         (* n (bind-exit (k)
                (dynamic-let (foo k)
-                 (fact (- n 1)) ) )) ) ) )
-\end{code:lisp}</p>
+                 (fact (- n 1)) ) )) ) ) )</pre>
 
 <p>Не следует вызывать переходы из ошибочного контекста в попытке быстро исправить
 ситуацию. Лучше сообщить об ошибке с помощью исключения и иметь в результате
@@ -2697,8 +2541,7 @@
 <!--\indexC{read-file}-->
 <!--\indexC{compile-file}-->
 <!--\indexC{write-result-file}-->
-<p>\begin{code:lisp}
-(define (read-file filename)
+<pre>(define (read-file filename)
   (call-with-input-file filename
     (lambda (in)
       (let gather ((e (read in)) (content '()))
@@ -2743,8 +2586,7 @@
       (write code out) (newline out) (newline out)
 
       (display ";;; Entry point" out) (newline out)
-      (write entry out) (newline out) ) ) )
-\end{code:lisp}</p>
+      (write entry out) (newline out) ) ) )</pre>
 
 
 <!--\indexC{*.scm}-->
@@ -2819,8 +2661,7 @@
 
 
 <!--\indexC{build-application}-->
-<p>\begin{code:lisp}
-(define (build-application application-name ofilename . ofilenames)
+<pre>(define (build-application application-name ofilename . ofilenames)
   (set! sg.current.names    '())
   (set! *dynamic-variables* '())
   (set! sg.current          (vector))
@@ -2838,8 +2679,7 @@
                            sg.current.names
                            *constants*
                            *code*
-                           entry-points ) ) ) )
-\end{code:lisp}</p>
+                           entry-points ) ) ) )</pre>
 
 
 <!--\indexR{исполнимый файл}-->
@@ -2875,8 +2715,7 @@
 
 <!--\indexC{install-object-file"!}-->
 <!--\indexC{install-code"!}-->
-<p>\begin{code:lisp}
-(define (install-object-file! filename)
+<pre>(define (install-object-file! filename)
   (let ((ofilename (string-append filename ".so")))
     (if (probe-file ofilename)
         (call-with-input-file ofilename
@@ -2897,8 +2736,7 @@
 <p>(define (install-code! code)
   (let ((start (vector-length *code*)))
     (set! *code* (vector-append *code* code))
-    start ) )
-\end{code:lisp}</p>
+    start ) )</pre>
 
 <p>\ForLayout{display}{\begingroup\lstset{aboveskip=\smallskipamount}}</p>
 
@@ -2916,8 +2754,7 @@
 
 
 <!--\indexC{relocate-constants"!}-->
-<p>\begin{code:lisp}
-(define CONSTANT-code 9)</p>
+<pre>(define CONSTANT-code 9)</p>
 
 <p>(define (relocate-constants! code constants)
   (define n (vector-length *constants*))
@@ -2930,8 +2767,7 @@
                    (quotation (vector-ref constants i)) )
               (vector-set! code (+ pc 1) (+ n i)) ) )
           (scan (+ pc (instruction-size code pc))) ) ) ) )
-  (set! *constants* (vector-append *constants* constants)) )
-\end{code:lisp}</p>
+  (set! *constants* (vector-append *constants* constants)) )</pre>
 
 
 <!--\indexR{компоновка!глобальных переменных}-->
@@ -2946,8 +2782,7 @@
 
 
 <!--\indexC{relocate-globals"!}-->
-<p>\begin{code:lisp}
-(define GLOBAL-REF-code         7)
+<pre>(define GLOBAL-REF-code         7)
 (define CHECKED-GLOBAL-REF-code 8)
 (define SET-GLOBAL!-code       27)</p>
 
@@ -2970,8 +2805,7 @@
           (scan (+ pc (instruction-size code pc))) ) ) ) )
   (let ((v (make-vector (length sg.current.names) undefined-value)))
     (vector-copy! sg.current v 0 (vector-length sg.current))
-    (set! sg.current v) ) )
-\end{code:lisp}</p>
+    (set! sg.current v) ) )</pre>
 
 <p>\ForLayout{display}{\endgroup\endgroup}% \lstset</p>
 
@@ -2981,8 +2815,7 @@
 
 
 <!--\indexC{relocate-dynamics"!}-->
-<p>\begin{code:lisp}
-(define DYNAMIC-REF-code 240)
+<pre>(define DYNAMIC-REF-code 240)
 (define DYNAMIC-PUSH-code 242)</p>
 
 <p>(define (relocate-dynamics! code dynamics)
@@ -2998,8 +2831,7 @@
                    (name (list-ref dynamics (- i 1))) )
               (vector-set! code (+ pc 1)
                            (get-dynamic-variable-index name) ) ) )
-          (scan (+ pc (instruction-size code pc))) ) ) ) ) )
-\end{code:lisp}</p>
+          (scan (+ pc (instruction-size code pc))) ) ) ) ) )</pre>
 
 <p>Обратите внимание на то, как и почему здесь используется
 <code><span class="func">instruction-size</span></code>. Также стоит отметить, что глупо просматривать вектор
@@ -3021,14 +2853,12 @@
 предлагаемого в <span class="cite">[<a href="z1_bibliography.xhtml#qp91a">qp91a</a>]</span> для <span class="logo">EuLisp</span>. Следующая директива описывает
 экспортируемые переменные модуля <code><span class="func">mod</span></code>:</p>
 
-<p>\begin{code:lisp}
-(ordered-union
+<pre>(ordered-union
   (only (fact) (expose "fact"))
   (union (except-pattern ("fib*") (expose "fib"))
          (rename ((call/cc call-with-current-continuation))
            (expose "scheme") )
-         (expose "numeric") ) )
-\end{code:lisp}</p>
+         (expose "numeric") ) )</pre>
 
 <p>Предположим, запись <code><span class="func">foo@mod</span></code> означает переменную с именем <code><span class="func">foo</span></code> в модуле
 <code><span class="func">mod</span></code>. Также допустим, что модуль <code><span class="func">fact</span></code> определяет переменные <code><span class="func">fact</span></code> и
@@ -3059,8 +2889,7 @@
 
 
 <!--\indexC{run-application}-->
-<p>\begin{code:lisp}
-(define (run-application stack-size filename)
+<pre>(define (run-application stack-size filename)
   (if (probe-file filename)
       (call-with-input-file filename
         (lambda (in)
@@ -3096,8 +2925,7 @@
           (call/cc (lambda (exit)
                      (set! *exit* exit)
                      (run) )) ) )
-      (static-wrong "No such file" filename) ) )
-\end{code:lisp}</p>
+      (static-wrong "No such file" filename) ) )</pre>
 
 
 <!--\indexC{show-exception}-->
@@ -3196,8 +3024,7 @@ dumped"</span></code>.} сообщений об ошибках на основе
 <code><span class="func">fact.scm</span></code>, то следующая программа должна успешно компилироваться и выдавать
 ожидаемое число 120:</p>
 
-<p>\begin{code:lisp}
-(begin (load "fact")
+<pre>(begin (load "fact")
        (fact 5) )
 \end{code:lisp}
 \end{exercise}</p>
@@ -3221,8 +3048,7 @@ dumped"</span></code>.} сообщений об ошибках на основе
 <code><span class="func">fact.so</span></code> это объектный файл, то следующая программа должна создать новый
 модуль <code><span class="func">nfact.so</span></code>, где переменная <code><span class="func">fact</span></code> имеет имя <code><span class="func">factorial</span></code>:</p>
 
-<p>\begin{code:lisp}
-(build-application-with-renaming-variables
+<pre>(build-application-with-renaming-variables
  "fact.so" "nfact.so" '((fact factorial)) )
 \end{code:lisp}
 \end{exercise}</p>

@@ -69,11 +69,9 @@
 записывать его подобно другим циклам. Лисп же вполне возможно научить понимать
 \ic{(repeat :while \ii{p} :unless \ii{q} :do \ii{тело}...)} как</p>
 
-<p>\begin{code:lisp}
-(let loop ()
+<pre>(let loop ()
   (if |\ii{p}| (begin (if (not |\ii{q}|) (begin |\ii{тело}|...))
-               (loop) )) )
-\end{code:lisp}</p>
+               (loop) )) )</pre>
 
 
 <!--\indexC{loop}-->
@@ -252,11 +250,9 @@
 
 
 <!--\indexCS{prepare}{экзогенная}-->
-<p>\begin{code:lisp}
-(define (prepare expression directives)
+<pre>(define (prepare expression directives)
   (let ((macroexpand (generate-macroexpand directives)))
-    (really-prepare (macroexpand expression)) ) )
-\end{code:lisp}</p>
+    (really-prepare (macroexpand expression)) ) )</pre>
 
 <p>Возможны некоторые вариации этой идеи, которые мы разберём на примере
 компилятора в байт-код. \seePage[compilation/separate/ssect:build] Предположим,
@@ -345,10 +341,8 @@ run tmp.so < file.scm > file.so
 
 
 <!--\indexCS{prepare}{эндогенная}-->
-<p>\begin{code:lisp}
-(define (prepare expression)
-  (really-prepare (macroexpand expression)) )
-\end{code:lisp}</p>
+<pre>(define (prepare expression)
+  (really-prepare (macroexpand expression)) )</pre>
 
 
 <!--\indexC{define-macros}-->
@@ -515,10 +509,8 @@ S-выражения. Ничто не запрещает экспандеру т
 
 
 <!--\indexCS{macroexpand}{классический}-->
-<p>\begin{code:lisp}
-(macroexpand '(foo . |\ii{expr}|)) |$\leadsto$|
-   |$\leadsto$| (macroexpand ((find-expander 'foo) '(foo . |\ii{expr}|)))
-\end{code:lisp}</p>
+<pre>(macroexpand '(foo . |\ii{expr}|)) |$\leadsto$|
+   |$\leadsto$| (macroexpand ((find-expander 'foo) '(foo . |\ii{expr}|)))</pre>
 
 
 <!--\indexE{EPS}-->
@@ -538,10 +530,8 @@ S-выражения. Ничто не запрещает экспандеру т
 
 
 <!--\indexCS{macroexpand}{EPS}-->
-<p>\begin{code:lisp}
-(macroexpand '(foo . |\ii{expr}|)) |$\leadsto$|
-   |$\leadsto$| ((find-expander 'foo) '(foo . |\ii{expr}|) macroexpand)
-\end{code:lisp}</p>
+<pre>(macroexpand '(foo . |\ii{expr}|)) |$\leadsto$|
+   |$\leadsto$| ((find-expander 'foo) '(foo . |\ii{expr}|) macroexpand)</pre>
 
 
 <!--\indexC{macrolet}-->
@@ -637,11 +627,9 @@ S-выражения. Ничто не запрещает экспандеру т
 определить макрос через самого себя. Как, например, в следующем определении
 макроса <code><span class="func">while</span></code>:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (while condition . body)
+<pre>(define-abbreviation (while condition . body)
   `(if ,condition (begin (begin . body)
-                         (while ,condition . ,body) )) )
-\end{code:lisp}</p>
+                         (while ,condition . ,body) )) )</pre>
 
 <p>Помните, что в конце концов экспандер должен вернуть нормальную программу,
 поэтому после первого раскрытия макроса <code><span class="func">while</span></code> он продолжит раскрывать
@@ -653,12 +641,10 @@ S-выражения. Ничто не запрещает экспандеру т
 вызвала его раскрытие, но её недальновидное использование приводит к печальным
 последствиям.</p>
 
-<p>\begin{code:lisp}
-(defmacro while (&whole call)    |\dialect<span class="logo">Common Lisp</span>|
+<pre>(defmacro while (&whole call)    |\dialect<span class="logo">Common Lisp</span>|
   (let ((condition (cadr call))
         (body      (cddr call)))
-    `(if ,condition (begin (begin . ,body) ,call)) ) )
-\end{code:lisp}</p>
+    `(if ,condition (begin (begin . ,body) ,call)) ) )</pre>
 
 
 <!--\indexR{мемоизация}-->
@@ -675,14 +661,12 @@ S-выражения. Ничто не запрещает экспандеру т
 сращиваться) <span class="cite">[<a href="z1_bibliography.xhtml#que92a">que92a</a>]</span>. После преобразования макрос <code><span class="func">while</span></code> будет
 выглядеть так:</p>
 
-<p>\begin{code:lisp}
-(defmacro while (&whole call)    |\dialect<span class="logo">Common Lisp</span>|
+<pre>(defmacro while (&whole call)    |\dialect<span class="logo">Common Lisp</span>|
   (let ((condition (cadr call))
         (body      (cddr call)) )
     (setf (car call) 'if)
     (setf (cdr call) `(,condition (begin (begin . ,body) ,call)))
-    call ) )
-\end{code:lisp}</p>
+    call ) )</pre>
 
 <p>Подобные проблемы с циклами возможны и в цитатах; они тоже могут вынуждать
 некоторые компиляторы надолго задуматься. \seePage[assignment/sect:quotation]</p>
@@ -707,10 +691,8 @@ S-выражения. Ничто не запрещает экспандеру т
 
 
 <!--\indexC{incredible}-->
-<p>\begin{code:lisp}
-(define-abbreviation (incredible x)
-  (call/cc (lambda (k) `(quote (,k ,x)))) )
-\end{code:lisp}</p>
+<pre>(define-abbreviation (incredible x)
+  (call/cc (lambda (k) `(quote (,k ,x)))) )</pre>
 
 
 <!--\indexR{продолжения (continuations)}-->
@@ -781,8 +763,7 @@ S-выражения. Ничто не запрещает экспандеру т
 <!--\indexC{naive-endogenous-macroexpander}-->
 <!--\indexC{install-macro"!}-->
 <!--\indexE{macros@\protect<code><span class="func">*macros*</span></code>}-->
-<p>\begin{code:lisp}
-(define *macros* '())</p>
+<pre>(define *macros* '())</p>
 
 <p>(define (install-macro! name expander)
   (set! *macros* (cons (cons name expander) *macros*)) )</p>
@@ -802,8 +783,7 @@ S-выражения. Ничто не запрещает экспандеру т
             (naive-endogenous-macroexpander (cdr exps)) )
           (let ((exp (expand-expression (car exps) *macros*)))
             (cons exp (naive-endogenous-macroexpander (cdr exps))) ) )
-      '() ) )
-\end{code:lisp}</p>
+      '() ) )</pre>
 
 <p>Эта функция принимает список выражений (считанный из подготавливаемого файла) и
 последовательно их обрабатывает, глядя в глобальную переменную <code><span class="func">*macros*</span></code>,
@@ -894,10 +874,8 @@ S-выражений, а не функция; такой функции во в�
 
 <!--\indexC{define-abbreviation}-->
 <!--\indexC{install-macro"!}-->
-<p>\begin{code:lisp}
-(define-abbreviation (define-abbreviation call . body)
-  `(install-macro! ',(car call) (lambda ,(cdr call) . ,body)) )
-\end{code:lisp}</p>
+<pre>(define-abbreviation (define-abbreviation call . body)
+  `(install-macro! ',(car call) (lambda ,(cdr call) . ,body)) )</pre>
 
 <p>Задачей этого макроса является установка нового определения в макросистему.
 Пусть для этой цели определена функция <code><span class="func">install-macro!</span></code>. Такой подход
@@ -1043,16 +1021,14 @@ S-выражений, а не функция; такой функции во в�
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-(define (fact n)
+<pre>(define (fact n)
   (if (= n 0) 1
       (* n (fact (- n 1))) ) )</p>
 
 <p>(define-abbreviation (factorial n)
   (if (and (integer? n) (> n 0))
       (fact n)
-      `(fact ,n) ) )
-\end{code:lisp}</p>
+      `(fact ,n) ) )</pre>
 
 
 <!--\indexE{tree-shaker}-->
@@ -1188,8 +1164,7 @@ S-выражений, а не функция; такой функции во в�
 
 
 <!--\indexC{expand-expression}-->
-<p>\begin{code:lisp}
-(define (expand-expression exp macroenv)
+<pre>(define (expand-expression exp macroenv)
   (define (evaluation? exp)
     (and (pair? exp)
          (eq? (car exp) 'eval-in-abbreviation-world) ) )</p>
@@ -1205,8 +1180,7 @@ S-выражений, а не функция; такой функции во в�
              (cons newcar (expand (cdr exp))) ) )
           (else exp) ) )</p>
 
-<p>  (expand exp) )
-\end{code:lisp}</p>
+<p>  (expand exp) )</pre>
 
 <p>Функция <code><span class="func">macro-eval</span></code> — это именно тот вычислитель, который реализует
 внутренний макроязык. Это может быть и обычная функция <code><span class="func">eval</span></code>, но
@@ -1218,10 +1192,8 @@ S-выражений, а не функция; такой функции во в�
 директивы для макроэкспандера, включённые в программу. Они, естественно,
 выполняются во время раскрытия макросов, поэтому вот так писать нельзя:</p>
 
-<p>\begin{code:lisp}
-(let ((x 33))
-  (eval-in-abbreviation-world (display x)) )
-\end{code:lisp}</p>
+<pre>(let ((x 33))
+  (eval-in-abbreviation-world (display x)) )</pre>
 
 
 <!--\indexC{compiler-let}-->
@@ -1237,40 +1209,32 @@ S-выражений, а не функция; такой функции во в�
 Верно и обратное: во время исполнения уже нет окружения раскрытия. Поэтому вот
 так использовать макросы тоже нельзя:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (foo ...) ...)
-(apply foo ...)
-\end{code:lisp}</p>
+<pre>(define-abbreviation (foo ...) ...)
+(apply foo ...)</pre>
 
 <p>Форма <code><span class="func">eval-in-abbreviation-world</span></code> снова позволяет определить
 <code><span class="func">define-abbreviation</span></code> как элементарный макрос:</p>
 
 
 <!--\indexC{define-abbreviation}-->
-<p>\begin{code:lisp}
-(define-abbreviation (define-abbreviation call . body)
+<pre>(define-abbreviation (define-abbreviation call . body)
   `(eval-in-abbreviation-world
      (install-macro! ',(car call) (lambda ,(cdr call) . ,body))
-     #t ) )
-\end{code:lisp}</p>
+     #t ) )</pre>
 
 <p>Главной особенностью данного определения является возможность размещать
 макроопределения где угодно, а не только на глобальном уровне. Следовательно,
 такая программа вполне допустима:</p>
 
-<p>\begin{code:lisp}
-(begin (define-abbreviation (foo x) ...)
-       (bar (foo 34)) )
-\end{code:lisp}</p>
+<pre>(begin (define-abbreviation (foo x) ...)
+       (bar (foo 34)) )</pre>
 
 <p>Хотя, конечно, чересчур сильная зависимость от порядка раскрытия макросов
 считается плохим вкусом, равно как и извращения вроде</p>
 
-<p>\begin{code:lisp}
-(if (bar) (begin (define-abbreviation (foo x))
+<pre>(if (bar) (begin (define-abbreviation (foo x))
                  (hux) )
-          (foo 35) )
-\end{code:lisp}</p>
+          (foo 35) )</pre>
 
 
 <!--\indexR{макроопределения!глобальные}-->
@@ -1312,12 +1276,10 @@ S-выражений, а не функция; такой функции во в�
 
 
 <!--\indexC{apply}-->
-<p>\begin{code:lisp}
-(define-abbreviation (apply-foo x y z)
+<pre>(define-abbreviation (apply-foo x y z)
   (if (memq 'binary-apply *features*)
       `(apply foo (cons x (cons y z)))
-      `(apply foo x y z) ) )
-\end{code:lisp}</p>
+      `(apply foo x y z) ) )</pre>
 
 <p>Переменная <code><span class="func">*features*</span></code> должна быть доступна экспандеру. Легче всего её
 создать с помощью <code><span class="func">eval-in-abbreviation-world</span></code>, передав ей соответствующую
@@ -1325,10 +1287,8 @@ S-выражений, а не функция; такой функции во в�
 макросов, что приведёт к созданию необходимой переменной. Это может делаться,
 например, в каком-нибудь автоматически загружаемом конфигурационном файле:</p>
 
-<p>\begin{code:lisp}
-(eval-in-abbreviation-world
-  (define *features* '(31bit-fixnum binary-apply)) )
-\end{code:lisp}</p>
+<pre>(eval-in-abbreviation-world
+  (define *features* '(31bit-fixnum binary-apply)) )</pre>
 
 <h3 id="macros/define/ssect:simult">Совместные вычисления</h3>
 
@@ -1342,8 +1302,7 @@ S-выражений, а не функция; такой функции во в�
 
 
 <!--\indexCS{macroexpand}{параллельный}-->
-<p>\begin{code:lisp}
-(define (simultaneous-eval-macroexpander exps)
+<pre>(define (simultaneous-eval-macroexpander exps)
   (define (macro-definition? exp)
     (and (pair? exp)
          (eq? (car exp) 'define-abbreviation) ) )</p>
@@ -1360,8 +1319,7 @@ S-выражений, а не функция; такой функции во в�
           (let ((e (expand-expression (car exps) *macros*)))
             (eval e)
             (cons e (simultaneous-eval-macroexpander (cdr exps))) ) )
-      '() ) )
-\end{code:lisp}</p>
+      '() ) )</pre>
 
 <p>Обратите внимание на вычислители: <code><span class="func">eval</span></code> отвечает за вычисление готовых
 выражений целевого языка, а <code><span class="func">macro-eval</span></code> за вычисление выражений макроязыка.
@@ -1490,15 +1448,13 @@ S-выражений, а не функция; такой функции во в�
 
 
 <!--\indexC{define-alias}-->
-<p>\begin{code:lisp}
-(define-abbreviation (define-alias newname oldname)
+<pre>(define-abbreviation (define-alias newname oldname)
   `(define-abbreviation (,newname . parameters)
      `(,',oldname . ,parameters) ) )</p>
 
 <p>(define-abbreviation (define-alias newname oldname)
   `(define-abbreviation (,newname . parameters)
-     (cons ',oldname parameters) ) )
-\end{code:lisp}</p>
+     (cons ',oldname parameters) ) )</pre>
 
 
 <!--\indexR{макроопределения!как синтаксические маркеры}-->
@@ -1537,8 +1493,7 @@ S-выражений, а не функция; такой функции во в�
         \seePage[objects/accomp/maker/src:fix-maker]
         А можно было бы написать для этого специальный макрос:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (generate-vector-of-fix-makers n)
+<pre>(define-abbreviation (generate-vector-of-fix-makers n)
   (let* ((numbers (iota 0 n))
          (variables (map (lambda (i) (gensym)) numbers)) )
     `(case size
@@ -1656,11 +1611,9 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 в модулях, которые динамически загрузят модуль с определениями, —
 <code><span class="func">define-meroonet-macro</span></code> можно реализовать следующим образом:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (define-meroonet-macro call . body)f
+<pre>(define-abbreviation (define-meroonet-macro call . body)f
   `(begin (define-abbreviation ,call . ,body)
-          (eval '(define-abbreviation ,call . ,body)) ) )
-\end{code:lisp}</p>
+          (eval '(define-abbreviation ,call . ,body)) ) )</pre>
 
 <h2 id="macros/sect:eval-and-expand">Вычисления и макрораскрытие</h2>
 
@@ -1701,10 +1654,8 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 содержащими макросы, но значит ли это, что она захватывает окружающие её
 макроопределения? Другими словами, если написать</p>
 
-<p>\begin{code:lisp}
-(let-syntax ((foo ...))
-  (eval/ce (read)) )
-\end{code:lisp}</p>
+<pre>(let-syntax ((foo ...))
+  (eval/ce (read)) )</pre>
 
 <p>\noindent
 то раскроет ли <code><span class="func">eval/ce</span></code> макровызовы <code><span class="func">foo</span></code> в считанном выражении? Если да,
@@ -1720,11 +1671,9 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 Предположим, ранее мы определили весьма полезный макрос <code><span class="func">when</span></code>. Будет ли
 работать следующее определение?</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (whenever condition . action)
+<pre>(define-abbreviation (whenever condition . action)
   (when condition (display '(whenever is called)))
-  `(when ,condition . ,action) )
-\end{code:lisp}</p>
+  `(when ,condition . ,action) )</pre>
 
 <p>В этом макросе <code><span class="func">when</span></code> используется дважды. Второй раз приходится на результат
 раскрытия, так что здесь проблем нет. Но вот в первый раз <code><span class="func">when</span></code> используется
@@ -1734,21 +1683,17 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 не в макроопределениях! Макрос <code><span class="func">when</span></code>, доступный в том числе во время самого
 процесса раскрытия, должен определяться вот так:</p>
 
-<p>\begin{code:lisp}
-(eval-in-abbreviation-world
+<pre>(eval-in-abbreviation-world
   (define-abbreviation (when condition . body)
-    `(if ,condition (begin . ,body)) ) )
-\end{code:lisp}</p>
+    `(if ,condition (begin . ,body)) ) )</pre>
 
 <p>Похожая ситуация возникает и в выражении</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (foo)
+<pre>(define-abbreviation (foo)
   (define-abbreviation (bar)
     (when ...)
     (wrek) )
-  (hux) )
-\end{code:lisp}</p>
+  (hux) )</pre>
 
 
 <!--\indexR{бесконечная регрессия}-->
@@ -1804,14 +1749,12 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 Не надо, дорвавшись до них, тут же бежать показывать своё мастерство с помощью
 чего-то подобного:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (foo x)
+<pre>(define-abbreviation (foo x)
   (call/cc (lambda (k)
              (set! the-k k)
              x )) )
 (define-abbreviation (bar y)
-  (the-k y) )
-\end{code:lisp}</p>
+  (the-k y) )</pre>
 
 <h2 id="macros/sect:usage">Применения макросов</h2>
 
@@ -1848,12 +1791,10 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 можно обеспечить, используя везде специальный макрос, скажем, <code><span class="func">meroon-if</span></code>,
 который определяется следующим образом:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (meroon-if condition consequent . alternant)
+<pre>(define-abbreviation (meroon-if condition consequent . alternant)
   `(if (let ((tmp ,condition))
          (or tmp (null? tmp)) )
-      ,consequent . ,alternant ) )
-\end{code:lisp}</p>
+      ,consequent . ,alternant ) )</pre>
 
 <p>Естественно, подобных уловок можно избежать, если изначально правильно писать
 программы. Но, увы, не все программы хорошо написаны, а среди «плохих» вполне
@@ -1872,16 +1813,14 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">es
 лишь реализовать всё самостоятельно. Для этого достаточно связать необходимую
 функцию с одноимённым макросом:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (define-inline call . body)
+<pre>(define-abbreviation (define-inline call . body)
   (let ((name      (car call))
         (variables (cdr call)) )
     `(begin
        (define-abbreviation (,name . arguments)
          (cons (cons 'lambda (cons ',variables ',body))
                arguments ) )
-       (define ,call (,name . ,variables)) ) ) )
-\end{code:lisp}</p>
+       (define ,call (,name . ,variables)) ) ) )</pre>
 
 
 <!--\indexR{функции!встраиваемые!рекурсия}-->
@@ -1970,22 +1909,18 @@ matching), например, рассмотренные в работах \cite{
 
 
 <!--\indexC{define-handy-method}-->
-<p>\begin{code:lisp}
-(define-handy-method (double (o Point))
+<pre>(define-handy-method (double (o Point))
   (set! x (* 2 x))
   (set! y (* 2 y))
-  o )
-\end{code:lisp}</p>
+  o )</pre>
 
 <p>\noindent
 вместо такого ужаса:</p>
 
-<p>\begin{code:lisp}
-(define-method (double (o Point))
+<pre>(define-method (double (o Point))
   (set-Point-x! o (* 2 (Point-x o)))
   (set-Point-y! o (* 2 (Point-y o)))
-  o )
-\end{code:lisp}</p>
+  o )</pre>
 
 <p>Макрос <code><span class="func">define-handy-method</span></code>, соответственно, должен пройтись по своему телу
 и заменить все ссылки и присваивания переменным, чьи имена совпадают с именами
@@ -2073,14 +2008,12 @@ S-выражение, в котором могут быть и другие ма
 
 
 <!--\indexC{acons}-->
-<p>\begin{code:lisp}
-(define-abbreviation (acons key value alist)
+<pre>(define-abbreviation (acons key value alist)
   `(let ((f cons)) (f (f ,key ,value) ,alist)) )</p>
 
 <p>(let ((cons list)
       (f #f) )
-  (acons 'false f '()) )
-\end{code:lisp}</p>
+  (acons 'false f '()) )</pre>
 
 <p>Переменная <code><span class="func">cons</span></code>, оказавшись в раскрытом макросе <code><span class="func">acons</span></code>, будет
 ссылаться не на ту <code><span class="func">cons</span></code>, к которой все привыкли, а на локальную переменную
@@ -2098,11 +2031,9 @@ S-выражение, в котором могут быть и другие ма
 неповторимое и гарантированно уникальное в текущем лексическом окружении имя.
 Поражаясь простоте решения, невозмутимо пишем:</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (acons key value alist)
+<pre>(define-abbreviation (acons key value alist)
   (let ((f (gensym)))
-    `(let ((,f cons)) (,f (,f ,key ,value) ,alist)) ) )
-\end{code:lisp}</p>
+    `(let ((,f cons)) (,f (,f ,key ,value) ,alist)) ) )</pre>
 
 <p>С первой проблемой, касающейся ссылки на <code><span class="func">cons</span></code> в макросе, разобраться будет
 сложнее. В данном случае хочется иметь какой-то механизм, с помощью которого
@@ -2117,14 +2048,12 @@ S-выражение, в котором могут быть и другие ма
 cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Но иногда необходимо связать локальную переменную
 с переменной в раскрытом макросе, как в следующем примере:</p>
 
-<p>\begin{code:lisp}
-(let ((results '())
+<pre>(let ((results '())
       (compose cons) )
   (let-syntax ((push (syntax-rules ()
                       ((push e) (set! results (compose e results))) )))
     |$\pi$|
-    results ) )
-\end{code:lisp}</p>
+    results ) )</pre>
 
 <p>Мы хотим, чтобы во всём теле $\pi$ этого выражения можно было использовать
 макрос <code><span class="func">push</span></code>, который присоединяет свой аргумент к переменной <code><span class="func">results</span></code>
@@ -2166,13 +2095,11 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 
 <!--\indexC{loop}-->
-<p>\begin{code:lisp}
-(define-syntax loop
+<pre>(define-syntax loop
   (syntax-rules ()
     ((loop e1 e2 ...)
      (call/cc (lambda (exit)
-                (let loop () e1 e2 ... (loop)) )) ) ) )
-\end{code:lisp}</p>
+                (let loop () e1 e2 ... (loop)) )) ) ) )</pre>
 
 <p>\noindent
 то из него нельзя будет выйти таким образом, потому что любое упоминание
@@ -2203,26 +2130,22 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 содержащий созданные переменные. Итого, предыдущий пример переписывается
 следующим образом:</p>
 
-<p>\begin{code:lisp}
-(let ((results '())
+<pre>(let ((results '())
       (compose cons) )
   (with-aliases ((s set!) (r results) (c compose))
     (let-abbreviation (((push e)
                         `(,s ,r (,c ,e ,r)) ))
       |$\pi$|
-      results ) ) )
-\end{code:lisp}</p>
+      results ) ) )</pre>
 
 <p>\noindent
 А пример с <code><span class="func">loop</span></code> теперь выглядит вот так:</p>
 
-<p>\begin{code:lisp}
-(with-aliases ((cc call/cc) (lam lambda) (ll let))
+<pre>(with-aliases ((cc call/cc) (lam lambda) (ll let))
   (define-abbreviation (loop . body)
     (let ((loop (gensym)))
       `(,cc (,lam (exit)
-               (,ll ,loop () ,@body (,loop)) )) ) ) )
-\end{code:lisp}</p>
+               (,ll ,loop () ,@body (,loop)) )) ) ) )</pre>
 
 <p>Все символы, чей смысл мы хотим сохранить неизменным при раскрытии макросов,
 перечисляются в <code><span class="func">with-aliases</span></code>. Она захватывает их, а во время раскрытия
@@ -2308,8 +2231,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <!--\indexC{Global-Variable}%-->
 <!--\indexC{Predefined-Variable}-->
 <!--\indexC{Local-Variable}-->
-<p>\begin{code:lisp}
-(define-class Program                Object ())
+<pre>(define-class Program                Object ())
 (define-class Reference              Program (variable))
 (define-class Local-Reference        Reference ())
 (define-class Global-Reference       Reference ())
@@ -2329,8 +2251,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 (define-class Variable               Object (name))
 (define-class Global-Variable        Variable ())
 (define-class Predefined-Variable    Variable (description))
-(define-class Local-Variable         Variable (mutable? dotted?))
-\end{code:lisp}</p>
+(define-class Local-Variable         Variable (mutable? dotted?))</pre>
 
 <p>В этом перечне легко заметить влияние предыдущих глав на наши представления
 о внутреннем устройстве языка. Например, вызовы примитивов, приводимых форм
@@ -2384,8 +2305,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
       (let ((m (objectify (car e) r)))
         (if (Magic-Keyword? m)
             ((Magic-Keyword-handler m) e r)
-            (objectify-application m (cdr e) r) ) ) ) )
-\end{code:lisp}</p>
+            (objectify-application m (cdr e) r) ) ) ) )</pre>
 
 <p>Теперь остаётся лишь разобрать всевозможные специализированные подфункции,
 выполняющие преобразования. Большинство из них просто заполняют поля объектов
@@ -2400,8 +2320,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <!--\indexC{objectify-quotation}-->
 <!--\indexC{objectify-alternative}-->
 <!--\indexC{objectify-sequence}-->
-<p>\begin{code:lisp}
-(define (objectify-quotation value r)
+<pre>(define (objectify-quotation value r)
   (make-Constant value) )</p>
 
 <p>(define (objectify-alternative ec et ef r)
@@ -2415,8 +2334,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
           (let ((a (objectify (car e*) r)))
             (make-Sequence a (objectify-sequence (cdr e*) r)) )
           (objectify (car e*) r) )
-      (make-Constant 42) ) )
-\end{code:lisp}</p>
+      (make-Constant 42) ) )</pre>
 
 <p>Обработка вызовов функций немного сложнее, так как необходимо проанализировать
 выражение и категоризовать его как приводимую форму, вызов примитива или вызов
@@ -2431,8 +2349,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 <!--\indexC{objectify-application}-->
 <!--\indexC{process-closed-application}-->
-<p>\begin{code:lisp}
-(define (objectify-application ff e* r)
+<pre>(define (objectify-application ff e* r)
   (let ((ee* (convert2arguments (map (lambda (e)
                                        (objectify e r) ) e*))))
     (cond ((Function? ff)
@@ -2456,8 +2373,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
         (process-nary-closed-application f e*)
         (if (= (number-of e*) (length v*))
             (make-Fix-Let v* e* b)
-            (objectify-error "Incorrect regular arity" f e*) ) ) ) )
-\end{code:lisp}</p>
+            (objectify-error "Incorrect regular arity" f e*) ) ) ) )</pre>
 
 <p>Список аргументов вызова функции тоже преобразуется в объект (экземпляр класса
 <code><span class="func">Arguments</span></code>); заканчивается этот список на специальный объект класса
@@ -2467,8 +2383,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 <!--\indexC{convert2arguments}-->
 <!--\indexC{number-of}-->
-<p>\begin{code:lisp}
-(define (convert2arguments e*)
+<pre>(define (convert2arguments e*)
   (if (pair? e*)
       (make-Arguments (car e*) (convert2arguments (cdr e*)))
       (make-No-Argument) ) )</p>
@@ -2478,8 +2393,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <p>(define-method (number-of (o Arguments))
   (+ 1 (number-of (Arguments-others o))) )</p>
 
-<p>(define-method (number-of (o No-Argument)) 0)
-\end{code:lisp}</p>
+<p>(define-method (number-of (o No-Argument)) 0)</pre>
 
 <p>Как обычно, редкий и громоздкий случай $n$-арных приводимых форм обрабатывается
 отдельно. Дополнительные аргументы собираются в список, а соответствующая
@@ -2488,8 +2402,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 
 <!--\indexC{process-nary-closed-application}-->
-<p>\begin{code:lisp}
-(define (process-nary-closed-application f e*)
+<pre>(define (process-nary-closed-application f e*)
   (let* ((v* (Function-variables f))
          (b  (Function-body f))
          (o (make-Fix-Let
@@ -2516,8 +2429,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
                         "Incorrect dotted arity" f e* ) ) ) )
              b )) )
     (set-Local-Variable-dotted?! (car (last-pair v*)) #f)
-    o ) )
-\end{code:lisp}</p>
+    o ) )</pre>
 
 <p>Абстракции анализируются и объектифицируются функцией <code><span class="func">objectify-function</span></code>.
 Она использует <code><span class="func">objectify-variables-list</span></code> для обработки списка аргументов,
@@ -2526,8 +2438,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 <!--\indexC{objectify-function}-->
 <!--\indexC{objectify-variables-list}-->
-<p>\begin{code:lisp}
-(define (objectify-function names body r)
+<pre>(define (objectify-function names body r)
   (let* ((vars (objectify-variables-list names))
          (b    (objectify-sequence body (r-extend* r vars))) )
     (make-Function vars b) ) )</p>
@@ -2538,8 +2449,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
             (objectify-variables-list (cdr names)) )
       (if (symbol? names)
           (list (make-Local-Variable names #f #t))
-          '() ) ) )
-\end{code:lisp}</p>
+          '() ) ) )</pre>
 
 <p>Наконец, <code><span class="func">objectify-symbol</span></code> отвечает за обработку переменных. Сначала она
 пытается найти их в текущем едином статическом лексическом окружении —
@@ -2550,8 +2460,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 <!--\indexC{objectify-symbol}-->
 <!--\indexC{objectify-free-global-reference}-->
-<p>\begin{code:lisp}
-(define (objectify-symbol variable r)
+<pre>(define (objectify-symbol variable r)
   (let ((v (find-variable? variable r)))
     (cond ((Magic-Keyword? v)       v)
           ((Local-Variable? v)      (make-Local-Reference v))
@@ -2562,8 +2471,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <p>(define (objectify-free-global-reference name r)
   (let ((v (make-Global-Variable name)))
     (insert-global! v r)
-    (make-Global-Reference v) ) )
-\end{code:lisp}</p>
+    (make-Global-Reference v) ) )</pre>
 
 <p>Окружение <code><span class="func">r</span></code> является, в принципе, списком локальных переменных, за которым
 следует список всех глобальных переменных, а в конце располагается список
@@ -2583,8 +2491,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <!--\indexC{insert-global"!}-->
 <!--\indexC{mark-global-preparation-environment}-->
 <!--\indexC{find-global-environment}-->
-<p>\begin{code:lisp}
-(define-class Environment      Object (next))
+<pre>(define-class Environment      Object (next))
 (define-class Full-Environment Environment (variable))</p>
 
 <p>(define (r-extend* r vars)
@@ -2618,8 +2525,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <p>(define (find-global-environment r)
   (if (Full-Environment? r)
       (find-global-environment (Full-Environment-next r))
-      r ) )
-\end{code:lisp}</p>
+      r ) )</pre>
 
 
 <!--\indexC{mutable"?}-->
@@ -2630,8 +2536,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 
 <!--\indexC{objectify-assignment}-->
-<p>\begin{code:lisp}
-(define (objectify-assignment variable e r)
+<pre>(define (objectify-assignment variable e r)
   (let ((ov (objectify variable r))
         (of (objectify e r)) )
     (cond ((Local-Reference? ov)
@@ -2641,8 +2546,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
           ((Global-Reference? ov)
            (make-Global-Assignment (Global-Reference-variable ov) of) )
           (else
-           (objectify-error "Illegal assignment" variable) ) ) ) )
-\end{code:lisp}</p>
+           (objectify-error "Illegal assignment" variable) ) ) ) )</pre>
 
 <p>Для программ, представленных деревьями подобных объектов, очень легко написать
 интерпретатор, проверяющий правильность выполнения преобразования. Результат
@@ -2679,8 +2583,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <!--\indexC{special-quote}-->
 <!--\indexC{special-set"!}-->
 <!--\indexC{special-lambda}-->
-<p>\begin{code:lisp}
-(define special-if
+<pre>(define special-if
   (make-Magic-Keyword 'if
     (lambda (e r)
       (objectify-alternative (cadr e) (caddr e) (cadddr e) r) ) ) )</p>
@@ -2703,8 +2606,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 <p>(define special-lambda
   (make-Magic-Keyword 'lambda
     (lambda (e r)
-      (objectify-function (cadr e) (cddr e) r) ) ) )
-\end{code:lisp}</p>
+      (objectify-function (cadr e) (cddr e) r) ) ) )</pre>
 
 
 <!--\indexC*{special-form-keywords}{*special-form-keywords*}-->
@@ -2712,8 +2614,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 специальных форм, сколько необходимо. Чтобы ничего потом не напутать, запишем
 их все в список <code><span class="func">*special-form-keywords*</span></code>:</p>
 
-<p>\begin{code:lisp}
-(define *special-form-keywords*
+<pre>(define *special-form-keywords*
   (list special-quote
         special-if
         special-begin
@@ -2721,8 +2622,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
         special-lambda
         ;; <code><span class="func">cond</span></code>, <code><span class="func">letrec</span></code> и т. д.
         special-let
-        ) )
-\end{code:lisp}</p>
+        ) )</pre>
 
 <h3 id="macros/macrosystem/ssect:eval-level">Уровни интерпретации</h3>
 
@@ -2743,15 +2643,13 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 
 <!--\indexC{Evaluator}-->
-<p>\begin{code:lisp}
-(define-class Evaluator Object
+<pre>(define-class Evaluator Object
   ( mother
     Preparation-Environment
     RunTime-Environment
     eval
     expand
-    ) )
-\end{code:lisp}</p>
+    ) )</pre>
 
 <p>Взаимодействие вычислителей весьма запутанно.
 Рисунок \ref{macros/macrosystem/eval-level/pic:tower} иллюстрирует цепочку
@@ -2803,8 +2701,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
 
 
 <!--\indexC{create-evaluator}-->
-<p>\begin{code:lisp}
-(define (create-evaluator old-level)
+<pre>(define (create-evaluator old-level)
   (let ((level 'wait)
         (g     g.predef)
         (sg    sg.predef))
@@ -2835,8 +2732,7 @@ cons)</span></code> или <code><span class="func">lisp:cons</span></code>. Н�
     (set-Evaluator-RunTime-Environment!
      level (mark-global-runtime-environment sg) )
 
-    level ) )
-\end{code:lisp}</p>
+    level ) )</pre>
 
 <p>Если программе потребуется явный экспандер или вычислитель, то достаточно
 создать новый уровень интерпретации с помощью <code><span class="func">create-evaluator</span></code> и достать
@@ -2870,8 +2766,7 @@ Scheme. Если нужны именно такие выражения, то н�
 
 
 <!--\indexC{make-macro-environment}-->
-<p>\begin{code:lisp}
-(define (make-macro-environment current-level)
+<pre>(define (make-macro-environment current-level)
   (let ((metalevel (delay (create-evaluator current-level))))
     (list (make-Magic-Keyword 'eval-in-abbreviation-world
            (special-eval-in-abbreviation-world metalevel) )
@@ -2880,8 +2775,7 @@ Scheme. Если нужны именно такие выражения, то н�
           (make-Magic-Keyword 'let-abbreviation
            (special-let-abbreviation metalevel) )
           (make-Magic-Keyword 'with-aliases
-           (special-with-aliases metalevel) ) ) ) )
-\end{code:lisp}</p>
+           (special-with-aliases metalevel) ) ) ) )</pre>
 
 <p>Макрос <code><span class="func">eval-in-abbreviation-world</span></code> является наиболее простым, так как его
 работа сводится лишь к вычислению выражения с помощью вычислителя следующего
@@ -2892,13 +2786,11 @@ Scheme. Если нужны именно такие выражения, то н�
 
 
 <!--\indexC{special-eval-in-abbreviation-world}-->
-<p>\begin{code:lisp}
-(define (special-eval-in-abbreviation-world level)
+<pre>(define (special-eval-in-abbreviation-world level)
   (lambda (e r)
     (let ((body (cdr e)))
       (objectify ((Evaluator-eval (force level))
-                  `(,special-begin . ,body) ) r) ) ) )
-\end{code:lisp}</p>
+                  `(,special-begin . ,body) ) r) ) ) )</pre>
 
 
 <!--\indexR{замыкания (closures)}-->
@@ -2916,8 +2808,7 @@ Scheme. Если нужны именно такие выражения, то н�
 
 
 <!--\indexC{special-define-abbreviation}-->
-<p>\begin{code:lisp}
-(define (special-define-abbreviation level)
+<pre>(define (special-define-abbreviation level)
   (lambda (e r)
     (let* ((call      (cadr e))
            (body      (cddr e))
@@ -2928,8 +2819,7 @@ Scheme. Если нужны именно такие выражения, то н�
         (define (handler e r)
           (objectify (invoke expander (cdr e)) r) )
         (insert-global! (make-Magic-Keyword name handler) r)
-        (objectify #t r) ) ) ) )
-\end{code:lisp}</p>
+        (objectify #t r) ) ) ) )</pre>
 
 <p>Локальные макросы создаются похожим образом. Разница только в том, что
 новые ключевые слова помещаются в начало текущего окружения — туда, где
@@ -2937,8 +2827,7 @@ Scheme. Если нужны именно такие выражения, то н�
 
 
 <!--\indexC{special-let-abbreviation}-->
-<p>\begin{code:lisp}
-(define (special-let-abbreviation level)
+<pre>(define (special-let-abbreviation level)
   (lambda (e r)
     (let ((level  (force level))
           (macros (cadr e))
@@ -2954,8 +2843,7 @@ Scheme. Если нужны именно такие выражения, то н�
               (objectify (invoke expander (cdr e)) r) )
             (make-Magic-Keyword name handler) ) ) )
       (objectify `(,special-begin . ,body)
-                 (r-extend* r (map make-macro macros)) ) ) ) )
-\end{code:lisp}</p>
+                 (r-extend* r (map make-macro macros)) ) ) ) )</pre>
 
 <p>Самым сложным из всей четвёрки является макрос <code><span class="func">with-aliases</span></code>, так как его
 работа затрагивает сразу несколько уровней. Он должен захватить смысл символов
@@ -2966,8 +2854,7 @@ Scheme. Если нужны именно такие выражения, то н�
 
 
 <!--\indexC{special-with-aliases}-->
-<p>\begin{code:lisp}
-(define (special-with-aliases level)
+<pre>(define (special-with-aliases level)
   (lambda (e current-r)
     (let* ((level   (force level))
            (old-r   (Evaluator-Preparation-Environment level))
@@ -2992,8 +2879,7 @@ Scheme. Если нужны именно такие выражения, то н�
                                       current-r ))
               (set-Evaluator-Preparation-Environment! level old-r)
               (set-Evaluator-RunTime-Environment! level old-sr)
-              result ) ) ) ) ) )
-\end{code:lisp}</p>
+              result ) ) ) ) ) )</pre>
 
 
 <!--\indexR{динамическое связывание}-->
@@ -3025,14 +2911,12 @@ Scheme. Если нужны именно такие выражения, то н�
 <p>\ForLayout{display}{\begingroup
 \lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
 
-<p>\begin{code:lisp}
-(let ((count 0))
+<pre>(let ((count 0))
   (with-aliases ((c count))
     (define-abbreviation (tick) c) )
   (tick) )
 (let ((count 1) (c 2))
-  (tick) )
-\end{code:lisp}</p>
+  (tick) )</pre>
 
 
 <!--\indexR{захват смысла символов}-->
@@ -3044,24 +2928,20 @@ Scheme. Если нужны именно такие выражения, то н�
 видна яснее в следующем «деобъектифицированном» представлении исходного
 фрагмента:</p>
 
-<p>\begin{code:lisp}
-((LAMBDA (COUNT501)
+<pre>((LAMBDA (COUNT501)
    (BEGIN #T ;; <code><span class="func">(tick)</span></code> $\leadsto$ <code><span class="func">COUNT501</span></code>
           COUNT501 ) ) 0)
-((LAMBDA (COUNT502 C503) COUNT501) 1 2)
-\end{code:lisp}</p>
+((LAMBDA (COUNT502 C503) COUNT501) 1 2)</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
 <p>Расположение формы <code><span class="func">with-aliases</span></code> необходимо тщательно выбирать, так как это
 нечто вроде <code><span class="func">let</span></code>, только для следующего уровня интерпретации. Если написать</p>
 
-<p>\begin{code:lisp}
-(define-abbreviation (loop . body)
+<pre>(define-abbreviation (loop . body)
   (with-aliases ((cc call/cc) (lam lambda) (ll let))
     (let ((loop (gensym)))
-      `(,cc (,lam (exit) (,ll ,loop () ,@body (,loop)))) ) ) )
-\end{code:lisp}</p>
+      `(,cc (,lam (exit) (,ll ,loop () ,@body (,loop)))) ) ) )</pre>
 
 <p>\noindent
 то форма <code><span class="func">with-aliases</span></code> захватит смысл символов на уровне макроопределений,

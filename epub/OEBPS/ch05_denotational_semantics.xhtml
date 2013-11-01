@@ -675,8 +675,7 @@ $\mathbf{If}$ в λ-исчисление, написав следующий ко
 <!--\indexE{if@\protect<code><span class="func">if</span></code>|seealso{\protect<code><span class="func">ef</span></code>}}-->
 \begin{code:lisp}
 (define (ef v v1 v2)
-  (v v1 v2) )
-\end{code:lisp}</p>
+  (v v1 v2) )</pre>
 
 <p>Чтобы сделать запись более понятной, подобный выбор будем записывать
 как в <span class="cite">[<a href="z1_bibliography.xhtml#sch86">sch86</a>]</span>:</p>
@@ -729,9 +728,7 @@ $(\Eval\sem{\p}\ \r\ \lambda\e\s_1. (\fn{boolify}\ \e) \to
 хотя кажется, что если вычислять его параллельно или в «неправильном» порядке,
 то нас ожидает провал:</p>
 
-<p>\begin{code:lisp}
-(if (= 0 q) 1 (/ p q))
-\end{code:lisp}</p>
+<pre>(if (= 0 q) 1 (/ p q))</pre>
 
 <p>Это выражение сначала проверяет, равна ли <code><span class="func">q</span></code> нулю, и, если это так, то
 возвращает единицу, иначе — выполняет деление <code><span class="func">p</span></code> на <code><span class="func">q</span></code> и возвращает
@@ -1258,10 +1255,8 @@ $\Bind\sem{\n}\mu =
 в стандарте есть требование, чтобы функции вели таким образом. Поэтому следующее
 выражение должно возвращать ложь:</p>
 
-<p>\begin{code:lisp}
-(let ((arguments (list 1 2 3)))
-  (apply (lambda args (eq? args arguments)) arguments) )
-\end{code:lisp}</p>
+<pre>(let ((arguments (list 1 2 3)))
+  (apply (lambda args (eq? args arguments)) arguments) )</pre>
 
 <p>Если мы не хотим этого делать, то вначале потребуется доказать, что совместное
 использование одного и того же физического списка не изменит смысла программы.</p>
@@ -1351,14 +1346,12 @@ Scheme, то станет очевидным, что добавление все
 
 <!--\indexC{dynamically-changing-evaluation-order}-->
 <!--\indexC{amb}-->
-<p>\begin{code:lisp}
-(define (dynamically-changing-evaluation-order?)
+<pre>(define (dynamically-changing-evaluation-order?)
   (define (amb)
     (call/cc (lambda (k) ((k #t) (k #f)))) )
   (if (eq? (amb) (amb))
     (dynamically-changing-evaluation-order?)
-    #t ) )
-\end{code:lisp}</p>
+    #t ) )</pre>
 
 <p>Функция <code><span class="func">amb</span></code> возвращает истину или ложь в зависимости от того, какой терм
 вычисляется первым. Если порядок вычислений не фиксирован, то функция
@@ -1441,13 +1434,11 @@ $\e'_0, \e'_1, \dots, \e'_n$ переупорядочиваются так, ка
 
 
 <!--\indexC{one-two-three}-->
-<p>\begin{code:lisp}
-(define (one-two-three)
+<pre>(define (one-two-three)
   (call/cc (lambda (k)
              ((begin (display 1) (call/cc k))
               (begin (display 2) (call/cc k))
-              (begin (display 3) (call/cc k)) ) )) )
-\end{code:lisp}</p>
+              (begin (display 3) (call/cc k)) ) )) )</pre>
 
 
 <!--\indexE{forall@\protect\ii{forall}}-->
@@ -1516,19 +1507,15 @@ $\quad\lambda \r\k\s.$\.
 в какой-нибудь последовательности. То есть следующая программа может вернуть
 <code><span class="func">(3 5)</span></code> или <code><span class="func">(4 3)</span></code>, но никак не <code><span class="func">(3 3)</span></code>:</p>
 
-<p>\begin{code:lisp}
-(let ((x 1) (y 2))
+<pre>(let ((x 1) (y 2))
   (list (begin (set! x (+ x y)) x)
-        (begin (set! y (+ x y)) y) ) )
-\end{code:lisp}</p>
+        (begin (set! y (+ x y)) y) ) )</pre>
 
 <p>Денотация следующей программы, полученная с помощью новой $\Eval$, будет
 возвращать два возможных результата: <code><span class="func">1</span></code> и <code><span class="func">2</span></code>. Конкретная реализация
 сможет выбрать один из них с помощью $\Noir$ и \ii{oneof}\!.</p>
 
-<p>\begin{code:lisp}
-(call/cc (lambda (k) ((k 1) (k 2)))) |{\is} $\{<code><span class="func">1</span></code>,\ <code><span class="func">2</span></code>\}$|
-\end{code:lisp}</p>
+<pre>(call/cc (lambda (k) ((k 1) (k 2)))) |{\is} $\{<code><span class="func">1</span></code>,\ <code><span class="func">2</span></code>\}$|</pre>
 
 <h2 id="denotational/sect:dynamic">Динамическое связывание</h2>
 
@@ -1640,10 +1627,8 @@ $\quad\Inj{Значение}($\*$\lambda \e^*\d\k\s.$                 \\
 
 <!--\indexC{dynamic-let}-->
 <!--\indexC{dynamic}-->
-<p>\begin{code:lisp}
-(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|...)
-(dynamic |\ii{переменная}|)
-\end{code:lisp}</p>
+<pre>(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|...)
+(dynamic |\ii{переменная}|)</pre>
 
 <p>\begin{table}[!ht]
 <!--\indexR{динамическое связывание!семантика}-->
@@ -1685,12 +1670,10 @@ $\quad(\Eval\sem{\pi}\ \r\ \d\ \lambda \e\s_1.
 
 
 <!--\indexC{file-exists"?}-->
-<p>\begin{code:lisp}
-(define (file-exists? filename)
+<pre>(define (file-exists? filename)
   (dynamic-let (*error* (lambda (anomaly) #f))
     (call-with-input-file filename
-      (lambda (port) #t) ) ) )
-\end{code:lisp}</p>
+      (lambda (port) #t) ) ) )</pre>
 
 <p>Это приближённое определение, так как в действительности надо ещё проверить,
 что <code><span class="func">*error*</span></code> вызвана потому, что файл действительно не существует, а не,
@@ -1917,10 +1900,8 @@ $\quad(\k\ \Inj{Значение}(\lambda\e^*\g_1\k_1\s_1.$\.
 
 
 <!--\indexC{weird}-->
-<p>\begin{code:lisp}
-(define (weird v)
-  (set! a-new-variable v) )
-\end{code:lisp}</p>
+<pre>(define (weird v)
+  (set! a-new-variable v) )</pre>
 
 <p>\noindent
 Присваивание внутри <code><span class="func">weird</span></code> расширяет глобальное окружение, захваченное
@@ -1938,12 +1919,10 @@ $\quad(\k\ \Inj{Значение}(\lambda\e^*\g_1\k_1\s_1.$\.
 даже если существует одноимённая локальная переменная. Следовательно, мы сможем
 определять глобальные взаимно рекурсивные функции следующим образом:</p>
 
-<p>\begin{code:lisp}
-(letrec ((odd? (lambda (n) (if (= n 0) #f (even? (- n 1)))))
+<pre>(letrec ((odd? (lambda (n) (if (= n 0) #f (even? (- n 1)))))
          (even? (lambda (n) (if (= n 0) #t (odd? (- n 1))))) )
   (define-global odd? odd?)
-  (define-global even? even?) )
-\end{code:lisp}</p>
+  (define-global even? even?) )</pre>
 
 <p>\begin{denotation}
 $\Eval\sem*{(global $\n$)}\r\g\k\s = {}$\.
@@ -2010,8 +1989,7 @@ Scheme). Но эта не такая уж и проблема. Заявляю п
 арностью). Можете сравнить его с соответствующим «греческим профилем»
 на странице \pageref{denotational/sematics/fig:naked-scheme}.</p>
 
-<p>\begin{code:lisp}
-(define ((meaning-abstraction n* e+) r k s)
+<pre>(define ((meaning-abstraction n* e+) r k s)
   (k (inValue (lambda (v* k1 s1)
                 (if (= (length v*) (length n*))
                     (allocate s1 (length n*)
@@ -2021,8 +1999,7 @@ Scheme). Но эта не такая уж и проблема. Заявляю п
                                  k1
                                  (extend* s2 a* v*) ) ) )
                     (wrong "Incorrect arity") ) ))
-     s ) )
-\end{code:lisp}</p>
+     s ) )</pre>
 
 
 <!--\indexCS{define}{синтаксис}-->
@@ -2036,8 +2013,7 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
 
 
 <!--\indexC{meaning}-->
-<p>\begin{code:lisp}
-(define (meaning e)
+<pre>(define (meaning e)
   (if (atom? e)
       (if (symbol? e) (meaning-reference e)
                       (meaning-quotation e) )
@@ -2047,8 +2023,7 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
         ((if)     (meaning-alternative (cadr e) (caddr e) (cadddr e)))
         ((begin)  (meaning-sequence (cdr e)))
         ((set!)   (meaning-assigment (cadr e) (caddr e)))
-        (else     (meaning-application (car e) (cdre))) ) ) )
-\end{code:lisp}</p>
+        (else     (meaning-application (car e) (cdre))) ) ) )</pre>
 
 <p>
 \section{\texorpdfstring{λ-исчисление и Scheme}%
@@ -2080,13 +2055,11 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
 
 <!--\indexC{delay}-->
 <!--\indexC{force}-->
-<p>\begin{code:lisp}
-(define-syntax delay
+<pre>(define-syntax delay
   (syntax-rules ()
     ((delay expression) (lambda () expression)) ) )</p>
 
-<p>(define (force promise) (promise))
-\end{code:lisp}</p>
+<p>(define (force promise) (promise))</pre>
 
 
 <!--\indexR{вызов!по имени!эмуляция}-->
@@ -2098,23 +2071,19 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
 Вот выражение, с которым у нас были проблемы из-за аппликативного порядка
 вычислений:</p>
 
-<p>\begin{code:lisp}
-(((lambda (x) (lambda (y) y))|\dialect{;<code><span class="func"> $\big((\lambda x. \lambda y.
+<pre>(((lambda (x) (lambda (y) y))|\dialect{;<code><span class="func"> $\big((\lambda x. \lambda y.
                                                 y\ (\omega\ \omega))\ z\big)$</span></code>}|
-  ((lambda (x) (x x)) (lambda (x) (x x))) ) z )
-\end{code:lisp}</p>
+  ((lambda (x) (x x)) (lambda (x) (x x))) ) z )</pre>
 
 <p>Использовав вышеуказанный приём, мы задерживаем вычисление $(\omega\ \omega)$ до
 тех пор, пока его значение не потребуется (то есть навсегда), и возвращаем
 правильное значение нормальной формы этого выражения — значение свободной
 переменной <code><span class="func">z</span></code>.</p>
 
-<p>\begin{code:lisp}
-(((lambda (x) (lambda (y) (delay y)))
+<pre>(((lambda (x) (lambda (y) (delay y)))
   (delay ((lambda (x) ((force x) (delay (force x))))
           (lambda (x) ((force x) (delay (force x)))) )) )
- (delay z) )
-\end{code:lisp}</p>
+ (delay z) )</pre>
 
 
 <!--\indexR{мемоизация}-->
@@ -2131,8 +2100,7 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
 
 
 <!--\indexCS{delay}{<code><span class="func">memo-delay</span></code>}-->
-<p>\begin{code:lisp}
-(define-syntax memo-delay
+<pre>(define-syntax memo-delay
   (synatax-rules ()
     ((memo-delay expression)
      (let ((already-computed? #f)
@@ -2141,8 +2109,7 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
          (if (not already-computed?)
              (begin (set! value expression)
                     (set! already-computed? #t) ) )
-         value ) ) ) ) )
-\end{code:lisp}</p>
+         value ) ) ) ) )</pre>
 
 
 <!--\indexR{анализ строгости}-->
@@ -2161,10 +2128,8 @@ $\p^*$))}, где $\n$ описывает форму вызова определ
 из \cite{kw90,mor92}, они отличаются лишь на одну <code><span class="func">delay</span></code>, но дают
 совершенно различные результаты:</p>
 
-<p>\begin{code:lisp}
-(pair? (call/cc (lambda (k) (list (k 33)))))
-(pair? (call/cc (lambda (k) (list (delay (k 33))))))
-\end{code:lisp}</p>
+<pre>(pair? (call/cc (lambda (k) (list (k 33)))))
+(pair? (call/cc (lambda (k) (list (delay (k 33))))))</pre>
 
 <p>
 \subsection{Круговорот продолжений в природе}%
@@ -2209,8 +2174,7 @@ style}). Очевидно, что мы можем транслировать л�
 
 
 <!--\indexC{cps}-->
-<p>\begin{code:lisp}
-(define (cps e)
+<pre>(define (cps e)
   (if (atom? e) (lambda (k) (k `,e))
       (case (car e)
         ((quote)  (cps-quote (cadr e)))
@@ -2218,8 +2182,7 @@ style}). Очевидно, что мы можем транслировать л�
         ((begin)  (cps-begin (cdr e)))
         ((set!)   (cps-set! (cadr e) (caddr e)))
         ((lambda) (cps-abstraction (cadr e) (cddr e)))
-        (else     (cps-application e)) ) ) )
-\end{code:lisp}</p>
+        (else     (cps-application e)) ) ) )</pre>
 
 <p>Транслятор <code><span class="func">cps</span></code> принимает программу, выполняет преобразования и возвращает
 замыкание, являющееся той же программой в стиле передачи продолжений. Такая
@@ -2236,23 +2199,19 @@ style}). Очевидно, что мы можем транслировать л�
 
 
 <!--\indexC{cps-quote}-->
-<p>\begin{code:lisp}
-(define (cps-quote data)
+<pre>(define (cps-quote data)
   (lambda (k)
-    (k `(quote ,data)) ) )
-\end{code:lisp}</p>
+    (k `(quote ,data)) ) )</pre>
 
 <p>Присваивание тоже просто записывается:</p>
 
 
 <!--\indexC{cps-set"!}-->
-<p>\begin{code:lisp}
-(define (cps-set! variable form)
+<pre>(define (cps-set! variable form)
   (lambda (k)
     ((cps form)
      (lambda (a)
-       (k `(set! ,variable ,a)) ) ) ) )
-\end{code:lisp}</p>
+       (k `(set! ,variable ,a)) ) ) ) )</pre>
 
 <p>\noindent
 Мы вычисляем новое значение переменной <code><span class="func">(cps form)</span></code>, передаём его
@@ -2263,21 +2222,18 @@ style}). Очевидно, что мы можем транслировать л�
 
 
 <!--\indexC{cps-if}-->
-<p>\begin{code:lisp}
-(define (cps-if bool formT formF)
+<pre>(define (cps-if bool formT formF)
   (lambda (k)
     ((cps bool)
      (lambda (b)
        `(if ,b ,((cps formT) k)
-               ,((cps formF) k) ) ) ) ) )
-\end{code:lisp}</p>
+               ,((cps formF) k) ) ) ) ) )</pre>
 
 <p>Упорядочить вычисления чуть сложнее:</p>
 
 
 <!--\indexC{cps-begin}-->
-<p>\begin{code:lisp}
-(define (cps-begin e)
+<pre>(define (cps-begin e)
   (if (pair? e)
       (if (pair? (cdr e))
           (let ((void (gensym "void")))
@@ -2288,8 +2244,7 @@ style}). Очевидно, что мы можем транслировать л�
                   (lambda (b)
                     (k `((lambda (,void) ,b) ,a)) ) ) ) ) ) )
           (cps (car e)) )
-      (cps '()) ) )
-\end{code:lisp}</p>
+      (cps '()) ) )</pre>
 
 <p>\noindent
 Здесь интересным местом является способ игнорирования промежуточных значений.</p>
@@ -2306,8 +2261,7 @@ style}). Очевидно, что мы можем транслировать л�
 <!--\indexC{cps-application}-->
 <!--\indexC{cps-terms}-->
 <!--\indexC{cps-abstraction}-->
-<p>\begin{code:lisp}
-(define (cps-application e)
+<pre>(define (cps-application e)
   (lambda (k)
     (if (memq (car e) primitives)
         ((cps-terms (cdr e))
@@ -2336,16 +2290,14 @@ style}). Очевидно, что мы можем транслировать л�
     (k (let ((c (gensym "cont")))
          `(lambda (,c . ,variables)
             ,((cps `(begin ,@body))
-              (lambda (a) `(,c ,a)) ) ) )) ) )
-\end{code:lisp}</p>
+              (lambda (a) `(,c ,a)) ) ) )) ) )</pre>
 
 <p>\noindent
 Готово. Посмотрим, во что данная трансформация превратит факториал:</p>
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-(set! fact (lambda (n)
+<pre>(set! fact (lambda (n)
              (if (= n 1) 1
                  (* n (fact (- n 1))) ) ))
 |$\leadsto$| (set! fact
@@ -2353,8 +2305,7 @@ style}). Очевидно, что мы можем транслировать л�
            (if (= n 1)
                (cont112 1)
                (fact (lambda (g113) (cont112 (* n g113)))
-                     (- n 1) ) ) ) )
-\end{code:lisp}</p>
+                     (- n 1) ) ) ) )</pre>
 
 <p>Теперь мы автоматически получаем то, что раньше были вынуждены писать вручную.
 Заметьте, что преобразование превратило программу в последовательность простых
@@ -2436,9 +2387,7 @@ $\Dana\sem*{(dynamic-let ($\n$ $\p$) $\p^+$)}$
 не хотим встраивать его поддержку в ядро языка. Последний штрих: начальное
 динамическое окружение. Программа $\p$ преобразуется в</p>
 
-<p>\begin{code:lisp}
-(let ((|$\d$| (lambda (n) (error "No such dynamic variable" n)))) |$\Dana\sem{\p}$|)
-\end{code:lisp}</p>
+<pre>(let ((|$\d$| (lambda (n) (error "No such dynamic variable" n)))) |$\Dana\sem{\p}$|)</pre>
 
 <p>В итоге можно сделать следующий вывод: денотации специальных форм языка иногда
 способны показать, что некоторые формы вовсе не такие уж и специальные.</p>

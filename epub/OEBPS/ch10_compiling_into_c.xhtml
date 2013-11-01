@@ -97,8 +97,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 имена классов записаны сокращённо, а часть дерева и вовсе не показана. На
 протяжении этой главы мы не раз будем возвращаться к данному примеру.</p>
 
-<p>\begin{code:lisp}
-(begin
+<pre>(begin
   (set! index 1)
   ((lambda (cnter . tmp)
      (set! tmp (cnter (lambda (i) (lambda x (cons i x)))))
@@ -106,8 +105,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
    (lambda (f)
      (set! index (+ 1 index))
      (f index) )
-   'foo) )        |$\is$| (2 3)
-\end{code:lisp}</p>
+   'foo) )        |$\is$| (2 3)</pre>
 
 <p>\begin{figure}\centering
 \input{figures/fig10.1}
@@ -149,8 +147,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{update-walk"!}-->
-<p>\begin{code:lisp}
-(define (update-walk! g o . args)
+<pre>(define (update-walk! g o . args)
   (for-each (lambda (field)
               (let ((vf (field-value o field)))
                 (when (Program? vf)
@@ -158,8 +155,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
                                (apply g vf args) )))
                     (set-field-value! o v field) ) ) ) )
             (Class-fields (object->class o)) )
-  o )
-\end{code:lisp}</p>
+  o )</pre>
 
 <p>Может показаться, что такой подход чересчур уж всё упрощает, но это
 действительно весьма удобная функция для преобразования программ, как вы сами
@@ -192,10 +188,8 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{insert-box"!}-->
-<p>\begin{code:lisp}
-(define-generic (insert-box! (o Program))
-  (update-walk! insert-box! o) )
-\end{code:lisp}</p>
+<pre>(define-generic (insert-box! (o Program))
+  (update-walk! insert-box! o) )</pre>
 
 <p>Мы введём три новых класса узлов синтаксического дерева для представления новых
 понятий, необходимых при работе с коробками. Подробно каждый из классов будет
@@ -205,33 +199,27 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 <!--\indexC{Box-Read}-->
 <!--\indexC{Box-Write}-->
 <!--\indexC{Box-Creation}-->
-<p>\begin{code:lisp}
-(define-class Box-Read     Program (reference))
+<pre>(define-class Box-Read     Program (reference))
 (define-class Box-Write    Program (reference form))
-(define-class Box-Creation Program (variable))
-\end{code:lisp}</p>
+(define-class Box-Creation Program (variable))</pre>
 
 <p>Благодаря удачному решению помечать во время объектификации изменяемые локальные
 переменные флагом <code><span class="func">mutable?</span></code>, заменить обращения к подобным переменным
 вызовами <code><span class="func">Box-Read</span></code> становится элементарно:</p>
 
-<p>\begin{code:lisp}
-(define-method (insert-box! (o Local-Reference))
+<pre>(define-method (insert-box! (o Local-Reference))
   (if (Local-Variable-mutable? (Local-Reference-variable o))
       (make-Box-Read o)
-      o ) )
-\end{code:lisp}</p>
+      o ) )</pre>
 
 <p>Преобразование присваиваний сравнимо по сложности. Присваивание локальной
 переменной однозначно переводится в <code><span class="func">Box-Write</span></code>. Нужно только не забыть
 о рекурсивной природе преобразования и вызвать обходчик для выражения,
 вычисляющего новое значение переменной.</p>
 
-<p>\begin{code:lisp}
-(define-method (insert-box! (o Local-Assignment))
+<pre>(define-method (insert-box! (o Local-Assignment))
   (make-Box-Write (Local-Assignment-reference o)
-                  (insert-box! (Local-Assignment-form o)) ) )
-\end{code:lisp}</p>
+                  (insert-box! (Local-Assignment-form o)) ) )</pre>
 
 <p>В данный момент программа считает, что все изменяемые переменные уже разложены
 по коробкам; нам остаётся лишь оправдать её ожидания. Локальные изменяемые
@@ -249,8 +237,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{boxify-mutable-variables}-->
-<p>\begin{code:lisp}
-(define-method (insert-box! (o Function))
+<pre>(define-method (insert-box! (o Function))
   (set-Function-body!
    o (insert-box!
       (boxify-mutable-variables (Function-body o)
@@ -272,8 +259,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
            (make-Box-Creation (car variables))
            (boxify-mutable-variables form (cdr variables)) )
           (boxify-mutable-variables form (cdr variables)) )
-      form ) )
-\end{code:lisp}</p>
+      form ) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -328,25 +314,21 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{fact}-->
-<p>\begin{code:lisp}
-(define (fact n k)
+<pre>(define (fact n k)
   (if (= n 0) (k 1)
-      (fact (- n 1) (lambda (r) (k (* n r))) ) ) )
-\end{code:lisp}</p>
+      (fact (- n 1) (lambda (r) (k (* n r))) ) ) )</pre>
 
 <p>От <code><span class="func">lambda</span></code>-формы со свободными переменными <code><span class="func">k</span></code> и <code><span class="func">n</span></code> можно избавиться
 следующим образом:</p>
 
-<p>\begin{code:lisp}
-(define-class Fact-Closure Object (n k))</p>
+<pre>(define-class Fact-Closure Object (n k))</p>
 
 <p>(define-method (invoke (f Fact-Closure) r)
   (invoke (Fact-Closure-k f) (* (Fact-Closure-n f) r)) )</p>
 
 <p>(define (fact n k)
   (if (= n 0) (invoke k 1)
-      (fact (- n 1) (make-Fact-Closure n k)) ) )
-\end{code:lisp}</p>
+      (fact (- n 1) (make-Fact-Closure n k)) ) )</pre>
 
 
 <!--\indexR{плоские окружения}-->
@@ -375,12 +357,10 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 <!--\indexC{Free-Environment}-->
 <!--\indexC{Free-Reference}-->
 <!--\indexC{No-Free}-->
-<p>\begin{code:lisp}
-(define-class Flat-Function    Function  (free))
+<pre>(define-class Flat-Function    Function  (free))
 (define-class Free-Environment Program   (first others))
 (define-class No-Free          Program   ())
-(define-class Free-Reference   Reference ())
-\end{code:lisp}</p>
+(define-class Free-Reference   Reference ())</pre>
 
 <p>Реализуется это преобразование, естественно, с помощью обходчика кода. Функция
 <code><span class="func">lift!</span></code> будет служить удобным интерфейсом, а всю чёрную работу мы переложим
@@ -394,13 +374,11 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 <!--\indexC{lift"!}-->
 <!--\indexC{lift-procedures"!}-->
-<p>\begin{code:lisp}
-(define (lift! o)
+<pre>(define (lift! o)
   (lift-procedures! o #f '()) )</p>
 
 <p>(define-generic (lift-procedures! (o Program) flatfun vars)
-  (update-walk! lift-procedures! o flatfun vars) )
-\end{code:lisp}</p>
+  (update-walk! lift-procedures! o flatfun vars) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -411,8 +389,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{adjoin-free-variable"!}-->
-<p>\begin{code:lisp}
-(define-method (lift-procedures! (o Local-Reference) flatfun vars)
+<pre>(define-method (lift-procedures! (o Local-Reference) flatfun vars)
   (let ((v (Local-Reference-variable o)))
     (if (memq v vars) o
         (begin (adjoin-free-variable! flatfun o)
@@ -428,8 +405,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
           (unless (eq? (Reference-variable ref)
                        (Reference-variable
                         (Free-Environment-first free*) ) )
-            (check (Free-Environment-others free*)) ) ) ) ) )
-\end{code:lisp}</p>
+            (check (Free-Environment-others free*)) ) ) ) ) )</pre>
 
 
 <!--\indexR{приводимые!формы}-->
@@ -441,15 +417,13 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 не требуют создания замыканий. Это очень важная оптимизация, и мы отнюдь
 не хотим её лишиться.</p>
 
-<p>\begin{code:lisp}
-(define-method (lift-procedures! (o Fix-Let) flatfun vars)
+<pre>(define-method (lift-procedures! (o Fix-Let) flatfun vars)
   (set-Fix-Let-arguments!
    o (lift-procedures! (Fix-Let-arguments o) flatfun vars) )
   (let ((newvars (append (Fix-Let-variables o) vars)))
     (set-Fix-Let-body!
      o (lift-procedures! (Fix-Let-body o) flatfun newvars) )
-    o ) )
-\end{code:lisp}</p>
+    o ) )</pre>
 
 <p>Наконец, остался самый сложный случай — абстракции. Тело абстракции
 анализируется и все её свободные переменные собираются в объекте
@@ -459,8 +433,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 принятому ранее решению сделать список свободных переменных наследником
 <code><span class="func">Program</span></code>.</p>
 
-<p>\begin{code:lisp}
-(define-method (lift-procedures! (o Function) flatfun vars)
+<pre>(define-method (lift-procedures! (o Function) flatfun vars)
   (let* ((localvars (Function-variables o))
          (body      (Function-body o))
          (newfun (make-Flat-Function localvars body (make-No-Free))) )
@@ -469,8 +442,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
     (let ((free* (Flat-Function-free newfun)))
       (set-Flat-Function-free!
        newfun (lift-procedures! free* flatfun vars) ) )
-    newfun ) )
-\end{code:lisp}</p>
+    newfun ) )</pre>
 
 <p>Как полагается, на рисунке \ref{cc/no-nest/pic:result} показан результат
 применения рассмотренного преобразования к нашему бессменному примеру.</p>
@@ -509,12 +481,10 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 <!--\indexC{Quotation-Variable}-->
 <!--\indexC{Function-Definition}-->
 <!--\indexC{Closure-Creation}-->
-<p>\begin{code:lisp}
-(define-class Flattened-Program   Program (form quotations definitions))
+<pre>(define-class Flattened-Program   Program (form quotations definitions))
 (define-class Quotation-Variable  Variable (value))
 (define-class Function-Definition Flat-Function (index))
-(define-class Closure-Creation    Program (index variables free))
-\end{code:lisp}</p>
+(define-class Closure-Creation    Program (index variables free))</pre>
 
 <p>Строго говоря, <code><span class="func">extract-things!</span></code> работает не одна, а вместе с обобщённой
 функцией <code><span class="func">extract!</span></code>. Взаимодействие подразумевает обмен информацией. Дабы
@@ -525,28 +495,24 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 <!--\indexC{extract-things}-->
 <!--\indexC{extract"!}-->
-<p>\begin{code:lisp}
-(define (extract-things! o)
+<pre>(define (extract-things! o)
   (let ((result (make-Flattened-Program o '() '())))
     (set-Flattened-Program-form! result (extract! o result))
     result ) )</p>
 
 <p>(define-generic (extract! (o Program) result)
-  (update-walk! extract! o result) )
-\end{code:lisp}</p>
+  (update-walk! extract! o result) )</pre>
 
 <p>Цитаты просто собираются в отведённом для них поле, а все обращения к ним
 заменяются обращениями к соответствующим глобальным переменным,
 инициализированным значениями исходных цитат.</p>
 
-<p>\begin{code:lisp}
-(define-method (extract! (o Constant) result)
+<pre>(define-method (extract! (o Constant) result)
   (let* ((qv* (Flattened-Program-quotations result))
          (qv  (make-Quotation-Variable (length qv*)
                                        (Constant-value o) )) )
     (set-Flattened-Program-quotations! result (cons qv qv*))
-    (make-Global-Reference qv) ) )
-\end{code:lisp}</p>
+    (make-Global-Reference qv) ) )</pre>
 
 <p>Абстракции находятся в узлах типа <code><span class="func">Flat-Function</span></code>, которые преобразуются
 в экземпляры <code><span class="func">Closure-Creation</span></code>. Процесс можно было бы оптимизировать,
@@ -558,8 +524,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 
 
 <!--\indexC{adjoin-definition"!}-->
-<p>\begin{code:lisp}
-(define-method (extract! (o Flat-Function) result)
+<pre>(define-method (extract! (o Flat-Function) result)
   (let* ((newbody   (extract! (Flat-Function-body o) result))
          (variables (Flat-Function-variables o))
          (freevars  (let extract ((free (Flat-Function-free o)))
@@ -580,8 +545,7 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
      result (cons (make-Function-Definition
                    variables body free newindex )
                   definitions ) )
-    newindex ) )
-\end{code:lisp}</p>
+    newindex ) )</pre>
 
 <p>И снова, на рисунке \ref{cc/collecting/pic:result} показан результат применения
 преобразования к иной части примера.</p>
@@ -598,8 +562,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{closurize-main"!}-->
-<p>\begin{code:lisp}
-(define (closurize-main! o)
+<pre>(define (closurize-main! o)
   (let ((index (length (Flattened-Program-definitions o))))
     (set-Flattened-Program-definitions!
      o (cons (make-Function-Definition
@@ -609,8 +572,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
      o (make-Regular-Application
         (make-Closure-Creation index '() (make-No-Free))
         (make-No-Argument) ) )
-    o ) )
-\end{code:lisp}</p>
+    o ) )</pre>
 
 <h2 id="cc/sect:tmp">Собираем временные переменные</h2>
 
@@ -636,10 +598,8 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{With-Temp-Function-Definition}-->
-<p>\begin{code:lisp}
-(define-class With-Temp-Function-Definition Function-Definition
-  ( temporaries ) )
-\end{code:lisp}</p>
+<pre>(define-class With-Temp-Function-Definition Function-Definition
+  ( temporaries ) )</pre>
 
 <p>Функция <code><span class="func">gather-temporaries!</span></code> реализует преобразование. Она полагается на
 обобщённую функцию <code><span class="func">collect-temporaries!</span></code>, работающую в паре с обходчиком.
@@ -650,8 +610,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{gather-temporaries"!}-->
 <!--\indexC{collect-temporaries"!}-->
-<p>\begin{code:lisp}
-(define (gather-temporaries! o)
+<pre>(define (gather-temporaries! o)
   (set-Flattened-Program-definitions!
    o (map (lambda (def)
             (let ((flatfun (make-With-Temp-Function-Definition
@@ -665,15 +624,13 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   o )</p>
 
 <p>(define-generic (collect-temporaries! (o Program) flatfun r)
-  (update-walk! collect-temporaries! o flatfun r) )
-\end{code:lisp}</p>
+  (update-walk! collect-temporaries! o flatfun r) )</pre>
 
 <p>Для завершения преобразования остаётся определить три новых метода. Локальные
 переменные при необходимости могут переименовываться, то же самое касается и
 переменных в коробках:</p>
 
-<p>\begin{code:lisp}
-(define-method (collect-temporaries! (o Local-Reference) flatfun r)
+<pre>(define-method (collect-temporaries! (o Local-Reference) flatfun r)
   (let* ((variable (Local-Reference-variable o))
          (v (assq variable r)) )
     (if (pair? v) (make-Local-Reference (cdr v))
@@ -683,8 +640,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   (let* ((variable (Box-Creation-variable o))
          (v (assq variable r)) )
     (if (pair? v) (make-Box-Creation (cdr v))
-                  o ) ) )
-\end{code:lisp}</p>
+                  o ) ) )</pre>
 
 <p>Самый сложный метод, конечно же, будет для <code><span class="func">Fix-Let</span></code>. Сначала он рекурсивно
 вызывается для всех её аргументов, после чего переименовывает локальные
@@ -695,8 +651,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{adjoin-temporary-variables"!}-->
-<p>\begin{code:lisp}
-(define-method (collect-temporaries! (o Fix-Let) flatfun r)
+<pre>(define-method (collect-temporaries! (o Fix-Let) flatfun r)
   (set-Fix-Let-arguments!
    o (collect-temporaries! (Fix-Let-arguments o) flatfun r) )
   (let* ((newvars (map new-renamed-variable (Fix-Let-variables o)))
@@ -716,8 +671,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
             (adjoin temps (cdr vars))
             (adjoin (cons (car vars) temps) (cdr vars)) )
         (set-With-Temp-Function-Definition-temporaries!
-         flatfun temps ) ) ) )
-\end{code:lisp}</p>
+         flatfun temps ) ) ) )</pre>
 
 <p>Переименованные переменные выделяются в собственный подкласс. Ещё нам
 потребуется счётчик для обеспечения уникальности их имён.</p>
@@ -726,8 +680,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 <!--\indexC{Renamed-Local-Variable}-->
 <!--\indexC{renaming-variable-counter}-->
 <!--\indexC{new-renamed-variable}-->
-<p>\begin{code:lisp}
-(define-class Renamed-Local-Variable Variable (index))</p>
+<pre>(define-class Renamed-Local-Variable Variable (index))</p>
 
 <p>(define renaming-variable-counter 0)</p>
 
@@ -736,8 +689,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 <p>(define-method (new-renamed-variable (variable Local-Variable))
   (set! renaming-variable-counter (+ 1 renaming-variable-counter))
   (make-Renamed-Local-Variable
-   (Variable-name variable) renaming-variable-counter ) )
-\end{code:lisp}</p>
+   (Variable-name variable) renaming-variable-counter ) )</pre>
 
 <h2 id="cc/sect:pause">Передышка</h2>
 
@@ -751,8 +703,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   \item Временные переменные создаются явно.
 \end{enumerate}</p>
 
-<p>\begin{code:lisp}
-(define quote_5 'foo)                    ; собранные цитаты
+<pre>(define quote_5 'foo)                    ; собранные цитаты
 (define-class Closure_0 Object ())       ; абстракция <code><span class="func">(lambda (f) ...)</span></code>
 (define-method (invoke (self Closure_0) f)
   (begin
@@ -777,8 +728,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
      (if cnter_1
          (invoke cnter_1 (box-read tmp_2))
          index ) ) ) )
-(invoke (make-Closure_3))                ; точка входа
-\end{code:lisp}</p>
+(invoke (make-Closure_3))                ; точка входа</pre>
 
 <h2 id="cc/sect:gen">Генерируем Си</h2>
 
@@ -799,8 +749,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{compile->C}-->
 <!--\indexC{generate-C-program}-->
-<p>\begin{code:lisp}
-(define (compile->C e out)
+<pre>(define (compile->C e out)
   (set! g.current '())
   (let ((prg (extract-things! (lift! (Sexp->object e)))))
     (gather-temporaries! (closurize-main! prg))
@@ -813,8 +762,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   (generate-functions          out (Flattened-Program-definitions prg))
   (generate-main               out (Flattened-Program-form prg))
   (generate-trailer            out)
-  prg )
-\end{code:lisp}</p>
+  prg )</pre>
 
 <p>Как и любая программа на Си, а в более широком смысле, как и любое животное,
 получаемая программа состоит из головы, тела и хвоста. В голове находятся
@@ -828,15 +776,13 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{generate-header}-->
 <!--\indexC{generate-trailer}-->
-<p>\begin{code:lisp}
-(define (generate-header out e)
+<pre>(define (generate-header out e)
   (format out "/* Compiler to C $Revision: 4.1$ %")
   (pp e out)
   (format out -%*/ % %#include \"scheme.h\-%") )</p>
 
 <p>(define (generate-trailer out)
-  (format out -%/* End of generated code */ %") )
-\end{code:lisp}</p>
+  (format out -%/* End of generated code */ %") )</pre>
 
 <p>В хвосте, как видите, нет ничего интересного; всё самое важное находится в теле
 программы. Результат компиляции нашего подопытного примера приведён на
@@ -869,8 +815,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{generate-global-environment}-->
 <!--\indexC{generate-global-variable}-->
-<p>\begin{code:lisp}
-(define (generate-global-environment out gv*)
+<pre>(define (generate-global-environment out gv*)
   (when (pair? gv*)
     (format out -%/* Global environment: */ %")
     (for-each (lambda (gv) (generate-global-variable out gv))
@@ -879,8 +824,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 <p>(define (generate-global-variable out gv)
   (let ((name (Global-Variable-name gv)))
     (format out "SCM_DefineGlobalVariable( A,\-A\"); %"
-            (IdScheme->IdC name) name ) ) )
-\end{code:lisp}</p>
+            (IdScheme->IdC name) name ) ) )</pre>
 
 
 <!--\indexR{идентификаторы в Си}-->
@@ -897,8 +841,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{IdScheme->IdC}-->
-<p>\begin{code:lisp}
-(define Scheme->C-names-mapping
+<pre>(define Scheme->C-names-mapping
   '( (*        . "TIMES")
      (<        . "LESSP")
      (pair?    . "CONSP")
@@ -915,8 +858,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
                 (begin (set! Scheme->C-names-mapping
                              (cons (cons name Cname)
                                    Scheme->C-names-mapping ) )
-                       Cname ) ) ) ) ) ) )
-\end{code:lisp}</p>
+                       Cname ) ) ) ) ) ) )</pre>
 
 <p>Обнаруженные конфликты имён разрешаются просто: добавлением уникального номера.</p>
 
@@ -925,8 +867,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{Cname-clash?}-->
 <!--\indexC{compute-Cname}-->
-<p>\begin{code:lisp}
-(define (Cname-clash? Cname mapping)
+<pre>(define (Cname-clash? Cname mapping)
   (let check ((mapping mapping))
     (and (pair? mapping)
          (or (string=? Cname (cdar mapping))
@@ -955,8 +896,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   (let ((cname (mapcan convert-char (string->list str))))
     (if (pair? cname)
         (list->string cname)
-        "weird" ) ) )
-\end{code:lisp}</p>
+        "weird" ) ) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -983,12 +923,10 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{generate-quotations}-->
-<p>\begin{code:lisp}
-(define (generate-quotations out qv*)
+<pre>(define (generate-quotations out qv*)
   (when (pair? qv*)
     (format out -%/* Quotations: */ %")
-    (scan-quotations out qv* (length qv*) '()) ) )
-\end{code:lisp}</p>
+    (scan-quotations out qv* (length qv*) '()) ) )</pre>
 
 <p>Настоящую работу выполняет <code><span class="func">scan-quotations</span></code>: просматривает собранные
 цитаты, представляемые объектами класса <code><span class="func">Quotation-Variable</span></code>, и генерирует
@@ -999,8 +937,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{scan-quotations}-->
 <!--\indexC{already-seen-value"?}-->
-<p>\begin{code:lisp}
-(define (scan-quotations out qv* i results)
+<pre>(define (scan-quotations out qv* i results)
   (when (pair? qv*)
     (let* ((qv       (car qv*))
            (value    (Quotation-Variable-value qv))
@@ -1020,8 +957,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   (and (pair? qv*)
        (if (equal? value (Quotation-Variable-value (car qv*)))
            (car qv*)
-           (already-seen-value? value (cdr qv*)) ) ) )
-\end{code:lisp}</p>
+           (already-seen-value? value (cdr qv*)) ) ) )</pre>
 
 <p>Имена всех цитат в генерируемом коде будут начинаться на <code><span class="func">thing</span></code>. Если
 в программе нашлась пара эквивалентных цитат, то достаточно одну из них везде
@@ -1031,13 +967,11 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 
 <!--\indexC{generate-quotation-alias}-->
-<p>\begin{code:lisp}
-(define (generate-quotation-alias out qv1 qv2)
+<pre>(define (generate-quotation-alias out qv1 qv2)
   (format out "#define thing A thing A /*  S */ %"
           (Quotation-Variable-name qv1)
           (Quotation-Variable-name qv2)
-          (Quotation-Variable-value qv2) ) )
-\end{code:lisp}</p>
+          (Quotation-Variable-value qv2) ) )</pre>
 
 
 <!--\indexR{значения!атомарные}-->
@@ -1054,8 +988,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{C-value?}-->
 <!--\indexC{generate-C-value}-->
-<p>\begin{code:lisp}
-(define *maximal-fixnum* +1073741823)
+<pre>(define *maximal-fixnum* +1073741823)
 (define *minimal-fixnum* -1073741824)
 |\ForLayout{display}{\vskip-0.333\baselineskip}|
 (define (C-value? value)
@@ -1082,8 +1015,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
         (format out "SCM_DefineString(thing A_object, \-A\"); %"
                 index value )
         (format out "#define thing A SCM_Wrap(&thing A_object) %"
-                index index ) ) ) ) )
-\end{code:lisp}</p>
+                index index ) ) ) ) )</pre>
 
 
 <!--\indexR{значения!составные}-->
@@ -1095,8 +1027,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{scan-symbol}-->
 <!--\indexC{generate-symbol}-->
-<p>\begin{code:lisp}
-(define (scan-symbol out value qv* i results)
+<pre>(define (scan-symbol out value qv* i results)
   (let* ((qv (car qv*))
          (str (symbol->string value))
          (strqv (already-seen-value? str results)) )
@@ -1115,8 +1046,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
           (Quotation-Variable-value qv) )
   (format out "#define thing A SCM_Wrap(&thing A_object) %"
           (Quotation-Variable-name qv)
-          (Quotation-Variable-name qv) ) )
-\end{code:lisp}</p>
+          (Quotation-Variable-name qv) ) )</pre>
 
 <p>Точечные пары состоят из двух частей — <code><span class="func">car</span></code> и <code><span class="func">cdr</span></code>, —
 обрабатываемых последовательно. При этом учитывается, что их значения могут
@@ -1126,8 +1056,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
 
 <!--\indexC{scan-pair}-->
 <!--\indexC{generate-pair}-->
-<p>\begin{code:lisp}
-(define (scan-pair out value qv* i results)
+<pre>(define (scan-pair out value qv* i results)
   (let* ((qv  (car qv*))
          (d   (cdr value))
          (dqv (already-seen-value? d results)) )
@@ -1156,8 +1085,7 @@ $\pi$ становится <code><span class="func">((lambda () $\pi$))</span></
   (format out
           "#define thing A SCM_Wrap(&thing A_object) %"
           (Quotation-Variable-name qv)
-          (Quotation-Variable-name qv) ) )
-\end{code:lisp}</p>
+          (Quotation-Variable-name qv) ) )</pre>
 
 <p>Теперь давайте рассмотрим пример, а затем поговорим обо всех этих загадочных
 макросах.</p>
@@ -1259,9 +1187,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 
 <!--\indexC*{c}{->C}-->
-<p>\begin{code:lisp}
-(define-generic (->C (e Program) out))
-\end{code:lisp}</p>
+<pre>(define-generic (->C (e Program) out))</pre>
 
 <p>В отличие от предыдущих трансформаций, в этот раз мы не будем использовать
 обобщённый обходчик (так как у нас нет действия по умолчанию), а просто
@@ -1279,15 +1205,13 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 
 <!--\indexC{between-parentheses}-->
-<p>\begin{code:lisp}
-(define-syntax between-parentheses
+<pre>(define-syntax between-parentheses
   (syntax-rules ()
     ((between-parentheses out . body)
      (let ((out out))
        (format out "(")
        (begin . body)
-       (format out ")") ) ) ) )
-\end{code:lisp}</p>
+       (format out ")") ) ) ) )</pre>
 
 <h4 id="cc/gen/exprs/sssect:refs">Обращения к переменным</h4>
 
@@ -1302,21 +1226,18 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 <!--\indexCS*{c}{->C}{<code><span class="func">Reference</span></code>}-->
 <!--\indexC{reference->C}-->
 <!--\indexC{variable->C}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Reference) out)
+<pre>(define-method (->C (e Reference) out)
   (reference->C (Reference-variable e) out) )</p>
 
 <p>(define-generic (reference->C (v Variable) out)
   (variable->C v out) )</p>
 
-<p>(define-generic (variable->C (variable) out))
-\end{code:lisp}</p>
+<p>(define-generic (variable->C (variable) out))</pre>
 
 <p>Обычно переменная получает новое имя на Си, похожее на её исходное, за
 исключением случаев, когда она была переименована или же ссылается на цитату.</p>
 
-<p>\begin{code:lisp}
-(define-method (variable->C (variable Variable) out)
+<pre>(define-method (variable->C (variable Variable) out)
   (format out (IdScheme->IdC (Variable-name variable))) )</p>
 
 <p>(define-method (variable->C (variable Renamed-Local-Variable) out)
@@ -1325,8 +1246,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
           (Renamed-Local-Variable-index variable) ) )</p>
 
 <p>(define-method (variable->C (variable Quotation-Variable) out)
-  (format out "thing A" (Quotation-Variable-name variable)) )
-\end{code:lisp}</p>
+  (format out "thing A" (Quotation-Variable-name variable)) )</pre>
 
 <p>Отдельно обрабатываются обращения к глобальным переменным, не являющимся
 предопределёнными. Фактически, это свободные переменные всей программы. Как вы
@@ -1336,24 +1256,20 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 исполнения программы. За этим проследит макрос <code><span class="func">SCM\_CheckedGlobal</span></code>.
 \seeEx[cc/ex:global-check]</p>
 
-<p>\begin{code:lisp}
-(define-method (reference->C (v Global-Variable) out)
+<pre>(define-method (reference->C (v Global-Variable) out)
   (format out "SCM_CheckedGlobal")
   (between-parentheses out
-    (variable->C v out) ) )
-\end{code:lisp}</p>
+    (variable->C v out) ) )</pre>
 
 <p>Кроме того, ещё остаются обычные свободные переменные. Для них тоже припасён
 специальный макрос.</p>
 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Free-Reference</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Free-Reference) out)
+<pre>(define-method (->C (e Free-Reference) out)
   (format out "SCM_Free")
   (between-parentheses out
-    (variable->C (Free-Reference-variable e) out) ) )
-\end{code:lisp}</p>
+    (variable->C (Free-Reference-variable e) out) ) )</pre>
 
 <h4 id="cc/gen/exprs/sssect:assignments">Присваивания</h4>
 
@@ -1364,13 +1280,11 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Global-Assignment</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Global-Assignment) out)
+<pre>(define-method (->C (e Global-Assignment) out)
   (between-parentheses out
     (variable->C (Global-Assignment-variable e) out)
     (format out " = ")
-    (->C (Global-Assignment-form e) out) ) )
-\end{code:lisp}</p>
+    (->C (Global-Assignment-form e) out) ) )</pre>
 
 <h4 id="cc/gen/exprs/sssect:boxes">Коробки</h4>
 
@@ -1382,8 +1296,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Read</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Write</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Creation</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Box-Read) out)
+<pre>(define-method (->C (e Box-Read) out)
   (format out "SCM_Content")
   (between-parentheses out
     (->C (Box-Read-reference e) out) ) )</p>
@@ -1400,8 +1313,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
   (variable->C (Box-Creation-variable e) out)
   (format out " = SCM_allocate_box")
   (between-parentheses out
-    (variable->C (Box-Creation-variable ) out) ) )
-\end{code:lisp}</p>
+    (variable->C (Box-Creation-variable ) out) ) )</pre>
 
 <h4 id="cc/gen/exprs/sssect:alternatives">Ветвления</h4>
 
@@ -1413,8 +1325,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Alternative</span></code>}-->
 <!--\indexC{boolean->C}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Alternative) out)
+<pre>(define-method (->C (e Alternative) out)
   (between-parentheses out
     (boolean->C (Alternative-condition e) out)
     (format out -%? ")
@@ -1425,8 +1336,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 <p>(define-generic (boolean->C (e) out)
   (between-parentheses out
     (->C e out)
-    (format out " != SCM_false") ) )
-\end{code:lisp}</p>
+    (format out " != SCM_false") ) )</pre>
 
 
 <!--\indexR{вывод типов}-->
@@ -1452,13 +1362,11 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Sequence</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Sequence) out)
+<pre>(define-method (->C (e Sequence) out)
   (between-parentheses out
     (->C (Sequence-first e) out)
     (format out ", %")
-    (->C (Sequence-last e) out) ) )
-\end{code:lisp}</p>
+    (->C (Sequence-last e) out) ) )</pre>
 
 <h3 id="cc/gen/ssect:apply">Компиляция аппликаций</h3>
 
@@ -1487,8 +1395,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Regular-Application</span></code>}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Regular-Application) out)
+<pre>(define-method (->C (e Regular-Application) out)
   (let ((n (number-of (Regular-Application-arguments e))))
     (cond ((< n 4)
            (format out "SCM_invoke A" n)
@@ -1500,8 +1407,7 @@ SCM_DefinePair(thing0_object, thing7, thing1);
            (between-parentheses out
              (->C (Regular-Application-function e) out)
              (format out ",  A" n)
-             (->C (Regular-Application-arguments e) out) ) ) ) ) )
-\end{code:lisp}</p>
+             (->C (Regular-Application-arguments e) out) ) ) ) ) )</pre>
 
 
 <!--\indexR{стековые фреймы!объединение}-->
@@ -1552,8 +1458,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Fix-Let</span></code>}-->
 <!--\indexC{bindings->C}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Fix-Let) out)
+<pre>(define-method (->C (e Fix-Let) out)
   (between-parentheses out
     (bindings->C (Fix-Let-variables e) (Fix-Let-arguments e) out)
     (->C (Fix-Let-body e) out) ) )</p>
@@ -1568,8 +1473,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
   (bindings->C (cdr variables) (Arguments-others e) out) )</p>
 
 <p>(define-method (bindings->C variables (e No-Argument) out)
-  (format out "") )
-\end{code:lisp}</p>
+  (format out "") )</pre>
 
 
 <!--\indexR{встраивание}-->
@@ -1597,8 +1501,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Predefined-Application</span></code>}-->
 <!--\indexC{arguments->C}-->
-<p>\begin{code:lisp}
-(define-generic (arguments->C (e) out))</p>
+<pre>(define-generic (arguments->C (e) out))</p>
 
 <p>(define-method (arguments->C (e No-Argument) out) #t)</p>
 
@@ -1609,8 +1512,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 <p>(define-method (->C (e Predefined-Application) out)
   ((Functional-Description-generator
     (Predefined-Variable-description
-     (Predefined-Application-variable e) ) ) e out ) )
-\end{code:lisp}</p>
+     (Predefined-Application-variable e) ) ) e out ) )</pre>
 
 <h3 id="cc/gen/ssect:predef-env">Предопределённое окружение</h3>
 
@@ -1621,8 +1523,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 <!--\indexC{Functional-Description}-->
 <!--\indexC{defprimitive}-->
-<p>\begin{code:lisp}
-(define-class Functional-Description Object
+<pre>(define-class Functional-Description Object
   ( comparator arity generator ) )</p>
 
 <p>(define-syntax defprimitive
@@ -1633,8 +1534,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
                 = arity
                 (make-predefined-application-generator 'Cname) ) )))
        (set! g.init (cons v g.init))
-       'name ) ) ) )
-\end{code:lisp}</p>
+       'name ) ) ) )</pre>
 
 <p>Итак, компилятору известно имя примитива на Scheme и Си, а также его арность.
 На выходе ожидается вызов функции Си: то есть имя функции, за которым в скобках
@@ -1643,22 +1543,18 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 
 <!--\indexC{make-predefined-application-generator}-->
-<p>\begin{code:lisp}
-(define (make-predefined-application-generator Cname)
+<pre>(define (make-predefined-application-generator Cname)
   (lambda (e out)
     (format out -A" Cname)
     (between-parentheses out
-      (arguments->C (Predefined-Application-arguments e) out) ) ) )
-\end{code:lisp}</p>
+      (arguments->C (Predefined-Application-arguments e) out) ) ) )</pre>
 
 <p>Приведём несколько примеров для всем знакомых функций:</p>
 
-<p>\begin{code:lisp}
-(defprimitive cons "SCM_cons" 2)
+<pre>(defprimitive cons "SCM_cons" 2)
 (defprimitive car "SCM_car" 1)
 (defprimitive + "SCM_Plus" 2)
-(defprimitive = "SCM_EqnP" 2)
-\end{code:lisp}</p>
+(defprimitive = "SCM_EqnP" 2)</pre>
 
 
 <!--\indexR{соглашения именования!макросов и примитивов}-->
@@ -1691,8 +1587,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 <!--\indexCS*{c}{->C}{<code><span class="func">No-Free</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Free-Environment</span></code>}-->
 <!--\indexC{generate-arity}-->
-<p>\begin{code:lisp}
-(define-method (->C (e Closure-Creation) out)
+<pre>(define-method (->C (e Closure-Creation) out)
   (format out "SCM_close")
   (between-parentheses out
     (format out "SCM_CfunctionAddress(function_ A),  A,  A"
@@ -1715,8 +1610,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 <p>(define-method (->C (e Free-Environment) out)
   (format out ", ")
   (->C (Free-Environment-first e) out)
-  (->C (Free-Environment-others e) out) )
-\end{code:lisp}</p>
+  (->C (Free-Environment-others e) out) )</pre>
 
 <p>Все абстракции компилируемой программы собираются в соответствующем
 поле объекта <code><span class="func">Flattened-Program</span></code> в виде списка объектов класса
@@ -1725,14 +1619,12 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 
 <!--\indexC{generate-functions}-->
-<p>\begin{code:lisp}
-(define (generate-functions out definitions)
+<pre>(define (generate-functions out definitions)
   (format out -%/* Functions: */ %")
   (for-each (lambda (def)
               (generate-closure-structure out def)
               (generate-possibly-dotted-definition out def) )
-            (reverse definitions) ) )
-\end{code:lisp}</p>
+            (reverse definitions) ) )</pre>
 
 
 <!--\indexC*{function}{function\_}-->
@@ -1753,14 +1645,12 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 
 <!--\indexC{generate-closure-structure}-->
-<p>\begin{code:lisp}
-(define (generate-closure-structure out definition)
+<pre>(define (generate-closure-structure out definition)
   (format out "SCM_DefineClosure(function_ A, "
           (Function-Definition-index definition) )
   (generate-local-temporaries (Function-Definition-free definition)
                               out )
-  (format out "); %") )
-\end{code:lisp}</p>
+  (format out "); %") )</pre>
 
 <p>Функция <code><span class="func">generate-possibly-dotted-definition</span></code> генерирует определение тела
 замыкания в виде функции Си, учитывая его арность. Прототип этой функции
@@ -1775,8 +1665,7 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 
 <!--\indexC{generate-possibly-dotted-definition}-->
-<p>\begin{code:lisp}
-(define (generate-possibly-dotted-definition out definition)
+<pre>(define (generate-possibly-dotted-definition out definition)
   (format out -%SCM_DeclareFunction(function_ A) %{ %"
           (Function-Definition-index definition) )
   (let ((vars (Function-Definition-variables definition))
@@ -1797,22 +1686,19 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
         (format out -%") ) )
     (format out "return ")
     (->C (Function-Definition-body definition) out)
-    (format out "; %} % %") ) )
-\end{code:lisp}</p>
+    (format out "; %} % %") ) )</pre>
 
 <p>Список локальных переменных формируется функцией
 <code><span class="func">generate-local-temporaries</span></code>:</p>
 
 
 <!--\indexC{generate-local-temporaries}-->
-<p>\begin{code:lisp}
-(define (generate-local-temporaries temps out)
+<pre>(define (generate-local-temporaries temps out)
   (when (pair? temps)
     (format out "SCM ")
     (variable->C (car temps) out)
     (format out "; ")
-    (generate-local-temporaries (cdr temps) out) ) )
-\end{code:lisp}</p>
+    (generate-local-temporaries (cdr temps) out) ) )</pre>
 
 <h3 id="cc/gen/ssect:init">Последний штрих</h3>
 
@@ -1830,15 +1716,13 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 
 
 <!--\indexC{generate-main}-->
-<p>\begin{code:lisp}
-(define (generate-main out form)
+<pre>(define (generate-main out form)
   (format out -%/* Expression: */ %")
   (format out "int main(void) %{ %")
   (format out "    SCM_print")
   (between-parentheses out
     (->C form out) )
-  (format out "; %    return 0; %} %") )
-\end{code:lisp}</p>
+  (format out "; %    return 0; %} %") )</pre>
 
 
 <!--\indexR{компиляция!в Си}-->
@@ -3052,14 +2936,12 @@ SCM SCM_callep(SCM f)
 
 
 <!--\indexC{compile->C}-->
-<p>\begin{code:lisp}
-(define (compile->C e out)
+<pre>(define (compile->C e out)
   (set! g.current '())
   (let* ((ee (letify (cpsify (Sexp->object e)) '()))
          (prg (extract-things! (lift! ee))) )
     (gather-temporaries! (closurize-main! prg))
-    (generate-C-program out e prg) ) )
-\end{code:lisp}</p>
+    (generate-C-program out e prg) ) )</pre>
 
 <p>Извлечение продолжений выполняет функция <code><span class="func">cpsify</span></code>. Она организует совместную
 работу обходчика <code><span class="func">update-walk!</span></code> и функции <code><span class="func">->CPS</span></code>. Также нам понадобятся
@@ -3072,8 +2954,7 @@ SCM SCM_callep(SCM f)
 <!--\indexC{Pseudo-Variable}-->
 <!--\indexC{cpsify}-->
 <!--\indexC{new-Variable}-->
-<p>\begin{code:lisp}
-(define-class Continuation    Function ())
+<pre>(define-class Continuation    Function ())
 (define-class Pseudo-Variable Local-Variable ())
 |\ForLayout{display}{\vskip-0.333\baselineskip}|
 (define (cpsify e)
@@ -3084,8 +2965,7 @@ SCM SCM_callep(SCM f)
   (let ((counter 0))
     (lambda ()
       (set! counter (+ 1 counter))
-      (make-Pseudo-Variable counter #f #f) ) ) )
-\end{code:lisp}</p>
+      (make-Pseudo-Variable counter #f #f) ) ) )</pre>
 
 <p>Функция <code><span class="func">->CPS</span></code> первым аргументом принимает объект, представляющий
 вычисления, а вторым — продолжение, которому надо передать результат этих
@@ -3096,46 +2976,39 @@ SCM SCM_callep(SCM f)
 
 <!--\indexC*{CPS}{->CPS}-->
 <!--\indexC{convert2Regular-Application}-->
-<p>\begin{code:lisp}
-(define-generic (->CPS (e Program) k)
+<pre>(define-generic (->CPS (e Program) k)
   (convert2Regular-Application k e) )
 |\ForLayout{display}{\vskip-0.333\baselineskip}|
 (define (convert2Regular-Application k . args)
-  (make-Regular-Application k (convert2arguments args)) )
-\end{code:lisp}</p>
+  (make-Regular-Application k (convert2arguments args)) )</pre>
 
 <p>Теперь остаётся лишь определить методы для всех остальных узлов синтаксического
 дерева. Последовательные вычисления? Элементарно: вычисляем одну форму сейчас,
 а остальные передаём продолжению:</p>
 
-<p>\begin{code:lisp}
-(define-method (->CPS (e Sequence) k)
+<pre>(define-method (->CPS (e Sequence) k)
   (->CPS (Sequence-first e)
          (let ((v (new-Variable)))
            (make-Continuation
-            (list v) (->CPS (Sequence-last e) k) ) ) ) )
-\end{code:lisp}</p>
+            (list v) (->CPS (Sequence-last e) k) ) ) ) )</pre>
 
 <p>С ветвлением тоже всё просто, надо только помнить, что обе ветви пользуются
 одним и тем же исходным продолжением:</p>
 
-<p>\begin{code:lisp}
-(define-method (->CPS (e Alternative) k)
+<pre>(define-method (->CPS (e Alternative) k)
   (->CPS (Alternative-condition e)
          (let ((v (new-Variable)))
            (make-Continuation
             (list v) (make-Alternative
                       (make-Local-Reference v)
                       (->CPS (Alternative-consequent e) k)
-                      (->CPS (Alternative-alternant e) k) ) ) ) ) )
-\end{code:lisp}</p>
+                      (->CPS (Alternative-alternant e) k) ) ) ) ) )</pre>
 
 <p>И даже присваивания очевидны. Сначала вычисляется новое значение, продолжением
 этих вычислений является обновление значения переменной и выполнение всего того,
 что следует дальше за присваиванием:</p>
 
-<p>\begin{code:lisp}
-(define-method (->CPS (e Box-Write) k)
+<pre>(define-method (->CPS (e Box-Write) k)
   (->CPS (Box-Write-form e)
          (let ((v (new-Variable)))
            (make-Continuation
@@ -3151,8 +3024,7 @@ SCM SCM_callep(SCM f)
             (list v) (convert2Regular-Application
                       k (make-Global-Assignment
                          (Global-Assignment-variable e)
-                         (make-Local-Reference v) ) ) ) ) ) )
-\end{code:lisp}</p>
+                         (make-Local-Reference v) ) ) ) ) ) )</pre>
 
 
 <!--\indexR{редексы!административные}-->
@@ -3173,25 +3045,21 @@ SCM SCM_callep(SCM f)
 <p>\ForLayout{display}{\begingroup
 \lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
 
-<p>\begin{code:lisp}
-(define-method (->CPS (e Fix-Let) k)
+<pre>(define-method (->CPS (e Fix-Let) k)
   (->CPS (make-Regular-Application
           (make-Function (Fix-Let-variables e) (Fix-Let-body e))
           (Fix-Let-arguments e) )
-         k ) )
-\end{code:lisp}</p>
+         k ) )</pre>
 
 <p>Все функции получают по дополнительному аргументу, представляющему продолжение
 их вызова.</p>
 
-<p>\begin{code:lisp}
-(define-method (->CPS (e Function) k)
+<pre>(define-method (->CPS (e Function) k)
   (convert2Regular-Application k
    (let ((k (new-Variable)))
      (make-Function (cons k (Function-variables e))
                     (->CPS (Function-body e)
-                           (make-Local-Reference k) ) ) ) ) )
-\end{code:lisp}</p>
+                           (make-Local-Reference k) ) ) ) ) )</pre>
 
 <p>Аппликации функций должны выполняться с учётом этого нововведения. Все аргументы
 последовательно вычисляются перед применением к ним функции. Порядок вычисления
@@ -3199,8 +3067,7 @@ SCM SCM_callep(SCM f)
 
 
 <!--\indexC{arguments->CPS}-->
-<p>\begin{code:lisp}
-(define-method (->CPS (e Predefined-Application) k)
+<pre>(define-method (->CPS (e Predefined-Application) k)
   (let* ((args (Predefined-Application-arguments e))
          (vars (let name ((args args))
                  (if (not (Arguments? args)) '()
@@ -3238,8 +3105,7 @@ SCM SCM_callep(SCM f)
               (list (car vars))
               (arguments->CPS (Arguments-others args)
                               (cdr vars) appl ) ) )
-      appl ) )
-\end{code:lisp}</p>
+      appl ) )</pre>
 
 <p>\ForLayout{display}{\endgroup}</p>
 
@@ -3263,8 +3129,7 @@ SCM SCM_callep(SCM f)
 
 
 <!--\indexC{letify}-->
-<p>\begin{code:lisp}
-(define-generic (letify (o Program) env)
+<pre>(define-generic (letify (o Program) env)
   (update-walk! letify (clone o) env) )
 |\ForLayout{display}{\vskip-0.333\baselineskip}|
 (define-method (letify (o Function) env)
@@ -3308,8 +3173,7 @@ SCM SCM_callep(SCM f)
         (make-Box-Creation (cdr r))
         (letify-error "Disappeared variable" o) ) ) )</p>
 
-<p>(define-method (clone (o Pseudo-Variable)) (new-Variable))
-\end{code:lisp}</p>
+<p>(define-method (clone (o Pseudo-Variable)) (new-Variable))</pre>
 
 <h4 id="cc/call/cc/cc/ssect:runtime">Дорабатываем библиотеку</h4>
 
@@ -3634,9 +3498,7 @@ CPS даже усугубляет ситуацию тем, что здесь п�
 
 
 <!--\indexC{defforeignprimitive}-->
-<p>\begin{code:lisp}
-(defforeignprimitive system int ("system" string) 1)
-\end{code:lisp}</p>
+<pre>(defforeignprimitive system int ("system" string) 1)</pre>
 
 
 <!--\indexR{маршалинг}-->
