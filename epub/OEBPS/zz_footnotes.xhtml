@@ -20,7 +20,7 @@
 
 <div class="footnote" id="foot0.1">
   <p><span class="num"><sup>1</sup></span>
-    {\LeLisp} является торговой маркой INRIA.}</p>
+    Le_Lisp является торговой маркой INRIA.</p>
 </div>
 
 <div class="footnote" id="foot0.tr-2">
@@ -69,7 +69,7 @@
 <div class="footnote" id="foot1.4">
   <p><span class="num"><sup>4</sup></span>
     Заметьте, не «функцию <code><span class="func">wrong</span></code>». Варианты её
-    реализации подробнее рассматриваются в разделе <a href="ch7_compilation.xhtml#compilation/sect:exception">7.9</a>.</p>
+    реализации подробнее рассматриваются в разделе <a href="ch07_compilation.xhtml#compilation/sect:exception">7.9</a>.</p>
 </div>
 
 <div class="footnote" id="foot1.5">
@@ -138,6 +138,111 @@
     <code><span class="syntax">&amp;rest</span></code>. Но это сильно усложняет синтаксический
     разбор и связывание. Иные системы позволяют даже обобщённое указание аргументов с помощью
     шаблонов <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.13">
+  <p><span class="num"><sup>13</sup></span>
+    Функция могла бы потом ещё проверять на правильность типы переданных аргументов, но это
+    не имеет отношения к механизму вызова.</p>
+</div>
+
+<div class="footnote" id="foot1.14">
+  <p><span class="num"><sup>14</sup></span>
+    На самом деле, здесь можно использовать любое необходимое
+    окружение. См. про форму <code><span class="special">closure</span></code> в разделе
+    <a href="ch04_assignment_and_side_effects.xhtml#assignement/assignement/para:closure">4.1</a>.</p>
+</div>
+
+<div class="footnote" id="foot1.15">
+  <p><span class="num"><sup>15</sup></span>
+    В объектно-ориентированных языках под динамическим
+    связыванием обычно понимается механизм выбора метода объекта на основе его
+    реального типа во время исполнения программы, в противоположность статическому
+    связыванию, при котором метод выбирается компилятором исходя из типа переменной,
+    которая хранит рассматриваемый объект.</p>
+</div>
+
+<div  class="footnote" id="foot1.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Начиная с Emacs Lisp v.\,24 и Perl 5, эти языки имеют и лексические переменные.</p>
+</div>
+
+<div class="footnote" id="foot1.16">
+  <p><span class="num"><sup>16</sup></span>
+    О происхождении <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.xhtml#ray91">Ray91</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.17">
+  <p><span class="num"><sup>17</sup></span>
+    Наша имитация не совсем точна, так как существует немало диалектов Лиспа (вроде CLtL1
+    <span class="cite">[<a href="z1_bibliography.xhtml#ste84">Ste84</a>]</span>), где
+    <code><span class="special">lambda</span></code> — это не специальный оператор, а только ключевое слово-маркер
+    вроде <code><span class="syntax">else</span></code> внутри <code><span class="syntax">cond</span></code> и <code><span class="syntax">case</span></code>. В этом случае <code><span class="func">d.evaluate</span></code>
+    может вообще не знать ни о какой <code><span class="special">lambda</span></code>. Иногда даже накладываются
+    ограничения на положение <code><span class="special">lambda</span></code>-форм, разрешающие им находиться только
+    внутри <code><span class="special">function</span></code> и в определениях функций.</p>
+</div>
+
+<div class="footnote" id="foot1.18">
+  <p><span class="num"><sup>18</sup></span>
+    В терминах λ-исчисления подобная замена имён называется α-конверсией.</p>
+</div>
+
+<div class="footnote" id="foot1.19">
+  <p><span class="num"><sup>19</sup></span>
+    К счастью, статистика показывает, что переменные, располагающиеся ближе к началу списка,
+    используются чаще тех, что находятся глубоко внутри. Кстати, ещё стоит отметить, что
+    лексические окружения в среднем меньше по размеру, чем динамические, так как
+    последним необходимо хранить все переменные, участвующие в вычислениях, включая
+    одноимённые <span class="cite">[<a href="z1_bibliography.xhtml#bak92a">Bak92a</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.20">
+  <p><span class="num"><sup>20</sup></span>
+    Здесь мы не реализуем присваивание переменным, захваченным замыканиями. Об этом можно
+    почитать в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.21">
+  <p><span class="num"><sup>21</sup></span>
+    Это поле названо в честь <code><span class="var">apval</span></code> из
+    <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>.
+    <span class="see">[см. <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/par:apval">2 главу</a>]</span>
+    Тогда значения полей действительно хранились в наивных P-списках.</p>
+</div>
+
+<div class="footnote" id="foot1.22">
+  <p><span class="num"><sup>22</sup></span>
+    Эти функции проходят по списку свойств символа (его P-списку,
+    от property) до тех пор, пока не найдут нужное. Скорость поиска, соответственно,
+    линейно зависит от длины списка, если только не применяются хеш-таблицы.</p>
+</div>
+
+<div class="footnote" id="foot1.23">
+  <p><span class="num"><sup>23</sup></span>
+    Согласитесь, было бы странным втискивать всю книгу в первую главу.</p>
+</div>
+
+<div class="footnote" id="foot1.24">
+  <p><span class="num"><sup>24</sup></span>
+    К сожалению, сейчас они ещё и инициализируются. Эта ошибка будет исправлена позже.</p>
+</div>
+
+<div class="footnote" id="foot1.25">
+  <p><span class="num"><sup>25</sup></span>
+    Можно только порадоваться за наш выбор не называть
+    <code><span class="func">invoke</span></code>
+    «<code><span class="func">apply</span></code>».</p>
+</div>
+
+<div class="footnote" id="foot1.26">
+  <p><span class="num"><sup>26</sup></span>
+    После того, как мы раскроем все
+    используемые макросы и сокращения вроде <code><span class="syntax">let</span></code>,
+    <code><span class="syntax">case</span></code>, <code><span class="special">define</span></code>
+    и т. д. Потом надо будет ещё поместить в глобальное окружение функции
+    <code><span class="func">evaluate</span></code>,
+    <code><span class="func">evlis</span></code> и др.</p>
 </div>
 
 </body>

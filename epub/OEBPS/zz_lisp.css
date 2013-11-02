@@ -14,6 +14,10 @@ span.logo {
     font-variant: small-caps;
 }
 
+span.comb {
+
+}
+
 pre span.logo {
     float: right;
 }
@@ -33,6 +37,7 @@ table#pref-table-signatures td:nth-child(2) { text-align: left; }
 table#ch1-table-grammar td:nth-child(1) { text-align: right; }
 table#ch1-table-grammar td:nth-child(2) { text-align: center; }
 table#ch1-table-grammar td:nth-child(3) { text-align: left; }
+table#ch1-table-let-expand {}
 
 /* code */
 code span.special,
