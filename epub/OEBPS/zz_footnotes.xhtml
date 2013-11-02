@@ -39,6 +39,8 @@
 </div>
 
 
+
+
 <h1><span class="seq">Глава 1.</span> Основы интерпретации</h1>
 
 <div class="footnote" id="foot1.1">
@@ -246,6 +248,8 @@
 </div>
 
 
+
+
 <h1><span class="seq">Глава 2.</span> Lisp, 1, 2, …, ω</h1>
 
 <div class="footnote" id="foot2.1">
@@ -259,7 +263,7 @@
 
 <div class="footnote" id="foot2.tr-1">
   <p><span class="num"><sup>*</sup></span>
-    REPL — «<em class="term">read--eval--print loop</em>», интерактивная сессия.
+    REPL — «<em class="term">read–eval–print loop</em>», интерактивная сессия.
     В интерпретаторе из предыдущей главы ей соответствует функция
     <code><span class="func">toplevel</span></code>.</p>
 </div>
@@ -275,6 +279,55 @@
     Название «локальные переменные» не совсем удачно, так как
     поведение динамических переменных кардинально отличается от поведения обычных
     (лексических) переменных.</p>
+</div>
+
+<div class="footnote" id="foot2.4">
+  <p><span class="num"><sup>4</sup></span>
+    Это две различные функции <code><span class="func">display</span></code>, принимающие один
+    и два аргумента соответственно. В Scheme нет
+    поддержки опциональных аргументов и значений по умолчанию на уровне языка.
+    Лисп же поддерживает эту идею, поэтому не нуждается в динамических переменных
+    для реализации подобного поведения.</p>
+</div>
+
+<div class="footnote" id="foot2.5">
+  <p><span class="num"><sup>5</sup></span>
+    См. также реализацию функции <code><span class="func">list-length</span></code> из
+    <span class="logo">Common Lisp</span>.</p>
+</div>
+
+<div class="footnote" id="foot2.6">
+  <p><span class="num"><sup>6</sup></span>
+    По соглашению, имена динамических переменных окружаются звёздочками, чтобы выделить их.</p>
+</div>
+
+<div class="footnote" id="foot2.7">
+  <p><span class="num"><sup>7</sup></span>
+    Разумеется, это не <span class="logo">Common Lisp</span>. Это наш Lisp<sub>3</sub>,
+    определённый чуть выше.</p>
+</div>
+
+<div class="footnote" id="foot2.8">
+  <p><span class="num"><sup>8</sup></span>
+    Многие реализации Лиспа не считают ключевые слова вроде <code><span class="var">nil</span></code> или <code><span class="special">if</span></code> символами (а значит, и легальными именами переменных).</p>
+</div>
+
+<div class="footnote" id="foot2.9">
+  <p><span class="num"><sup>9</sup></span>
+    Ведь <code>(<span class="num">42</span> <span class="num">42</span>)</code> вполне
+    подходит как корень данного уравнения, но почему именно
+    <code><span class="num">42</span></code>?</p>
+</div>
+
+<div class="footnote" id="foot2.10">
+  <p><span class="num"><sup>10</sup></span>
+    Правда, расплачиваясь за это необходимостью собирать бесполезный список, который тут же
+    удаляется после создания.</p>
+</div>
+
+<div class="footnote" id="foot2.11">
+  <p><span class="num"><sup>11</sup></span>
+    Более подробное объяснение см. в <span class="cite">[<a href="z1_bibliography.xhtml#man74">Man74</a>]</span>.</p>
 </div>
 
 </body>
