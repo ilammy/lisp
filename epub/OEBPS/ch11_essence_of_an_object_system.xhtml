@@ -2130,47 +2130,47 @@ table). Алгоритм вызова обобщённых функций теп
 соображений <span class="logo">EuLisp</span>, ILOG Talk, <span class="logo">Common Lisp</span> и многие другие поддерживают
 концепцию объектов непосредственно, делая их базовыми понятиями языка.</p>
 
+
 <h2 id="objects/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{objects/ex:precise-predicate}
-Улучшите определение предиката <code><span class="func">Object?</span></code>, чтобы он чётче различал объекты и
-значения Scheme.
-\end{exercise}</p>
+<h5 class="exercise" id="objects/ex:precise-predicate">Упражнение <span class="seq">0.0</span></h5>
+<p>Улучшите определение предиката <code><span class="func">Object?</span></code>, чтобы он чётче различал объекты и
+значения Scheme.</p>
 
-<p>\begin{exercise}\label{objects/ex:clone}
-Напишите обобщённую функцию <code><span class="func">clone</span></code>, копирующую объекты {\Meroonet}. Пусть
+
+<h5 class="exercise" id="objects/ex:clone">Упражнение <span class="seq">0.0</span></h5>
+<p>Напишите обобщённую функцию <code><span class="func">clone</span></code>, копирующую объекты {\Meroonet}. Пусть
 она выполняет «поверхностное копирование» (shallow copy): содержимое полей
 исходного объекта можно просто перенести в копию без рекурсивных вызовов
-<code><span class="func">clone</span></code>.
-\end{exercise}</p>
+<code><span class="func">clone</span></code>.</p>
 
-<p>\begin{exercise}\label{objects/ex:metaclass}
-{\Meroonet} позволяет определять новые типы классов — метаклассы, являющиеся
+
+<h5 class="exercise" id="objects/ex:metaclass">Упражнение <span class="seq">0.0</span></h5>
+<p>{\Meroonet} позволяет определять новые типы классов — метаклассы, являющиеся
 наследниками <code><span class="func">Class</span></code>. Реализуйте метакласс, чьими экземплярами будут классы,
-подсчитывающие количество своих объектов.
-\end{exercise}</p>
+подсчитывающие количество своих объектов.</p>
 
-<p>\begin{exercise}\label{objects/ex:field-reflection}
-Классам и полям {\Meroonet} не помешало бы чуть больше рефлексии. Добавьте им
+
+<h5 class="exercise" id="objects/ex:field-reflection">Упражнение <span class="seq">0.0</span></h5>
+<p>Классам и полям {\Meroonet} не помешало бы чуть больше рефлексии. Добавьте им
 дополнительные поля, ссылающиеся на сопутствующие функции: предикат и оба
-аллокатора для классов; геттеры, сеттеры и измерители длины для полей.
-\end{exercise}</p>
+аллокатора для классов; геттеры, сеттеры и измерители длины для полей.</p>
 
-<p>\begin{exercise}\label{objects/ex:auto-generic}
-CLOS не требует обязательного существования обобщённой функции для определения
+
+<h5 class="exercise" id="objects/ex:auto-generic">Упражнение <span class="seq">0.0</span></h5>
+<p>CLOS не требует обязательного существования обобщённой функции для определения
 её метода. Доработайте <code><span class="func">define-method</span></code> так, чтобы она создавала необходимую
-обобщённую функцию на лету, если она ещё не была определена.
-\end{exercise}</p>
+обобщённую функцию на лету, если она ещё не была определена.</p>
 
-<p>\begin{exercise}\label{objects/ex:next-method}
+
+<h5 class="exercise" id="objects/ex:next-method">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{next-method"?}-->
-Некоторые объектные системы, вроде CLOS и \TELOS, наряду с <code><span class="func">call-next-method</span></code>
+<p>Некоторые объектные системы, вроде CLOS и \TELOS, наряду с <code><span class="func">call-next-method</span></code>
 имеют также предикат <code><span class="func">next-method?</span></code>, возвращающий ложь, когда следующий
 суперметод не определён. Эта рефлексивная возможность позволяет последовательно
 выполнить всю цепочку суперметодов, не рискуя при этом вызвать метод по
 умолчанию, потенциально приводящий к ошибке. Научите <code><span class="func">define-method</span></code>
-определять функцию <code><span class="func">next-method?</span></code>.
-\end{exercise}</p>
+определять функцию <code><span class="func">next-method?</span></code>.</p>
 
 <p>\ForLayout{display}{\clearpage}</p>
 

@@ -2413,12 +2413,13 @@ $\Dana\sem*{(dynamic-let ($\n$ $\p$) $\p^+$)}$
 неудобно <span class="cite">[<a href="z1_bibliography.xhtml#mcd93">mcd93</a>]</span>. К примеру, вывод типов довольно сложно выразить
 денотационно, именно поэтому существует естественная семантика <span class="cite">[<a href="z1_bibliography.xhtml#kah87">kah87</a>]</span>.</p>
 
+
 <h2 id="denotational/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{denotational/ex:truly-random}
+<h5 class="exercise" id="denotational/ex:truly-random">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{интерпретатор!E@$\protect\Eval$}-->
 <!--\indexE{E-@$\protect\Eval$, интерпретатор}-->
-Рассмотрим ещё один способ денотации аппликации. Докажите, что он эквивалентен
+<p>Рассмотрим ещё один способ денотации аппликации. Докажите, что он эквивалентен
 показанному в разделе \ref{denotational/semantics/ssect:application}.</p>
 
 <p>\begingroup
@@ -2432,32 +2433,31 @@ $\rev\Eval\sem{\,}\e^*\r\k\s = (\k\ (\ii{reverse}\ e^*)\ \s)$     \|
 $\rev\Eval\sem{\p\ \p^*}\e^*\r\k\s = (\Eval\sem{\p}\ \r\ \lambda \e\s_1.
     (\rev\Eval\sem{\p^*}\ \seq{\e}\append\e^*\ \r\ \k\ \s_1)\ \s)$
 \end{denotation}
-\endgroup
-\end{exercise}</p>
+\endgroup</p>
 
-<p>\begin{exercise}\label{denotational/ex:label}
+
+<h5 class="exercise" id="denotational/ex:label">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{label}-->
-Определения из раздела \ref{denotational/sect:lambda} слишком затрудняют
+<p>Определения из раздела \ref{denotational/sect:lambda} слишком затрудняют
 описание рекурсивных функций. Мы могли бы, как в <span class="logo">Lisp 1.5</span>, ввести специальную
 форму <code><span class="func">label</span></code>. В Scheme форма <code><span class="func">(label $\n$ (lambda ...))</span></code> эквивалентна
 <code><span class="func">(letrec (($\n$ (lambda ...))) $\n$)</span></code>. Определите семантику аналогичного
-оператора <code><span class="func">label</span></code> для λ-исчисления.
-\end{exercise}</p>
+оператора <code><span class="func">label</span></code> для λ-исчисления.</p>
 
-<p>\begin{exercise}\label{denotational/ex:dynamic-fallback}
-Измените денотацию <code><span class="func">dynamic</span></code> таким образом, чтобы в случае отсутствия
+
+<h5 class="exercise" id="denotational/ex:dynamic-fallback">Упражнение <span class="seq">0.0</span></h5>
+<p>Измените денотацию <code><span class="func">dynamic</span></code> таким образом, чтобы в случае отсутствия
 динамической переменной с искомым именем возвращалась одноимённая переменная
-из глобального окружения.
-\end{exercise}</p>
+из глобального окружения.</p>
 
-<p>\begin{exercise}\label{denotational/ex:quantum}
+
+<h5 class="exercise" id="denotational/ex:quantum">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{порядок вычислений!неопределённый}-->
-Напишите макрос, который бы эмулировал неопределённый порядок вычисления
+<p>Напишите макрос, который бы эмулировал неопределённый порядок вычисления
 аргументов в такой реализации Scheme, где аргументы вычисляются слева направо.
 В вашем распоряжении есть унарная функция <code><span class="func">random-permutation</span></code>, которая
 принимает целое число $n$ и возвращает случайную перестановку
-чисел $0, \dots, n - 1$.
-\end{exercise}</p>
+чисел $0, \dots, n - 1$.</p>
 
 <p>
 \section*{Рекомендуемая литература}</p>

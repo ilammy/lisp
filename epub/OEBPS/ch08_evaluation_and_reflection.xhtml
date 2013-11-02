@@ -2391,35 +2391,35 @@ Dylan лишены такого удобства.} Данное продолже
 программ и данных, сближающим понятия языка и метаязыка, благодаря чему
 открывается широчайшее поле для экспериментов.</p>
 
+
 <h2 id="reflection/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{reflection/ex:no-cycles}
-Почему функция <code><span class="func">variables-list?</span></code> ничего не предпринимает во избежание
-зацикливания при обработке списка переменных?
-\end{exercise}</p>
+<h5 class="exercise" id="reflection/ex:no-cycles">Упражнение <span class="seq">0.0</span></h5>
+<p>Почему функция <code><span class="func">variables-list?</span></code> ничего не предпринимает во избежание
+зацикливания при обработке списка переменных?</p>
 
-<p>\begin{exercise}\label{reflection/ex:optimize-ce}
+
+<h5 class="exercise" id="reflection/ex:optimize-ce">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexCS{eval/ce}{оптимизация}-->
 <!--\indexR{мемоизация}-->
-Специальная форма <code><span class="func">eval/ce</span></code> компилирует на лету передаваемые ей выражения.
+<p>Специальная форма <code><span class="func">eval/ce</span></code> компилирует на лету передаваемые ей выражения.
 Но она делает это каждый раз заново, что не особо эффективно, если требуется
 вычислить одно и то же выражение несколько раз. Придумайте, как исправить этот
-недостаток.
-\end{exercise}</p>
+недостаток.</p>
 
-<p>\begin{exercise}\label{reflection/ex:no-capture}
-Улучшите определение <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>, избавившись от нечаянно
-захватываемой переменной. Подсказка: <code><span class="func">gens...</span></code>
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{reflection/ex:defined}
-Может ли пользователь определить <code><span class="func">variable-defined?</span></code> самостоятельно?
-Почему нет\slash как именно?
-\end{exercise}</p>
+<h5 class="exercise" id="reflection/ex:no-capture">Упражнение <span class="seq">0.0</span></h5>
+<p>Улучшите определение <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>, избавившись от нечаянно
+захватываемой переменной. Подсказка: <code><span class="func">gens...</span></code></p>
 
-<p>\begin{exercise}\label{reflection/ex:rnrs}
-Переопределите рефлексивный интерпретатор с помощью стандартного Scheme.
-\end{exercise}</p>
+
+<h5 class="exercise" id="reflection/ex:defined">Упражнение <span class="seq">0.0</span></h5>
+<p>Может ли пользователь определить <code><span class="func">variable-defined?</span></code> самостоятельно?
+Почему нет\slash как именно?</p>
+
+
+<h5 class="exercise" id="reflection/ex:rnrs">Упражнение <span class="seq">0.0</span></h5>
+<p>Переопределите рефлексивный интерпретатор с помощью стандартного Scheme.</p>
 
 <p>
 \section*{Рекомендуемая литература}\label{reflection/sect:recommended-reading}</p>

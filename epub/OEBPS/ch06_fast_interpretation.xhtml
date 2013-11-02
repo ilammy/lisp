@@ -2452,22 +2452,23 @@ $\pi_1$ $\pi_2$)</span></code> тоже не является последним
 сделать описание языка более компактным и понятным, а также формирующего
 фундамент для нашего дальнейшего продвижения.</p>
 
+
 <h2 id="fast/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{fast/ex:symbol-table}
-Доработайте комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>, научив его выводить более
+<h5 class="exercise" id="fast/ex:symbol-table">Упражнение <span class="seq">0.0</span></h5>
+<p>Доработайте комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>, научив его выводить более
 осмысленные сообщения о неинициализированных переменных.
-\seePage[fast/dilute/refs/par:meaningful]
-\end{exercise}</p>
+\seePage[fast/dilute/refs/par:meaningful]</p>
 
-<p>\begin{exercise}\label{fast/ex:list}
-Определите примитив <code><span class="func">list</span></code> для третьего интерпретатора из этой главы.
-Подсказка: это можно сделать <em>очень</em> элегантно.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{fast/ex:disassemble}
+<h5 class="exercise" id="fast/ex:list">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите примитив <code><span class="func">list</span></code> для третьего интерпретатора из этой главы.
+Подсказка: это можно сделать <em>очень</em> элегантно.</p>
+
+
+<h5 class="exercise" id="fast/ex:disassemble">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{disassemble}-->
-Вместо исполнения программы мы могли бы выводить на экран результат
+<p>Вместо исполнения программы мы могли бы выводить на экран результат
 предварительной обработки. Как-то так это бы выглядело для факториала:</p>
 
 <pre>? (disassemble
@@ -2488,30 +2489,29 @@ $\pi_1$ $\pi_2$)</span></code> тоже не является последним
     1 )</pre>
 
 <p>\noindent
-Напишите подобный дизассемблер.
-\end{exercise}</p>
+Напишите подобный дизассемблер.</p>
 
-<p>\begin{exercise}\label{fast/ex:act-rec-before}
-Измените последний рассмотренный интерпретатор так, чтобы записи активаций
+
+<h5 class="exercise" id="fast/ex:act-rec-before">Упражнение <span class="seq">0.0</span></h5>
+<p>Измените последний рассмотренный интерпретатор так, чтобы записи активаций
 создавались перед вычислением аргументов. Тогда готовые аргументы можно будет
 сразу же укладывать в ячейки записи активации.
-\seePage[fast/fast/begin/application/par:act-rec-before]
-\end{exercise}</p>
+\seePage[fast/fast/begin/application/par:act-rec-before]</p>
 
-<p>\begin{exercise}\label{fast/ex:redefine}
+
+<h5 class="exercise" id="fast/ex:redefine">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{redefine}-->
-Определите специальную форму <code><span class="func">redefine</span></code>, позволяющую переопределять
+<p>Определите специальную форму <code><span class="func">redefine</span></code>, позволяющую переопределять
 глобальные неизменяемые переменные. Она должна принимать имя примитива и
 создавать одноименную переменную в глобальном изменяемом окружении, которая,
 как сказано на странице \pageref{fast/fast/classify/par:redefine}, скроет
 оригинал. Пусть начальным значением этой переменной будет переопределяемый
-примитив.
-\end{exercise}</p>
+примитив.</p>
 
-<p>\begin{exercise}\label{fast/ex:boost-thunks}
-Оптимизируйте предобработку функций без аргументов.
-\seePage[fast/dilute/ssect:pretreater]
-\end{exercise}</p>
+
+<h5 class="exercise" id="fast/ex:boost-thunks">Упражнение <span class="seq">0.0</span></h5>
+<p>Оптимизируйте предобработку функций без аргументов.
+\seePage[fast/dilute/ssect:pretreater]</p>
 
 <p>
 \section*{Рекомендуемая литература}\label{fast/sect:recommended-reading}</p>

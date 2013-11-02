@@ -2285,47 +2285,47 @@ $f\colon X \to Y$ называется частичной, если её зна�
 отнюдь не такое простое, каким кажется; от витиеватых цитат стоит
 воздерживаться.</p>
 
+
 <h2 id="assignment/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{assignment/ex:pure-min-max}
-Определите чистую (без побочных эффектов) функцию <code><span class="func">min-max</span></code>.
-\end{exercise}</p>
+<h5 class="exercise" id="assignment/ex:pure-min-max">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите чистую (без побочных эффектов) функцию <code><span class="func">min-max</span></code>.</p>
 
-<p>\begin{exercise}\label{assignment/ex:lambda-cons}
+
+<h5 class="exercise" id="assignment/ex:lambda-cons">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{чисто функциональные структуры данных}-->
 <!--\indexR{точечные пары!чисто функциональные}-->
-Точечные пары, которые мы реализовали с помощью замыканий, реагируют на
+<p>Точечные пары, которые мы реализовали с помощью замыканий, реагируют на
 сообщения-символы. Запретите модификацию пар (<code><span class="func">set-car!</span></code> и <code><span class="func">set-cdr!</span></code>)
-и реализуйте их, используя исключительно <code><span class="func">lambda</span></code>-формы.
-\end{exercise}</p>
+и реализуйте их, используя исключительно <code><span class="func">lambda</span></code>-формы.</p>
 
-<p>\begin{exercise}\label{assignment/ex:destructive-eq}
-Определите <code><span class="func">eq?</span></code> для точечных пар с помощью <code><span class="func">set-car!</span></code> или <code><span class="func">set-cdr!</span></code>.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{assignment/ex:form-or}
+<h5 class="exercise" id="assignment/ex:destructive-eq">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите <code><span class="func">eq?</span></code> для точечных пар с помощью <code><span class="func">set-car!</span></code> или <code><span class="func">set-cdr!</span></code>.</p>
+
+
+<h5 class="exercise" id="assignment/ex:form-or">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{поиск с возвратом}-->
 <!--\indexC{or}-->
-Определите новую специальную форму <code><span class="func">(or $\alpha$ $\beta$)</span></code>, которая
+<p>Определите новую специальную форму <code><span class="func">(or $\alpha$ $\beta$)</span></code>, которая
 возвращает значение $\alpha$, если оно приводится к истине; иначе <code><span class="func">or</span></code>
 откатывает все побочные эффекты вычисления $\alpha$ и возвращает
-значение $\beta$.
-\end{exercise}</p>
+значение $\beta$.</p>
 
-<p>\begin{exercise}\label{assignment/ex:previous-value}
-Присваивание в текущем варианте возвращает только что присвоенное значение.
+
+<h5 class="exercise" id="assignment/ex:previous-value">Упражнение <span class="seq">0.0</span></h5>
+<p>Присваивание в текущем варианте возвращает только что присвоенное значение.
 Перепишите <code><span class="func">set!</span></code> так, чтобы она возвращала значение переменной до
-присваивания.
-\end{exercise}</p>
+присваивания.</p>
 
-<p>\begin{exercise}\label{assignment/ex:apply/cc}
-Определите функции <code><span class="func">apply</span></code> и <code><span class="func">call/cc</span></code> для интерпретатора из этой главы.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{assignment/ex:dotted}
-Встройте в интерпретатор поддержку функций переменной арности (с точечным
-аргументом).
-\end{exercise}</p>
+<h5 class="exercise" id="assignment/ex:apply/cc">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите функции <code><span class="func">apply</span></code> и <code><span class="func">call/cc</span></code> для интерпретатора из этой главы.</p>
+
+
+<h5 class="exercise" id="assignment/ex:dotted">Упражнение <span class="seq">0.0</span></h5>
+<p>Встройте в интерпретатор поддержку функций переменной арности (с точечным
+аргументом).</p>
 
 <p></body>
 </html>

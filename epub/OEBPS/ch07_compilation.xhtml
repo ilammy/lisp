@@ -3009,56 +3009,56 @@ dumped"</span></code>.} сообщений об ошибках на основе
 этом объектов-посредников и экономя таким образом значительное количество
 времени.</p>
 
+
 <h2 id="compilation/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{compilation/ex:dynamic}
-Реализуйте поддержку динамических переменных с помощью регистра <code><span class="func">*dynenv*</span></code>
+<h5 class="exercise" id="compilation/ex:dynamic">Упражнение <span class="seq">0.0</span></h5>
+<p>Реализуйте поддержку динамических переменных с помощью регистра <code><span class="func">*dynenv*</span></code>
 для компилятора и виртуальной машины из этой главы.
-\seePage[compilation/sect:dynamic]
-\end{exercise}</p>
+\seePage[compilation/sect:dynamic]</p>
 
-<p>\begin{exercise}\label{compilation/ex:load}
+
+<h5 class="exercise" id="compilation/ex:load">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{load}-->
-Определите функцию <code><span class="func">load</span></code>, которая загружает и исполняет скомпилированные
+<p>Определите функцию <code><span class="func">load</span></code>, которая загружает и исполняет скомпилированные
 программы. Например, если у нас есть файл <code><span class="func">fact.so</span></code>, полученный из файла
 <code><span class="func">fact.scm</span></code>, то следующая программа должна успешно компилироваться и выдавать
 ожидаемое число 120:</p>
 
 <pre>(begin (load "fact")
        (fact 5) )
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{compilation/ex:global-value}
-Реализуйте функцию <code><span class="func">global-value</span></code>, принимающую имя глобальной переменной
-и возвращающую её текущее значение.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{compilation/ex:shallow-dynamic}
+<h5 class="exercise" id="compilation/ex:global-value">Упражнение <span class="seq">0.0</span></h5>
+<p>Реализуйте функцию <code><span class="func">global-value</span></code>, принимающую имя глобальной переменной
+и возвращающую её текущее значение.</p>
+
+
+<h5 class="exercise" id="compilation/ex:shallow-dynamic">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{ближнее (shallow) связывание}-->
 <!--\indexR{связывание!ближнее (shallow)}-->
-Переопределите инструкции, отвечающие за работу с динамическими переменными,
+<p>Переопределите инструкции, отвечающие за работу с динамическими переменными,
 реализовав их с помощью ближнего связывания.
-\seePage[basics/representing-functions/ssect:deep-or-shallow]
-\end{exercise}</p>
+\seePage[basics/representing-functions/ssect:deep-or-shallow]</p>
 
-<p>\begin{exercise}\label{compilation/ex:export-rename}
-\seePage[compilation/separate/build/par:linker-dsl]
+
+<h5 class="exercise" id="compilation/ex:export-rename">Упражнение <span class="seq">0.0</span></h5>
+<p>\seePage[compilation/separate/build/par:linker-dsl]
 Напишите функцию, переименовывающую экспортируемые глобальные переменные. Если
 <code><span class="func">fact.so</span></code> это объектный файл, то следующая программа должна создать новый
 модуль <code><span class="func">nfact.so</span></code>, где переменная <code><span class="func">fact</span></code> имеет имя <code><span class="func">factorial</span></code>:</p>
 
 <pre>(build-application-with-renaming-variables
  "fact.so" "nfact.so" '((fact factorial)) )
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{compilation/ex:unchecked-ref}
-\seePage[fast/fast/classify/static-err/par:self-modify]
+
+<h5 class="exercise" id="compilation/ex:unchecked-ref">Упражнение <span class="seq">0.0</span></h5>
+<p>\seePage[fast/fast/classify/static-err/par:self-modify]
 <!--\indexR{мемоизация}-->
 Измените инструкцию <code><span class="func">CHECKED-GLOBAL-REF</span></code> так, чтобы после определения
-соответствующей переменной она автоматически изменялась на <code><span class="func">GLOBAL-REF</span></code>.
-\end{exercise}</p>
+соответствующей переменной она автоматически изменялась на <code><span class="func">GLOBAL-REF</span></code>.</p>
 
 <p>\begin{project}
 Многие реализации Лиспа и Scheme имеют компиляторы в байт-код. Возьмём,

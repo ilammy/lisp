@@ -2373,17 +2373,18 @@ $\gamma$, имеем:
 <p>Присваивание вносит множество неоднозначностей в идею связывания, мы изучим этот
 вопрос подробнее в следующих главах.</p>
 
+
 <h2 id="lisp1-2-omega/sect:exercises">Упражнения</h2>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:funcall}
-Следующее выражение записано на <span class="logo">Common Lisp</span>. Как бы вы его перевели на Scheme?</p>
+<h5 class="exercise" id="lisp1-2-omega/ex:funcall">Упражнение <span class="seq">0.0</span></h5>
+<p>Следующее выражение записано на <span class="logo">Common Lisp</span>. Как бы вы его перевели на Scheme?</p>
 
 <pre>(funcall (function funcall) (function funcall) (function cons) 1 2)
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:lexical}
-Что вернёт данная программа на псевдо-<span class="logo">Common Lisp</span> из этой главы?
+
+<h5 class="exercise" id="lisp1-2-omega/ex:lexical">Упражнение <span class="seq">0.0</span></h5>
+<p>Что вернёт данная программа на псевдо-<span class="logo">Common Lisp</span> из этой главы?
 О чём она вам напоминает?</p>
 
 <pre>(defun test (p)
@@ -2392,30 +2393,30 @@ $\gamma$, имеем:
 <p>(let ((f (test #f)))
   (defun bar (x) (cdr x))
   (funcall f '(1 . 2)) )
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:innovations}
-Реализуйте в вашем интерпретаторе первые две инновации из
+
+<h5 class="exercise" id="lisp1-2-omega/ex:innovations">Упражнение <span class="seq">0.0</span></h5>
+<p>Реализуйте в вашем интерпретаторе первые две инновации из
 раздела \ref{lisp1-2-omega/sect:extensions}
 \seePage[lisp1-2-omega/sect:extensions]. Речь идёт о трактовке чисел и
-списков как функций.
-\end{exercise}</p>
+списков как функций.</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:assoc-with-comparator}
-Можно научить функцию <code><span class="func">assoc/de</span></code> явно принимать компаратор (вроде <code><span class="func">eq?</span></code>,
-<code><span class="func">equal?</span></code> и т. п.) через аргумент, а не задавать его внутри. Сделайте это.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:dynamic}
-Используя <code><span class="func">bind/de</span></code> и <code><span class="func">assoc/de</span></code>, напишите макросы, эмулирующие
-специальные формы <code><span class="func">dynamic-let</span></code>, <code><span class="func">dynamic</span></code> и <code><span class="func">dynamic-set!</span></code>.
-\end{exercise}</p>
+<h5 class="exercise" id="lisp1-2-omega/ex:assoc-with-comparator">Упражнение <span class="seq">0.0</span></h5>
+<p>Можно научить функцию <code><span class="func">assoc/de</span></code> явно принимать компаратор (вроде <code><span class="func">eq?</span></code>,
+<code><span class="func">equal?</span></code> и т. п.) через аргумент, а не задавать его внутри. Сделайте это.</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:write-put/get-prop}
+
+<h5 class="exercise" id="lisp1-2-omega/ex:dynamic">Упражнение <span class="seq">0.0</span></h5>
+<p>Используя <code><span class="func">bind/de</span></code> и <code><span class="func">assoc/de</span></code>, напишите макросы, эмулирующие
+специальные формы <code><span class="func">dynamic-let</span></code>, <code><span class="func">dynamic</span></code> и <code><span class="func">dynamic-set!</span></code>.</p>
+
+
+<h5 class="exercise" id="lisp1-2-omega/ex:write-put/get-prop">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{putprop}-->
 <!--\indexC{getprop}-->
-Напишите функции <code><span class="func">getprop</span></code> и <code><span class="func">putprop</span></code>, которые реализуют списки свойств.
+<p>Напишите функции <code><span class="func">getprop</span></code> и <code><span class="func">putprop</span></code>, которые реализуют списки свойств.
 Любой символ имеет личный список свойств в виде пар «ключ — значение»;
 добавление в этот список осуществляет функция <code><span class="func">putprop</span></code>, поиск значения по
 ключу осуществляет функция <code><span class="func">getprop</span></code>. Также, естественно, должно выполняться
@@ -2423,32 +2424,32 @@ $\gamma$, имеем:
 
 <pre>(begin (putprop 'symbol 'key 'value)
        (getprop 'symbol 'key) )      |\is| value
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:label}
-Определите специальную форму <code><span class="func">label</span></code> на Lisp<sub>1</sub>.
-\end{exercise}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:labels}
-Определите специальную форму <code><span class="func">labels</span></code> на Lisp<sub>2</sub>.
-\end{exercise}</p>
+<h5 class="exercise" id="lisp1-2-omega/ex:label">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите специальную форму <code><span class="func">label</span></code> на Lisp<sub>1</sub>.</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:orderless-letrec}
+
+<h5 class="exercise" id="lisp1-2-omega/ex:labels">Упражнение <span class="seq">0.0</span></h5>
+<p>Определите специальную форму <code><span class="func">labels</span></code> на Lisp<sub>2</sub>.</p>
+
+
+<h5 class="exercise" id="lisp1-2-omega/ex:orderless-letrec">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{letrec}-->
-Придумайте, как реализовать <code><span class="func">letrec</span></code> с помощью <code><span class="func">let</span></code> и <code><span class="func">set!</span></code> так,
-чтобы порядок вычисления значений-инициализаторов был неопределённым.
-\end{exercise}</p>
+<p>Придумайте, как реализовать <code><span class="func">letrec</span></code> с помощью <code><span class="func">let</span></code> и <code><span class="func">set!</span></code> так,
+чтобы порядок вычисления значений-инициализаторов был неопределённым.</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:fixn}
+
+<h5 class="exercise" id="lisp1-2-omega/ex:fixn">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexR{комбинаторы!неподвижной точки!универсальный}-->
-У нашего комбинатора неподвижной точки на Scheme обнаружился недостаток: он
+<p>У нашего комбинатора неподвижной точки на Scheme обнаружился недостаток: он
 поддерживает только унарные функции. Реализуйте <code><span class="func">fix2</span></code>, работающий
-с бинарными функциями. Затем <code><span class="func">fixN</span></code>, поддерживающий функции любой арности.
-\end{exercise}</p>
+с бинарными функциями. Затем <code><span class="func">fixN</span></code>, поддерживающий функции любой арности.</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:nfixn}
-Далее напишите функцию <code><span class="func">NfixN</span></code>, возвращающую неподвижные точки для списка
+
+<h5 class="exercise" id="lisp1-2-omega/ex:nfixn">Упражнение <span class="seq">0.0</span></h5>
+<p>Далее напишите функцию <code><span class="func">NfixN</span></code>, возвращающую неподвижные точки для списка
 функционалов произвольной арности. Её можно использовать, например, следующим
 образом:</p>
 
@@ -2461,11 +2462,11 @@ $\gamma$, имеем:
                         (if (= n 0) #t (odd? (- n 1))) ) ) )) ))
   (set! odd? (car odd-and-even))
   (set! even? (cadr odd-and-even)) )
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:klop}
-Рассмотрим функцию <code><span class="func">klop</span></code>. Является ли она комбинатором неподвижной точки?
+
+<h5 class="exercise" id="lisp1-2-omega/ex:klop">Упражнение <span class="seq">0.0</span></h5>
+<p>Рассмотрим функцию <code><span class="func">klop</span></code>. Является ли она комбинатором неподвижной точки?
 Попробуйте доказать или опровергнуть, что <code><span class="func">(klop $f$)</span></code> тоже возвращает
 неподвижную точку $f$ подобно <code><span class="func">fix</span></code>.</p>
 
@@ -2477,12 +2478,12 @@ $\gamma$, имеем:
                (f (lambda (n)
                     (((m e c h e s) f) n) )) ) )))
     (r r r r r r) ) )
-\end{code:lisp}
-\end{exercise}</p>
+\end{code:lisp}</p>
 
-<p>\begin{exercise}\label{lisp1-2-omega/ex:hyper-fact}
+
+<h5 class="exercise" id="lisp1-2-omega/ex:hyper-fact">Упражнение <span class="seq">0.0</span></h5>
 <!--\indexC{fact}-->
-Если функция <code><span class="func">hyper-fact</span></code> определена так:</p>
+<p>Если функция <code><span class="func">hyper-fact</span></code> определена так:</p>
 
 <pre>(define (hyper-fact f)
   (lambda (n)
@@ -2490,8 +2491,7 @@ $\gamma$, имеем:
         (* n ((f f) (- n 1))) ) ) )</pre>
 
 <p>\noindent
-то что вернёт <code><span class="func">((hyper-fact hyper-fact) 5)</span></code>?
-\end{exercise}</p>
+то что вернёт <code><span class="func">((hyper-fact hyper-fact) 5)</span></code>?</p>
 
 <p>\section*{Рекомендуемая литература}%
 \label{lisp1-2-omega/sect:recommended-reading}</p>
