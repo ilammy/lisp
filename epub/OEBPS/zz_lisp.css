@@ -39,6 +39,8 @@ table#ch1-table-grammar td:nth-child(2) { text-align: center; }
 table#ch1-table-grammar td:nth-child(3) { text-align: left; }
 table#ch1-table-let-expand {}
 
+table.envtable { border: 1px solid black; }
+
 /* code */
 code span.special,
 pre span.special { color: #CC1212; font-size: 100%; }
@@ -63,6 +65,12 @@ pre span.string { color: #70C070; font-size: 100%; }
 
 code span.comment,
 pre span.comment { color: #555555; font-size: 100%; }
+
+code span.highlight,
+pre span.highlight { background: #CDCDCD; font-size: 100%; }
+
+code span.fbox,
+pre span.fbox { border: 1px solid black; padding: 3px; font-size: 100%; }
 
 code span,
 pre span { font-size: 400%; }
