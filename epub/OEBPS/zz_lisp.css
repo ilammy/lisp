@@ -24,10 +24,6 @@ span.comb {
 
 }
 
-pre span.logo {
-    float: right;
-}
-
 span.see {
     font-weight: bolder;
 }
@@ -79,7 +75,10 @@ code span.fbox,
 pre span.fbox { border: 1px solid black; padding: 3px; font-size: 100%; }
 
 code span,
-pre span { font-size: 400%; }
+pre span { font-size: 100%; }
+
+pre span.dialect { font-size: 100%; float: right; }
+pre span.dialect span.logo { font-size: 100%; }
 
 
 .math .frac {

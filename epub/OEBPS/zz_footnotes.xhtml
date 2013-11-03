@@ -335,5 +335,85 @@
     Терминология Маккарти из <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>: функционал — это функция, принимающая другие функции как аргументы.</p>
 </div>
 
+
+
+
+<h1><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
+
+<div class="footnote" id="foot3.1">
+  <p><span class="num"><sup>1</sup></span>
+    Например, сравните стили изложения первого и третьего изданий <span class="cite">[<a href="z1_bibliography.xhtml#wh89">WH89</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot3.2">
+  <p><span class="num"><sup>2</sup></span>
+    Нам пришлось воспользоваться <code><span class="syntax">letrec</span></code>, так как в Scheme
+    запрещено располагать <code><span class="special">define</span></code> сразу внутри
+    <code><span class="special">block</span></code>, а <code>(<span class="syntax">let</span> ()
+    (<span class="special">define</span> ...))</code> писать тоже нельзя из-за <code>()</code>.</p>
+</div>
+
+<div class="footnote" id="foot3.3">
+  <p><span class="num"><sup>3</sup></span>
+    Этот вариант <code><span class="special">catch</span></code>
+    использует <code><span class="special">block</span></code> с меткой
+    <code><span class="var">label</span></code>. Естественно, система макросов должна
+    обеспечивать гигиеничность имён (гарантировать отсутствие коллизий) и для
+    окружения меток.</p>
+</div>
+
+<div class="footnote" id="foot3.4">
+  <p><span class="num"><sup>4</sup></span>
+    Кстати, в этом случае равенство меток устанавливается предикатом
+    <code><span class="func">eqv?</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot3.5">
+  <p><span class="num"><sup>5</sup></span>
+    Альтернативное решение: эмулировать <code><span class="special">block</span></code>
+    и <code><span class="special">return-from</span></code> с помощью самих себя таким образом,
+    чтобы они учитывали <code><span class="syntax">catch</span></code> и
+    <code><span class="syntax">throw</span></code>. Это сложновато реализовать прямиком в
+    интерпретаторе, но вполне возможно.</p>
+</div>
+
+<div class="footnote" id="foot3.6">
+  <p><span class="num"><sup>6</sup></span>
+    Здесь используется нотация <span class="logo">Common Lisp</span> для рекурсивных
+    структур данных. Такой список в Scheme возвращает выражение
+    <code>(<span class="syntax">let</span> ((<span class="var">p</span> (<span class="func">list</span> (<span class="func">cons</span> '<span class="var">foo</span> '<span class="var">hack</span>)))) (<span class="func">set-cdr!</span> <span class="var">p</span> <span class="var">p</span>) <span class="var">p</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot3.7">
+  <p><span class="num"><sup>7</sup></span>
+    В Scheme достаточно, чтобы функция могла принять как минимум один аргумент.
+    То есть с <code>(<span class="func">call/cc</span> <span class="var">list</span>)</code> никаких проблем нет.</p>
+</div>
+
+<div class="footnote" id="foot3.8">
+  <p><span class="num"><sup>8</sup></span>
+    Здесь ударение стоит на слове «<em>возврат</em>», а не «значений».
+    Функция <code><span class="func">values</span></code> не имеет никакого
+    отношения к <code><span class="func">call/cc</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot3.9">
+  <p><span class="num"><sup>9</sup></span>
+    Тут та же ситуация, что и с <code><span class="func">car</span></code> и
+    <code><span class="func">cdr</span></code>, которые являются акронимами от «contents of the
+    address register» и «contents of the decrement register» — с помощью данных
+    примитивов обрабатывались точечные пары в оригинальной реализации Лиспа для
+    IBM 704. Это не имеет ничего общего с текущими реализациями, но названия
+    приклеились.</p>
+</div>
+
+<div class="footnote" id="foot3.10">
+  <p><span class="num"><sup>10</sup></span>
+    Правильно работающий аналог <code><span class="special">unwind-protect</span></code> для
+    Scheme — <code><span class="func">dynamic-wind</span></code>, — был описан ещё в
+    <span class="cite">[<a href="z1_bibliography.xhtml#fwh92">FWH92</a>]</span>;
+    см. также <span class="cite">[<a href="z1_bibliography.xhtml#que93c">Que93c</a>]</span>.</p>
+</div>
+
 </body>
 </html>
