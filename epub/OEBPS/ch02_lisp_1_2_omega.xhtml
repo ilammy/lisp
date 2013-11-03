@@ -1445,7 +1445,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 переменная видна везде, в том числе в своём собственном определении. Лисп
 поддерживает опережающие ссылки без какого-либо специального синтаксиса. (Под
 таким синтаксисом понимаются явные объявления вроде ключевого слова <code>forward</code>
-Паскаля или прототипов ISO C <span class="cite">[<a href="z1_bibliography.xhtml#iso90">iso90</a>]</span>.)</p>
+Паскаля или прототипов ISO C <span class="cite">[<a href="z1_bibliography.xhtml#iso90">ISO90</a>]</span>.)</p>
 
 <p>Выбор отнюдь не так прост. Возвращаясь к факториалу; в окружении, где будет
 вычисляться <code><span class="special">lambda</span></code>-форма, необходимо ответить на вопрос: «Чему здесь равно
@@ -1667,7 +1667,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 <p>Заметьте, что переменная <code><span class="var">x</span></code> фактически определяется через саму себя. Это,
 похоже, обыкновенное уравнение</p>
 
-<blockquote class="equation math">x = \frac{x + 1}{2}</blockquote>
+<blockquote class="equation math"><span class="ord var">x</span><span class="rel">=</span><div class="frac ord"><div class="numerator"><span class="ord var">x</span><span class="binop">+</span><span class="ord num">1</span></div><div class="denominator"><span class="ord num">2</span></div></div></blockquote>
 
 <p>Логично будет сделать значением <code><span class="var">x</span></code> корень этого уравнения. То есть такое
 выражение должно вернуть <code><span class="num">1</span></code>.</p>
@@ -2031,213 +2031,181 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 <!--\indexC{fix}-->
-<pre>((fix meta-fact) 3)
-|\Equals|   (((d d)|\begin{where}
-                    \- d {\eq} \begin{complex}
-                              \-(lambda (w)
-                              \-  (lambda (f)
-                              \-   (f (lambda (x)
-                              \-        (((w w) f) x) )) ) )
-                              \end{complex}
-                    \end{where}|
-     meta-fact )
-    3 )</p>
+<pre>((<span class="func">fix</span> <span class="func">meta-fact</span>) <span class="num">3</span>)
+<span class="math"><span class="binop">≡</span></span> (((<span class="func">d</span> <span class="var">d</span>)<div class="where">
+<span class="var">d</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+    <span class="var">meta-fact</span> )
+   <span class="num">3</span> )
 
-<p>|\Equals|   (((lambda (f)               ; <em class="term">шаг I</em>
-       (f (lambda (x)
-            (((w w) f) x) )) )|\begin{where}
-                               \- w {\eq} \begin{complex}
-                                         \-(lambda (w)
-                                         \-  (lambda (f)
-                                         \-   (f (lambda (x)
-                                         \-        (((w w) f) x) )) ) )
-                                         \end{complex}
-                              \end{where}|
-     meta-fact )
-    3 )</p>
+<span class="math"><span class="binop">≡</span></span> (((<span class="special">lambda</span> (<span class="var">f</span>)               <span class="comment">; <em class="term">шаг I</em></span>
+      (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+           (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+    <span class="var">meta-fact</span> )
+   <span class="num">3</span> )
 
-<p>|\Equals|   ((meta-fact (lambda (x)
-                 (((w w) f) x) ))|\begin{where}
-                                  \- w {\eq} \begin{complex}
-                                            \-(lambda (w)
-                                            \-  (lambda (f)
-                                            \-    (f (lambda (x)
-                                            \-         (((w w) f) x) )) ) )
-                                            \end{complex}
-                                  \end{where}|
-    3 )
-|\Equals|   ((lambda (n)
-      (if (= n 0) 1
-          (* n (f (- n 1))) ) )|\begin{where}
-                                \- f {\eq} \begin{complex}
-                                          \-(lambda (x)
-                                          \-  (((w w) meta-fact) x) )\begin{where}
-                                                         \- w {\eq} \begin{complex*}{6.2cm}
-                                                                   \-(lambda (w)
-                                                                   \-  (lambda (f)
-                                                                   \-    (f (lambda (x)
-                                                                   \-         (((w w) f) x) )) ) )
-                                                                   \end{complex*}
-                                                         \end{where}
-                                                  \end{complex}
-                                \end{where}|
-    3 )
-|\Equals|   (* 3 (f 2))|\begin{where}
-                        \- f {\eq} \begin{complex}
-                                  \-(lambda (x)
-                                  \-  (((w w) meta-fact) x) )\begin{where}
-                                                             \- w {\eq} \begin{complex*}{4.8cm}
-                                                                       \-(lambda (w)
-                                                                       \-  (lambda (f)
-                                                                       \-    (f (lambda (x)
-                                                                       \-         (((w w) f) x) )) )  )
-                                                                       \end{complex*}
-                                                                      \end{where}
-                                  \end{complex}
-                        \end{where}|
-|\Equals|   (* 3 (((w w) meta-fact) 2))|\begin{where}
-                                        \- w {\eq} \begin{complex}
-                                                  \-(lambda (w)
-                                                  \-  (lambda (f)
-                                                  \-    (f (lambda (x)
-                                                  \-         (((w w) f) x) )) ) )
-                                                  \end{complex}
-                                        \end{where}|
-|\Equals|   (* 3 (((lambda (f)           ; <em class="term">шаг II</em>
-            (f (lambda (x)
-                 (((w w) f) x) )) )|\begin{where}
-                                    \- w {\eq} \begin{complex}
-                                              \-(lambda (w)
-                                              \-  (lambda (f)
-                                              \-    (f (lambda (x)
-                                              \-         (((w w) f) x) )) ) )
-                                              \end{complex}
-                                    \end{where}|
-          meta-fact )
-         2 ) )</pre>
+<span class="math"><span class="binop">≡</span></span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) ))<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+   <span class="num">3</span> )
+
+<span class="math"><span class="binop">≡</span></span> ((<span class="special">lambda</span> (<span class="var">n</span>)
+     (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
+         (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
+<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
+   <span class="num">3</span> )
+
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">f</span> <span class="num">2</span>))<div class="where">
+<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
+
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="num">2</span>))<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="special">lambda</span> (<span class="var">f</span>)           <span class="comment">; <em class="term">шаг II</em></span>
+           (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+         <span class="var">meta-fact</span> )
+        <span class="num">2</span> ) )</pre>
 
 <p>Остановимся на минутку, чтобы заметить, что на шаге II мы получили то же самое
 выражение, что и на шаге I. Естественно, оно появится и в третий раз:</p>
 
-<pre>(* 3 (* 2 (((lambda (f)
-              (f (lambda (x)
-                   (((w w) f) x) )) )|\begin{where}
-                                      \- w {\eq} \begin{complex}
-                                                \-(lambda (w)
-                                                \-  (lambda (f)
-                                                \-    (f (lambda (x)
-                                                \-         (((w w) f) x) )) ) )
-                                                \end{complex}
-                                      \end{where}|
-            meta-fact )
-           1 )))
-|\Equals|   (* 3 (* 2 ((meta-fact (lambda (x)
-                           (((w w) meta-fact) x) ))|\begin{where}
-                                                    \- w {\eq} \begin{complex*}{4.5cm}
-                                                              \-(lambda (w)
-                                                              \-  (lambda (f)
-                                                              \-    (f (lambda (x)
-                                                              \-         (((w w) f) x) )) ) )
-                                                              \end{complex*}
-                                                    \end{where}|
-              1 )))
-|\Equals|   (* 3 (* 2 ((lambda (n)
-                (if (= n 0) 1
-                    (* n (f (- n 1))) ) )|\begin{where}
-                                          \- f {\is} ...
-                                          \end{where}|
-              1 )))
-|\Equals|   (* 3 (* 2 (if (= n 0) 1 (* n (f (- n 1))))))|\begin{where}
-                                                         \- n {\is} 1
-                                                         \- f {\is} ...
-                                                         \end{where}|
-|\Equals|   (* 3 (* 2 1))</p>
+<pre>(<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (((<span class="special">lambda</span> (<span class="var">f</span>)
+              (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+                   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+            <span class="var">meta-fact</span> )
+           <span class="num">1</span> )))
 
-<p>|\is| 6</pre>
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+                          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) ))<div class="where">
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
+             <span class="num">1</span> )))
+
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="special">lambda</span> (<span class="var">n</span>)
+               (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
+                   (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
+<span class="var">f</span> <span class="math"><span class="binop">→</span></span> ...</div>
+             <span class="num">1</span> )))
+
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))))<div class="where">
+<span class="var">n</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="var">f</span> <span class="math"><span class="binop">→</span></span> ...</div>
+<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> <span class="num">1</span>))
+
+<span class="math"><span class="binop">→</span></span> <span class="num">6</span></pre>
 
 <p>Обратите внимание, что в процессе вычислений мы действительно используем
 функцию, вычисляющую факториал. Это значение выражения:</p>
 
-<pre>(lambda (x)
-  (((w w) f) x) )|\begin{where}
-                  \- f {\eq} meta-fact
-                  \- w {\is} \begin{complex}
-                            \-(lambda (w)
-                            \-  (lambda (f)
-                            \-    (f (lambda (x)
-                            \-         (((w w) f) x) )) ) )
-                            \end{complex}
-                  \end{where}|</pre>
-
+<pre>(<span class="special">lambda</span> (<span class="var">x</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )<div class="where">
+<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <span class="func">meta-fact</span>
+<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (<span class="special">lambda</span> (<span class="var">f</span>)
+    (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+         (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></pre>
 
 <!--\indexR{самоприменение!и рекурсия}-->
 <p>Идея состоит в том, что благодаря самоприменению мы помним, как создать заново
 данную функцию, и делаем это каждый раз, когда для вычислений требуется
 рекурсивный вызов.</p>
 
-
 <!--\indexCS{define}{как решатель уравнений}-->
 <p>Таким образом можно получить простую рекурсию без использования побочных
 эффектов, только с помощью <code><span class="func">fix</span></code>, комбинатора неподвижной точки. Благодаря
-\comb{Y} (или <code><span class="func">fix</span></code>), <code><span class="func">define</span></code> можно определить как решатель рекурсивных
+<span class="comb">Y</span> (или <code><span class="func">fix</span></code>), <code><span class="special">define</span></code> можно определить как решатель рекурсивных
 уравнений; она принимает уравнение и связывает решение с переданным именем.
-В итоге, если мы передадим <code><span class="func">define</span></code> уравнение для факториала, то с <code><span class="func">fact</span></code>
+В итоге, если мы передадим <code><span class="special">define</span></code> уравнение для факториала, то с <code><span class="var">fact</span></code>
 будет связано следующее значение:</p>
 
-<pre>(fix (lambda (fact)
-       (lambda (n)
-         (if (= n 0) 1
-             (* n (fact (- n 1))) ) ) ))</pre>
+<pre>(<span class="func">fix</span> (<span class="special">lambda</span> (<span class="var">fact</span>)
+       (<span class="special">lambda</span> (<span class="var">n</span>)
+         (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
+             (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) ) ))</pre>
 
 <p>Аналогично можно решать системы уравнений, а значит, и задавать взаимно
 рекурсивные функции, собирая их уравнения воедино:</p>
 
-
 <!--\indexC{odd"?}-->
 <!--\indexC{even"?}-->
-<pre>(define odd-and-even
-  (fix (lambda (f)
-         (lambda (which)
-           (case which
-             ((odd) (lambda (n) (if (= n 0) #f
-                                    ((f 'even) (- n 1)) )))
-             ((even) (lambda (n) (if (= n 0) #t
-                                     ((f 'odd) (- n 1)) ))) ) ) )) )
-(define odd? (odd-and-even 'odd))
-(define even? (odd-and-even 'even))</pre>
+<pre>(<span class="special">define</span> <span class="var">odd-and-even</span>
+  (<span class="func">fix</span> (<span class="special">lambda</span> (<span class="var">f</span>)
+         (<span class="special">lambda</span> (<span class="var">which</span>)
+           (<span class="syntax">case</span> <span class="var">which</span>
+             ((<span class="var">odd</span>) (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span>
+                                    ((<span class="func">f</span> '<span class="var">even</span>) (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)) )))
+             ((<span class="var">even</span>) (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span>
+                                     ((<span class="func">f</span> '<span class="var">odd</span>) (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)) ))) ) ) )) )
+(<span class="special">define</span> <span class="var">odd?</span> (<span class="func">odd-and-even</span> '<span class="var">odd</span>))
+(<span class="special">define</span> <span class="var">even?</span> (<span class="func">odd-and-even</span> '<span class="var">even</span>))</pre>
 
 <p>У этого метода есть один большой недостаток: неэффективность, даже по сравнению
-с наивной реализацией <code><span class="func">letrec</span></code>. (И всё же, см. \cite{roz92,ser93}.) Тем
-не менее, он используется, особенно в качестве книжного примера. Функциональные
-языки, по мнению <span class="cite">[<a href="z1_bibliography.xhtml#pj87">pj87</a>]</span>, тоже особо не жалуют данный метод, так как,
+с наивной реализацией <code><span class="syntax">letrec</span></code>.
+(И всё же, см. <span class="cite">[<a href="z1_bibliography.xhtml#roz92">Roz92</a>, <a href="z1_bibliography.xhtml#ser93">Ser93</a>]</span>.)
+Тем не менее, он используется, особенно в качестве книжного примера. Функциональные
+языки, по мнению <span class="cite">[<a href="z1_bibliography.xhtml#pj87">PJ87</a>]</span>, тоже особо не жалуют данный метод, так как,
 во-первых, он неэффективен, а во-вторых, <code><span class="func">fix</span></code> плохо сочетается с системами
-вывода типов. Действительно, <code><span class="func">fix</span></code> принимает функционал,%
-\footnote*{Терминология Маккарти из <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">mae+62</a>]</span>: функционал — это функция,
-принимающая другие функции как аргументы.} принимающий функцию типа $\alpha \to
-\beta$, и возвращает неподвижную точку этого функционала. То есть типом <code><span class="func">fix</span></code>
-является
-%
-\[ \big((\alpha \to \beta) \to (\alpha \to \beta)\big) \to (\alpha \to \beta) \]</p>
+вывода типов. Действительно, <code><span class="func">fix</span></code> принимает функционал<a class="footref" href="zz_footnotes.xhtml#foot2.12"><sup>12</sup></a>, принимающий функцию типа
+<span class="math"><span class="ord var">α</span><span class="rel">→</span><span class="ord var">β</span></span>, и возвращает неподвижную точку этого функционала.
+То есть типом <code><span class="func">fix</span></code> является</p>
 
+<blockquote class="equation math"><span class="open"><span class="big">(</span></span><span class="open">(</span><span class="ord var">α</span><span class="rel">→</span><span class="ord var">β</span><span class="close">)</span><span class="rel">→</span><span class="open">(</span><span class="ord var">α</span><span class="rel">→</span><span class="ord var">β</span><span class="close">)</span><span class="close"><span class="big">)</span></span><span class="rel">→</span><span class="open">(</span><span class="ord var">α</span><span class="rel">→</span><span class="ord var">β</span><span class="close">)</span></blockquote>
 
 <!--\indexR{самоприменение!типизация}-->
-<p>Но в определении <code><span class="func">fix</span></code> есть самоприменение: <code><span class="func">(d d)</span></code>. Обозначив его тип
-$\gamma$, имеем:
-%
-\[ \gamma = \gamma \to (\alpha \to \beta) \]</p>
+<p>Но в определении <code><span class="func">fix</span></code> есть самоприменение:
+<code>(<span class="func">d</span> <span class="var">d</span>)</code>.
+Обозначив его тип <span class="math"><span class="ord var">γ</span></span>, имеем:</p>
+
+<blockquote class="equation math"><span class="ord var">γ</span><span class="rel">=</span><span class="ord var">γ</span><span class="rel">→</span><span class="open">(</span><span class="ord var">α</span><span class="rel">→</span><span class="ord var">β</span><span class="close">)</span></blockquote>
 
 <p>Потребуется или нетривиальная система типов, чтобы в ней можно было выразить
-подобный рекурсивный тип, или же мы будем вынуждены реализовать <code><span class="func">fix</span></code>
+подобный рекурсивный тип, или же мы будем вынуждены реализовать
+<code><span class="func">fix</span></code>
 в интерпретаторе как примитивную функцию, так как её нельзя выразить средствами
 самого языка.</p>
 
-<h2 id="lisp1-2-omega/sect:conclusions">Заключение</h2>
+
+<h2 id="lisp1-2-omega/sect:conclusions"><span class="seq">2.7.</span> Заключение</h2>
 
 <p>В этой главе мы прошлись по наиболее заметным из вопросов, на которые сообщество
 Лиспа за последние несколько десятков лет так и не смогло дать однозначного
 ответа. Рассмотрев причины данных разногласий, мы поняли, что они вовсе не такие
 серьёзные по своей сути. Большая часть из них связана с неоднозначностью
-толкования смысла формы <code><span class="func">lambda</span></code> и различными способами применения функций.
+толкования смысла формы <code><span class="special">lambda</span></code> и различными
+способами применения функций.
 Хотя идея функции достаточно хорошо проработана в математике, но
 в функциональных (!) языках вроде Лиспа это отнюдь не так. Различные мнения по
 таким вопросам — это часть истории Лиспа. Подобно изучению истории родного
@@ -2258,60 +2226,56 @@ $\gamma$, имеем:
 переменных и могут быть изменены только косвенно. Собственно, привязки полезны
 именно потому, что они крепко-накрепко связаны со своими переменными.</p>
 
-
 <!--\indexR{форма!связывающая}-->
 <!--\indexR{связывающие формы}-->
 <!--\indexR{область видимости!лексическая}-->
 <p>Бок о бок со связывающими формами следует идея областей видимости. Область
 видимости переменной — это пространство в тексте программы, где можно
 обращаться к данной переменной. Область видимости переменных, создаваемых
-формой <code><span class="func">lambda</span></code>, ограничена телом данной формы. Поэтому она называется
-текстуальной или лексической.</p>
+формой <code><span class="special">lambda</span></code>, ограничена телом данной формы.
+Поэтому она называется текстуальной или лексической.</p>
 
 <p>Присваивание вносит множество неоднозначностей в идею связывания, мы изучим этот
 вопрос подробнее в следующих главах.</p>
 
 
-<h2 id="lisp1-2-omega/sect:exercises">Упражнения</h2>
+<h2 id="lisp1-2-omega/sect:exercises"><span class="seq">2.8.</span> Упражнения</h2>
 
-<h5 class="exercise" id="lisp1-2-omega/ex:funcall">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:funcall">Упражнение <span class="seq">2.1</span></h5>
 <p>Следующее выражение записано на <span class="logo">Common Lisp</span>. Как бы вы его перевели на Scheme?</p>
 
-<pre>(funcall (function funcall) (function funcall) (function cons) 1 2)
-\end{code:lisp}</p>
+<pre>(<span class="func">funcall</span> (<span class="special">function</span> <span class="var">funcall</span>) (<span class="special">function</span> <span class="var">funcall</span>) (<span class="special">function</span> <span class="var">cons</span>) <span class="num">1</span> <span class="num">2</span>)</pre>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:lexical">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:lexical">Упражнение <span class="seq">2.2</span></h5>
 <p>Что вернёт данная программа на псевдо-<span class="logo">Common Lisp</span> из этой главы?
 О чём она вам напоминает?</p>
 
-<pre>(defun test (p)
-  (function bar) )</p>
+<pre>(<span class="special">defun</span> <span class="func">test</span> (<span class="var">p</span>)
+  (<span class="special">function</span> <span class="var">bar</span>) )
 
-<p>(let ((f (test #f)))
-  (defun bar (x) (cdr x))
-  (funcall f '(1 . 2)) )
-\end{code:lisp}</p>
+(<span class="syntax">let</span> ((<span class="var">f</span> (<span class="func">test</span> <span class="hash">#f</span>)))
+  (<span class="special">defun</span> <span class="func">bar</span> (<span class="var">x</span>) (<span class="func">cdr</span> <span class="var">x</span>))
+  (<span class="func">funcall</span> <span class="var">f</span> '(<span class="num">1</span> . <span class="num">2</span>)) )</pre>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:innovations">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:innovations">Упражнение <span class="seq">2.3</span></h5>
 <p>Реализуйте в вашем интерпретаторе первые две инновации из
-раздела \ref{lisp1-2-omega/sect:extensions}
-\seePage[lisp1-2-omega/sect:extensions]. Речь идёт о трактовке чисел и
-списков как функций.</p>
+раздела <a href="#lisp1-2-omega/sect:extensions">2.3</a>.
+Речь идёт о трактовке чисел и списков как функций.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:assoc-with-comparator">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:assoc-with-comparator">Упражнение <span class="seq">2.4</span></h5>
 <p>Можно научить функцию <code><span class="func">assoc/de</span></code> явно принимать компаратор (вроде <code><span class="func">eq?</span></code>,
 <code><span class="func">equal?</span></code> и т. п.) через аргумент, а не задавать его внутри. Сделайте это.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:dynamic">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:dynamic">Упражнение <span class="seq">2.5</span></h5>
 <p>Используя <code><span class="func">bind/de</span></code> и <code><span class="func">assoc/de</span></code>, напишите макросы, эмулирующие
-специальные формы <code><span class="func">dynamic-let</span></code>, <code><span class="func">dynamic</span></code> и <code><span class="func">dynamic-set!</span></code>.</p>
+специальные формы <code><span class="special">dynamic-let</span></code>, <code><span class="special">dynamic</span></code> и <code><span class="special">dynamic-set!</span></code>.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:write-put/get-prop">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:write-put/get-prop">Упражнение <span class="seq">2.6</span></h5>
 <!--\indexC{putprop}-->
 <!--\indexC{getprop}-->
 <p>Напишите функции <code><span class="func">getprop</span></code> и <code><span class="func">putprop</span></code>, которые реализуют списки свойств.
@@ -2320,87 +2284,82 @@ $\gamma$, имеем:
 ключу осуществляет функция <code><span class="func">getprop</span></code>. Также, естественно, должно выполняться
 утверждение</p>
 
-<pre>(begin (putprop 'symbol 'key 'value)
-       (getprop 'symbol 'key) )      |\is| value
-\end{code:lisp}</p>
+<pre>(<span class="special">begin</span> (<span class="func">putprop</span> '<span class="var">symbol</span> '<span class="var">key</span> '<span class="var">value</span>)
+       (<span class="func">getprop</span> '<span class="var">symbol</span> '<span class="var">key</span>) )      <span class="math"><span class="binop">→</span></span> <span class="var">value</span></pre>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:label">Упражнение <span class="seq">0.0</span></h5>
-<p>Определите специальную форму <code><span class="func">label</span></code> на Lisp<sub>1</sub>.</p>
+<h5 class="exercise" id="lisp1-2-omega/ex:label">Упражнение <span class="seq">2.7</span></h5>
+<p>Определите специальную форму <code><span class="special">label</span></code> на Lisp<sub>1</sub>.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:labels">Упражнение <span class="seq">0.0</span></h5>
-<p>Определите специальную форму <code><span class="func">labels</span></code> на Lisp<sub>2</sub>.</p>
+<h5 class="exercise" id="lisp1-2-omega/ex:labels">Упражнение <span class="seq">2.8</span></h5>
+<p>Определите специальную форму <code><span class="special">labels</span></code> на Lisp<sub>2</sub>.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:orderless-letrec">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:orderless-letrec">Упражнение <span class="seq">2.9</span></h5>
 <!--\indexC{letrec}-->
-<p>Придумайте, как реализовать <code><span class="func">letrec</span></code> с помощью <code><span class="func">let</span></code> и <code><span class="func">set!</span></code> так,
+<p>Придумайте, как реализовать <code><span class="syntax">letrec</span></code> с помощью <code><span class="syntax">let</span></code> и <code><span class="special">set!</span></code> так,
 чтобы порядок вычисления значений-инициализаторов был неопределённым.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:fixn">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:fixn">Упражнение <span class="seq">2.10</span></h5>
 <!--\indexR{комбинаторы!неподвижной точки!универсальный}-->
 <p>У нашего комбинатора неподвижной точки на Scheme обнаружился недостаток: он
 поддерживает только унарные функции. Реализуйте <code><span class="func">fix2</span></code>, работающий
 с бинарными функциями. Затем <code><span class="func">fixN</span></code>, поддерживающий функции любой арности.</p>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:nfixn">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:nfixn">Упражнение <span class="seq">2.11</span></h5>
 <p>Далее напишите функцию <code><span class="func">NfixN</span></code>, возвращающую неподвижные точки для списка
 функционалов произвольной арности. Её можно использовать, например, следующим
 образом:</p>
 
-<pre>(let ((odd-and-even
-       (NfixN (list (lambda (odd? even?)    ; <code><span class="func">odd?</span></code>
-                      (lambda (n)
-                        (if (= n 0) #f (even? (- n 1))) ) )
-                    (lambda (odd? even?)    ; <code><span class="func">even?</span></code>
-                      (lambda (n)
-                        (if (= n 0) #t (odd? (- n 1))) ) ) )) ))
-  (set! odd? (car odd-and-even))
-  (set! even? (cadr odd-and-even)) )
-\end{code:lisp}</p>
+<pre>(<span class="syntax">let</span> ((<span class="var">odd-and-even</span>
+       (<span class="func">NfixN</span> (<span class="func">list</span> (<span class="special">lambda</span> (<span class="var">odd?</span> <span class="var">even?</span>)    <span class="comment">; <code><span class="func">odd?</span></code></span>
+                      (<span class="special">lambda</span> (<span class="var">n</span>)
+                        (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span> (<span class="func">even?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )
+                    (<span class="special">lambda</span> (<span class="var">odd?</span> <span class="var">even?</span>)    <span class="comment">; <code><span class="func">even?</span></code></span>
+                      (<span class="special">lambda</span> (<span class="var">n</span>)
+                        (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) ) )) ))
+  (<span class="special">set!</span> <span class="var">odd?</span> (<span class="func">car</span> <span class="var">odd-and-even</span>))
+  (<span class="special">set!</span> <span class="var">even?</span> (<span class="func">cadr</span> <span class="var">odd-and-even</span>)) )</pre>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:klop">Упражнение <span class="seq">0.0</span></h5>
-<p>Рассмотрим функцию <code><span class="func">klop</span></code>. Является ли она комбинатором неподвижной точки?
-Попробуйте доказать или опровергнуть, что <code><span class="func">(klop $f$)</span></code> тоже возвращает
-неподвижную точку $f$ подобно <code><span class="func">fix</span></code>.</p>
-
+<h5 class="exercise" id="lisp1-2-omega/ex:klop">Упражнение <span class="seq">2.12</span></h5>
+<p>Рассмотрим функцию <code><span class="func">klop</span></code>.
+Является ли она комбинатором неподвижной точки? Попробуйте доказать или опровергнуть, что
+<code>(<span class="func">klop</span> <span class="math"><span class="ord var">f</span></span>)</code> тоже возвращает неподвижную точку <span class="math"><span class="ord var">f</span></span> подобно <code><span class="func">fix</span></code>.</p>
 
 <!--\indexC{klop}-->
-<pre>(define klop
-  (let ((r (lambda (s c h e m)
-             (lambda (f)
-               (f (lambda (n)
-                    (((m e c h e s) f) n) )) ) )))
-    (r r r r r r) ) )
-\end{code:lisp}</p>
+<pre>(<span class="special">define</span> <span class="var">klop</span>
+  (<span class="syntax">let</span> ((<span class="var">r</span> (<span class="special">lambda</span> (<span class="var">s</span> <span class="var">c</span> <span class="var">h</span> <span class="var">e</span> <span class="var">m</span>)
+             (<span class="special">lambda</span> (<span class="var">f</span>)
+               (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">n</span>)
+                    (((<span class="func">m</span> <span class="var">e</span> <span class="var">c</span> <span class="var">h</span> <span class="var">e</span> <span class="var">s</span>) <span class="var">f</span>) <span class="var">n</span>) )) ) )))
+    (<span class="func">r</span> <span class="var">r</span> <span class="var">r</span> <span class="var">r</span> <span class="var">r</span> <span class="var">r</span>) ) )</pre>
 
 
-<h5 class="exercise" id="lisp1-2-omega/ex:hyper-fact">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="lisp1-2-omega/ex:hyper-fact">Упражнение <span class="seq">2.13</span></h5>
 <!--\indexC{fact}-->
 <p>Если функция <code><span class="func">hyper-fact</span></code> определена так:</p>
 
-<pre>(define (hyper-fact f)
-  (lambda (n)
-    (if (= n 0) 1
-        (* n ((f f) (- n 1))) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">hyper-fact</span> <span class="var">f</span>)
+  (<span class="special">lambda</span> (<span class="var">n</span>)
+    (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
+        (<span class="func">*</span> <span class="var">n</span> ((<span class="func">f</span> <span class="var">f</span>) (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) ) )</pre>
 
-<p>\noindent
-то что вернёт <code><span class="func">((hyper-fact hyper-fact) 5)</span></code>?</p>
+<p>то что вернёт <code>((<span class="func">hyper-fact</span> <span class="var">hyper-fact</span>) <span class="num">5</span>)</code>?</p>
 
-<p>\section*{Рекомендуемая литература}%
-\label{lisp1-2-omega/sect:recommended-reading}</p>
 
-<p>Кроме упомянутой ранее работы по λ-исчислению <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">ss78a</a>]</span> также имеет
-смысл почитать про анализ функций в <span class="cite">[<a href="z1_bibliography.xhtml#mos70">mos70</a>]</span> и сравнительный анализ Lisp<sub>1</sub>
-и Lisp<sub>2</sub> в <span class="cite">[<a href="z1_bibliography.xhtml#gp88">gp88</a>]</span>.</p>
+<h2 id="lisp1-2-omega/sect:recommended-reading">Рекомендуемая литература</h2>
 
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#gor88">gor88</a>]</span> есть интересное введение в λ-исчисление.</p>
+<p>Кроме упомянутой ранее работы по λ-исчислению <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">SS78a</a>]</span> также имеет
+смысл почитать про анализ функций в <span class="cite">[<a href="z1_bibliography.xhtml#mos70">Mos70</a>]</span> и сравнительный анализ Lisp<sub>1</sub>
+и Lisp<sub>2</sub> в <span class="cite">[<a href="z1_bibliography.xhtml#gp88">GP88</a>]</span>.</p>
 
-<p>Комбинатор \comb{Y} разбирается подробнее в <span class="cite">[<a href="z1_bibliography.xhtml#gab88">gab88</a>]</span>.</p>
+<p>В <span class="cite">[<a href="z1_bibliography.xhtml#gor88">Gor88</a>]</span> есть интересное введение в λ-исчисление.</p>
 
-<p></body>
+<p>Комбинатор <span class="comb">Y</span> разбирается подробнее в <span class="cite">[<a href="z1_bibliography.xhtml#gab88">Gab88</a>]</span>.</p>
+
+</body>
 </html>

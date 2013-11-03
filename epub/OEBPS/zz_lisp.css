@@ -7,6 +7,12 @@ div.where {
     vertical-align: top;
 }
 
+div.complex {
+    display: inline-block;
+    white-space: pre;
+    vertical-align: top;
+}
+
 span { color: red; }
 
 span.logo {
@@ -74,3 +80,22 @@ pre span.fbox { border: 1px solid black; padding: 3px; font-size: 100%; }
 
 code span,
 pre span { font-size: 400%; }
+
+
+.math .frac {
+  display: inline-block;
+  font-size: 300%;
+}
+
+.math .frac .numerator {
+  border-bottom: 1px solid black;
+  display: block;
+  padding-bottom: 1px;
+  text-align: center;
+}
+
+.math .frac .denominator {
+  display: block;
+  padding-top: 0px;
+  text-align: center;
+}
