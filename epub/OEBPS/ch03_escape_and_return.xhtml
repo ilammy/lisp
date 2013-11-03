@@ -960,14 +960,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 обычные динамические переменные <span class="logo">Common Lisp</span>.</p>
 
 
-<h2 id="escape/sect:actors">Участники вычислений</h2>
+<h2 id="escape/sect:actors"><span class="seq">3.2.</span> Участники вычислений</h2>
 
 <!--\indexR{вычисления!контекст}-->
 <!--\indexR{контекст вычислений}-->
 <p>Сейчас мы считаем, что для проведения вычислений необходимы три вещи: выражение,
 окружение и продолжение. Тактическая цель вычислений: определить значение
 выражения в окружении. Стратегическая — передать это значение продолжению.</p>
-
 
 <!--\indexR{записи активации}-->
 <!--\indexR{фреймы стека}-->
@@ -977,8 +976,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 фреймов стека (или записей активаций), то мы будем использовать объекты для
 представления этих сущностей внутри разрабатываемого интерпретатора.</p>
 
-<h3 id="escape/actors/ssect:review">Краткий обзор объектов</h3>
 
+<h3 id="escape/actors/ssect:review"><span class="seq">3.2.1.</span> Краткий обзор объектов</h3>
 
 <!--\indexR{объекты}-->
 <!--\indexE{Meroon@\protect\MeroonMeroonet!вводное описание}-->
@@ -996,105 +995,99 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 объектно-ориентированного программирования, так что будет достаточно показать,
 как здесь записываются известные вам идиомы, которые мы будем использовать.</p>
 
-
 <!--\indexR{классы}-->
 <!--\indexR{методы}-->
 <!--\indexR{обобщённые функции}-->
 <!--\indexR{функции!обобщённые}-->
 <p>Объекты группируются в <em class="term">классы</em>; объекты одного класса имеют одинаковые
 <em class="term">методы</em>; сообщения посылаются с помощью <em class="term">обобщённых функций</em>,
-популяризованных Common Loops <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">bkk+86</a>]</span>, CLOS <span class="cite">[<a href="z1_bibliography.xhtml#bdg+88">bdg+88</a>]</span> и
-\TELOS <span class="cite">[<a href="z1_bibliography.xhtml#pnb93">pnb93</a>]</span>. Для нас важнейшей возможностью объектно-ориентированного
+популяризованных Common Loops <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">BKK<sup>+</sup>86</a>]</span>, CLOS <span class="cite">[<a href="z1_bibliography.xhtml#bdg+88">BDG<sup>+</sup>88</a>]</span> и
+ΤΕΛΟΣ <span class="cite">[<a href="z1_bibliography.xhtml#pnb93">PNB93</a>]</span>. Для нас важнейшей возможностью объектно-ориентированного
 программирования является отделение обработки различных специальных форм и
 примитивных функций от ядра интерпретатора. Но всё имеет свою цену: в этом
 случае будет сложнее увидеть картину целиком, так как обработка будет размазана
 по нескольким местам.</p>
 
-<p>
-\subsubsection{Определение классов}</p>
 
+<h4>Определение классов</h4>
 
 <!--\indexC{define-class}-->
-<p>Классы определяется с помощью <code><span class="func">define-class</span></code> следующим образом:</p>
+<p>Классы определяется с помощью <code><span class="syntax">define-class</span></code> следующим образом:</p>
 
-<pre>(define-class |\ii{класс}| |\ii{суперкласс}|
-  (|\ii{поля}|...) )</pre>
-
+<pre>(<span class="syntax">define-class</span> <i>класс</i> <i>суперкласс</i>
+  (<i>поля</i>...) )</pre>
 
 <!--\indexR{поля}-->
 <!--\indexR{аксессоры}-->
-<p>Эта форма определяет класс с именем \ii{класс}, который наследует поля и методы
-\ii{суперкласса}, а также имеет свои собственные \ii{поля}. Вместе с классом
-создаётся набор вспомогательных функций. Функция \ic{make-\ii{класс}} создаёт
+<p>Эта форма определяет класс с именем <i>класс</i>, который наследует поля и методы
+<i>суперкласса</i>, а также имеет свои собственные <i>поля</i>. Вместе с классом
+создаётся набор вспомогательных функций. Функция <code><span class="func">make-<i>класс</i></span></code> создаёт
 объекты этого класса; количество и порядок её аргументов соответствуют порядку
 указания полей при определении класса. Названия аксессоров чтения состоят из
 имени класса и имени поля, разделённых дефисом. Названия аксессоров записи
-аналогичны аксессорам чтения, только с <code><span class="func">set-</span></code> в начале и восклицательным
+аналогичны аксессорам чтения, только с <code>set-</code> в начале и восклицательным
 знаком в конце. Возвращаемое значение аксессоров записи не определено. Предикат
-\ic{\ii{класс}?} проверяет, является ли объект экземпляром данного класса.</p>
-
+<code><span class="func"><i>класс</i>?</span></code> проверяет, является ли объект
+экземпляром данного класса.</p>
 
 <!--\indexC{Object}-->
-<p>Корнем иерархии наследования является класс <code><span class="func">Object</span></code>, не имеющий полей.</p>
+<p>Корнем иерархии наследования является класс <code><span class="class">Object</span></code>, не имеющий полей.</p>
 
 <p>Например, определение</p>
 
-<pre>(define-class continuation Object (k))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">continuation</span> <span class="class">Object</span> (<span class="var">k</span>))</pre>
 
-<p>\noindent
-создаст следующие функции:</p>
+<p>создаст следующие функции:</p>
 
-<pre>(make-continuation k)         ; конструктор
-(continuation-k c)            ; аксессор чтения
-(set-continuation-k! c k)     ; аксессор записи
-(continuation? k)             ; предикат принадлежности</pre>
+<pre>(<span class="func">make-continuation</span> <span class="var">k</span>)         <span class="comment">; конструктор</span>
+(<span class="func">continuation-k</span> <span class="var">c</span>)            <span class="comment">; аксессор чтения</span>
+(<span class="func">set-continuation-k!</span> <span class="var">c</span> <span class="var">k</span>)     <span class="comment">; аксессор записи</span>
+(<span class="func">continuation?</span> <span class="var">k</span>)             <span class="comment">; предикат принадлежности</span></pre>
 
-<p>
-\subsubsection{Определение обобщённых функций}</p>
 
+<h4>Определение обобщённых функций</h4>
 
 <!--\indexC{define-generic}-->
 <!--\indexR{обобщённые функции}-->
 <p>Обобщённые функции определяются следующим образом:</p>
 
-<pre>(define-generic (|\ii{функция}| |\ii{аргументы}|)
-  |\textrm{$[$\ic{\ii{трактовка-по-умолчанию}...}$]$}|)</pre>
+<pre>(<span class="syntax">define-generic</span> (<i>функция</i> <i>аргументы</i>)
+  <span class="normal">[<code><i>трактовка-по-умолчанию</i>...</code>]</span>)</pre>
 
 
 <!--\indexR{дискриминант}-->
 <!--\indexR{обобщённые функции!дискриминант}-->
-<p>Эта форма определяет обобщённую \ii{функцию}; формы
-\ii{трак\-товки-по-умол\-чанию} станут её телом, если при вызове функции
+<p>Эта форма определяет обобщённую <i>функцию</i>; формы
+<i>трактовки-по-умолчанию</i> станут её телом, если при вызове функции
 не найдётся подходящего специализированного варианта. Список аргументов
 указывается как обычно, за исключением того, что один из них является
 <em class="term">дискриминантом</em>; дискриминант записывается в скобках:</p>
 
-<pre>(define-generic (invoke (f) v* r k)
-  (wrong "Not a function" f r k) )</pre>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )</pre>
 
 <p>Таким образом определяется обобщённая функция <code><span class="func">invoke</span></code>, для которой можно
 в последующем задать специализированные варианты. Данная функция имеет четыре
-аргумента, первый из них — <code><span class="func">f</span></code> — это дискриминант. Если для
-класса <code><span class="func">f</span></code> не найдётся специализированного варианта функции (метода
-класса <code><span class="func">f</span></code>), то будет выбран вариант по умолчанию: вызов <code><span class="func">wrong</span></code>.</p>
+аргумента, первый из них — <code><span class="var">f</span></code> — это дискриминант. Если для
+класса <code><span class="var">f</span></code> не найдётся специализированного варианта функции (метода
+класса <code><span class="var">f</span></code>), то будет выбран вариант по умолчанию: вызов <code><span class="special">wrong</span></code>.</p>
 
-<p>
-\subsubsection{Определение методов}</p>
 
+<h4>Определение методов</h4>
 
 <!--\indexC{define-method}-->
-<p>Форма <code><span class="func">define-method</span></code> используется для специализации обобщённых функций
+<p>Форма <code><span class="syntax">define-method</span></code> используется для специализации обобщённых функций
 конкретными методами.</p>
 
-<pre>(define-method (|\ii{функция}| |\ii{аргументы}|)
-  |\ii{тело}|... )</pre>
+<pre>(<span class="syntax">define-method</span> (<i>функция</i> <i>аргументы</i>)
+  <i>тело</i>... )</pre>
 
-<p>Аргументы указываются аналогично <code><span class="func">define-generic</span></code>. Класс дискриминанта, для
+<p>Аргументы указываются аналогично <code><span class="syntax">define-generic</span></code>. Класс дискриминанта, для
 которого создаётся метод, указывается после него. Например, мы можем создать
-метод <code><span class="func">invoke</span></code> для класса <code><span class="func">primitive</span></code> следующим образом:</p>
+метод <code><span class="func">invoke</span></code> для класса <code><span class="class">primitive</span></code> следующим образом:</p>
 
-<pre>(define-method (invoke (f primitive) v* r k)
-  ((primitive-address f) v* r k) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">primitive</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  ((<span class="func">primitive-address</span> <span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) )</pre>
 
 <p>На этом мы заканчиваем обзор объектной системы и переходим к написанию
 интерпретатора. Детали реализации, а также другие возможности объектов будут
@@ -1102,8 +1095,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 известными из них, чтобы облегчить понимание и уменьшить количество возможных
 проблем.</p>
 
-<h3 id="escape/actors/ssect:interpreter">Интерпретатор</h3>
 
+<h3 id="escape/actors/ssect:interpreter"><span class="seq">3.2.2.</span> Интерпретатор</h3>
 
 <!--\indexR{соглашения именования}-->
 <!--\indexE{e @\protect<code><span class="func">e</span></code> (выражения)}-->
@@ -1116,36 +1109,38 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 Начинает она свою работу с выяснения смысла выражения, чтобы выбрать правильный
 метод его вычисления, который хранится в специализированной функции. Перед тем,
 как продолжить, давайте договоримся о правилах именования переменных, которых
-теперь будет довольно много. Первое правило: сущность «список \ii{x}» будем
-называть \ic{\ii{x}*}. Второе: сущности интерпретатора будем называть
+теперь будет довольно много. Первое правило: сущность «список <i>x</i>» будем
+называть <code><i>x</i>*</code>. Второе: сущности интерпретатора будем называть
 одной-двумя буквами для краткости:</p>
 
-<p>\begin{center}\begin{tabular}{>{\raggedleft}p{0.3\textwidth}p{0.6\textwidth}}
-<code><span class="func">e</span></code>, <code><span class="func">et</span></code>, <code><span class="func">ec</span></code>, <code><span class="func">ef</span></code> & выражения, формы                          \\
-                           <code><span class="func">r</span></code> & окружения                                 \\
-                  <code><span class="func">k</span></code>, <code><span class="func">kk</span></code> & продолжения                               \\
-                           <code><span class="func">v</span></code> & значения (числа, пары, замыкания и т. д.)\\
-                           <code><span class="func">f</span></code> & функции                                   \\
-                           <code><span class="func">n</span></code> & идентификаторы
-\end{tabular}\end{center}</p>
+<table class="term-def">
+<tr><td><code><span class="var">e</span></code>,
+        <code><span class="var">et</span></code>,
+        <code><span class="var">ec</span></code>,
+        <code><span class="var">ef</span></code></td><td>выражения, формы</td></tr>
+<tr><td><code><span class="var">r</span></code></td><td>окружения</td></tr>
+<tr><td><code><span class="var">k</span></code>,
+        <code><span class="var">kk</span></code></td><td>продолжения</td></tr>
+<tr><td><code><span class="var">v</span></code></td><td>значения (числа, пары, замыкания и т. д.)</td></tr>
+<tr><td><code><span class="var">f</span></code></td><td>функции</td></tr>
+<tr><td><code><span class="var">n</span></code></td><td>идентификаторы</td></tr>
+</table>
 
-<p>
-Всё, теперь принимаемся за интерпретатор. Для простоты он считает все атомы,
+<p>Всё, теперь принимаемся за интерпретатор. Для простоты он считает все атомы,
 кроме переменных, автоцитированными значениями.</p>
 
-
 <!--\indexC{evaluate}-->
-<pre>(define (evaluate e r k)
-  (if (atom? e)
-      (cond ((symbol? e) (evaluate-variable e r k))
-            (else        (evaluate-quote e r k)) )
-      (case (car e)
-        ((quote)  (evaluate-quote (cadr e) r k))
-        ((if)     (evaluate-if (cadr e) (caddr e) (cadddr e) r k))
-        ((begin)  (evaluate-begin (cdr e) r k))
-        ((set!)   (evaluate-set! (cadr e) (caddr e) r k))
-        ((lambda) (evaluate-lambda (cadr e) (cddr e) r k))
-        (else     (evaluate-application (car e) (cdr e) r k)) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="syntax">cond</span> ((<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">evaluate-variable</span> <span class="var">e</span> <span class="var">r</span> <span class="var">k</span>))
+            (<span class="syntax">else</span>        (<span class="func">evaluate-quote</span> <span class="var">e</span> <span class="var">r</span> <span class="var">k</span>)) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">evaluate-quote</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+        ((<span class="var">if</span>)     (<span class="func">evaluate-if</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+        ((<span class="var">begin</span>)  (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+        ((<span class="var">set!</span>)   (<span class="func">evaluate-set!</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+        ((<span class="var">lambda</span>) (<span class="func">evaluate-lambda</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+        (<span class="syntax">else</span>     (<span class="func">evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>)) ) ) )</pre>
 
 <p>Собственно интерпретатор состоит из трёх функций: <code><span class="func">evaluate</span></code>, <code><span class="func">invoke</span></code> и
 <code><span class="func">resume</span></code>. Две последние являются обобщёнными и знают, как вызывать вызываемое
@@ -1153,48 +1148,48 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 значениями между этими функциями. Вдобавок мы введём ещё две полезные обобщённые
 функции для работы с переменными: <code><span class="func">lookup</span></code> и <code><span class="func">update!</span></code>.</p>
 
-
 <!--\indexC{invoke}-->
 <!--\indexC{resume}-->
 <!--\indexC{lookup}-->
 <!--\indexC{update"!}-->
-<pre>(define-generic (invoke (f) v* r k)
-  (wrong "Not a function" f r k) )</p>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )
 
-<p>(define-generic (resume (k continuation) v)
-  (wrong "Unknown continuation" k) )</p>
+(<span class="syntax">define-generic</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">continuation</span>) <span class="var">v</span>)
+  (<span class="special">wrong</span> <span class="string">"Unknown continuation"</span> <span class="var">k</span>) )
 
-<p>(define-generic (lookup (r environment) n k)
-  (wrong "Not an environment" r n k) )</p>
+(<span class="syntax">define-generic</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">environment</span>) <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )
 
-<p>(define-generic (update! (r environment) n k v)
-  (wrong "Not an environment" r n k) )</pre>
+(<span class="syntax">define-generic</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">environment</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )</pre>
 
 <p>Все сущности, которыми мы будем оперировать, наследуются от трёх базовых
 классов:</p>
 
-
 <!--\indexC{value}-->
 <!--\indexC{environment}-->
 <!--\indexC{continuation}-->
-<pre>(define-class value        Object ())
-(define-class environment  Object ())
-(define-class continuation Object (k))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">value</span>        <span class="class">Object</span> ())
+(<span class="syntax">define-class</span> <span class="class">environment</span>  <span class="class">Object</span> ())
+(<span class="syntax">define-class</span> <span class="class">continuation</span> <span class="class">Object</span> (<span class="var">k</span>))</pre>
 
-<p>Классы значений являются наследниками <code><span class="func">value</span></code>, классы окружений —
-наследники <code><span class="func">environment</span></code>, классы продолжений — <code><span class="func">continuation</span></code>.</p>
+<p>Классы значений являются наследниками <code><span class="class">value</span></code>, классы окружений —
+наследники <code><span class="class">environment</span></code>, классы продолжений — <code><span class="class">continuation</span></code>.</p>
 
-<h3 id="escape/actors/ssect:quoting">Цитирование</h3>
+
+<h3 id="escape/actors/ssect:quoting"><span class="seq">3.2.3.</span> Цитирование</h3>
 
 <p>Специальная форма цитирования всё так же является наиболее простой, её задача
 сводится к передаче значения в неизменной форме текущему продолжению:</p>
 
 
 <!--\indexC{evaluate-quotation}-->
-<pre>(define (evaluate-quotation v r k)
-  (resume k v) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">evaluate-quotation</span> <span class="var">v</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">resume</span> <span class="var">k</span> <span class="var">v</span>) )</pre>
 
-<h3 id="escape/actors/ssect:alternatives">Ветвление</h3>
+
+<h3 id="escape/actors/ssect:alternatives"><span class="seq">3.2.4.</span> Ветвление</h3>
 
 <p>Условный оператор использует два продолжения: текущее и продолжение вычисления
 условия, которое выберет и вычислит необходимую ветку. Для этого продолжения мы
@@ -1204,101 +1199,96 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 передать продолжению условной формы, которое тоже надо где-то хранить. Таким
 образом, мы пишем:</p>
 
-
 <!--\indexC{if-cont}-->
 <!--\indexC{evaluate-if}-->
 <!--\indexCS{resume}{<code><span class="func">if-cont</span></code>}-->
-<pre>(define-class if-cont continuation (et ef r))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">if-cont</span> <span class="class">continuation</span> (<span class="var">et</span> <span class="var">ef</span> <span class="var">r</span>))
 
-<p>(define (evaluate-if ec et ef r k)
-  (evaluate ec r (make-if-cont k et ef r)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-if</span> <span class="var">ec</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">ec</span> <span class="var">r</span> (<span class="func">make-if-cont</span> <span class="var">k</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span>)) )
 
-<p>(define-method (resume (k if-cont) v)
-  (evaluate (if v (if-cont-et k) (if-cont-ef k))
-            (if-cont-r k)
-            (if-cont-k k) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">if-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate</span> (<span class="special">if</span> <span class="var">v</span> (<span class="func">if-cont-et</span> <span class="var">k</span>) (<span class="func">if-cont-ef</span> <span class="var">k</span>))
+            (<span class="func">if-cont-r</span> <span class="var">k</span>)
+            (<span class="func">if-cont-k</span> <span class="var">k</span>) ) )</pre>
 
-<p>Форма вначале вычисляет условие <code><span class="func">ec</span></code> в своём окружении <code><span class="func">r</span></code>, но с новым
+<p>Форма вначале вычисляет условие <code><span class="var">ec</span></code> в своём окружении <code><span class="var">r</span></code>, но с новым
 продолжением. Как только мы заканчиваем вычислять условие, результат передаётся
 <code><span class="func">resume</span></code>, которая вызывает специализацию для нашего класса продолжений.
 В этом продолжении мы выполняем собственно выбор, вычисляем одну их сохранённых
 веток в сохранённом окружении и передаём результат сохранённому продолжению всей
-условной формы.\footnote*{С точки зрения реализации можно считать, что
-<code><span class="func">make-if-cont</span></code> кладёт в стек <code><span class="func">et</span></code> и <code><span class="func">ef</span></code>, а также <code><span class="func">r</span></code>; под ними
-в стеке лежат аналогичные группы выражений и окружений, которые фактически и
-есть ничем иным, как продолжением <code><span class="func">k</span></code>. А вызовы вроде <code><span class="func">(if-cont-et k)</span></code>
-лишь снимают с верхушки стека нужные данные.}</p>
+условной формы.<a class="footref" href="zz_footnotes.xhtml#foot3.11"><sup>11</sup></a></p>
 
-<h3 id="escape/actors/ssect:sequence">Последовательность</h3>
+
+<h3 id="escape/actors/ssect:sequence"><span class="seq">3.2.5.</span> Последовательность</h3>
 
 <p>Здесь нам тоже потребуются два продолжения: текущее и продолжение вычисления
 оставшихся форм.</p>
 
-
 <!--\indexC{begin-cont}-->
 <!--\indexC{evaluate-begin}-->
 <!--\indexCS{resume}{<code><span class="func">begin-cont</span></code>}-->
-<pre>(define-class begin-cont continuation (e* r))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">begin-cont</span> <span class="class">continuation</span> (<span class="var">e*</span> <span class="var">r</span>))
 
-<p>(define (evaluate-begin e* r k)
-  (if (pair? e*)
-    (if (pair? (cdr e*))
-        (evaluate (car e*) r (make-begin-cont k e* r))
-        (evaluate (car e*) r k) )
-    (resume k empty-begin-value) ) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-begin</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e*</span>))
+        (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>))
+        (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">k</span>) )
+    (<span class="func">resume</span> <span class="var">k</span> <span class="var">empty-begin-value</span>) ) )
 
-<p>(define-method (resume (k begin-cont) v)
-  (evaluate-begin (cdr (begin-cont-e* k))
-                  (begin-cont-r k)
-                  (begin-cont-k k) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">begin-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>))
+                  (<span class="func">begin-cont-r</span> <span class="var">k</span>)
+                  (<span class="func">begin-cont-k</span> <span class="var">k</span>) ) )</pre>
 
-<p>Случаи <code><span class="func">(begin)</span></code> и <code><span class="func">(begin $\pi$)</span></code> тривиальны. Если же <code><span class="func">begin</span></code>
+<p>Случаи <code>(<span class="special">begin</span>)</code> и <code>(<span class="special">begin</span> <span class="math"><span class="ord var">π</span></span>)</code> тривиальны.
+Если же <code><span class="special">begin</span></code>
 передано больше выражений, то вычисление первого из них продолжается
-<code><span class="func">(make-begin-cont k e* r)</span></code>. Это продолжение принимает значение <code><span class="func">v</span></code>
-с помощью <code><span class="func">resume</span></code>, игнорирует его и продолжает оставшиеся вычисления
-в том же окружении и с тем же продолжением.\footnote*{Внимательный читатель
-наверняка заметил странную форму <code><span class="func">(cdr (begin-cont-e* k))</span></code> в методе
-<code><span class="func">resume</span></code>. Конечно, мы могли бы отбросить уже вычисленное выражение ещё
-в <code><span class="func">evaluate-begin</span></code>: <code><span class="func">(make-begin-cont k (cdr e*) r)</span></code>, и получить тот же
-результат. Причина такого решения в том, что если случится ошибка, то у нас
-будет на руках её источник.}</p>
+<code>(<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>)</code>. Это продолжение принимает значение
+<code><span class="var">v</span></code> с помощью <code><span class="func">resume</span></code>,
+игнорирует его и продолжает оставшиеся вычисления
+в том же окружении и с тем же продолжением.<a class="footref" href="zz_footnotes.xhtml#foot3.12"><sup>12</sup></a></p>
 
-<h3 id="escape/actors/ssect:variables">Окружения</h3>
+
+<h3 id="escape/actors/ssect:variables"><span class="seq">3.2.6.</span> Окружения</h3>
 
 <p>Значения переменных хранятся в окружениях. Они тоже представляются объектами:</p>
-
 
 <!--\indexC{null-env}-->
 <!--\indexC{full-env}-->
 <!--\indexC{variable-env}-->
-<pre>(define-class null-env environment ())
-(define-class full-env environment (others name))
-(define-class variable-env full-env (value))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">null-env</span> <span class="class">environment</span> ())
+(<span class="syntax">define-class</span> <span class="class">full-env</span> <span class="class">environment</span> (<span class="var">others</span> <span class="var">name</span>))
+(<span class="syntax">define-class</span> <span class="class">variable-env</span> <span class="class">full-env</span> (<span class="var">value</span>))</pre>
 
-<p>Нам потребуются два типа окружений: пустое начальное окружение <code><span class="func">null-env</span></code> и
-окружения с переменными <code><span class="func">variable-env</span></code>. Последние хранят одну привязку имени
-<code><span class="func">name</span></code> к значению <code><span class="func">value</span></code>, а также ссылку на остальные привязки этого
-окружения в поле <code><span class="func">others</span></code>. То есть это обычный А-список, разве что для
+<p>Нам потребуются два типа окружений: пустое начальное окружение
+<code><span class="class">null-env</span></code> и
+окружения с переменными <code><span class="class">variable-env</span></code>.
+Последние хранят одну привязку имени
+<code><span class="var">name</span></code> к значению
+<code><span class="var">value</span></code>, а также ссылку на остальные привязки этого
+окружения в поле <code><span class="var">others</span></code>.
+То есть это обычный А-список, разве что для
 хранения каждой привязки используется объект с тремя полями, а не две точечных
 пары.</p>
 
 <p>Для нахождения значения переменной мы делаем следующее:</p>
 
-
 <!--\indexC{evaluate-variable}-->
-<pre>(define (evaluate-variable n r k)
-  (lookup r n k) )</p>
+<pre>(<span class="special">define</span> (<span class="func">evaluate-variable</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">lookup</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )
 
-<p>(define-method (lookup (r null-env) n k)
-  (wrong "Unknown variable" n r k) )</p>
+(<span class="syntax">define-method</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
 
-<p>(define-method (lookup (r full-env) n k)
-  (lookup (full-env-others r) n k) )</p>
+(<span class="syntax">define-method</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">full-env</span>) <span class="var">n</span> <span class="var">k</span>)
+  (<span class="func">lookup</span> (<span class="func">full-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span>) )
 
-<p>(define-method (lookup (r variable-env) n k)
-  (if (eqv? n (variable-env-name r))
-      (resume k (variable-env-value r))
-      (lookup (variable-env-others r) n k) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">variable-env</span>) <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">eqv?</span> <span class="var">n</span> (<span class="func">variable-env-name</span> <span class="var">r</span>))
+      (<span class="func">resume</span> <span class="var">k</span> (<span class="func">variable-env-value</span> <span class="var">r</span>))
+      (<span class="func">lookup</span> (<span class="func">variable-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span>) ) )</pre>
 
 <p>Обобщённая функция <code><span class="func">lookup</span></code> проходит по окружению, пока не найдёт подходящую
 привязку: с совпадающим именем и хранящую значение переменной. Найденное
@@ -1306,63 +1296,63 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <p>Изменение значения происходит похожим образом:</p>
 
-
 <!--\indexC{set"!-cont}-->
 <!--\indexC{evaluate-set"!}-->
 <!--\indexCS{resume}{<code><span class="func">set"!-cont</span></code>}-->
 <!--\indexCS{update"!}{<code><span class="func">null-env</span></code>}-->
 <!--\indexCS{update"!}{<code><span class="func">full-env</span></code>}-->
 <!--\indexCS{update"!}{<code><span class="func">variable-env</span></code>}-->
-<pre>(define-class set!-cont continuation (n r))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">set!-cont</span> <span class="class">continuation</span> (<span class="var">n</span> <span class="var">r</span>))
 
-<p>(define (evaluate-set! n e r k)
-  (evaluate e r (make-set!-cont k n r)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-set!</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> (<span class="func">make-set!-cont</span> <span class="var">k</span> <span class="var">n</span> <span class="var">r</span>)) )
 
-<p>(define-method (resume (k set!-cont) v)
-  (update! (set!-cont-r k) (set!-cont-n k) (set!-cont-k k) v) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">set!-cont</span>) <span class="var">v</span>)
+  (<span class="func">update!</span> (<span class="func">set!-cont-r</span> <span class="var">k</span>) (<span class="func">set!-cont-n</span> <span class="var">k</span>) (<span class="func">set!-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) )
 
-<p>(define-method (update! (r null-env) n k v)
-  (wrong "Unknown variable" n r k) )</p>
+(<span class="syntax">define-method</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
 
-<p>(define-method (update! (r full-env) n k v)
-  (update! (full-env-others r) n k v) )</p>
+(<span class="syntax">define-method</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">full-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="func">update!</span> (<span class="func">full-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
 
-<p>(define-method (update! (r variable-env) n k v)
-  (if (eqv? n (variable-env-name r))
-      (begin (set-variable-env-value! r v)
-             (resume k v) )
-      (update! (variable-env-others r) n k v) ) )</pre>
+(<span class="syntax">define-method</span> <span class="func">(update!</span> (<span class="var">r</span> <span class="class">variable-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">if</span> (<span class="func">eqv?</span> <span class="var">n</span> (<span class="func">variable-env-name</span> <span class="var">r</span>))
+      (<span class="special">begin</span> (<span class="func">set-variable-env-value!</span> <span class="var">r</span> <span class="var">v</span>)
+             (<span class="func">resume</span> <span class="var">k</span> <span class="var">v</span>) )
+      (<span class="func">update!</span> (<span class="func">variable-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) ) )</pre>
 
 <p>Нам потребовалось вспомогательное продолжение, так как присваивание проходит
 в два этапа: сначала надо вычислить присваиваемое значение, потом присвоить его
-переменной. Класс <code><span class="func">set!-cont</span></code> представляет необходимые продолжения, его метод
+переменной. Класс <code><span class="class">set!-cont</span></code> представляет необходимые продолжения, его метод
 <code><span class="func">resume</span></code> лишь вызывает <code><span class="func">update!</span></code> для установки значения, после чего
 продолжает дальнейшие вычисления.</p>
 
-<h3 id="escape/actors/ssect:functions">Функции</h3>
 
-<p>Создать функцию легко, с этим справится <code><span class="func">make-function</span></code>:</p>
+<h3 id="escape/actors/ssect:functions"><span class="seq">3.2.7.</span> Функции</h3>
 
+<p>Создать функцию легко, с этим справится
+<code><span class="func">make-function</span></code>:</p>
 
 <!--\indexC{function}-->
 <!--\indexC{evaluate-lambda}-->
-<pre>(define-class function value (variables body env))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">function</span> <span class="class">value</span> (<span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>))
 
-<p>(define (evaluate-lambda n* e* r k)
-  (resume k (make-function n* e* r)) )</pre>
+(<span class="special">define</span> (<span class="func">evaluate-lambda</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">resume</span> <span class="var">k</span> (<span class="func">make-function</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span>)) )</pre>
 
 <p>Чуть сложнее будет вызвать созданную функцию. Обратите внимание на неявное
 использование <code><span class="func">progn</span></code>/<code><span class="func">begin</span></code> для тела функций.</p>
 
-
 <!--\indexCS{invoke}{<code><span class="func">function</span></code>}-->
-<pre>(define-method (invoke (f function) v* r k)
-  (let ((env (extend-env (function-env f)
-                         (function-variables f)
-                         v* )))
-    (evaluate-begin (function-body f) env k) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">function</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="syntax">let</span> ((<span class="var">env</span> (<span class="func">extend-env</span> (<span class="func">function-env</span> <span class="var">f</span>)
+                         (<span class="func">function-variables</span> <span class="var">f</span>)
+                         <span class="var">v*</span> )))
+    (<span class="func">evaluate-begin</span> (<span class="func">function-body</span> <span class="var">f</span>) <span class="var">env</span> <span class="var">k</span>) ) )</pre>
 
-<p>Может показаться странным, что функция принимает текущее окружение <code><span class="func">r</span></code>, но
+<p>Может показаться странным, что функция принимает текущее окружение
+<code><span class="var">r</span></code>, но
 никак не использует его. Это сделано по нескольким причинам. Во-первых, обычно
 при компиляции текущие окружение и продолжение считаются чем-то вроде
 глобальных динамических переменных и передаются через жёстко заданные регистры,
@@ -1374,21 +1364,19 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <p>Следующая функция расширяет окружение переменных. И выполняет проверку
 согласованности количества имён и связываемых с ними значений.</p>
 
-
 <!--\indexC{extend-env}-->
-<pre>(define (extend-env env names values)
-  (cond ((and (pair? names) (pair? values))
-         (make-variable-env
-          (extend-env env (cdr names) (cdr values))
-          (car names)
-          (car values) ) )
-        ((and (null? names) (null? values)) env)
-        ((symbol? names) (make-variable-env env names values))
-        (else (wrong "Arity mismatch")) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">extend-env</span> <span class="var">env</span> <span class="var">names</span> <span class="var">values</span>)
+  (<span class="syntax">cond</span> ((<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">names</span>) (<span class="func">pair?</span> <span class="var">values</span>))
+         (<span class="func">make-variable-env</span>
+          (<span class="func">extend-env</span> <span class="var">env</span> (<span class="func">cdr</span> <span class="var">names</span>) (<span class="func">cdr</span> <span class="var">values</span>))
+          (<span class="func">car</span> <span class="var">names</span>)
+          (<span class="func">car</span> <span class="var">values</span>) ) )
+        ((<span class="syntax">and</span> (<span class="func">null?</span> <span class="var">names</span>) (<span class="func">null?</span> <span class="var">values</span>)) <span class="var">env</span>)
+        ((<span class="func">symbol?</span> <span class="var">names</span>) (<span class="func">make-variable-env</span> <span class="var">env</span> <span class="var">names</span> <span class="var">values</span>))
+        (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Arity mismatch"</span>)) ) )</pre>
 
 <p>Осталось только определить собственно применение функций. Здесь надо помнить
 о том, что функция применяется к списку аргументов.</p>
-
 
 <!--\indexC{evfun-cont}-->
 <!--\indexC{apply-cont}-->
@@ -1401,89 +1389,78 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexCS{resume}{<code><span class="func">argument-cont</span></code>}-->
 <!--\indexCS{resume}{<code><span class="func">gather-cont</span></code>}-->
 <!--\indexCS{resume}{<code><span class="func">apply-cont</span></code>}-->
-<pre>(define-class evfun-cont    continuation (e* r))
-(define-class apply-cont    continuation (f  r))
-(define-class argument-cont continuation (e* r))
-(define-class gather-cont   continuation (v))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">evfun-cont</span>    <span class="class">continuation</span> (<span class="var">e*</span> <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">apply-cont</span>    <span class="class">continuation</span> (<span class="var">f</span>  <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">argument-cont</span> <span class="class">continuation</span> (<span class="var">e*</span> <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">gather-cont</span>   <span class="class">continuation</span> (<span class="var">v</span>))
 
-<p>(define (evaluate-application e e* r k)
-  (evaluate e r (make-evfun-cont k e* r)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> (<span class="func">make-evfun-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>)) )
 
-<p>(define-method (resume (k evfun-cont) f)
-  (evaluate-arguments (evfun-cont-e* k)
-                      (evfun-cont-r k)
-                      (make-apply-cont (evfun-cont-k k) f
-                                       (evfun-cont-r k) ) ) )
-(define no-more-arguments '())</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">evfun-cont</span>) <span class="var">f</span>)
+  (<span class="func">evaluate-argument</span>s (<span class="func">evfun-cont-e*</span> <span class="var">k</span>)
+                      (<span class="func">evfun-cont-r</span> <span class="var">k</span>)
+                      (<span class="func">make-apply-cont</span> (<span class="func">evfun-cont-k</span> <span class="var">k</span>) <span class="var">f</span>
+                                       (<span class="func">evfun-cont-r</span> <span class="var">k</span>) ) ) )
+(<span class="special">define</span> <span class="var">no-more-arguments</span> <span class="hash">'()</span>)
 
-<p>(define (evaluate-arguments e* r k)
-  (if (pair? e*)
-      (evaluate (car e*) r (make-argument-cont k e* r))
-      (resume k no-more-arguments) ) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-arguments</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-argument-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>))
+      (<span class="func">resume</span> <span class="var">k</span> <span class="var">no-more-arguments</span>) ) )
 
-<p>(define-method (resume (k argument-cont) v)
-  (evaluate-arguments (cdr (argument-cont-e* k))
-                      (argument-cont-r k)
-                      (make-gather-cont (argument-cont-k k) v) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">argument-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate-arguments</span> (<span class="func">cdr</span> (<span class="func">argument-cont-e*</span> <span class="var">k</span>))
+                      (<span class="func">argument-cont-r</span> <span class="var">k</span>)
+                      (<span class="func">make-gather-cont</span> (<span class="func">argument-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) ) )
 
-<p>(define-method (resume (k gather-cont) v*)
-  (resume (gather-cont-k k) (cons (gather-cont-v k) v*)) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">gather-cont</span>) <span class="var">v*</span>)
+  (<span class="func">resume</span> (<span class="func">gather-cont-k</span> <span class="var">k</span>) (<span class="func">cons</span> (<span class="func">gather-cont-v</span> <span class="var">k</span>) <span class="var">v*</span>)) )
 
-<p>(define-method (resume (k apply-cont) v)
-  (invoke (apply-cont-f k) v
-          (apply-cont-r k)
-          (apply-cont-k k) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">apply-cont</span>) <span class="var">v</span>)
+  (<span class="func">invoke</span> (<span class="func">apply-cont-f</span> <span class="var">k</span>) <span class="var">v</span>
+          (<span class="func">apply-cont-r</span> <span class="var">k</span>)
+          (<span class="func">apply-cont-k</span> <span class="var">k</span>) ) )</pre>
 
 <p>На первый взгляд, здесь всё слишком сложно, но только на первый. Вычисления
 проводятся слева направо, так что первой вычисляется сама функция с продолжением
-<code><span class="func">evfun-cont</span></code>. Это продолжение должно вычислить аргументы функции и передать
+<code><span class="class">evfun-cont</span></code>. Это продолжение должно вычислить аргументы функции и передать
 их продолжению, которое применит функцию к списку значений аргументов.
-В процессе вычисления аргументов мы обращаемся к продолжениям <code><span class="func">gather-cont</span></code>,
+В процессе вычисления аргументов мы обращаемся к продолжениям <code><span class="class">gather-cont</span></code>,
 которые последовательно собирают вычисленные аргументы в список.</p>
 
-
 <!--\indexR{продолжения (continuations)!иллюстрация стека}-->
-<p>Давайте рассмотрим на примере, что происходит при вычислении <code><span class="func">(cons
-foo bar)</span></code>. Пусть переменная <code><span class="func">foo</span></code> имеет значение $33$, а <code><span class="func">bar</span></code>
-равна $-77$. Стек продолжений показан справа, а вычисляемое выражение слева.
-\ii{k} — это текущее продолжение, \ii{r} — текущее окружение.
-Функция-значение переменной <code><span class="func">cons</span></code> записывается как \ii{cons}.</p>
+<p>Давайте рассмотрим на примере, что происходит при вычислении <code>(<span class="func">cons</span> <span class="var">foo</span> <span class="var">bar</span>)</code>. Пусть переменная <code><span class="var">foo</span></code> имеет значение <span class="math"><span class="ord num">33</span></span>, а <code><span class="var">bar</span></code>
+равна <span class="math"><span class="ord">−</span><span class="ord num">77</span></span>. Стек продолжений показан справа, а вычисляемое выражение слева. <i>k</i> — это текущее продолжение, <i>r</i> — текущее окружение.
+Функция-значение переменной <code><span class="var">cons</span></code> записывается как
+<i>cons</i>.</p>
 
-<p>{\def\EV{\ii{evaluate}} \def\RE{\ii{resume}} \def\IV{\ii{invoke}}
- \def\EA{\ii{evaluate-arguments}}
- \def\EC{\icc{evfun-cont}}
- \def\PC{\icc{apply-cont}}
- \def\GC{\icc{gather-cont}}
- \def\AC{\icc{argument-cont}}
- \def\iv#1{\textsf{#1}}
- \def\X{\kern0.75em}
-%
-\begin{eval-stack}
-  {\EV} (cons foo bar) \ii{r} \-                                        \ii{k}\\
-  {\EV} cons \ii{r}           \-                 {\EC} (foo bar) \ii{r} \ii{k}\\
-  {\RE} \ii{cons}             \-                 {\EC} (foo bar) \ii{r} \ii{k}\\
-  {\EA} (foo bar) \ii{r}      \-                        {\PC} \ii{cons} \ii{k}\\
-  {\EV} foo \ii{r}            \- {\AC} (foo bar) \ii{r} {\PC} \ii{cons} \ii{k}\\
-  {\RE} \iv{33}               \- {\AC} (foo bar) \ii{r} {\PC} \ii{cons} \ii{k}\\
-  {\EA} (bar) \ii{r}         \-           {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\EV} bar \ii{r}      \-{\AC} () \ii{r} {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\RE} \iv{--77}      \- {\AC} () \ii{r} {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\EA} () \ii{r}      \- {\GC} \iv{--77} {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\RE} \iv{(\,)}       \-{\GC} \iv{--77} {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\RE} \iv{(--77)}        \-             {\GC} \iv{33} {\PC} \ii{cons} \ii{k}\\
-  {\RE} \iv{(33\X--77)}      \-                         {\PC} \ii{cons} \ii{k}\\
-  {\IV} \ii{cons} \iv{(33\X--77)}\-                                     \ii{k}
-\end{eval-stack}}</p>
+<table id="ch3-eval-stack">
+<tr><td><code><i>evaluate</i> (<span class="func">cons</span> <span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate</i> <span class="var">cons</span> <i>r</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr><span class="var"></span>
+<tr><td><code><i>resume</i> <i>cons</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate-arguments</i> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate</i> <span class="var">foo</span> <i>r</i> </code></td><td><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>resume</i> <span class="value">33</span> </code></td><td><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate-arguments</i> (<span class="var">bar</span>) <i>r</i> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate</i> <span class="var">bar</span> <i>r</i> </code></td><td><code><span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>resume</i> <span class="value">–77</span> </code></td><td><code> <span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>evaluate-arguments</i> () <i>r</i> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>resume</i> <span class="value">()</span> </code></td><td><code><span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>resume</i> <span class="value">(–77)</span> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>resume</i> <span class="value">(33 –77)</span> </code></td><td><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td><code><i>invoke</i> <i>cons</i> <span class="value">(33 –77)</span></code></td><td><code> <i>k</i></code></td></tr>
+</table>
 
-<h2 id="escape/sect:init">Инициализация интерпретатора</h2>
+
+<h2 id="escape/sect:init"><span class="seq">3.3.</span> Инициализация интерпретатора</h2>
 
 <p>Перед погружением в сокровенные тайны устройства управляющих форм, давайте
 сначала подготовим наш интерпретатор к запуску. Этот раздел похож на
-раздел \ref{basics/sect:global-environment}.
-\seePage[basics/sect:global-environment] Неплохо было бы вначале научить наш
-интерпретатор нескольким полезным вещам вроде <code><span class="func">car</span></code>, поэтому объявим
+раздел <a href="ch01_basics.xhtml#basics/sect:global-environment">1.7</a>.
+Неплохо было бы вначале научить наш интерпретатор нескольким полезным вещам вроде
+<code><span class="func">car</span></code>, поэтому объявим
 пару макросов, которые помогут нам наполнить его глобальное окружение.</p>
-
 
 <!--\indexC{definitial}-->
 <!--\indexC{defprimitive}-->
@@ -1491,163 +1468,151 @@ foo bar)</span></code>. Пусть переменная <code><span class="func"
 <!--\indexC{r.init}-->
 <!--\indexC{cons}-->
 <!--\indexC{car}-->
-<pre>(define-syntax definitial
-  (syntax-rules ()
-    ((definitial name)
-     (definitial name 'void) )
-    ((definitial name value)
-     (begin (set! r.init (make-variable-env r.init 'name value))
-            'name ) ) ) )</p>
+<pre>(<span class="special">define-syntax</span> <span class="var">definitial</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">definitial</span> <span class="var">name</span>)
+     (<span class="syntax">definitial</span> <span class="var">name</span> '<span class="var">void</span>) )
+    ((<span class="syntax">definitial</span> <span class="var">name</span> <span class="var">value</span>)
+     (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">r.init</span> (<span class="func">make-variable-env</span> <span class="var">r.init</span> '<span class="var">name</span> <span class="var">value</span>))
+            '<span class="var">name</span> ) ) ) )
 
-<p>(define-class primitive value (name address))</p>
+(<span class="syntax">define-class</span> <span class="class">primitive</span> <span class="class">value</span> (<span class="var">name</span> <span class="var">address</span>))
 
-<p>(define-syntax defprimitive
-  (syntax-rules ()
-    ((defprimitive name value arity)
-     (definitial name
-       (make-primitive
-        'name (lambda (v* r k)
-                (if (= arity (length v*))
-                    (resume k (apply value v*))
-                    (wrong "Incorrect arity" 'name v*) ) ) ) ) ) ) )</p>
+(<span class="special">define-syntax</span> <span class="var">defprimitive</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">defprimitive</span> <span class="var">name</span> <span class="var">value</span> <span class="var">arity</span>)
+     (<span class="syntax">definitial</span> <span class="var">name</span>
+       (<span class="func">make-primitive</span>
+        '<span class="var">name</span> (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+                (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity</span> (<span class="func">length</span> <span class="var">v*</span>))
+                    (<span class="func">resume</span> <span class="var">k</span> (<span class="func">apply</span> <span class="var">value</span> <span class="var">v*</span>))
+                    (<span class="special">wrong</span> <span class="strin">"Incorrect arity"</span> '<span class="var">name</span> <span class="var">v*</span>) ) ) ) ) ) ) )
 
-<p>(define r.init (make-null-env))</p>
+(<span class="special">define</span> <span class="var">r.init</span> (<span class="func">make-null-env</span>))
 
-<p>(defprimitive cons cons 2)
-(defprimitive car car 1)</pre>
+(<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="var">cons</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)</pre>
 
 <p>Создаваемые примитивные функции должны вызываться той же функцией <code><span class="func">invoke</span></code>,
 которая обрабатывает обычные функции. Каждый примитив имеет два поля. Первое из
 них служит для упрощения отладки: оно хранит имя примитива. Естественно, это
 лишь подсказка, так как ничто не мешает в дальнейшем связать один и тот же
-примитив с разными именами.\footnote*{Эта подсказка позволяет также копировать
-примитивы по значению: выражение <code><span class="func">(begin (set! foo car) (set! car 3) foo)</span></code>
-возвращает <code><span class="func">\#<car></span></code> — собственное имя примитива, связанного с глобальной
-переменной.} Второе поле хранит «адрес» примитива, ссылку на соответствующую
+примитив с разными именами.<a class="footref" href="zz_footnotes.xhtml#foot3.13"><sup>13</sup></a> Второе поле хранит «адрес» примитива, ссылку на соответствующую
 функцию языка реализации интерпретатора. В итоге примитивы вызываются с помощью
 <code><span class="func">invoke</span></code> следующим образом:</p>
 
-
 <!--\indexCS{invoke}{<code><span class="func">primitive</span></code>}-->
-<pre>(define-method (invoke (f primitive) v* r k)
-  ((primitive-address f) v* r k) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">primitive</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  ((<span class="func">primitive-address</span> <span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) )</pre>
 
 <p>Для запуска нашего прекрасного интерпретатора остаётся лишь определить начальное
 продолжение-заглушку. Это продолжение будет печатать на экран всё, что ему
 передают.</p>
 
-
 <!--\indexC{bottom-cont}-->
 <!--\indexCS{resume}{<code><span class="func">bottom-cont</span></code>}-->
 <!--\indexC{chapter3-interpreter}-->
-<pre>(define-class bottom-cont continuation (f))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">bottom-cont</span> <span class="class">continuation</span> (<span class="var">f</span>))
 
-<p>(define-method (resume (k bottom-cont) v)
-  ((bottom-cont-f k) v) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">bottom-cont</span>) <span class="var">v</span>)
+  ((<span class="func">bottom-cont-f</span> <span class="var">k</span>) <span class="var">v</span>) )
 
-<p>(define (chapter3-interpreter)
-  (define (toplevel)
-    (evaluate (read)
-              r.init
-              (make-bottom-cont 'void display) )
-    (toplevel) )
-  (toplevel) )</pre>
+(<span class="special">define</span> (<span class="func">chapter3-interpreter</span>)
+  (<span class="special">define</span> (<span class="func">toplevel</span>)
+    (<span class="func">evaluate</span> (<span class="func">read</span>)
+              <span class="var">r.init</span>
+              (<span class="func">make-bottom-cont</span> '<span class="var">void</span> <span class="var">display</span>) )
+    (<span class="func">toplevel</span>) )
+  (<span class="func">toplevel</span>) )</pre>
 
 <p>Заметьте, что мы могли бы легко написать похожий интерпретатор на истинно
-объектно-ориентированном языке, например на Smalltalk <span class="cite">[<a href="z1_bibliography.xhtml#gr83">gr83</a>]</span>, получив
+объектно-ориентированном языке, например на Smalltalk
+<span class="cite">[<a href="z1_bibliography.xhtml#gr83">GR83</a>]</span>, получив
 заодно доступ к его хвалёному отладчику и среде разработки. Для полного счастья
 останется только добавить те несколько строчек, что открывают гору маленьких
 окошек с контекстными подсказками.</p>
 
-<h2 id="escape/sect:implementation">Реализация управляющих форм</h2>
+
+<h2 id="escape/sect:implementation"><span class="seq">3.4.</span> Реализация управляющих форм</h2>
 
 <p>Начнём с самой мощной формы — <code><span class="func">call/cc</span></code>. Парадоксально, но факт: это самая
 простая форма, если смотреть на количество кода. Благодаря используемому нами
 объектному подходу и явному присутствию продолжений в интерпретаторе,
 преобразование их в полноценные объекты языка становится тривиальным.</p>
 
-<p>
-\subsection{\texorpdfstring%
-{Реализация \protect<code><span class="func">call/cc</span></code>}%
-{Реализация call/cc}}%
-\label{escape/implementation/ssect:call/cc}</p>
 
+<h3 id="escape/implementation/ssect:call/cc"><span class="seq">3.4.1.</span> Реализация <code><span class="func">call/cc</span></code></h3>
 
 <!--\indexCS{call/cc}{реализация}-->
-<p>Функция <code><span class="func">call/cc</span></code> берёт текущее продолжение \ii{k}, превращает его в объект,
-понятный <code><span class="func">invoke</span></code>, и применяет к нему свой аргумент — унарную функцию.
-Следующий код чуть ли не буквально записывает это определение:</p>
-
+<p>Функция <code><span class="func">call/cc</span></code> берёт текущее продолжение <i>k</i>,
+превращает его в объект, понятный <code><span class="func">invoke</span></code>, и применяет
+к нему свой аргумент — унарную функцию. Следующий код чуть ли не буквально записывает это
+определение:</p>
 
 <!--\indexC{call/cc}-->
-<pre>(definitial call/cc
-  (make-primitive
-   'call/cc
-   (lambda (v* r k)
-     (if (= 1 (length v*))
-         (invoke (car v*) (list k) r k)
-         (wrong "Incorrect arity" 'call/cc v*) ) ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">call/cc</span>
+  (<span class="func">make-primitive</span>
+   '<span class="var">call/cc</span>
+   (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+     (<span class="special">if</span> (<span class="func">=</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">v*</span>))
+         (<span class="func">invoke</span> (<span class="func">car</span> <span class="var">v*</span>) (<span class="func">list</span> <span class="var">k</span>) <span class="var">r</span> <span class="var">k</span>)
+         (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">call/cc</span> <span class="var">v*</span>) ) ) ) )</pre>
 
 <p>Хоть тут и немного строчек, всё же стоит кое-что объяснить. <code><span class="func">call/cc</span></code> это
-функция, но мы определяем её с помощью <code><span class="func">defprimitive</span></code>, так как это
-единственный способ для функции добраться до <code><span class="func">k</span></code>. Переменная <code><span class="func">call/cc</span></code>
-(это всё же Lisp<sub>1</sub>) связывается с объектом класса <code><span class="func">primitive</span></code>. Для вызова
+функция, но мы определяем её с помощью <code><span class="syntax">defprimitive</span></code>, так как это
+единственный способ для функции добраться до <code><span class="var">k</span></code>. Переменная <code><span class="func">call/cc</span></code>
+(это всё же Lisp<sub>1</sub>) связывается с объектом класса <code><span class="class">primitive</span></code>. Для вызова
 объектов этого класса необходим «адрес» функции, которому у нас соответствуют
-функции языка определения вида <code><span class="func">(lambda (v* r k) ...)</span></code>. После проверки на
+функции языка определения вида <code>(<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) ...)</code>. После проверки на
 арность первый аргумент <code><span class="func">call/cc</span></code> применяется к захваченному продолжению.
 Само продолжение мы никак не трогаем, оно остаётся объектом языка определения.
 Так как сохранённые «сырые» продолжения могут быть впоследствии переданы
 <code><span class="func">invoke</span></code> напрямую, то её надо научить обращаться с ними:</p>
 
-
 <!--\indexCS{invoke}{<code><span class="func">continuation</span></code>}-->
-<pre>(define-method (invoke (f continuation) v* r k)
-  (if (= 1 (length v*))
-      (resume f (car v*))
-      (wrong "Continuations expect one argument" v* r k) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">continuation</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">=</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">v*</span>))
+      (<span class="func">resume</span> <span class="var">f</span> (<span class="func">car</span> <span class="var">v*</span>))
+      (<span class="special">wrong</span> <span class="string">"Continuations expect one argument"</span> <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) ) )</pre>
 
-<p>
-\subsection{\texorpdfstring{Реализация \protect<code><span class="func">catch</span></code>}{Реализация catch}}%
-\label{escape/implementation/ssect:catch}</p>
 
+<h3 id="escape/implementation/ssect:catch"><span class="seq">3.4.2.</span> Реализация <code><span class="special">catch</span></code></h3>
 
 <!--\indexCS{catch}{реализация}-->
 <!--\indexCS{throw}{реализация}-->
-<p>Форма <code><span class="func">catch</span></code> по-своему интересна, так как требует разительно иного подхода,
-нежели форма <code><span class="func">block</span></code>, которую мы рассмотрим чуть позже. Как обычно, начнём
-с добавления анализа <code><span class="func">catch</span></code> и <code><span class="func">throw</span></code> в <code><span class="func">evaluate</span></code>:</p>
+<p>Форма <code><span class="special">catch</span></code> по-своему интересна, так как требует разительно иного подхода,
+нежели форма <code><span class="special">block</span></code>, которую мы рассмотрим чуть позже. Как обычно, начнём
+с добавления анализа <code><span class="special">catch</span></code> и <code><span class="special">throw</span></code> в <code><span class="func">evaluate</span></code>:</p>
 
 <pre>...
-((catch) (evaluate-catch (cadr e) (cddr e) r k))
-((throw) (evaluate-throw (cadr e) (caddr e) r k))
+((<span class="var">catch</span>) (<span class="func">evaluate-catch</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+((<span class="var">throw</span>) (<span class="func">evaluate-throw</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
 ...</pre>
 
-<p>Здесь решено сделать <code><span class="func">throw</span></code> специальной формой, а не функцией. В первую
+<p>Здесь решено сделать <code><span class="special">throw</span></code> специальной формой, а не функцией. В первую
 очередь с целью походить на <span class="logo">Common Lisp</span>. Далее определим правила обработки
-формы <code><span class="func">catch</span></code>:</p>
-
+формы <code><span class="special">catch</span></code>:</p>
 
 <!--\indexC{catch-cont}-->
 <!--\indexC{labeled-cont}-->
 <!--\indexC{evaluate-catch}-->
 <!--\indexCS{resume}{<code><span class="func">catch-cont</span></code>}-->
-<pre>(define-class catch-cont   continuation (body r))
-(define-class labeled-cont continuation (tag))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">catch-cont</span>   <span class="class">continuation</span> (<span class="var">body</span> <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">labeled-cont</span> <span class="class">continuation</span> (<span class="var">tag</span>))
 
-<p>(define (evaluate-catch tag body r k)
-  (evaluate tag r (make-catch-cont k body r)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-catch</span> <span class="var">tag</span> <span class="var">body</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">tag</span> <span class="var">r</span> (<span class="func">make-catch-cont</span> <span class="var">k</span> <span class="var">body</span> <span class="var">r</span>)) )
 
-<p>(define-method (resume (k catch-cont) v)
-  (evaluate-begin (catch-cont-body k)
-                  (catch-cont-r k)
-                  (make-labeled-cont (catch-cont-k k) v) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">catch-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate-begin</span> (<span class="func">catch-cont-body</span> <span class="var">k</span>)
+                  (<span class="func">catch-cont-r</span> <span class="var">k</span>)
+                  (<span class="func">make-labeled-cont</span> (<span class="func">catch-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) ) )</pre>
 
-<p>Как видите, <code><span class="func">catch</span></code> вычисляет первый аргумент (метку), связывает с ней своё
+<p>Как видите, <code><span class="special">catch</span></code> вычисляет первый аргумент (метку), связывает с ней своё
 продолжение, создавая таким образом помеченный блок, и, наконец, последовательно
 вычисляет формы, составляющие её тело. Когда продолжение этого блока получает
 значение, оно просто перебрасывает его сохранённому продолжению самой формы
-<code><span class="func">catch</span></code>. Форма <code><span class="func">throw</span></code> чуть более сложная:</p>
-
+<code><span class="special">catch</span></code>. Форма <code><span class="special">throw</span></code> чуть более сложная:</p>
 
 <!--\indexC{throw-cont}-->
 <!--\indexC{throwing-cont}-->
@@ -1656,70 +1621,65 @@ foo bar)</span></code>. Пусть переменная <code><span class="func"
 <!--\indexC{catch-lookup}-->
 <!--\indexCS{resume}{<code><span class="func">throwing-cont</span></code>}-->
 <!--\indexC{eqv"?}-->
-<pre>(define-class throw-cont    continuation (form r))
-(define-class throwing-cont continuation (tag cont))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">throw-cont</span>    <span class="class">continuation</span> (<span class="var">form</span> <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">throwing-cont</span> <span class="class">continuation</span> (<span class="var">tag</span> <span class="var">cont</span>))
 
-<p>(define (evaluate-throw tag form r k)
-  (evaluate tag r (make-throw-cont k form r)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-throw</span> <span class="var">tag</span> <span class="var">form</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">tag</span> <span class="var">r</span> (<span class="func">make-throw-cont</span> <span class="var">k</span> <span class="var">form</span> <span class="var">r</span>)) )
 
-<p>(define-method (resume (k throw-cont) tag)
-  (catch-lookup k tag k) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">throw-cont</span>) <span class="var">tag</span>)
+  (<span class="func">catch-lookup</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">k</span>) )
 
-<p>(define-generic (catch-lookup (k) tag kk)
-  (wrong "Not a continuation" k tag kk) )</p>
+(<span class="syntax">define-generic</span> (<span class="func">catch-lookup</span> (<span class="var">k</span>) <span class="var">tag</span> <span class="var">kk</span>)
+  (<span class="special">wrong</span> <span class="string">"Not a continuation"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
 
-<p>(define-method (catch-lookup (k continuation) tag kk)
-  (catch-lookup (continuation-k k) tag kk) )</p>
+(<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">continuation</span>) <span class="var">tag</span> <span class="var">kk</span>)
+  (<span class="func">catch-lookup</span> (<span class="func">continuation-k</span> <span class="var">k</span>) <span class="var">tag</span> <span class="var">kk</span>) )
 
-<p>(define-method (catch-lookup (k bottom-cont) tag kk)
-  (wrong "No associated catch" k tag kk) )</p>
+(<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">bottom-cont</span>) <span class="var">tag</span> <span class="var">kk</span>)
+  (<span class="special">wrong</span> <span class="string">"No associated catch"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
 
-<p>(define-method (catch-lookup (k labeled-cont) tag kk)
-  (if (eqv? tag (labeled-cont-tag k))  ; внимание на компаратор
-      (evaluate (throw-cont-form kk)
-                (throw-cont-r kk)
-                (make-throwing-cont kk tag k) )
-      (catch-lookup (labeled-cont-k k) tag kk) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">labeled-cont</span>) <span class="var">tag</span> <span class="var">kk</span>)
+  (<span class="special">if</span> (<span class="func">eqv?</span> <span class="var">tag</span> (<span class="func">labeled-cont-tag</span> <span class="var">k</span>))  <span class="comment">; внимание на компаратор</span>
+      (<span class="func">evaluate</span> (<span class="func">throw-cont-form</span> <span class="var">kk</span>)
+                (<span class="func">throw-cont-r</span> <span class="var">kk</span>)
+                (<span class="func">make-throwing-cont</span> <span class="var">kk</span> <span class="var">tag</span> <span class="var">k</span>) )
+      (<span class="func">catch-lookup</span> (<span class="func">labeled-cont-k</span> <span class="var">k</span>) <span class="var">tag</span> <span class="var">kk</span>) ) )
 
-<p>(define-method (resume (k throwing-cont) v)
-  (resume (throwing-cont-cont k) v) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">throwing-cont</span>) <span class="var">v</span>)
+  (<span class="func">resume</span> (<span class="func">throwing-cont-cont</span> <span class="var">k</span>) <span class="var">v</span>) )</pre>
 
 
 <!--\indexR{переходы (escapes)!вложенные}-->
-<p>Форма <code><span class="func">throw</span></code> вычисляет первый аргумент и пытается найти продолжение
+<p>Форма <code><span class="special">throw</span></code> вычисляет первый аргумент и пытается найти продолжение
 с совпадающей меткой. Если в процессе поиска она добирается до начального
 продолжения, то сигнализирует об ошибке. Если же нет, то вычисляется второй
-аргумент <code><span class="func">throw</span></code> и его значение передаётся найденному продолжению. Но
-передаётся оно по-хитрому: через <code><span class="func">throwing-cont</span></code>. Дело в том, что в процессе
+аргумент <code><span class="special">throw</span></code> и его значение передаётся найденному продолжению. Но
+передаётся оно по-хитрому: через <code><span class="class">throwing-cont</span></code>. Дело в том, что в процессе
 вычисления этого значения тоже может возникнуть переход. Если бы продолжением
 данного вычисления было продолжение, сохранённое в метке внешней формы
-<code><span class="func">throw</span></code>, то вложенная форма <code><span class="func">throw</span></code> начинала бы поиски <code><span class="func">catch</span></code> так, как
+<code><span class="special">throw</span></code>, то вложенная форма <code><span class="special">throw</span></code> начинала бы поиски <code><span class="special">catch</span></code> так, как
 будто бы переход на внешнюю метку уже произошёл. Но это не так, так что поиск
-следует вести от текущей формы <code><span class="func">throw</span></code>, потому и создаётся специальное
+следует вести от текущей формы <code><span class="special">throw</span></code>, потому и создаётся специальное
 промежуточное продолжение. В итоге, когда мы пишем:</p>
 
-<pre>(catch 2
-  (* 7 (catch 1
-         (* 3 (catch 2
-                (throw 1 (throw 2 5)) )) )) )</pre>
+<pre>(<span class="special">catch</span> <span class="num">2</span>
+  (<span class="func">*</span> <span class="num">7</span> (<span class="special">catch</span> <span class="num">1</span>
+         (<span class="func">*</span> <span class="num">3</span> (<span class="special">catch</span> <span class="num">2</span>
+                (<span class="special">throw</span> <span class="num">1</span> (<span class="special">throw</span> <span class="num">2</span> <span class="num">5</span>)) )) )) )</pre>
 
-<p>\noindent
-то получаем <code><span class="func">(* 7 3 5)</span></code>, а не <code><span class="func">5</span></code>.</p>
+<p>то получаем <code>(<span class="func">*</span> <span class="num">7</span> <span class="num">3</span> <span class="num">5</span>)</code>, а не <code><span class="num">5</span></code>.</p>
 
-<p>Кроме того, реализация <code><span class="func">throw</span></code> как специальной формы позволяет отлавливать
-больше ошибок.</p>
+<p>Кроме того, реализация <code><span class="special">throw</span></code> как специальной формы позволяет отлавливать больше ошибок.</p>
 
-<pre>(catch 2 (* 7 (throw 1 (throw 2 3))))</pre>
+<pre>(<span class="special">catch</span> <span class="num">2</span> (<span class="func">*</span> <span class="num">7</span> (<span class="special">throw</span> <span class="num">1</span> (<span class="special">throw</span> <span class="num">2</span> <span class="num">3</span>))))</pre>
 
-<p>\noindent
-Эта форма гарантированно вернёт не <code><span class="func">3</span></code>, а ошибку <code><span class="func">"No associated catch"</span></code>,
-так как действительно нет <code><span class="func">catch</span></code> с меткой <code><span class="func">1</span></code> и не важно, что она
+<p>Эта форма гарантированно вернёт не <code><span class="num">3</span></code>, а ошибку <code><span class="string">"No associated catch"</span></code>,
+так как действительно нет <code><span class="special">catch</span></code> с меткой <code><span class="num">1</span></code> и не важно, что она
 вроде бы как не используется.</p>
 
-<p>
-\subsection{\texorpdfstring{Реализация \protect<code><span class="func">block</span></code>}{Реализация block}}%
-\label{escape/implementation/ssect:block}</p>
 
+<h3 id="escape/implementation/ssect:block"><span class="seq">3.4.3.</span> Реализация <code><span class="special">block</span></code></h3>
 
 <!--\indexCS{block}{реализация}-->
 <!--\indexCS{return-from}{реализация}-->
@@ -1728,40 +1688,38 @@ foo bar)</span></code>. Пусть переменная <code><span class="func"
 лексическую видимость меток. Для решения второй задачи мы, естественно,
 воспользуемся лексическими окружениями, где лексическая область видимости есть
 «из коробки». Над первой же придётся немного поработать самостоятельно. Чтобы
-не было путаницы, у <code><span class="func">block</span></code> будет личный класс окружений для хранения
+не было путаницы, у <code><span class="special">block</span></code> будет личный класс окружений для хранения
 привязок меток к продолжениям.</p>
 
-<p>Начинаем как обычно: добавляем распознавание формы <code><span class="func">block</span></code> в <code><span class="func">evaluate</span></code> и
+<p>Начинаем как обычно: добавляем распознавание формы <code><span class="special">block</span></code> в <code><span class="func">evaluate</span></code> и
 описываем необходимые функции-обработчики.</p>
-
 
 <!--\indexC{block-cont}-->
 <!--\indexC{block-env}-->
 <!--\indexC{evaluate-block}-->
 <!--\indexCS{resume}{<code><span class="func">block-cont</span></code>}-->
-<pre>(define-class block-cont continuation (label))
-(define-class block-env full-env (cont))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">block-cont</span> <span class="class">continuation</span> (<span class="var">label</span>))
+(<span class="syntax">define-class</span> <span class="class">block-env</span> <span class="class">full-env</span> (<span class="var">cont</span>))
 
-<p>(define (evaluate-block label body r k)
-  (let ((k (make-block-cont k label)))
-    (evaluate-begin body
-                    (make-block-env r label k)
-                    k ) ) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-block</span> <span class="var">label</span> <span class="var">body</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="syntax">let</span> ((<span class="var">k</span> (<span class="func">make-block-cont</span> <span class="var">k</span> <span class="var">label</span>)))
+    (<span class="func">evaluate-begin</span> <span class="var">body</span>
+                    (<span class="func">make-block-env</span> <span class="var">r</span> <span class="var">label</span> <span class="var">k</span>)
+                    <span class="var">k</span> ) ) )
 
-<p>(define-method (resume (k block-cont) v)
-  (resume (block-cont-k k) v) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">block-cont</span>) <span class="var">v</span>)
+  (<span class="func">resume</span> (<span class="func">block-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) )</pre>
 
-<p>С нормальным поведением закончили, переходим к <code><span class="func">return-from</span></code>. Сначала
+<p>С нормальным поведением закончили, переходим к
+<code><span class="special">return-from</span></code>. Сначала
 добавляем её в <code><span class="func">evaluate</span></code>:</p>
 
 <pre>...
-((block)       (evaluate-block (cadr e) (cddr e) r k))
-((return-from) (evaluate-return-from (cadr e) (caddr e) r k))
+((<span class="var">block</span>)       (<span class="func">evaluate-block</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
+((<span class="var">return-from</span>) (<span class="func">evaluate-return-from</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
 ...</pre>
 
-<p>\noindent
-Затем описываем обработку:</p>
-
+<p>Затем описываем обработку:</p><span class="func"></span>
 
 <!--\indexC{return-from-cont}-->
 <!--\indexC{evaluate-return-from}-->
@@ -1770,52 +1728,52 @@ foo bar)</span></code>. Пусть переменная <code><span class="func"
 <!--\indexC{unwind}-->
 <!--\indexCS{unwind}{<code><span class="func">continuation</span></code>}-->
 <!--\indexCS{unwind}{<code><span class="func">bottom-cont</span></code>}-->
-<pre>(define-class return-from-cont continuation (r label))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">return-from-cont</span> <span class="class">continuation</span> (<span class="var">r</span> <span class="var">label</span>))
 
-<p>(define (evaluate-return-from label form r k)
-  (evaluate form r (make-return-from-cont k r label)) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-return-from</span> <span class="var">label</span> <span class="var">form</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">form</span> <span class="var">r</span> (<span class="func">make-return-from-cont</span> <span class="var">k</span> <span class="var">r</span> <span class="var">label</span>)) )
 
-<p>(define-method (resume (k return-from-cont) v)
-  (block-lookup (return-from-cont-r k)
-                (return-from-cont-label k)
-                (return-from-cont-k k)
-                v ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">return-from-cont</span>) <span class="var">v</span>)
+  (<span class="func">block-lookup</span> (<span class="func">return-from-cont-r</span> <span class="var">k</span>)
+                (<span class="func">return-from-cont-label</span> <span class="var">k</span>)
+                (<span class="func">return-from-cont-k</span> <span class="var">k</span>)
+                <span class="var">v</span> ) )
 
-<p>(define-generic (block-lookup (r) n k v)
-  (wrong "Not an environment" r n k v) )</p>
+(<span class="syntax">define-generic</span> (<span class="func">block-lookup</span> (<span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
 
-<p>(define-method (block-lookup (r block-env) n k v)
-  (if (eq? n (block-env-name r))
-      (unwind k v (block-env-cont r))
-      (block-lookup (block-env-others r) n k v) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">block-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">n</span> (<span class="func">block-env-name</span> <span class="var">r</span>))
+      (<span class="func">unwind</span> <span class="var">k</span> <span class="var">v</span> (<span class="func">block-env-cont</span> <span class="var">r</span>))
+      (<span class="func">block-lookup</span> (<span class="func">block-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) ) )
 
-<p>(define-method (block-lookup (r full-env) n k v)
-  (block-lookup (variable-env-others r) n k v) )</p>
+(<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">full-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="func">block-lookup</span> (<span class="func">variable-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
 
-<p>(define-method (block-lookup (r null-env) n k v)
-  (wrong "Unknown block label" n r k v) )</p>
+(<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">wrong</span> <span class="string">"Unknown block label"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span> <span class="var">v</span>) )
 
-<p>(define-generic (unwind (k) v ktarget))</p>
+(<span class="syntax">define-generic</span> (<span class="func">unwind</span> (<span class="var">k</span>) <span class="var">v</span> <span class="var">ktarget</span>))
 
-<p>(define-method (unwind (k continuation) v ktarget)
-  (if (eq? k ktarget)
-      (resume k v)
-      (unwind (continuation-k k) v ktarget) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">unwind</span> (<span class="var">k</span> <span class="class">continuation</span>) <span class="var">v</span> <span class="var">ktarget</span>)
+  (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">k</span> <span class="var">ktarget</span>)
+      (<span class="func">resume</span> <span class="var">k</span> <span class="var">v</span>)
+      (<span class="func">unwind</span> (<span class="func">continuation-k</span> <span class="var">k</span>) <span class="var">v</span> <span class="var">ktarget</span>) ) )
 
-<p>(define-method (unwind (k bottom-cont) v ktarget)
-  (wrong "Obsolete continuation" v) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">unwind</span> (<span class="var">k</span> <span class="class">bottom-cont</span>) <span class="var">v</span> <span class="var">ktarget</span>)
+  (<span class="special">wrong</span> <span class="string">"Obsolete continuation"</span> <span class="var">v</span>) )</pre>
 
 <p>После вычисления необходимого значения функция <code><span class="func">block-lookup</span></code> отправляется
-на поиски продолжения, связанного с меткой <code><span class="func">tag</span></code> в лексическом окружении
-формы <code><span class="func">return-from</span></code>. Если такое продолжение существует, то дальше с помощью
+на поиски продолжения, связанного с меткой <code><span class="var">tag</span></code> в лексическом окружении
+формы <code><span class="special">return-from</span></code>. Если такое продолжение существует, то дальше с помощью
 <code><span class="func">unwind</span></code> она убеждается в том, что оно является частью текущего продолжения.</p>
 
 <p>Поиск именованного блока, хранящего нужное продолжение, реализуется обобщённой
 функцией <code><span class="func">block-lookup</span></code>. Она обучена пропускать ненужные окружения с обычными
-переменными, останавливаясь только на экземплярах <code><span class="func">block-env</span></code>, хранящих
-нужные нам <code><span class="func">block-cont</span></code>. Аналогично и <code><span class="func">lookup</span></code> пропускает экземпляры
-<code><span class="func">block-env</span></code>, останавливаясь лишь на <code><span class="func">variable-env</span></code>. Именно с этой целью
-данные классы наследуются от общего предка: <code><span class="func">full-env</span></code>. Это позволяет
+переменными, останавливаясь только на экземплярах <code><span class="class">block-env</span></code>, хранящих
+нужные нам <code><span class="class">block-cont</span></code>. Аналогично и <code><span class="func">lookup</span></code> пропускает экземпляры
+<code><span class="class">block-env</span></code>, останавливаясь лишь на <code><span class="class">variable-env</span></code>. Именно с этой целью
+данные классы наследуются от общего предка: <code><span class="class">full-env</span></code>. Это позволяет
 безболезненно добавлять новые классы окружений, которые не будут мешать уже
 существующим.</p>
 
@@ -1823,128 +1781,120 @@ foo bar)</span></code>. Пусть переменная <code><span class="func"
 продолжению, но только если оно ещё актуально — то есть доступно из текущего
 продолжения.</p>
 
-<p>
-\subsection{\texorpdfstring%
-{Реализация \protect<code><span class="func">unwind-protect</span></code>}%
-{Реализация unwind-protect}}%
-\label{escape/implementation/ssect:unwind-protect}</p>
 
+<h3 id="escape/implementation/ssect:unwind-protect"><span class="seq">3.4.4.</span> Реализация <code><span class="special">unwind-protect</span></code></h3>
 
 <!--\indexCS{unwind-protect}{реализация}-->
-<p>Форма <code><span class="func">unwind-protect</span></code> является самой сложной для реализации; нам понадобится
-изменить определения форм <code><span class="func">catch</span></code> и <code><span class="func">block</span></code>, чтобы они вели себя
-правильно, когда находятся внутри <code><span class="func">unwind-protect</span></code>. Это хороший пример
+<p>Форма <code><span class="special">unwind-protect</span></code> является самой сложной для реализации; нам понадобится
+изменить определения форм <code><span class="special">catch</span></code> и <code><span class="special">block</span></code>, чтобы они вели себя
+правильно, когда находятся внутри <code><span class="special">unwind-protect</span></code>. Это хороший пример
 возможности, чьё введение требует переработки всего, что уже написано до этого.
-Но отсутствие <code><span class="func">unwind-protect</span></code> приводит к другим сложностям в будущем, так
+Но отсутствие <code><span class="special">unwind-protect</span></code> приводит к другим сложностям в будущем, так
 что оно того стоит.</p>
 
-<p>Начнём с определения поведения самой формы <code><span class="func">unwind-protect</span></code> (которая, как мы
-уже говорили, мало чем отличается от <code><span class="func">prog1</span></code>):</p>
-
+<p>Начнём с определения поведения самой формы <code><span class="special">unwind-protect</span></code> (которая, как мы
+уже говорили, мало чем отличается от <code><span class="special">prog1</span></code>):</p>
 
 <!--\indexC{unwind-protect-cont}-->
 <!--\indexC{protect-return-cont}-->
 <!--\indexC{evaluate-unwind-protect}-->
 <!--\indexCS{resume}{<code><span class="func">unwind-protect-cont</span></code>}-->
 <!--\indexCS{resume}{<code><span class="func">protect-return-cont</span></code>}-->
-<pre>(define-class unwind-protect-cont continuation (cleanup r))
-(define-class protect-return-cont continuation (value))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">unwind-protect-cont</span> <span class="class">continuation</span> (<span class="var">cleanup</span> <span class="var">r</span>))
+(<span class="syntax">define-class</span> <span class="class">protect-return-cont</span> <span class="class">continuation</span> (<span class="var">value</span>))
 
-<p>(define (evaluate-unwind-protect form cleanup r k)
-  (evaluate form r
-            (make-unwind-protect-cont k cleanup r) ) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-unwind-protect</span> <span class="var">form</span> <span class="var">cleanup</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">form</span> <span class="var">r</span>
+            (<span class="func">make-unwind-protect-cont</span> <span class="var">k</span> <span class="var">cleanup</span> <span class="var">r</span>) ) )
 
-<p>(define-method (resume (k unwind-protect-cont) v)
-  (evaluate-begin (unwind-protect-cont-cleanup k)
-                  (unwind-protect-cont-r k)
-                  (make-protect-return-cont
-                   (unwind-protect-cont-k k) v ) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">unwind-protect-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate-begin</span> (<span class="func">unwind-protect-cont-cleanup</span> <span class="var">k</span>)
+                  (<span class="func">unwind-protect-cont-r</span> <span class="var">k</span>)
+                  (<span class="func">make-protect-return-cont</span>
+                   (<span class="func">unwind-protect-cont-k</span> <span class="var">k</span>) <span class="var">v</span> ) ) )
 
-<p>(define-method (resume (k protect-return-cont) v)
-  (resume (protect-return-cont-k k) (protect-return-cont-value k)) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">protect-return-cont</span>) <span class="var">v</span>)
+  (<span class="func">resume</span> (<span class="func">protect-return-cont-k</span> <span class="var">k</span>) (<span class="func">protect-return-cont-value</span> <span class="var">k</span>)) )</pre>
 
-<p>Далее необходимо доработать <code><span class="func">catch</span></code> и <code><span class="func">block</span></code>, чтобы они выполняли
-действия, предписанные <code><span class="func">unwind-protect</span></code>, даже в случае выхода из них
-с помощью <code><span class="func">throw</span></code> или <code><span class="func">return-from</span></code>. Для <code><span class="func">catch</span></code> необходимо изменить
-обработку <code><span class="func">throwing-cont</span></code>:</p>
+<p>Далее необходимо доработать <code><span class="special">catch</span></code> и <code><span class="special">block</span></code>, чтобы они выполняли
+действия, предписанные <code><span class="special">unwind-protect</span></code>, даже в случае выхода из них
+с помощью <code><span class="special">throw</span></code> или <code><span class="special">return-from</span></code>. Для <code><span class="special">catch</span></code> необходимо изменить
+обработку <code><span class="class">throwing-cont</span></code>:</p>
 
 
 <!--\indexCS{resume}{<code><span class="func">throwing-cont</span></code>}-->
-<pre>(define-method (resume (k throwing-cont) v)
-  (unwind (throwing-cont-k k) v (throwing-cont-cont k)) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">throwing-cont</span>) <span class="var">v</span>)
+  (<span class="func">unwind</span> (<span class="func">throwing-cont-k</span> <span class="var">k</span>) <span class="var">v</span> (<span class="func">throwing-cont-cont</span> <span class="var">k</span>)) )</pre>
 
-<p>\noindent
-И научить <code><span class="func">unwind</span></code> выполнять сохранённые действия в процессе обхода стека:</p>
-
+<p>И научить <code><span class="func">unwind</span></code> выполнять сохранённые действия в процессе обхода стека:</p>
 
 <!--\indexC{unwind-cont}-->
 <!--\indexCS{unwind}{<code><span class="func">unwind-protect-cont</span></code>}-->
 <!--\indexCS{resume}{<code><span class="func">unwind-cont</span></code>}-->
-<pre>(define-class unwind-cont continuation (value target))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">unwind-cont</span> <span class="class">continuation</span> (<span class="var">value</span> <span class="var">target</span>))
 
-<p>(define-method (unwind (k unwind-protect-cont) v target)
-  (evaluate-begin (unwind-protect-cont-cleanup k)
-                  (unwind-protect-cont-r k)
-                  (make-unwind-cont
-                   (unwind-protect-cont-k k) v target ) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">unwind</span> (<span class="var">k</span> <span class="class">unwind-protect-cont</span>) <span class="var">v</span> <span class="var">target</span>)
+  (<span class="func">evaluate-begin</span> (<span class="func">unwind-protect-cont-cleanup</span> <span class="var">k</span>)
+                  (<span class="func">unwind-protect-cont-r</span> <span class="var">k</span>)
+                  (<span class="func">make-unwind-cont</span>
+                   (<span class="func">unwind-protect-cont-k</span> <span class="var">k</span>) <span class="var">v</span> <span class="var">target</span> ) ) )
 
-<p>(define-method (resume (k unwind-cont) v)
-  (unwind (unwind-cont-k k)
-          (unwind-cont-value k)
-          (unwind-cont-target k) ) )</pre>
-
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">unwind-cont</span>) <span class="var">v</span>)
+  (<span class="func">unwind</span> (<span class="func">unwind-cont-k</span> <span class="var">k</span>)
+          (<span class="func">unwind-cont-value</span> <span class="var">k</span>)
+          (<span class="func">unwind-cont-target</span> <span class="var">k</span>) ) )</pre>
 
 <!--\indexR{раскрутка стека (unwinding)}-->
 <p>Теперь, чтобы передать значение при переходе, нам недостаточно просто его отдать
 нужному продолжению. Нам необходимо подняться по стеку продолжений с помощью
 <code><span class="func">unwind</span></code> (<em class="term">раскрутить</em> стек) от текущего до целевого продолжения,
 выполняя по пути соответствующую уборку. Продолжения форм-уборщиков имеют тип
-<code><span class="func">unwind-cont</span></code>. Их обработка с помощью <code><span class="func">resume</span></code> вызывает продолжение уборки
-до достижения цели на случай вложенных форм <code><span class="func">unwind-protect</span></code>, а также
+<code><span class="class">unwind-cont</span></code>. Их обработка с помощью <code><span class="func">resume</span></code> вызывает продолжение уборки
+до достижения цели на случай вложенных форм <code><span class="special">unwind-protect</span></code>, а также
 устанавливает правильное продолжение на случай переходов внутри самих
 форм-уборщиков (тот самый процесс отбрасывания продолжений, который
-рассматривался на странице \pageref{escape/forms/protection/p:discard}).</p>
+рассматривался в разделе <a href="#escape/forms/protection/p:discard">3.1.6</a>.</p>
 
-<p>Что касается <code><span class="func">block</span></code>, то тут даже делать ничего не надо. Как вы помните,
+<p>Что касается <code><span class="special">block</span></code>, то тут даже делать ничего не надо. Как вы помните,
 <code><span class="func">block-lookup</span></code> уже вызывает <code><span class="func">unwind</span></code> для раскрутки стека с целью проверки
 актуальности перехода:</p>
 
-<pre>(define-method (block-lookup (r block-env) n k v)
-  (if (eq? n (block-env-name r))
-      (unwind k v (block-env-cont r))
-      (block-lookup (block-env-others r) n k v) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">block-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
+  (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">n</span> (<span class="func">block-env-name</span> <span class="var">r</span>))
+      (<span class="func">unwind</span> <span class="var">k</span> <span class="var">v</span> (<span class="func">block-env-cont</span> <span class="var">r</span>))
+      (<span class="func">block-lookup</span> (<span class="func">block-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) ) )</pre>
 
-<p>\noindent
-Так что остаётся только сказать спасибо обобщённым функциям.</p>
-
+<p>Так что остаётся только сказать спасибо обобщённым функциям.</p>
 
 <!--\indexCS{block}{и <code><span class="func">unwind-protect</span></code>}-->
-<p>Может показаться, что с появлением <code><span class="func">unwind-protect</span></code> форма <code><span class="func">block</span></code>
-перестала быть быстрее <code><span class="func">catch</span></code>, ведь они обе вынуждены пользоваться медленной
+<p>Может показаться, что с появлением <code><span class="special">unwind-protect</span></code> форма <code><span class="special">block</span></code>
+перестала быть быстрее <code><span class="special">catch</span></code>, ведь они обе вынуждены пользоваться медленной
 <code><span class="func">unwind</span></code>. В общем случае, конечно, да, но в частностях, коих большинство, это
-не так: <code><span class="func">unwind-protect</span></code> является специальной формой, так что она не может
+не так: <code><span class="special">unwind-protect</span></code> является специальной формой, так что она не может
 быть спутана с обычной функцией, её всегда надо использовать явно. А если
-<code><span class="func">return-from</span></code> прямо видит метку соответствующего <code><span class="func">block</span></code> (то есть когда
-между ними нет <code><span class="func">lambda</span></code>- или <code><span class="func">unwind-protect</span></code>-форм), то <code><span class="func">unwind</span></code> будет
+<code><span class="special">return-from</span></code> прямо видит метку соответствующего <code><span class="special">block</span></code> (то есть когда
+между ними нет <code><span class="special">lambda</span></code>- или <code><span class="special">unwind-protect</span></code>-форм), то <code><span class="func">unwind</span></code> будет
 работать так же быстро, как и раньше.</p>
 
 <div class="bigskip"/>
 
-
 <!--\indexCS{unwind-protect}{ограничения \CommonLisp}-->
-<p>В <span class="logo">Common Lisp</span> (CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">ste90</a>]</span>) присутствует ещё одно интересное
+<p>В <span class="logo">Common Lisp</span> (CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
 ограничение, касающееся переходов из форм-уборщиков. Эти переходы не могут вести
-внутрь той формы, из которой в теле <code><span class="func">unwind-protect</span></code> был вызван выход.
+внутрь той формы, из которой в теле <code><span class="special">unwind-protect</span></code> был вызван выход.
 Введено такое ограничение с целью недопущения бесконечных циклов из переходов,
-любые попытки выбраться из которых пресекаются <code><span class="func">unwind-protect</span></code>.
-\seeEx[escape/ex:eternal] Следовательно, следующая программа выдаст ошибку, так
-как форма-уборщик хочет прыгнуть ближе, чем прыжок на <code><span class="func">1</span></code>, который уже
+любые попытки выбраться из которых пресекаются <code><span class="special">unwind-protect</span></code>.
+<span class="see">[см. упр. <a href="#escape/ex:eternal">3.9</a>]</span>
+Следовательно, следующая программа выдаст ошибку, так
+как форма-уборщик хочет прыгнуть ближе, чем прыжок на <code><span class="num">1</span></code>, который уже
 в процессе.</p>
 
-<pre>(catch 1                  |\dialect<span class="logo">Common Lisp</span>|
-  (catch 2
-    (unwind-protect (throw 1 'foo)
-      (throw 2 'bar) ) ) )         |\is| |\ii{ошибка!}|</pre>
+<pre>(<span class="special">catch</span> <span class="num">1</span>                  <span class="dialect"><span class="logo">Common Lisp</span></span>
+  (<span class="special">catch</span> <span class="num">2</span>
+    (<span class="special">unwind-protect</span> (<span class="special">throw</span> <span class="num">1</span> '<span class="var">foo</span>)
+      (<span class="special">throw</span> <span class="num">2</span> '<span class="var">bar</span>) ) ) )         <span class="math"><span class="rel">→</span></span> <i>ошибка!</i></pre>
+
+<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
 <p>
 \section{\texorpdfstring%

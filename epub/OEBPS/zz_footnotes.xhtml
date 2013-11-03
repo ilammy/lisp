@@ -415,5 +415,35 @@
     см. также <span class="cite">[<a href="z1_bibliography.xhtml#que93c">Que93c</a>]</span>.</p>
 </div>
 
+<div class="footnote" id="foot3.11">
+  <p><span class="num"><sup>11</sup></span>
+    С точки зрения реализации можно считать, что
+    <code><span class="func">make-if-cont</span></code> кладёт в стек
+    <code><span class="var">et</span></code> и <code><span class="var">ef</span></code>,
+    а также <code><span class="var">r</span></code>; под ними
+    в стеке лежат аналогичные группы выражений и окружений, которые фактически и
+    есть ничем иным, как продолжением <code><span class="var">k</span></code>.
+    А вызовы вроде <code>(<span class="func">if-cont-et</span> <span class="var">k</span>)</code>
+    лишь снимают с верхушки стека нужные данные.</p>
+</div>
+
+<div class="footnote" id="foot3.12">
+  <p><span class="num"><sup>12</sup></span>
+    Внимательный читатель наверняка заметил странную форму
+    <code>(<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>))</code> в методе
+    <code><span class="func">resume</span></code>. Конечно, мы могли бы отбросить уже
+    вычисленное выражение ещё в <code><span class="func">evaluate-begin</span></code>:
+    <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span>)</code>, и получить тот же
+    результат. Причина такого решения в том, что если случится ошибка, то у нас
+    будет на руках её источник.</p>
+</div>
+
+<div class="footnote" id="foot3.13">
+  <p><span class="num"><sup>13</sup></span>
+    Эта подсказка позволяет также копировать примитивы по значению: выражение
+    <code>(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">foo</span> <span class="var">car</span>) (<span class="special">set!</span> <span class="var">car</span> <span class="num">3</span>) <span class="var">foo</span>)</code>
+    возвращает <code><span class="hash">#&lt;car&gt;</span></code> — собственное имя примитива, связанного с глобальной переменной.</p>
+</div>
+
 </body>
 </html>

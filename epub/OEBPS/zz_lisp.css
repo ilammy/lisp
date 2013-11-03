@@ -43,12 +43,21 @@ table#ch1-table-let-expand {}
 
 table.envtable { border: 1px solid black; }
 
+table.term-def td:nth-child(1) { text-align: right; }
+table.term-def td:nth-child(2) { text-align: left; }
+
+table#ch3-eval-stack td:nth-child(1) { float: left; padding-right: 1em; }
+table#ch3-eval-stack td:nth-child(2) { float: right; }
+
 /* code */
 code span.special,
 pre span.special { color: #CC1212; font-size: 100%; }
 
 code span.syntax,
 pre span.syntax { color: #1212CC; font-size: 100%; }
+
+code span.class,
+pre span.class { color: #1488CC; font-size: 100%; }
 
 code span.func,
 pre span.func { color: #128812; font-size: 100%; }
