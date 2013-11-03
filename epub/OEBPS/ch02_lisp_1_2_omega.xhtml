@@ -268,7 +268,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 
 <p>Теперь наша проблема решается следующим образом:</p>
 
-<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="binop">≡</span></span> ((<span class="special">if</span> <i>условие</i> '<span class="var">+</span> '<span class="var">*</span>) <span class="num">3</span> <span class="num">4</span>)</pre>
+<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="rel">≡</span></span> ((<span class="special">if</span> <i>условие</i> '<span class="var">+</span> '<span class="var">*</span>) <span class="num">3</span> <span class="num">4</span>)</pre>
 
 <p>Не особо элегантно, так как необходимо писать лишние кавычки, но по крайней
 мере это работает. Работает, но, пожалуй, чересчур прилежно; иногда настолько,
@@ -327,7 +327,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 свой первый аргумент (который обязан быть функцией) к остальным. С её помощью
 наша проблема решается следующим образом:</p>
 
-<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="binop">≡</span></span> (<span class="func">funcall</span> (<span class="special">if</span> <i>условие</i> <span class="var">+</span> <span class="var">*</span>) <span class="num">3</span> <span class="num">4</span>)</pre>
+<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="rel">≡</span></span> (<span class="func">funcall</span> (<span class="special">if</span> <i>условие</i> <span class="var">+</span> <span class="var">*</span>) <span class="num">3</span> <span class="num">4</span>)</pre>
 
 <p>Все аргументы (первый в том числе) вычисляются обычной <code><span class="func">f.evaluate</span></code>.
 Функция <code><span class="func">funcall</span></code> только берёт всё готовое и выполняет вызов. Мы легко можем
@@ -358,7 +358,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 <p>К сожалению, есть ещё одна небольшая проблема. Когда мы пишем <code>(<span class="special">if</span> <i>условие</i> <span class="var">+</span> <span class="var">*</span>)</code>, мы ожидаем получить функцию сложения или умножения. Но то,
 что мы сейчас получаем, — это значение переменной <code><span class="var">+</span></code> или <code><span class="var">*</span></code>!
 В <span class="logo">Common Lisp</span> значения этих переменных и близко не связаны с арифметикой: они
-хранят последнее считанное и последнее возвращённое REPL<a href="zz_footnotes.xhtml#foot2.tr-1"><sup>*</sup></a> значение!</p>
+хранят последнее считанное и последнее возвращённое REPL<a class="footref" href="zz_footnotes.xhtml#foot2.tr-1"><sup>*</sup></a> значение!</p>
 
 
 <!--\indexC{function}-->
@@ -372,8 +372,8 @@ Maclisp, заключается в том, что если <code><span class="fu
 форма принимает имя функции и возвращает соответствующее функциональное
 значение. Теперь мы можем свободно перемещаться меж двух миров:</p>
 
-<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="binop">≡</span></span>
-       <span class="math"><span class="binop">≡</span></span> (<span class="func">funcall</span> (<span class="special">if</span> <i>условие</i> (<span class="special">function</span> <span class="var">+</span>) (<span class="special">function</span> <span class="var">*</span>)) <span class="num">3</span> <span class="num">4</span>)</pre>
+<pre>(<span class="special">if</span> <i>условие</i> (<span class="func">+</span> <span class="num">3</span> <span class="num">4</span>) (<span class="func">*</span> <span class="num">3</span> <span class="num">4</span>)) <span class="math"><span class="rel">≡</span></span>
+       <span class="math"><span class="rel">≡</span></span> (<span class="func">funcall</span> (<span class="special">if</span> <i>условие</i> (<span class="special">function</span> <span class="var">+</span>) (<span class="special">function</span> <span class="var">*</span>)) <span class="num">3</span> <span class="num">4</span>)</pre>
 
 <p>Для определения <code><span class="special">function</span></code> достаточно добавить соответствующую обработку
 в <code><span class="func">f.evaluate</span></code>. Эта форма <code><span class="special">function</span></code> не имеет ничего общего с одноимённой
@@ -515,18 +515,18 @@ Maclisp, заключается в том, что если <code><span class="fu
 сразу же приходят другие варианты использования этой возможности. Например, мы
 могли бы трактовать числа как функции-аксессоры для списков:</p>
 
-<pre>(<span class="func">2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>))  <span class="math"><span class="binop">→</span></span> <span class="var">hux</span>
-(<span class="func">-2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>)) <span class="math"><span class="binop">→</span></span> (<span class="var">hux</span> <span class="var">wok</span>)</pre>
+<pre>(<span class="func">2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>))  <span class="math"><span class="rel">→</span></span> <span class="var">hux</span>
+(<span class="func">-2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>)) <span class="math"><span class="rel">→</span></span> (<span class="var">hux</span> <span class="var">wok</span>)</pre>
 
 <p>Число <span class="math"><span class="ord var">n</span></span> считается синонимом для <code><span class="func">cad<sup><span class="math"><span class="ord var">n</span></span></sup>r</span></code>, если оно неотрицательно,
 или <code><span class="func">cd<span class="math"><span class="ord symb">−</span><span class="ord var">n</span></span>r</span></code>, если оно меньше ноля. Базовым аксессорам <code><span class="func">car</span></code> и
 <code><span class="func">cdr</span></code> соответствуют числа <code><span class="num">0</span></code> и <code><span class="num">-1</span></code>. После этого элементарно
-реализуются чисто алгебраические преобразования <code>(<span class="func">-1</span> (<span class="func">-2</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="binop">≡</span></span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)</code> или
-<code>(<span class="func">2</span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="binop">≡</span></span> (<span class="func">5</span> <span class="math"><span class="ord var">π</span></span>)</code>.</p>
+реализуются чисто алгебраические преобразования <code>(<span class="func">-1</span> (<span class="func">-2</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="rel">≡</span></span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)</code> или
+<code>(<span class="func">2</span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="rel">≡</span></span> (<span class="func">5</span> <span class="math"><span class="ord var">π</span></span>)</code>.</p>
 
 <p>Также можно придать смысл спискам функций на месте функции:</p>
 
-<pre>((<span class="func">list</span> <span class="var">+</span> <span class="var">-</span> <span class="var">*</span>) <span class="num">5</span> <span class="num">3</span>) <span class="math"><span class="binop">→</span></span> (<span class="num">8</span> <span class="num">2</span> <span class="num">15</span>)</pre>
+<pre>((<span class="func">list</span> <span class="var">+</span> <span class="var">-</span> <span class="var">*</span>) <span class="num">5</span> <span class="num">3</span>) <span class="math"><span class="rel">→</span></span> (<span class="num">8</span> <span class="num">2</span> <span class="num">15</span>)</pre>
 
 <p>Применение списка функций возвращает список из результатов применения каждого
 элемента-функции к соответствующим аргументам. Фактически, предыдущий пример
@@ -549,7 +549,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 
 <pre>(<span class="func">apply</span> (<span class="func">list</span> <span class="num">2</span> (<span class="func">list</span> <span class="num">0</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">2</span>)))
        '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>) )
-   <span class="math"><span class="binop">→</span></span> (<span class="func">hux</span> (<span class="func">foo</span> <span class="var">wok</span>))</pre>
+   <span class="math"><span class="rel">→</span></span> (<span class="func">hux</span> (<span class="func">foo</span> <span class="var">wok</span>))</pre>
 
 <p>Поэтому не рекомендуется реализовывать данные инновации как часть базового языка.
 <span class="see">[см. упр. <a href="#lisp1-2-omega/ex:innovations">2.3</a>]</span></p>
@@ -806,7 +806,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
 </table>
 
 <p>Окружение учитывает новые особенности: можно создавать локальные динамические
-переменные<a href="zz_footnotes.xhtml#foot2.3"><sup>3</sup></a> с помощью формы <code><span class="special">dynamic-let</span></code>, подобной <code><span class="syntax">let</span></code>
+переменные<a class="footref" href="zz_footnotes.xhtml#foot2.3"><sup>3</sup></a> с помощью формы <code><span class="special">dynamic-let</span></code>, подобной <code><span class="syntax">let</span></code>
 и <code><span class="special">flet</span></code>; значение динамической переменной получается с помощью <code><span class="special">dynamic</span></code>,
 а изменяется — с помощью <code><span class="special">dynamic-set!</span></code>.</p>
 
@@ -815,7 +815,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
 <p>Пока что это три специальные формы, но далее будут рассмотрены другие варианты
 реализации. А сейчас мы всего лишь добавим в наш интерпретатор <code><span class="func">f.evaluate</span></code>
 поддержку динамического окружения: <code><span class="var">denv</span></code>. Это окружение будет содержать
-только динамические переменные. Новый интерпретатор, назовём его \Lisp3, будет
+только динамические переменные. Новый интерпретатор, назовём его Lisp<sub>3</sub>, будет
 использовать функции с префиксом <code>df.</code>, чтобы не путать их с остальными. Вот
 его код. (Форма <code><span class="special">flet</span></code> не показана для краткости.)</p>
 
@@ -1025,7 +1025,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 <table><tr>
 <td><pre>(<span class="special">dynamic-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
-<td><span class="math"><span class="binop">≡</span></span></td>
+<td><span class="math"><span class="rel">≡</span></span></td>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   (<span class="special">declare</span> (<span class="syntax">special</span> <span class="var">x</span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
@@ -1135,7 +1135,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                  <span class="var">x</span> <span class="var">x</span> )))      <span class="comment">; динамические</span>
        <span class="func">(+</span> <span class="var">x</span>                   <span class="comment">; лексический</span>
           (<span class="special">dynamic</span> <span class="var">x</span>) ) ) ) ) <span class="comment">; динамический</span>
-<span class="math"><span class="binop">→</span></span> <span class="num">8</span></pre>
+<span class="math"><span class="rel">→</span></span> <span class="num">8</span></pre>
 
 
 <h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars-no-special"><span class="seq">2.5.3.</span> Динамические переменные без специальных форм</h3>
@@ -1255,7 +1255,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                 (<span class="syntax">let</span> ((<span class="var">x</span> (<span class="func">+</span> (<span class="func">assoc/de</span> '<span class="var">x</span> <span class="var">error</span>)
                             (<span class="func">assoc/de</span> '<span class="var">x</span> <span class="var">error</span>) )))
                   (<span class="func">+</span> <span class="var">x</span> (<span class="func">assoc/de</span> '<span class="var">x</span> <span class="var">error</span>)) ) )) )
-<span class="math"><span class="binop">→</span></span> <span class="num">8</span></pre>
+<span class="math"><span class="rel">→</span></span> <span class="num">8</span></pre>
 
 <p>Таким образом, мы опровергли необходимость использования специальных форм для
 реализации механизма динамических переменных. Заодно мы получили возможность
@@ -1555,12 +1555,12 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 
 <pre>(<span class="special">labels</span> ((<span class="func">fact</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
                        (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) )))
-  (<span class="func">fact</span> <span class="num">6</span>) ) <span class="math"><span class="binop">→</span></span> <span class="num">720</span>
+  (<span class="func">fact</span> <span class="num">6</span>) ) <span class="math"><span class="rel">→</span></span> <span class="num">720</span>
 
 (<span class="func">funcall</span> (<span class="special">labels</span> ((<span class="func">even?</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))
                   (<span class="func">odd?</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span> (<span class="func">even?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)))) )
            (<span class="special">function</span> <span class="var">even?</span>) )
-         <span class="num">4</span> ) <span class="math"><span class="binop">→</span></span> <span class="hash">#t</span></pre>
+         <span class="num">4</span> ) <span class="math"><span class="rel">→</span></span> <span class="hash">#t</span></pre>
 
 <p>Так что в Lisp<sub>2</sub> мы имеем две формы для расширения локального функционального
 окружения: <code><span class="special">flet</span></code> и <code><span class="special">labels</span></code>.</p>
@@ -1794,7 +1794,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
          ...
          (<i>имя<sub>n</sub></i> <i>выражение<sub>n</sub></i>) )
   <i>тело</i> )</pre></td>
-<td><span class="math"><span class="binop">≡</span></span></td>
+<td><span class="math"><span class="rel">≡</span></span></td>
 <td><pre>(<span class="special">let</span> (<i>имя<sub>1</sub></i> ... <i>имя<sub>n</sub></i>)
   (<span class="special">let</span> ((<i>temp<sub>1</sub></i> <i>выражение<sub>1</sub></i>)
         ...
@@ -2032,61 +2032,61 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <!--\indexC{fix}-->
 <pre>((<span class="func">fix</span> <span class="func">meta-fact</span>) <span class="num">3</span>)
-<span class="math"><span class="binop">≡</span></span> (((<span class="func">d</span> <span class="var">d</span>)<div class="where">
-<span class="var">d</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="math"><span class="rel">≡</span></span> (((<span class="func">d</span> <span class="var">d</span>)<div class="where">
+<span class="var">d</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
     <span class="var">meta-fact</span> )
    <span class="num">3</span> )
 
-<span class="math"><span class="binop">≡</span></span> (((<span class="special">lambda</span> (<span class="var">f</span>)               <span class="comment">; <em class="term">шаг I</em></span>
+<span class="math"><span class="rel">≡</span></span> (((<span class="special">lambda</span> (<span class="var">f</span>)               <span class="comment">; <em class="term">шаг I</em></span>
       (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
            (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
     <span class="var">meta-fact</span> )
    <span class="num">3</span> )
 
-<span class="math"><span class="binop">≡</span></span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+<span class="math"><span class="rel">≡</span></span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
                 (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) ))<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
    <span class="num">3</span> )
 
-<span class="math"><span class="binop">≡</span></span> ((<span class="special">lambda</span> (<span class="var">n</span>)
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">n</span>)
      (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
          (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
    <span class="num">3</span> )
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">f</span> <span class="num">2</span>))<div class="where">
-<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">f</span> <span class="num">2</span>))<div class="where">
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="num">2</span>))<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="num">2</span>))<div class="where">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="special">lambda</span> (<span class="var">f</span>)           <span class="comment">; <em class="term">шаг II</em></span>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="special">lambda</span> (<span class="var">f</span>)           <span class="comment">; <em class="term">шаг II</em></span>
            (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
                 (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2099,41 +2099,41 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <pre>(<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (((<span class="special">lambda</span> (<span class="var">f</span>)
               (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
                    (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
             <span class="var">meta-fact</span> )
            <span class="num">1</span> )))
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
                           (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) ))<div class="where">
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
              <span class="num">1</span> )))
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="special">lambda</span> (<span class="var">n</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="special">lambda</span> (<span class="var">n</span>)
                (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
                    (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="binop">→</span></span> ...</div>
+<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div>
              <span class="num">1</span> )))
 
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))))<div class="where">
-<span class="var">n</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
-<span class="var">f</span> <span class="math"><span class="binop">→</span></span> ...</div>
-<span class="math"><span class="binop">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> <span class="num">1</span>))
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> <span class="num">1</span>))
 
-<span class="math"><span class="binop">→</span></span> <span class="num">6</span></pre>
+<span class="math"><span class="rel">→</span></span> <span class="num">6</span></pre>
 
 <p>Обратите внимание, что в процессе вычислений мы действительно используем
 функцию, вычисляющую факториал. Это значение выражения:</p>
 
 <pre>(<span class="special">lambda</span> (<span class="var">x</span>)
   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> <span class="func">meta-fact</span>
-<span class="var">w</span> <span class="math"><span class="binop">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <span class="func">meta-fact</span>
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></pre>
@@ -2285,7 +2285,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 утверждение</p>
 
 <pre>(<span class="special">begin</span> (<span class="func">putprop</span> '<span class="var">symbol</span> '<span class="var">key</span> '<span class="var">value</span>)
-       (<span class="func">getprop</span> '<span class="var">symbol</span> '<span class="var">key</span>) )      <span class="math"><span class="binop">→</span></span> <span class="var">value</span></pre>
+       (<span class="func">getprop</span> '<span class="var">symbol</span> '<span class="var">key</span>) )      <span class="math"><span class="rel">→</span></span> <span class="var">value</span></pre>
 
 
 <h5 class="exercise" id="lisp1-2-omega/ex:label">Упражнение <span class="seq">2.7</span></h5>

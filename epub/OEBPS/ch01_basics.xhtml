@@ -219,7 +219,7 @@
 
 <!--\indexC{atom"?}-->
 <pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>)
-  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">exp</span>)   <span class="comment">; <code>(<span class="func">atom?</span> <span class="var">exp</span>)</code> <span class="math"><span class="binop">≡</span></span> <code>(<span class="func">not</span> (<span class="func">pair?</span> <span class="var">exp</span>))</code></span>
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">exp</span>)   <span class="comment">; <code>(<span class="func">atom?</span> <span class="var">exp</span>)</code> <span class="math"><span class="rel">≡</span></span> <code>(<span class="func">not</span> (<span class="func">pair?</span> <span class="var">exp</span>))</code></span>
       ...
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">exp</span>)
         ...
@@ -240,7 +240,7 @@
 переменной в окружении. Вот её прототип:</p>
 
 <!--\indexC{lookup}-->
-<pre>(<span class="func">lookup</span> <i>переменная</i> <i>окружение</i>) <span class="math"><span class="binop">→</span></span> <i>значение</i></pre>
+<pre>(<span class="func">lookup</span> <i>переменная</i> <i>окружение</i>) <span class="math"><span class="rel">→</span></span> <i>значение</i></pre>
 
 <!--\indexR{переменные!связь с символами}-->
 <!--\indexR{символы!связь с переменными}-->
@@ -603,12 +603,12 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 упорядочить вычисления. Но не только <code><span class="special">begin</span></code> может их упорядочивать.
 Например, условный оператор может:</p>
 
-<pre>(<span class="special">if</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="binop">≡</span></span> (<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</pre>
+<pre>(<span class="special">if</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> (<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</pre>
 
 <p id="basics/forms/sequence/par:gensym-puzzle">
 И <code><span class="special">lambda</span></code> тоже может<a class="footref" href="zz_footnotes.xhtml#foot1.7"><sup>7</sup></a>:</p>
 
-<pre>(<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="binop">≡</span></span> ((<span class="special">lambda</span> (<i>void</i>) <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="ord var">α</span></span>)</pre>
+<pre>(<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<i>void</i>) <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="ord var">α</span></span>)</pre>
 
 <p>Как видно из этого примера, в Scheme <code><span class="special">begin</span></code> не является необходимой
 специальной формой, так как её поведение можно проэмулировать с помощью
@@ -955,7 +955,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 получив в результате вызова <code><span class="func">make-function</span></code> комбинатор <span class="comb">K</span>, определяемый
 как <code>(<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span>) <span class="var">a</span>)</code>, мы можем его вызвать следующим образом:</p>
 
-<pre>(<span class="func">K</span> <span class="num">1</span> <span class="num">2</span>) <span class="math"><span class="binop">→</span></span> <span class="num">1</span></pre>
+<pre>(<span class="func">K</span> <span class="num">1</span> <span class="num">2</span>) <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
 
 <p>Но есть и неприятность: функция может использовать только свои аргументы и
 локальные переменные, потому что мы определили <i>env.init</i> как пустое
@@ -980,7 +980,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <td><pre>(<span class="syntax">let</span> ((<span class="var">a</span> <span class="num">1</span>))
   (<span class="syntax">let</span> ((<span class="var">b</span> (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>)))
     (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) ) )</pre></td>
-<td><span class="math"><span class="binop">≡</span></span></td>
+<td><span class="math"><span class="rel">≡</span></span></td>
 <td><pre>((<span class="special">lambda</span> (<span class="var">a</span>)
    ((<span class="special">lambda</span> (<span class="var">b</span>)
       (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) )
@@ -993,12 +993,12 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where">
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span>  ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="math"><span class="rel">≡</span></span>  ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span>  (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
-                     <span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
+<span class="math"><span class="rel">≡</span></span>  (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
+                     <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
                      <i>env.global</i>
                      </div></pre>
 
@@ -1047,13 +1047,13 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where">
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
-<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div></pre>
 
@@ -1097,16 +1097,16 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <pre>(((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))) <span class="num">1</span>) <span class="num">2</span>)<div class="where">
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div>
     <span class="num">2</span> )<div class="where">
 <i>env.global</i>
 </div>
-<span class="math"><span class="binop">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
-<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">2</span>
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">1</span>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div></pre>
 
@@ -1200,8 +1200,8 @@ Emacs Lisp<a class="footref" href="zz_footnotes.xhtml#foot1.tr-1"><sup>*</sup></
 значение <code><span class="num">0</span></code>, то получим следующие результаты:</p>
 
 <pre>(<span class="special">define</span> <span class="var">y</span> <span class="num">0</span>)
-(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="binop">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в динамическом Лиспе</span>
-(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="binop">→</span></span> ((<span class="num">1991</span> <span class="num">100</span>) (<span class="num">3</span> <span class="num">0</span>)) <span class="comment">; в лексическом Лиспе</span></pre>
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в динамическом Лиспе</span>
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">100</span>) (<span class="num">3</span> <span class="num">0</span>)) <span class="comment">; в лексическом Лиспе</span></pre>
 
 <!--\indexR{свободные переменные!и области видимости}-->
 <p>Заметьте, что в динамическом Лиспе <code><span class="func">bar</span></code> понятия не имеет о том, что
@@ -1313,7 +1313,7 @@ transparency). Ссылочная прозрачность — это свойс
 поведение этой программы (оба варианта программы или вернут одно и то же
 значение, или вместе застрянут в бесконечном цикле). Например:</p>
 
-<pre>(<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) (<span class="func">x</span>)) <span class="math"><span class="binop">≡</span></span> ((<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) <span class="var">x</span>)) <span class="math"><span class="binop">≡</span></span> <span class="num">1</span></pre>
+<pre>(<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) (<span class="func">x</span>)) <span class="math"><span class="rel">≡</span></span> ((<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) <span class="var">x</span>)) <span class="math"><span class="rel">≡</span></span> <span class="num">1</span></pre>
 
 <p>В общем случае ссылочная прозрачность теряется, если язык позволяет побочные
 эффекты. Чтобы она сохранилась и при наличии побочных эффектов, необходимо
@@ -1581,13 +1581,13 @@ transparency). Ссылочная прозрачность — это свойс
 и не поменяется в будущем. Посмотрите, какая беда случается, если это не так:</p>
 
 <pre>(<span class="special">set!</span> <span class="var">my-global</span> (<span class="func">cons</span> '<span class="var">c</span> '<span class="var">d</span>))
-   <span class="math"><span class="binop">→</span></span> (<span class="var">c</span> . <span class="var">d</span>)
+   <span class="math"><span class="rel">→</span></span> (<span class="var">c</span> . <span class="var">d</span>)
 (<span class="special">set!</span> <span class="var">my-test</span> (<span class="special">lambda</span> () (<span class="func">car</span> <span class="var">my-global</span>)))
-   <span class="math"><span class="binop">→</span></span> <span class="hash">#&lt;MY-TEST procedure&gt;</span>
+   <span class="math"><span class="rel">→</span></span> <span class="hash">#&lt;MY-TEST procedure&gt;</span>
 (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">car</span> <span class="var">cdr</span>)
        (<span class="special">set!</span> <span class="var">my-global</span> (<span class="func">cons</span> '<span class="var">a</span> '<span class="var">b</span>))
        (<span class="func">my-test</span>) )
-   <span class="math"><span class="binop">→</span></span> <i>?????</i></pre>
+   <span class="math"><span class="rel">→</span></span> <i>?????</i></pre>
 
 <p>К счастью, в результате может получиться только <code><span class="var">a</span></code> или <code><span class="var">b</span></code>. Если
 <code><span class="func">my-test</span></code> использует значение <code><span class="var">car</span></code> на момент определения, то мы
@@ -1670,8 +1670,8 @@ transparency). Ссылочная прозрачность — это свойс
 то, что <code><span class="func">evaluate</span></code> способна<a class="footref" href="zz_footnotes.xhtml#foot1.26"><sup>26</sup></a> проинтерпретировать сама себя. Следовательно,
 следующие выражения эквивалентны:</p>
 
-<pre>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>) <span class="math"><span class="binop">≡</span></span>
-  <span class="math"><span class="binop">≡</span></span> (<span class="func">evaluate</span> (<span class="special">quote</span> (<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)) <span class="var">env.global</span>)</pre>
+<pre>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>) <span class="math"><span class="rel">≡</span></span>
+  <span class="math"><span class="rel">≡</span></span> (<span class="func">evaluate</span> (<span class="special">quote</span> (<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)) <span class="var">env.global</span>)</pre>
 
 <p>Есть ли ещё решения приведённого уравнения? Да, и их великое множество! Как мы
 видели раньше, определение <code><span class="func">evaluate</span></code> вовсе не обязательно указывает порядок

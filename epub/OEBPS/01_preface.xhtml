@@ -219,8 +219,8 @@ PowerBook) и вообще сделали эту книгу возможной: 
 
 <!--\indexC*{.->}{\protect\is}
 \indexC*{.=}{\protect\equals}-->
-<p>Знак <span class="math"><span class="binop">→</span></span> читается: «имеет значение»,
-а знак <span class="math"><span class="binop">≡</span></span> обозначает
+<p>Знак <span class="math"><span class="rel">→</span></span> читается: «имеет значение»,
+а знак <span class="math"><span class="rel">≡</span></span> обозначает
 эквивалентность, «имеет то же значение, что и». При разборе вычисления
 выражений после вертикальной черты мы будем записывать окружение, в котором
 проводятся вычисления. Вот пример, иллюстрирующий эти соглашения:</p>
@@ -228,27 +228,27 @@ PowerBook) и вообще сделали эту книгу возможной: 
 <pre>(<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
   (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
     (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where">
-<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
-<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
 </div>
 
-<span class="math"><span class="binop">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
-<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
-<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
-<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
+<span class="math"><span class="rel">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
 </div>
 </div>
-<span class="math"><span class="binop">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
-<span class="var">b</span> <span class="math"><span class="binop">→</span></span> <span class="num">3</span>
-<span class="var">foo</span> <span class="math"><span class="binop">≡</span></span> <span class="func">cons</span>
-<span class="var">f</span> <span class="math"><span class="binop">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> <span class="math"><span class="binop">→</span></span> <span class="num">4</span>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
 </div>
              </div>
-<span class="math"><span class="binop">→</span></span> (<span class="num">4</span> . <span class="num">4</span>)</pre>
+<span class="math"><span class="rel">→</span></span> (<span class="num">4</span> . <span class="num">4</span>)</pre>
 
 <p>Все имена переменных и сообщения об ошибках в приводимых программах мы будем
 записывать на английском — «родном языке» Scheme.</p>
