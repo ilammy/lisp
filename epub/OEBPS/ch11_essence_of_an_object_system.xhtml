@@ -57,9 +57,9 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и {\TELOS} (The <spa
 <!--\indexR{мультиметоды}-->
 
 <!--\indexR{методы!мультиметоды}-->
-        Отправка сообщения записывается как \ic{(\ii{сообщение}
-        \ii{аргументы}...)}, что синтаксически идентично вызову
-        функции: \ic{(\ii{функция} \ii{аргументы}...)}. Мультиметоды же
+        Отправка сообщения записывается как \ic{(<i>сообщение</i>
+        <i>аргументы</i>...)}, что синтаксически идентично вызову
+        функции: \ic{(<i>функция</i> <i>аргументы</i>...)}. Мультиметоды же
         не предполагают, что получателем сообщения будет один-единственный
         объект, хоть чаще всего это именно так. Вместо этого методы
         считаются функциями классов существенных аргументов
@@ -277,8 +277,8 @@ kdrb92}. {\Meroonet} отличается от них в нескольких а
 <pre>(define-class Point Object (x y))</pre>
 
 <p>Далее, пусть классу <code><span class="func">Point</span></code> соответствует номер 7; тогда значение точки,
-созданной формой <code><span class="func">(make-Point 11 22)</span></code>, представляется вектором <code><span class="func">\#(7 11
-22)</span></code>. Многоугольник можно определить как последовательность точек,
+созданной формой <code>(make-Point 11 22)</code>, представляется вектором <code>\#(7 11
+22)</code>. Многоугольник можно определить как последовательность точек,
 представляющих его вершины, перечисленные в некотором порядке обхода. Если
 сделать класс <code><span class="func">Polygon</span></code> наследником <code><span class="func">Point</span></code>, то дополнительную пару
 координат можно понимать как некую опорную точку фигуры (центр, например).</p>
@@ -314,7 +314,7 @@ kdrb92}. {\Meroonet} отличается от них в нескольких а
     (make-Point 88 99)
   'orange )               ; цвет</p>
 
-<p>|$\to$| #(9             ; <code><span class="func">(Class-number ColoredPolygon-class)</span></code>
+<p>|$\to$| #(9             ; <code>(Class-number ColoredPolygon-class)</code>
        11          ; <code><span class="func">x</span></code>
        22          ; <code><span class="func">y</span></code>
        3           ; длина <code><span class="func">side</span></code>
@@ -394,7 +394,7 @@ kdrb92}. {\Meroonet} отличается от них в нескольких а
 
 <p>Синтаксис формы <code><span class="func">define-class</span></code> следующий:</p>
 
-<pre>(define-class |\ii{имя-класса}| |\ii{имя-суперкласса}| (|\ii{поля}|...))</pre>
+<pre>(define-class <i>имя-класса</i> <i>имя-суперкласса</i> (<i>поля</i>...))</pre>
 
 <p>Поле в списке полей обозначается или просто своим именем (в таком случае это
 будет обычное поле), или списком из имени и знака равенства (для обычных полей)
@@ -477,10 +477,10 @@ kdrb92}. {\Meroonet} отличается от них в нескольких а
 из имени класса и суффикса <code><span class="func">-class</span></code>. В качестве примера рассмотрим функции и
 переменные,\footnote*{Несмотря на то, что индексированные поля состоят из
 нескольких значений, имена им лучше давать в единственном числе. Тогда выражения
-вида \ic{(ColoredPolygon-side \ii{o} \ii{i})} читаются естественнее:
-«\ii{i}-я сторона цветного многоугольника \ii{o}». Слово <code><span class="func">sides</span></code>
+вида \ic{(ColoredPolygon-side <i>o</i> <i>i</i>)} читаются естественнее:
+«<i>i</i>-я сторона цветного многоугольника <i>o</i>». Слово <code><span class="func">sides</span></code>
 выглядело бы тут странно, ведь мы обращаемся к одной стороне, а не нескольким.}
-генерируемые формой <code><span class="func">(define-class ColoredPolygon Point (color))</span></code>.</p>
+генерируемые формой <code>(define-class ColoredPolygon Point (color))</code>.</p>
 
 <pre>(ColoredPolygon? o)                              |\,$\to$ \icc{логическое значение}|
 (allocate-ColoredPolygon sides-number)                |$\to$ \icc{многоугольник}|
@@ -548,8 +548,8 @@ kdrb92}. {\Meroonet} отличается от них в нескольких а
 тоже не лишено недостатков. Во-первых, функции <code><span class="func">Point-x</span></code> и <code><span class="func">Polygon-x</span></code>
 не обязательно эквивалентны. По сути, они обе извлекают одно и то же
 поле <code><span class="func">x</span></code>, но ведь первая делает это для точек, а вторая — для
-многоугольников. Кажется логичным требовать, чтобы форма <code><span class="func">(Polygon-x
-(make-Point 11 22))</span></code> вызывала ошибку типизации, поэтому аксессоры <code><span class="func">Point-x</span></code>
+многоугольников. Кажется логичным требовать, чтобы форма <code>(Polygon-x
+(make-Point 11 22))</code> вызывала ошибку типизации, поэтому аксессоры <code><span class="func">Point-x</span></code>
 и <code><span class="func">Polygon-x</span></code> должны быть разными. Кроме философских затруднений, у данного
 решения есть и более прагматичное следствие: такой подход генерирует много
 глобальных переменных и функций. Это может огорчить компьютеры с небольшим
@@ -1084,9 +1084,9 @@ error, core dumped"</span></code>, так и молча выдать какой-
 сравнении. \seePage[assignment/side-effects/ssect:equality] Кроме того,
 неизменяемые объекты гораздо лучше оптимизируются в силу того, что все их поля
 неизменны. Возьмём, например, функцию <code><span class="func">make-allocator</span></code>, которая определена
-чуть ниже. В ней используется форма <code><span class="func">(Class-number class)</span></code>, значение которой
+чуть ниже. В ней используется форма <code>(Class-number class)</code>, значение которой
 вполне можно было бы вычислить заранее и подставить напрямую (как это сделано
-для <code><span class="func">(Class-fields class)</span></code>), если бы номер класса был неизменной величиной.
+для <code>(Class-fields class)</code>), если бы номер класса был неизменной величиной.
 Но из-за возможности переименования классов мы вынуждены выяснять его каждый
 раз заново.</p>
 
@@ -1271,7 +1271,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 непосредственной поддержке этой системы самим языком. Нелепостей вроде функции
 выделения памяти, требующей для работы сравнимого объёма памяти, можно избежать,
 например, имея в распоряжении внутреннюю функцию, создающую аллокаторы вида
-<code><span class="func">(vector cn a b c ...)</span></code>.</p>
+<code>(vector cn a b c ...)</code>.</p>
 
 <h3 id="objects/accomp/ssect:access">Аксессоры</h3>
 
@@ -1398,7 +1398,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 <!--\indexC{field-value}-->
 <pre>(define (compute-field-offset o field)
   (let ((class (Field-defining-class field)))
-    ;; <code><span class="func">(assume (check-class-membership o class))</span></code>
+    ;; <code>(assume (check-class-membership o class))</code>
     (let skip ((fields (careless-Class-fields class))
                (offset *starting-offset*) )
       (if (eq? field (car fields)) offset
@@ -1432,7 +1432,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 Но в случае {\Meroonet} необязательный индекс нарушает эту стройную систему,
 поэтому и был выбран порядок\footnote{Если вы ещё не забыли, что такое списки
 свойств, то наверяка вспомните и то, что аргументы <code><span class="func">putprop</span></code> располагаются
-в точно таком же порядке.} <code><span class="func">(o v field . i)</span></code>.</p>
+в точно таком же порядке.} <code>(o v field . i)</code>.</p>
 
 
 <!--\indexC{make-writer}-->
@@ -1490,7 +1490,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 <!--\indexC{make-lengther}-->
 <!--\indexC{field-length}-->
 <pre>(define (make-lengther field)
-  ;; <code><span class="func">(assume (Poly-Field? field))</span></code>
+  ;; <code>(assume (Poly-Field? field))</code>
   (let ((class (Field-defining-class field)))
     (let skip ((fields (careless-Class-fields class))
                (offset *starting-offset*) )
@@ -1678,7 +1678,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 В Smalltalk <span class="cite">[<a href="z1_bibliography.xhtml#gr83">gr83</a>]</span> сообщения посылаются следующим образом:</p>
 
 <p>\begin{code}[escapeinside=||]
-|\ii{получатель}| |\ii{сообщение}|: |\ii{аргументы}|...
+<i>получатель</i> <i>сообщение</i>: <i>аргументы</i>...
 \end{code}</p>
 
 
@@ -1689,7 +1689,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 использовали специальные ключевые слова наподобие <code><span class="func">send</span></code> или <code><span class="func">=></span></code>
 (Planner <span class="cite">[<a href="z1_bibliography.xhtml#hs75">hs75</a>]</span>):</p>
 
-<pre>(send |\ii{получатель}| |\ii{сообщение}| |\ii{аргументы}|...)</pre>
+<pre>(send <i>получатель</i> <i>сообщение</i> <i>аргументы</i>...)</pre>
 
 
 <!--\indexR{диспетчеризация}-->
@@ -1712,7 +1712,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 положение, поэтому Common Loops <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">bkk+86</a>]</span> был предложен более подходящий
 вариант:</p>
 
-<pre>(|\ii{сообщение}| |\ii{объекты}|...)</pre>
+<pre>(<i>сообщение</i> <i>объекты</i>...)</pre>
 
 <p>Ключевое слово <code><span class="func">send</span></code> исчезло, а вместо него на место функции стало само
 сообщение — следовательно, это сообщение должно быть настоящей функцией.
@@ -1750,9 +1750,9 @@ error, core dumped"</span></code>, так и молча выдать какой-
 обмен сообщениями между объектами — для пользователя они выглядят как
 функции, вызываются как функции и работают как функции. Хотя, естественно,
 с точки зрения реализации разница определённо есть. Рассмотрим обобщённую
-функцию \ii{g}, чьим дискриминантом является первый аргумент. Каждый её вызов
-\ic{(\ii{g} \ii{аргументы}...)} на самом деле может раскрываться в обращения
-к замыканию вида \ic{(lambda args (apply send (car args) \ii{g} (cdr args)))},
+функцию <i>g</i>, чьим дискриминантом является первый аргумент. Каждый её вызов
+\ic{(<i>g</i> <i>аргументы</i>...)} на самом деле может раскрываться в обращения
+к замыканию вида \ic{(lambda args (apply send (car args) <i>g</i> (cdr args)))},
 что однозначно сказывается на производительности.</p>
 
 
@@ -1792,7 +1792,7 @@ error, core dumped"</span></code>, так и молча выдать какой-
 
 
 <!--\indexC{define-generic}-->
-<pre>(define-generic (|\ii{имя}| |\ii{переменные}|...) |$[$\ii{тело-по-умолчанию}$]$|)</pre>
+<pre>(define-generic (<i>имя</i> <i>переменные</i>...) |$[$<i>тело-по-умолчанию</i>$]$|)</pre>
 
 
 <!--\indexR{обобщённые функции!сигнатуры}-->
@@ -1857,7 +1857,7 @@ table). Алгоритм вызова обобщённых функций теп
 
 <pre>(lambda (a b c) (g b a c))</pre>
 
-<p>Остальные методы также должны иметь арность, совместимую с <code><span class="func">(a b c)</span></code>.
+<p>Остальные методы также должны иметь арность, совместимую с <code>(a b c)</code>.
 Функция, представляющая <code><span class="func">f</span></code> в мире Scheme, получает сигнатуру, идентичную
 написанной в определении <code><span class="func">f</span></code>:</p>
 
@@ -1994,7 +1994,7 @@ table). Алгоритм вызова обобщённых функций теп
 
 
 <!--\indexC{define-method}-->
-<pre>(define-method (|\ii{имя}| |\ii{переменные}|...) |\ii{формы}|...)</pre>
+<pre>(define-method (<i>имя</i> <i>переменные</i>...) <i>формы</i>...)</pre>
 
 <p>Обобщённые функции являются объектами, чьё поведение можно динамически
 расширять, определяя новые методы с помощью <code><span class="func">define-method</span></code>. Следовательно,
@@ -2017,7 +2017,7 @@ table). Алгоритм вызова обобщённых функций теп
 <p>Единственной оставшейся проблемой является реализация возможности, которая
 в Smalltalk называется <code><span class="func">super</span></code>, а в CLOS — <code><span class="func">call-next-method</span></code>. Имеется
 в виду возможность для метода подкласса вызвать одноимённый метод суперкласса
-(который иначе для подкласса недоступен). Форма <code><span class="func">(call-next-method)</span></code> может
+(который иначе для подкласса недоступен). Форма <code>(call-next-method)</code> может
 использоваться только внутри определений методов и означает вызов
 соответствующего суперметода с теми же\footnote{В отличие от CLOS, мы запретили
 изменять аргументы вызова суперметода, так как иначе стало бы возможным заменить

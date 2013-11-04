@@ -14,37 +14,37 @@
 вроде переходов, динамических переменных, исключений.</p>
 
 <p>\begin{table}[!h]%
-\def\I{\ii{i}}
-\def\J{\ii{j}}
-\def\M{\ii{m}}
-\def\V{\ii{v}}
-\def\MU{\ii{m}{\normalfont\textsubscript{1}}}
-\def\MD{\ii{m}{\normalfont\textsubscript{2}}}
-\def\MT{\ii{m}{\normalfont\textsubscript{3}}}
-\def\MP{\ii{m}{\normalfont+}}
-\def\MS{\ii{m}{\normalfont\textasteriskcentered}}
-\def\AR{\ii{арность}}
-\def\AD{\ii{адрес}}
-\def\II{\ii{индекс}}
-\def\SZ{\ii{размер}}
+\def\I{<i>i</i>}
+\def\J{<i>j</i>}
+\def\M{<i>m</i>}
+\def\V{<i>v</i>}
+\def\MU{<i>m</i>{\normalfont\textsubscript{1}}}
+\def\MD{<i>m</i>{\normalfont\textsubscript{2}}}
+\def\MT{<i>m</i>{\normalfont\textsubscript{3}}}
+\def\MP{<i>m</i>{\normalfont+}}
+\def\MS{<i>m</i>{\normalfont\textasteriskcentered}}
+\def\AR{<i>арность</i>}
+\def\AD{<i>адрес</i>}
+\def\II{<i>индекс</i>}
+\def\SZ{<i>размер</i>}
 \setlength{\tabcolsep}{0.5em}
 \small\centering
 \begin{tabular}{|l|l|}
 \hline
 \rule[1.25em]{0pt}{\baselineskip}%
-<code><span class="func">(SHALLOW-ARGUMENT-REF \J)</span></code>        & <code><span class="func">(PREDEFINED \I)</span></code>                \\
-<code><span class="func">(DEEP-ARGUMENT-REF \I\ \J)</span></code>       & <code><span class="func">(SHALLOW-ARGUMENT-SET! \J\ \M)</span></code> \\
-<code><span class="func">(DEEP-ARGUMENT-SET! \I\ \J\ \M)</span></code>  & <code><span class="func">(GLOBAL-REF \I)</span></code>                \\
-<code><span class="func">(CHECKED-GLOBAL-REF \I)</span></code>          & <code><span class="func">(GLOBAL-SET! \I\ \M)</span></code>           \\
-<code><span class="func">(CONSTANT \V)</span></code>                    & <code><span class="func">(ALTERNATIVE \MU\ \MD\ \MT)</span></code>    \\
-<code><span class="func">(SEQUENCE \M\ \MP)</span></code>               & <code><span class="func">(TR-FIX-LET \MS\ \MP)</span></code>          \\
-<code><span class="func">(FIX-LET \MS\ \MP)</span></code>               & <code><span class="func">(CALL0 \AD)</span></code>                    \\
-<code><span class="func">(CALL1 \AD\ \MU)</span></code>                 & <code><span class="func">(CALL2 \AD\ \MU\ \MD)</span></code>          \\
-<code><span class="func">(CALL3 \AD\ \MU\ \MD\ \MT)</span></code>       & <code><span class="func">(FIX-CLOSURE \MP\ \AR)</span></code>         \\
-<code><span class="func">(NARY-CLOSURE \MP\ \AR)</span></code>          & <code><span class="func">(TR-REGULAR-CALL \M\ \MS)</span></code>      \\
-<code><span class="func">(REGULAR-CALL \M\ \MS)</span></code>           & <code><span class="func">(STORE-ARGUMENT \M\ \MS\ \II)</span></code>  \\
-<code><span class="func">(CONS-ARGUMENT \M\ \MS\ \AR)</span></code>     & <code><span class="func">(ALLOCATE-FRAME \SZ)</span></code>           \\
-<code><span class="func">(ALLOCATE-DOTTED-FRAME \AR)</span></code>      & \rule[-0.6em]{0pt}{\baselineskip}   \\
+<code>(SHALLOW-ARGUMENT-REF \J)</code>        & <code>(PREDEFINED \I)</code>                \\
+<code>(DEEP-ARGUMENT-REF \I\ \J)</code>       & <code>(SHALLOW-ARGUMENT-SET! \J\ \M)</code> \\
+<code>(DEEP-ARGUMENT-SET! \I\ \J\ \M)</code>  & <code>(GLOBAL-REF \I)</code>                \\
+<code>(CHECKED-GLOBAL-REF \I)</code>          & <code>(GLOBAL-SET! \I\ \M)</code>           \\
+<code>(CONSTANT \V)</code>                    & <code>(ALTERNATIVE \MU\ \MD\ \MT)</code>    \\
+<code>(SEQUENCE \M\ \MP)</code>               & <code>(TR-FIX-LET \MS\ \MP)</code>          \\
+<code>(FIX-LET \MS\ \MP)</code>               & <code>(CALL0 \AD)</code>                    \\
+<code>(CALL1 \AD\ \MU)</code>                 & <code>(CALL2 \AD\ \MU\ \MD)</code>          \\
+<code>(CALL3 \AD\ \MU\ \MD\ \MT)</code>       & <code>(FIX-CLOSURE \MP\ \AR)</code>         \\
+<code>(NARY-CLOSURE \MP\ \AR)</code>          & <code>(TR-REGULAR-CALL \M\ \MS)</code>      \\
+<code>(REGULAR-CALL \M\ \MS)</code>           & <code>(STORE-ARGUMENT \M\ \MS\ \II)</code>  \\
+<code>(CONS-ARGUMENT \M\ \MS\ \AR)</code>     & <code>(ALLOCATE-FRAME \SZ)</code>           \\
+<code>(ALLOCATE-DOTTED-FRAME \AR)</code>      & \rule[-0.6em]{0pt}{\baselineskip}   \\
 \hline
 \end{tabular}%
 \caption{Все 25 инструкций промежуточного языка. {\M}, {\MU}, {\MD}, {\MT},
@@ -186,7 +186,7 @@
 <!--\indexC*{val}{*val*}-->
 <!--\indexR{регистры!val@\protect<code><span class="func">*val*</span></code>}-->
 <p>Для того, чтобы передать инструкции <code><span class="func">global-update!</span></code> результат
-вычисления <code><span class="func">(m)</span></code>, необходим дополнительный регистр. Назовём его <code><span class="func">*val*</span></code>.
+вычисления <code>(m)</code>, необходим дополнительный регистр. Назовём его <code><span class="func">*val*</span></code>.
 Инструкции-производители, соответственно, кладут возвращаемые значения в этот
 регистр, а инструкции-потребители — забирают их оттуда. В итоге, типичный
 производитель <code><span class="func">CONSTANT</span></code> теперь записывается вот так:</p>
@@ -207,7 +207,7 @@
     (m)
     (global-update! i *val*) ) )</pre>
 
-<p>Итого, форма <code><span class="func">(m)</span></code> размещает новое значение переменной в регистре <code><span class="func">*val*</span></code>,
+<p>Итого, форма <code>(m)</code> размещает новое значение переменной в регистре <code><span class="func">*val*</span></code>,
 затем его оттуда забирает <code><span class="func">global-update!</span></code> и переносит в глобальное
 окружение. Заметьте, что <code><span class="func">global-update!</span></code> не изменяет значение регистра
 <code><span class="func">*val*</span></code>, ведь это потребовало бы как минимум одной лишней инструкции.
@@ -253,7 +253,7 @@
 <!--\indexR{стек}-->
 <p>Эта инструкция использует <code><span class="func">let</span></code>, чтобы сохранить, а затем восстановить
 значение регистра <code><span class="func">*val*</span></code>. Форма <code><span class="func">let</span></code> сохраняет значение в «анонимном
-регистре» <code><span class="func">v</span></code> на время, пока вычисляется <code><span class="func">(m*)</span></code>. Под <code><span class="func">v</span></code> не получится
+регистре» <code><span class="func">v</span></code> на время, пока вычисляется <code>(m*)</code>. Под <code><span class="func">v</span></code> не получится
 выделить реальный машинный регистр, так как нам может потребоваться произвольное
 количество таких <code><span class="func">v</span></code> одновременно — ведь, например, внутри <code><span class="func">m*</span></code> вполне
 может быть ещё несколько вложенных <code><span class="func">STORE-ARGUMENT</span></code>. Следовательно, здесь
@@ -281,7 +281,7 @@
 преобразования инструкции <code><span class="func">STORE-ARGUMENT</span></code>. Теперь временные значения можно
 сохранить в стеке перед началом других вычислений, чтобы после их окончания
 достать оттуда всё в целости и сохранности. Правда, это сработает только при
-условии, что форма <code><span class="func">(m*)</span></code> оставит стек в том же состоянии, в каком он был до
+условии, что форма <code>(m*)</code> оставит стек в том же состоянии, в каком он был до
 её исполнения. Следовательно, необходимо быть аккуратным и везде следить за
 соблюдением данного инварианта.</p>
 
@@ -352,7 +352,7 @@
 регистры позволяет определить <code><span class="func">CALL3</span></code> следующим образом:</p>
 
 
-<!--\indexC*{CALL0}{CALL\protect\ii{n}}-->
+<!--\indexC*{CALL0}{CALL\protect<i>n</i>}-->
 <pre>(define (CALL3 address m1 m2 m3)
   (lambda (m)
     (m1)
@@ -466,7 +466,7 @@
 Функция <code><span class="func">run</span></code> олицетворяет процессор виртуальной машины, который считывает
 команду, сдвигает счётчик на следующую, исполняет считанную команду и повторяет
 всё сначала. Кстати, именно поэтому все машинные инструкции представляются
-замыканиями вида <code><span class="func">(lambda () ...)</span></code>.</p>
+замыканиями вида <code>(lambda () ...)</code>.</p>
 
 <p>
 \subsubsection{Линеаризация ветвлений}%
@@ -585,7 +585,7 @@
         ... ) )</pre>
 
 <p>Перед вызовом функции в стек заталкивается адрес инструкции, следующей за
-<code><span class="func">(FUNCTION-INVOKE)</span></code>. Затем извлекается сохранённое в замыкании окружение и
+<code>(FUNCTION-INVOKE)</code>. Затем извлекается сохранённое в замыкании окружение и
 устанавливается в регистр <code><span class="func">*env*</span></code>. Наконец, в регистр <code><span class="func">*pc*</span></code> заносится
 адрес первой инструкции тела замыкания, что передаёт ему управление. Текущее
 окружение здесь не сохраняется: за управление ним отвечают непосредственно
@@ -658,7 +658,7 @@
 <p>\begin{table}[!htb]%
 <!--\indexR{виртуальная машина!язык}%-->
 <!--\indexR{язык!машинный}%-->
-\def\I{\ii{i}} \def\J{\ii{j}} \def\V{\ii{v}}
+\def\I{<i>i</i>} \def\J{<i>j</i>} \def\V{<i>v</i>}
 \def\star{\textsubscript{<code><span class="func">*</span></code>}}
 \def\P{\normalfont\:+\:1}
 \def\botstrut{\rule[-0.6em]{0pt}{\baselineskip}}
@@ -666,23 +666,23 @@
 \setlength{\tabcolsep}{0.5em}
 \begin{center}\begin{tabular}{|l|l|}
 \hline\topstrut%
-<code><span class="func">(SHALLOW-ARGUMENT-REF \J)</span></code>\star  & <code><span class="func">(PREDEFINED \I)</span></code>\star              \\
-<code><span class="func">(DEEP-ARGUMENT-REF \I\ \J)</span></code>\star & <code><span class="func">(SET-SHALLOW-ARGUMENT! \J)</span></code>        \\
-<code><span class="func">(SET-DEEP-ARGUMENT! \I\ \J)</span></code>     & <code><span class="func">(GLOBAL-REF \I)</span></code>\star              \\
-<code><span class="func">(CHECKED-GLOBAL-REF \I)</span></code>\star    & <code><span class="func">(SET-GLOBAL! \I)</span></code>                  \\
-<code><span class="func">(CONSTANT \V)</span></code>\star              & \ic{(JUMP-FALSE \ii{смещение})}        \\
-\ic{(GOTO \ii{смещение})}            & <code><span class="func">(EXTEND-ENV)</span></code>                      \\
-<code><span class="func">(UNLINK-ENV)</span></code>                    & \ic{(CALL0 \ii{адрес})}\star           \\
-\ic{(INVOKE1 \ii{адрес})}            & <code><span class="func">(PUSH-VALUE)</span></code>                      \\
-\ic{(INVOKE2 \ii{адрес})}            & <code><span class="func">(POP-ARG1)</span></code>                        \\
-\ic{(INVOKE3 \ii{адрес})}            & <code><span class="func">(POP-ARG2)</span></code>                        \\
-\ic{(CREATE-CLOSURE \ii{смещение})}  & \ic{(ARITY=? \ii{арность}\P)}          \\
-<code><span class="func">(RETURN)</span></code>                        & \ic{(ARITY>=? \ii{арность}\P)}         \\
-\ic{(PACK-FRAME! \ii{арность})}      & <code><span class="func">(POP-FUNCTION)</span></code>                    \\
-<code><span class="func">(FUNCTION-INVOKE)</span></code>               & <code><span class="func">(PRESERVE-ENV)</span></code>                    \\
-<code><span class="func">(RESTORE-ENV)</span></code>                   & \ic{(POP-FRAME! \ii{индекс})}          \\
-\ic{(POP-CONS-FRAME! \ii{арность})}  & \ic{(ALLOCATE-FRAME \ii{размер})}\star \\
-\ic{(ALLOCATE-DOTTED-FRAME \ii{арность})}\star & <code><span class="func">(FINISH)</span></code>\botstrut       \\
+<code>(SHALLOW-ARGUMENT-REF \J)</code>\star  & <code>(PREDEFINED \I)</code>\star              \\
+<code>(DEEP-ARGUMENT-REF \I\ \J)</code>\star & <code>(SET-SHALLOW-ARGUMENT! \J)</code>        \\
+<code>(SET-DEEP-ARGUMENT! \I\ \J)</code>     & <code>(GLOBAL-REF \I)</code>\star              \\
+<code>(CHECKED-GLOBAL-REF \I)</code>\star    & <code>(SET-GLOBAL! \I)</code>                  \\
+<code>(CONSTANT \V)</code>\star              & \ic{(JUMP-FALSE <i>смещение</i>)}        \\
+\ic{(GOTO <i>смещение</i>)}            & <code>(EXTEND-ENV)</code>                      \\
+<code>(UNLINK-ENV)</code>                    & \ic{(CALL0 <i>адрес</i>)}\star           \\
+\ic{(INVOKE1 <i>адрес</i>)}            & <code>(PUSH-VALUE)</code>                      \\
+\ic{(INVOKE2 <i>адрес</i>)}            & <code>(POP-ARG1)</code>                        \\
+\ic{(INVOKE3 <i>адрес</i>)}            & <code>(POP-ARG2)</code>                        \\
+\ic{(CREATE-CLOSURE <i>смещение</i>)}  & \ic{(ARITY=? <i>арность</i>\P)}          \\
+<code>(RETURN)</code>                        & \ic{(ARITY>=? <i>арность</i>\P)}         \\
+\ic{(PACK-FRAME! <i>арность</i>)}      & <code>(POP-FUNCTION)</code>                    \\
+<code>(FUNCTION-INVOKE)</code>               & <code>(PRESERVE-ENV)</code>                    \\
+<code>(RESTORE-ENV)</code>                   & \ic{(POP-FRAME! <i>индекс</i>)}          \\
+\ic{(POP-CONS-FRAME! <i>арность</i>)}  & \ic{(ALLOCATE-FRAME <i>размер</i>)}\star \\
+\ic{(ALLOCATE-DOTTED-FRAME <i>арность</i>)}\star & <code>(FINISH)</code>\botstrut       \\
 \hline
 \end{tabular}\end{center}%
 \caption{Символьная форма машинных инструкций.}%
@@ -701,7 +701,7 @@
 <!--\indexC{SEQUENCE}-->
 <!--\indexC{TR-FIX-LET}-->
 <!--\indexC{FIX-LET}-->
-<!--\indexC*{CALL0}{CALL\protect\ii{n}}-->
+<!--\indexC*{CALL0}{CALL\protect<i>n</i>}-->
 <!--\indexC{FIX-CLOSURE}-->
 <!--\indexC{TR-REGULAR-CALL}-->
 <!--\indexC{STORE-ARGUMENT}-->
@@ -771,10 +771,10 @@
 
 <p>\begin{enumerate}
   \item сгенерировать и вывести код <code><span class="func">m1</span></code>;
-  \item вывести код <code><span class="func">(PUSH-VALUE)</span></code>;
+  \item вывести код <code>(PUSH-VALUE)</code>;
   \item сгенерировать и вывести код <code><span class="func">m2</span></code>;
-  \item вывести код <code><span class="func">(POP-ARG1)</span></code>;
-  \item вывести код \ic{(INVOKE2 \ii{адрес})}.
+  \item вывести код <code>(POP-ARG1)</code>;
+  \item вывести код \ic{(INVOKE2 <i>адрес</i>)}.
 \end{enumerate}</p>
 
 
@@ -829,45 +829,45 @@
 
 <p>\begin{table}[pt]\setlength{\tabcolsep}{1.5em}%
 \begin{center}\begin{tabular}{l|@{\extracolsep{1.25em}}l}
-<code><span class="func">(CREATE-CLOSURE 2)</span></code>          &   <code><span class="func">(INVOKE2 \#<*>)</span></code>            \\
-<code><span class="func">(GOTO 82)</span></code>                   &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(ARITY=? 4)</span></code>                 &   <code><span class="func">(ALLOCATE-FRAME 1)</span></code>         \\
-<code><span class="func">(EXTEND-ENV)</span></code>                &   <code><span class="func">(POP-FRAME! 0)</span></code>             \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>    &   <code><span class="func">(POP-FUNCTION)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(FUNCTION-INVOKE)</span></code>          \\
-<code><span class="func">(CONSTANT 0)</span></code>                &   <code><span class="func">(RETURN)</span></code>                   \\
-<code><span class="func">(POP-ARG1)</span></code>                  &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(INVOKE2 \#<=>)</span></code>             &   <code><span class="func">(ALLOCATE-FRAME 3)</span></code>         \\
-<code><span class="func">(JUMP-FALSE 13)</span></code>             &   <code><span class="func">(POP-FRAME! 2)</span></code>             \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 2)</span></code>    &   <code><span class="func">(POP-FRAME! 1)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(POP-FRAME! 0)</span></code>             \\
-<code><span class="func">(CONSTANT 1)</span></code>                &   <code><span class="func">(POP-FUNCTION)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(FUNCTION-INVOKE)</span></code>          \\
-<code><span class="func">(ALLOCATE-FRAME 1)</span></code>          &   <code><span class="func">(RETURN)</span></code>                   \\
-<code><span class="func">(POP-FRAME! 0)</span></code>              &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(POP-FUNCTION)</span></code>              &   <code><span class="func">(ALLOCATE-FRAME 1)</span></code>         \\
-<code><span class="func">(FUNCTION-INVOKE)</span></code>           &   <code><span class="func">(POP-FRAME! 0)</span></code>             \\
-<code><span class="func">(GOTO 54)</span></code>                   &   <code><span class="func">(EXTEND-ENV)</span></code>               \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 1)</span></code>    &   <code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>   \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>    &   <code><span class="func">(CONSTANT 5)</span></code>               \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(CONSTANT 1)</span></code>                &   <code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>   \\
-<code><span class="func">(POP-ARG1)</span></code>                  &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(INVOKE2 \#<->)</span></code>             &   <code><span class="func">(CREATE-CLOSURE 2)</span></code>         \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(GOTO 6)</span></code>                   \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 1)</span></code>    &   <code><span class="func">(ARITY=? 2)</span></code>                \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(EXTEND-ENV)</span></code>               \\
-<code><span class="func">(CREATE-CLOSURE 2)</span></code>          &   <code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>   \\
-<code><span class="func">(GOTO 24)</span></code>                   &   <code><span class="func">(RETURN)</span></code>                   \\
-<code><span class="func">(ARITY=? 2)</span></code>                 &   <code><span class="func">(PUSH-VALUE)</span></code>               \\
-<code><span class="func">(EXTEND-ENV)</span></code>                &   <code><span class="func">(ALLOCATE-FRAME 3)</span></code>         \\
-<code><span class="func">(DEEP-ARGUMENT-REF 1 2)</span></code>     &   <code><span class="func">(POP-FRAME! 2)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(POP-FRAME! 1)</span></code>             \\
-<code><span class="func">(DEEP-ARGUMENT-REF 1 0)</span></code>     &   <code><span class="func">(POP-FRAME! 0)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>                &   <code><span class="func">(POP-FUNCTION)</span></code>             \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF 0)</span></code>    &   <code><span class="func">(FUNCTION-INVOKE)</span></code>          \\
-<code><span class="func">(POP-ARG1)</span></code>                  &   <code><span class="func">(RETURN)</span></code>
+<code>(CREATE-CLOSURE 2)</code>          &   <code><span class="func">(INVOKE2 \#<*>)</span></code>            \\
+<code>(GOTO 82)</code>                   &   <code>(PUSH-VALUE)</code>               \\
+<code>(ARITY=? 4)</code>                 &   <code>(ALLOCATE-FRAME 1)</code>         \\
+<code>(EXTEND-ENV)</code>                &   <code>(POP-FRAME! 0)</code>             \\
+<code>(SHALLOW-ARGUMENT-REF 0)</code>    &   <code>(POP-FUNCTION)</code>             \\
+<code>(PUSH-VALUE)</code>                &   <code>(FUNCTION-INVOKE)</code>          \\
+<code>(CONSTANT 0)</code>                &   <code>(RETURN)</code>                   \\
+<code>(POP-ARG1)</code>                  &   <code>(PUSH-VALUE)</code>               \\
+<code><span class="func">(INVOKE2 \#<=>)</span></code>             &   <code>(ALLOCATE-FRAME 3)</code>         \\
+<code>(JUMP-FALSE 13)</code>             &   <code>(POP-FRAME! 2)</code>             \\
+<code>(SHALLOW-ARGUMENT-REF 2)</code>    &   <code>(POP-FRAME! 1)</code>             \\
+<code>(PUSH-VALUE)</code>                &   <code>(POP-FRAME! 0)</code>             \\
+<code>(CONSTANT 1)</code>                &   <code>(POP-FUNCTION)</code>             \\
+<code>(PUSH-VALUE)</code>                &   <code>(FUNCTION-INVOKE)</code>          \\
+<code>(ALLOCATE-FRAME 1)</code>          &   <code>(RETURN)</code>                   \\
+<code>(POP-FRAME! 0)</code>              &   <code>(PUSH-VALUE)</code>               \\
+<code>(POP-FUNCTION)</code>              &   <code>(ALLOCATE-FRAME 1)</code>         \\
+<code>(FUNCTION-INVOKE)</code>           &   <code>(POP-FRAME! 0)</code>             \\
+<code>(GOTO 54)</code>                   &   <code>(EXTEND-ENV)</code>               \\
+<code>(SHALLOW-ARGUMENT-REF 1)</code>    &   <code>(SHALLOW-ARGUMENT-REF 0)</code>   \\
+<code>(PUSH-VALUE)</code>                &   <code>(PUSH-VALUE)</code>               \\
+<code>(SHALLOW-ARGUMENT-REF 0)</code>    &   <code>(CONSTANT 5)</code>               \\
+<code>(PUSH-VALUE)</code>                &   <code>(PUSH-VALUE)</code>               \\
+<code>(CONSTANT 1)</code>                &   <code>(SHALLOW-ARGUMENT-REF 0)</code>   \\
+<code>(POP-ARG1)</code>                  &   <code>(PUSH-VALUE)</code>               \\
+<code><span class="func">(INVOKE2 \#<->)</span></code>             &   <code>(CREATE-CLOSURE 2)</code>         \\
+<code>(PUSH-VALUE)</code>                &   <code>(GOTO 6)</code>                   \\
+<code>(SHALLOW-ARGUMENT-REF 1)</code>    &   <code>(ARITY=? 2)</code>                \\
+<code>(PUSH-VALUE)</code>                &   <code>(EXTEND-ENV)</code>               \\
+<code>(CREATE-CLOSURE 2)</code>          &   <code>(SHALLOW-ARGUMENT-REF 0)</code>   \\
+<code>(GOTO 24)</code>                   &   <code>(RETURN)</code>                   \\
+<code>(ARITY=? 2)</code>                 &   <code>(PUSH-VALUE)</code>               \\
+<code>(EXTEND-ENV)</code>                &   <code>(ALLOCATE-FRAME 3)</code>         \\
+<code>(DEEP-ARGUMENT-REF 1 2)</code>     &   <code>(POP-FRAME! 2)</code>             \\
+<code>(PUSH-VALUE)</code>                &   <code>(POP-FRAME! 1)</code>             \\
+<code>(DEEP-ARGUMENT-REF 1 0)</code>     &   <code>(POP-FRAME! 0)</code>             \\
+<code>(PUSH-VALUE)</code>                &   <code>(POP-FUNCTION)</code>             \\
+<code>(SHALLOW-ARGUMENT-REF 0)</code>    &   <code>(FUNCTION-INVOKE)</code>          \\
+<code>(POP-ARG1)</code>                  &   <code>(RETURN)</code>
 \end{tabular}\end{center}%
 \caption{Результат компиляции.}%
 \label{compilation/lang-and-target/disassembly/table:subj}%
@@ -1005,7 +1005,7 @@
 здесь форме <code><span class="func">case</span></code>. Благодаря тому, что дискриминант <code><span class="func">case</span></code> может быть
 только числом от 0 до 255, становится возможным реализовать <code><span class="func">case</span></code> через
 таблицу переходов, что позволит выполнять выбор нужной ветви за постоянное
-время. Если же <code><span class="func">case</span></code> раскрывается в цепочку <code><span class="func">(if (eqv? ...) ...)</span></code>, то
+время. Если же <code><span class="func">case</span></code> раскрывается в цепочку <code>(if (eqv? ...) ...)</code>, то
 выбор выполняется за линейное время — прощай, производительность! Лишь
 некоторые из компиляторов Лиспа умеют выполнять такую оптимизацию автоматически
 (среди них Sqil <span class="cite">[<a href="z1_bibliography.xhtml#sen91">sen91</a>]</span> и Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser93">ser93</a>]</span>).</p>
@@ -1213,7 +1213,7 @@
 <pre>(define (PREDEFINED i)
   (check-byte i)
   (case i
-    ;; <code><span class="func">0</span></code>${}={}$<code><span class="func">\#t</span></code>, <code><span class="func">1</span></code>${}={}$<code><span class="func">\#f</span></code>, <code><span class="func">2</span></code>${}={}$<code><span class="func">()</span></code>,%
+    ;; <code><span class="func">0</span></code>${}={}$<code><span class="func">\#t</span></code>, <code><span class="func">1</span></code>${}={}$<code><span class="func">\#f</span></code>, <code><span class="func">2</span></code>${}={}$<code>()</code>,%
     {} <code><span class="func">3</span></code>${}={}$<code><span class="func">cons</span></code>, <code><span class="func">4</span></code>${}={}$<code><span class="func">car</span></code>,
     ;; <code><span class="func">5</span></code>${}={}$<code><span class="func">cdr</span></code>, <code><span class="func">6</span></code>${}={}$<code><span class="func">pair?</span></code>,%
     {} <code><span class="func">7</span></code>${}={}$<code><span class="func">symbol?</span></code>, <code><span class="func">8</span></code>${}={}$<code><span class="func">eq?</span></code>
@@ -1370,7 +1370,7 @@
 функции:</p>
 
 
-<!--\indexE{INVOKE0@\protect<code><span class="func">INVOKE</span></code>\protect\ii{n}!специализация}-->
+<!--\indexE{INVOKE0@\protect<code><span class="func">INVOKE</span></code>\protect<i>n</i>!специализация}-->
 <pre>(define (INVOKE1 address)
   (case address
     ((car)     (list 90))
@@ -1502,7 +1502,7 @@
 из хвостовой позиции и <code><span class="func">FUNCTION-INVOKE</span></code> для всего остального. При вызове из
 хвостовой позиции функция просто использует тот адрес возврата, который в момент
 её вызова лежал на верхушке стека. При нормальном вызове поток исполнения
-необходимо вернуть к инструкции, следующей за <code><span class="func">(FUNCTION-INVOKE)</span></code>, поэтому
+необходимо вернуть к инструкции, следующей за <code>(FUNCTION-INVOKE)</code>, поэтому
 она должна самостоятельно сохранить состояние счётчика команд в стеке. Хвостовой
 вызов же по определению эквивалентен <code><span class="func">FUNCTION-INVOKE</span></code>, за которой сразу же
 следует <code><span class="func">RETURN</span></code>, а так любая функция всегда завершается инструкцией
@@ -1637,45 +1637,45 @@
 
 <p>\begin{table}[pt]\setlength{\tabcolsep}{1.5em}%
 \begin{center}\begin{tabular}{l|@{\extracolsep{1.25em}}l}
-<code><span class="func">(CREATE-CLOSURE 2)</span></code>        &  <code><span class="func">(CALL2-*)</span></code>                 \\
-<code><span class="func">(SHORT-GOTO 60)</span></code>           &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(ARITY=?4)</span></code>                &  <code><span class="func">(ALLOCATE-FRAME2)</span></code>         \\
-<code><span class="func">(EXTEND-ENV)</span></code>              &  <code><span class="func">(POP-FRAME!0)</span></code>             \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   &  <code><span class="func">(POP-FUNCTION)</span></code>            \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(FUNCTION-GOTO)</span></code>           \\
-<code><span class="func">(CONSTANT0)</span></code>               &  <code><span class="func">(RETURN)</span></code>                  \\
-<code><span class="func">(POP-ARG1)</span></code>                &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(CALL2-=)</span></code>                 &  <code><span class="func">(ALLOCATE-FRAME4)</span></code>         \\
-<code><span class="func">(SHORT-JUMP-FALSE 10)</span></code>     &  <code><span class="func">(POP-FRAME!2)</span></code>             \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF2)</span></code>   &  <code><span class="func">(POP-FRAME!1)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(POP-FRAME!0)</span></code>             \\
-<code><span class="func">(CONSTANT1)</span></code>               &  <code><span class="func">(POP-FUNCTION)</span></code>            \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(FUNCTION-GOTO)</span></code>           \\
-<code><span class="func">(ALLOCATE-FRAME2)</span></code>         &  <code><span class="func">(RETURN)</span></code>                  \\
-<code><span class="func">(POP-FRAME!0)</span></code>             &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(POP-FUNCTION)</span></code>            &  <code><span class="func">(ALLOCATE-FRAME2)</span></code>         \\
-<code><span class="func">(FUNCTION-GOTO)</span></code>           &  <code><span class="func">(POP-FRAME!0)</span></code>             \\
-<code><span class="func">(SHORT-GOTO 40)</span></code>           &  <code><span class="func">(EXTEND-ENV)</span></code>              \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF1)</span></code>   &  <code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   &  <code><span class="func">(SHORT-NUMBER 5)</span></code>          \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(CONSTANT1)</span></code>               &  <code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   \\
-<code><span class="func">(POP-ARG1)</span></code>                &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-\ic{(CALL2-{}-)}               &  <code><span class="func">(CREATE-CLOSURE 2)</span></code>        \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(SHORT-GOTO 4)</span></code>            \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF1)</span></code>   &  <code><span class="func">(ARITY=?2)</span></code>                \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(EXTEND-ENV)</span></code>              \\
-<code><span class="func">(CREATE-CLOSURE 2)</span></code>        &  <code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   \\
-<code><span class="func">(SHORT-GOTO 19)</span></code>           &  <code><span class="func">(RETURN)</span></code>                  \\
-<code><span class="func">(ARITY=?2)</span></code>                &  <code><span class="func">(PUSH-VALUE)</span></code>              \\
-<code><span class="func">(EXTEND-ENV)</span></code>              &  <code><span class="func">(ALLOCATE-FRAME4)</span></code>         \\
-<code><span class="func">(DEEP-ARGUMENT-REF 1 2)</span></code>   &  <code><span class="func">(POP-FRAME!2)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(POP-FRAME!1)</span></code>             \\
-<code><span class="func">(DEEP-ARGUMENT-REF 1 0)</span></code>   &  <code><span class="func">(POP-FRAME!0)</span></code>             \\
-<code><span class="func">(PUSH-VALUE)</span></code>              &  <code><span class="func">(POP-FUNCTION)</span></code>            \\
-<code><span class="func">(SHALLOW-ARGUMENT-REF0)</span></code>   &  <code><span class="func">(FUNCTION-GOTO)</span></code>           \\
-<code><span class="func">(POP-ARG1)</span></code>                &  <code><span class="func">(RETURN)</span></code>
+<code>(CREATE-CLOSURE 2)</code>        &  <code>(CALL2-*)</code>                 \\
+<code>(SHORT-GOTO 60)</code>           &  <code>(PUSH-VALUE)</code>              \\
+<code>(ARITY=?4)</code>                &  <code>(ALLOCATE-FRAME2)</code>         \\
+<code>(EXTEND-ENV)</code>              &  <code>(POP-FRAME!0)</code>             \\
+<code>(SHALLOW-ARGUMENT-REF0)</code>   &  <code>(POP-FUNCTION)</code>            \\
+<code>(PUSH-VALUE)</code>              &  <code>(FUNCTION-GOTO)</code>           \\
+<code>(CONSTANT0)</code>               &  <code>(RETURN)</code>                  \\
+<code>(POP-ARG1)</code>                &  <code>(PUSH-VALUE)</code>              \\
+<code>(CALL2-=)</code>                 &  <code>(ALLOCATE-FRAME4)</code>         \\
+<code>(SHORT-JUMP-FALSE 10)</code>     &  <code>(POP-FRAME!2)</code>             \\
+<code>(SHALLOW-ARGUMENT-REF2)</code>   &  <code>(POP-FRAME!1)</code>             \\
+<code>(PUSH-VALUE)</code>              &  <code>(POP-FRAME!0)</code>             \\
+<code>(CONSTANT1)</code>               &  <code>(POP-FUNCTION)</code>            \\
+<code>(PUSH-VALUE)</code>              &  <code>(FUNCTION-GOTO)</code>           \\
+<code>(ALLOCATE-FRAME2)</code>         &  <code>(RETURN)</code>                  \\
+<code>(POP-FRAME!0)</code>             &  <code>(PUSH-VALUE)</code>              \\
+<code>(POP-FUNCTION)</code>            &  <code>(ALLOCATE-FRAME2)</code>         \\
+<code>(FUNCTION-GOTO)</code>           &  <code>(POP-FRAME!0)</code>             \\
+<code>(SHORT-GOTO 40)</code>           &  <code>(EXTEND-ENV)</code>              \\
+<code>(SHALLOW-ARGUMENT-REF1)</code>   &  <code>(SHALLOW-ARGUMENT-REF0)</code>   \\
+<code>(PUSH-VALUE)</code>              &  <code>(PUSH-VALUE)</code>              \\
+<code>(SHALLOW-ARGUMENT-REF0)</code>   &  <code>(SHORT-NUMBER 5)</code>          \\
+<code>(PUSH-VALUE)</code>              &  <code>(PUSH-VALUE)</code>              \\
+<code>(CONSTANT1)</code>               &  <code>(SHALLOW-ARGUMENT-REF0)</code>   \\
+<code>(POP-ARG1)</code>                &  <code>(PUSH-VALUE)</code>              \\
+\ic{(CALL2-{}-)}               &  <code>(CREATE-CLOSURE 2)</code>        \\
+<code>(PUSH-VALUE)</code>              &  <code>(SHORT-GOTO 4)</code>            \\
+<code>(SHALLOW-ARGUMENT-REF1)</code>   &  <code>(ARITY=?2)</code>                \\
+<code>(PUSH-VALUE)</code>              &  <code>(EXTEND-ENV)</code>              \\
+<code>(CREATE-CLOSURE 2)</code>        &  <code>(SHALLOW-ARGUMENT-REF0)</code>   \\
+<code>(SHORT-GOTO 19)</code>           &  <code>(RETURN)</code>                  \\
+<code>(ARITY=?2)</code>                &  <code>(PUSH-VALUE)</code>              \\
+<code>(EXTEND-ENV)</code>              &  <code>(ALLOCATE-FRAME4)</code>         \\
+<code>(DEEP-ARGUMENT-REF 1 2)</code>   &  <code>(POP-FRAME!2)</code>             \\
+<code>(PUSH-VALUE)</code>              &  <code>(POP-FRAME!1)</code>             \\
+<code>(DEEP-ARGUMENT-REF 1 0)</code>   &  <code>(POP-FRAME!0)</code>             \\
+<code>(PUSH-VALUE)</code>              &  <code>(POP-FUNCTION)</code>            \\
+<code>(SHALLOW-ARGUMENT-REF0)</code>   &  <code>(FUNCTION-GOTO)</code>           \\
+<code>(POP-ARG1)</code>                &  <code>(RETURN)</code>
 \end{tabular}\end{center}%
 \caption{Откомпилированная программа.}%
 \label{compilation/instruction/catch-breath/pic:disasm}%
@@ -1762,12 +1762,12 @@
 <!--\indexCS{call/cc}{огранизация стека}-->
 <p>Для правильной работы продолжений <code><span class="func">call/cc</span></code> должна организовать стек таким
 образом, чтобы после активации продолжения начал исполняться код, следующий за
-самой <code><span class="func">call/cc</span></code>. То есть форма \ic{(call/cc \ii{f})} с точки зрения стека
-должна быть идентична вызову функции \ii{f} из хвостовой позиции (если забыть
+самой <code><span class="func">call/cc</span></code>. То есть форма \ic{(call/cc <i>f</i>)} с точки зрения стека
+должна быть идентична вызову функции <i>f</i> из хвостовой позиции (если забыть
 про <code><span class="func">dynamic-wind</span></code>). Следующее определение добивается этого, выполняя
 хвостовой вызов вручную. Функция <code><span class="func">call/cc</span></code> сама создаёт нужную запись
 активации для своего аргумента-замыкания, сохраняет в ней продолжение, помещает
-эту запись в обход стека сразу же в <code><span class="func">*val*</span></code> и вызывает \ii{f} напрямую.</p>
+эту запись в обход стека сразу же в <code><span class="func">*val*</span></code> и вызывает <i>f</i> напрямую.</p>
 
 
 <!--\indexC{call/cc}-->
@@ -1819,18 +1819,18 @@
 
 <p>Форма <code><span class="func">bind-exit</span></code> имеет следующий синтаксис:</p>
 
-<pre>(bind-exit (|\ii{переменная}|) |\ii{формы}|...)</pre>
+<pre>(bind-exit (<i>переменная</i>) <i>формы</i>...)</pre>
 
 
 <!--\indexC{call/ep}-->
-<p>\ii{Переменная} связывается с продолжением формы <code><span class="func">bind-exit</span></code>, после чего
-последовательно вычисляются \ii{формы}. Захваченным продолжением можно
+<p><i>Переменная</i> связывается с продолжением формы <code><span class="func">bind-exit</span></code>, после чего
+последовательно вычисляются <i>формы</i>. Захваченным продолжением можно
 воспользоваться только во время этих вычислений. Если у нас есть <code><span class="func">bind-exit</span></code>,
 то можно легко определить функцию <code><span class="func">call/ep</span></code> и наоборот:</p>
 
 <p>{\def\E{\hbox to 0pt{\kern0.15em\eq}}
-\def\K{\ii{k}}
-\def\B{\ii{тело}}
+\def\K{<i>k</i>}
+\def\B{<i>тело</i>}
 \begin{code:lisp}
 (define (call/ep f)
   (bind-exit (k) (f k)) )</p>
@@ -1917,7 +1917,7 @@
         текущее окружение полученной записью.</p>
 
 <p>  \item Кладёт в стек дескриптор перехода, затем странную
-        метку <code><span class="func">(*ESCAPE*)</span></code> и, наконец, адрес инструкции
+        метку <code>(*ESCAPE*)</code> и, наконец, адрес инструкции
         <code><span class="func">POP-ESCAPER</span></code>, соответствующей создаваемому
         переходу.
 \end{enumerate}</p>
@@ -2004,11 +2004,11 @@
 
 <!--\indexC{dynamic}-->
 <!--\indexC{dynamic-let}-->
-<pre>(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|)
-(dynamic |\ii{переменная}|)</pre>
+<pre>(dynamic-let (<i>переменная</i> <i>значение</i>) <i>тело</i>)
+(dynamic <i>переменная</i>)</pre>
 
-<p>Форма <code><span class="func">dynamic-let</span></code> связывает \ii{переменную} со \ii{значением} на время
-вычисления \ii{тела}. Текущее значение динамической переменной можно получить
+<p>Форма <code><span class="func">dynamic-let</span></code> связывает <i>переменную</i> со <i>значением</i> на время
+вычисления <i>тела</i>. Текущее значение динамической переменной можно получить
 с помощью формы <code><span class="func">dynamic</span></code>. Естественно, если переменная не была ранее связана
 с каким-либо значением, то возникает ошибка.</p>
 
@@ -2125,7 +2125,7 @@
 <!--\indexR{символы!адреса при компиляции}-->
 <p>Единственная не совсем очевидная деталь — это как именно компилировать
 обращения к динамическим переменным. Очевидно, что просто так у нас не получится
-скомпилировать выражение <code><span class="func">(dynamic foo)</span></code> в байты, потому что символ <code><span class="func">foo</span></code>
+скомпилировать выражение <code>(dynamic foo)</code> в байты, потому что символ <code><span class="func">foo</span></code>
 — это не число. Та же проблема у нас была с глобальными переменными, тогда мы
 стали их нумеровать по мере появления. Почему бы не поступить аналогично
 и сейчас? Этим будет заниматься функция <code><span class="func">get-dynamic-variable-index</span></code>:</p>
@@ -2175,8 +2175,8 @@
 <!--\indexR{обработка ошибок}-->
 <p>Понятие ошибки имеет несколько значений. Во-первых, это предотвратимые, но
 почему-то не предусмотренные ситуации. Например, ошибки типизации:
-<code><span class="func">(car 33)</span></code>, недопустимые значения аргументов: <code><span class="func">(quotient 111 0)</span></code>, или
-их неправильное количество: <code><span class="func">(cons)</span></code>. Подобных логических ошибок можно
+<code>(car 33)</code>, недопустимые значения аргументов: <code>(quotient 111 0)</code>, или
+их неправильное количество: <code>(cons)</code>. Подобных логических ошибок можно
 избежать, вовремя выполняя соответствующие проверки. Другой класс ошибок
 составляют непредотвратимые, исключительные ситуации, например, ошибка открытия
 файла. Для их обработки необходимы следующие механизмы:</p>
@@ -2246,15 +2246,15 @@
 время вычислений, представляемых её телом. Таким образом, она имеет следующий
 синтаксис:</p>
 
-<pre>(monitor |\ii{обработчик}| |\ii{формы}|...)</pre>
+<pre>(monitor <i>обработчик</i> <i>формы</i>...)</pre>
 
 <p>Соответственно, в синтаксическом анализаторе <code><span class="func">meaning</span></code> появляется новое
 правило:</p>
 
 <pre>... ((monitor) (meaning-monitor (cadr e) (cddr e) r tail?)) ...</pre>
 
-<p>\ii{Обработчик} вычисляется и становится текущим обработчиком исключений.
-\ii{Формы}, составляющие тело <code><span class="func">meaning</span></code>, последовательно вычисляются
+<p><i>Обработчик</i> вычисляется и становится текущим обработчиком исключений.
+<i>Формы</i>, составляющие тело <code><span class="func">meaning</span></code>, последовательно вычисляются
 внутри неявной формы <code><span class="func">begin</span></code>. Если во время вычислений ничего плохого
 не произошло, то <code><span class="func">monitor</span></code> возвращает значение последней вычисленной формы и
 устанавливает обратно предыдущий обработчик.</p>
@@ -2364,8 +2364,8 @@
     (push-dynamic-binding 0 (if (null? (cdr handlers)) handlers
                                 (cdr handlers) ))
     (if continuable?
-      (stack-push 2)   ; выполнится <code><span class="func">(POP-HANDLER)\,(RESTORE-ENV)\,(RETURN)</span></code>
-      (stack-push 0) ) ; выполнится <code><span class="func">(NON-CONT-ERR)</span></code>
+      (stack-push 2)   ; выполнится <code>(POP-HANDLER)\,(RESTORE-ENV)\,(RETURN)</code>
+      (stack-push 0) ) ; выполнится <code>(NON-CONT-ERR)</code>
     (invoke (car handlers) #t) ) )</pre>
 
 
@@ -2862,13 +2862,13 @@
 
 <p>Предположим, запись <code><span class="func">foo@mod</span></code> означает переменную с именем <code><span class="func">foo</span></code> в модуле
 <code><span class="func">mod</span></code>. Также допустим, что модуль <code><span class="func">fact</span></code> определяет переменные <code><span class="func">fact</span></code> и
-<code><span class="func">fact100</span></code> (последняя содержит значение <code><span class="func">(fact 100)</span></code>, которое очень часто
+<code><span class="func">fact100</span></code> (последняя содержит значение <code>(fact 100)</code>, которое очень часто
 бывает необходимым); модуль <code><span class="func">fib</span></code> определяет переменные <code><span class="func">fib</span></code>, <code><span class="func">fib20</span></code>
 и <code><span class="func">Fibonacci</span></code>. Модуль <code><span class="func">numeric</span></code> среди множества определяемых им функций
 содержит также <code><span class="func">fact</span></code> и <code><span class="func">fib</span></code>, а модуль <code><span class="func">scheme</span></code> определяет все
 стандартные функции \RnRS. Тогда создаваемый данной директивой модуль состоит из
 следующих частей: переменной <code><span class="func">fact@fact</span></code> (а переменная <code><span class="func">fact100@fact</span></code>,
-экспортируемая директивой <code><span class="func">(expose "fact")</span></code>, отбрасывается директивой
+экспортируемая директивой <code>(expose "fact")</code>, отбрасывается директивой
 <code><span class="func">only</span></code>); переменной <code><span class="func">Fibonacci@fib</span></code> (все остальные фильтруются по шаблону
 с помощью <code><span class="func">except-pattern</span></code>). Экспортируемая переменная
 <code><span class="func">call-with-current-continuation@scheme</span></code> становится просто
@@ -2954,9 +2954,9 @@ dumped"</span></code>.} сообщений об ошибках на основе
 памяти, предоставляемый операционной системой, чтобы избавиться от проверок и
 увеличивать размер стека при необходимости на лету. Наша эмуляция памяти
 вряд ли является эффективной, так как о стоимости выражения \ic{(vector-ref
-\ii{v} \ii{i})} нельзя сказать ничего определённого; здесь наверняка каждый раз
-будет выполняться проверка, что \ii{v} это действительно вектор, а
-\ii{i} является неотрицательным целым числом, меньшим, чем длина вектора \ii{v}.</p>
+<i>v</i> <i>i</i>)} нельзя сказать ничего определённого; здесь наверняка каждый раз
+будет выполняться проверка, что <i>v</i> это действительно вектор, а
+<i>i</i> является неотрицательным целым числом, меньшим, чем длина вектора <i>v</i>.</p>
 
 <p>Функция <code><span class="func">run-application</span></code> требует весьма немного приспособлений для
 исполнения скомпилированных приложений. Ей нужен всего лишь интерпретатор
