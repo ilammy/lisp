@@ -492,7 +492,7 @@ Maclisp, заключается в том, что если <code><span class="fu
   (<span class="func">cddr</span> <span class="var">e</span>)
   <span class="var">env</span>
   (<span class="func">extend</span> <span class="var">fenv</span>
-          (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+          (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
           (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">def</span>)
                  (<span class="func">f.make-function</span> (<span class="func">cadr</span> <span class="var">def</span>) (<span class="func">cddr</span> <span class="var">def</span>) <span class="var">env</span> <span class="var">fenv</span>) )
                (<span class="func">cadr</span> <span class="var">e</span>) ) ) ) ) ...</pre>
@@ -629,7 +629,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
         ((<span class="var">flet</span>)
          (<span class="func">f.progn</span> (<span class="func">cddr</span> <span class="var">e</span>)
                   <span class="var">env</span>
-                  (<span class="func">extend</span> <span class="var">fenv</span> (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                  (<span class="func">extend</span> <span class="var">fenv</span> (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
                           (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">def</span>)
                                  (<span class="func">f.make-function</span> (<span class="func">cadr</span> <span class="var">def</span>)
                                                   (<span class="func">cddr</span> <span class="var">def</span>)
@@ -637,7 +637,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
                                (<span class="func">cadr</span> <span class="var">e</span>) ) ) ) )
         ((<span class="var">labels</span>)
          (<span class="syntax">let</span> ((<span class="var">new-fenv</span> (<span class="func">extend</span> <span class="var">fenv</span>
-                                 (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                                 (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
                                  (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">def</span>) '<span class="var">void</span>)
                                       (<span class="func">cadr</span> <span class="var">e</span>) ) )))
            (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">def</span>)
@@ -856,10 +856,10 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
                     <span class="var">env</span>
                     <span class="var">fenv</span>
                     (<span class="func">extend</span> <span class="var">denv</span>
-                            (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                            (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
                             (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">e</span>)
                                    (<span class="func">df.evaluate</span> <span class="var">e</span> <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>) )
-                                 (<span class="func">map</span> <span class="func">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) ) ) ) )
+                                 (<span class="func">map</span> <span class="var">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) ) ) ) )
         (<span class="syntax">else</span> (<span class="func">df.evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>)
                                        (<span class="func">df.evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)
                                        <span class="var">env</span>
@@ -1082,13 +1082,13 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
         ((<span class="var">dynamic-let</span>)
          (<span class="func">df.eprogn</span> (<span class="func">cddr</span> <span class="var">e</span>)
                     <span class="highlight">(<span class="func">special-extend</span> <span class="var">env</span>
-                                    (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) )</span>
+                                    (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) )</span>
                     <span class="var">fenv</span>
                     (<span class="func">extend</span> <span class="var">denv</span>
-                            (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                            (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
                             (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">e</span>)
                                    (<span class="func">df.evaluate</span> <span class="var">e</span> <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>) )
-                                 (<span class="func">map</span> <span class="func">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) ) ) ) )
+                                 (<span class="func">map</span> <span class="var">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) ) ) ) )
         (<span class="syntax">else</span> (<span class="func">df.evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>)
                                        (<span class="func">df.evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)
                                        <span class="var">env</span>
@@ -1878,7 +1878,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <pre>...
 ((<span class="var">letrec</span>)
  (<span class="syntax">let</span> ((<span class="var">new-env</span> (<span class="func">extend</span> <span class="var">env</span>
-                        (<span class="func">map</span> <span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                        (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))
                         (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">binding</span>) <span class="var">the-uninitialized-marker</span>)
                              (<span class="func">cadr</span> <span class="var">e</span>) ) )))
       (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">binding</span>)         <span class="comment">; <code><span class="func">map</span></code> во имя беспорядка!</span>

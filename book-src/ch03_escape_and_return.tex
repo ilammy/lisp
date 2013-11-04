@@ -2430,7 +2430,7 @@ foo~bar)}. Пусть переменная \ic{foo} имеет значение~
           (evaluate (car e*) r (make-no-more-argument-cont k)) )
       (resume k no-more-arguments) ) )
 
-(define-method (resume k (make-no-more-argument-cont) v)
+(define-method (resume (k make-no-more-argument-cont) v)
   (resume (no-more-argument-cont-k k) (list v)) )
 \end{code:lisp}
 

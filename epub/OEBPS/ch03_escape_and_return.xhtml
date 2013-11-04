@@ -1437,7 +1437,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <table id="ch3-eval-stack">
 <tr><td><code><i>evaluate</i> (<span class="func">cons</span> <span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate</i> <span class="var">cons</span> <i>r</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr><span class="var"></span>
+<tr><td><code><i>evaluate</i> <span class="var">cons</span> <i>r</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
 <tr><td><code><i>resume</i> <i>cons</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
 <tr><td><code><i>evaluate-arguments</i> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
 <tr><td><code><i>evaluate</i> <span class="var">foo</span> <i>r</i> </code></td><td><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
@@ -1719,7 +1719,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 ((<span class="var">return-from</span>) (<span class="func">evaluate-return-from</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
 ...</pre>
 
-<p>Затем описываем обработку:</p><span class="func"></span>
+<p>Затем описываем обработку:</p>
 
 <!--\indexC{return-from-cont}-->
 <!--\indexC{evaluate-return-from}-->
@@ -1894,68 +1894,58 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
     (<span class="special">unwind-protect</span> (<span class="special">throw</span> <span class="num">1</span> '<span class="var">foo</span>)
       (<span class="special">throw</span> <span class="num">2</span> '<span class="var">bar</span>) ) ) )         <span class="math"><span class="rel">→</span></span> <i>ошибка!</i></pre>
 
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<p>
-\section{\texorpdfstring%
-{Сравнение \protect<code><span class="func">call/cc</span></code> и \protect<code><span class="func">catch</span></code>}%
-{Сравнение call/cc и catch}}%
-\label{escape/sect:comparing}</p>
+<h2 id="escape/sect:comparing"><span class="seq">3.5.</span> Сравнение <code><span class="func">call/cc</span></code> и <code><span class="special">catch</span></code></h2>
 
 <p>Благодаря объектам, продолжения можно представлять связным списком блоков.
 Некоторые из этих блоков доступны прямо в лексическом окружении; до других
 необходимо пробираться, проходя через несколько промежуточных продолжений;
 третьи вызывают выполнение определённых действий, когда через них проходят.</p>
 
-
 <!--\indexR{продолжения (continuations)!время жизни!динамическое}-->
 <p>В языках вроде Лиспа, где есть продолжения с динамическим временем жизни, стек
-вызовов и продолжения являются синонимами. Когда мы пишем <code>(evaluate ec r
-(make-if-cont k et ef r))</code>, мы явно кладём в стек блок кода, который будет
-обрабатывать значение, которое вернёт условие <code><span class="func">if</span></code>-формы. И наоборот, когда
-мы пишем <code>(evaluate-begin (cdr (begin-cont-e* k)) (begin-cont-r k)
-(begin-cont-k k))</code>, то это значит, что текущий блок <code><span class="func">k</span></code> надо выбросить и
-поставить на его место <code>(begin-cont-k k)</code>. Можно легко убедиться в том, что
+вызовов и продолжения являются синонимами. Когда мы пишем <code>(<span class="func">evaluate</span> <span class="var">ec</span> <span class="var">r</span>
+(<span class="func">make-if-cont</span> <span class="var">k</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span>))</code>, мы явно кладём в стек блок кода, который будет
+обрабатывать значение, которое вернёт условие <code><span class="special">if</span></code>-формы. И наоборот, когда
+мы пишем <code>(<span class="func">evaluate-begin</span> (<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>)) (<span class="func">begin-cont-r</span> <span class="var">k</span>)
+(<span class="func">begin-cont-k</span> <span class="var">k</span>))</code>, то это значит, что текущий блок <code><span class="var">k</span></code> надо выбросить и
+поставить на его место <code>(<span class="func">begin-cont-k</span> <span class="var">k</span>)</code>. Можно легко убедиться в том, что
 такие блоки действительно выбрасываются, в стеке не остаются недовыполненные
 куски продолжений. Таким образом, когда мы выходим из блока, все продолжения,
 указывающие на него и, возможно, сохранённые в других блоках, становятся
 недействительными. Обычно продолжения неявно хранятся в стеке или даже
 в нескольких стеках, согласованных между собой, а переходы между ними
-компилируются в примитивы языка Си: <code><span class="func">setjmp</span></code>/<code><span class="func">longjmp</span></code>.
-\seePage[cc/sect:call/cc]</p>
-
+компилируются в примитивы языка Си: <code>setjmp</code>/<code>longjmp</code>.
+<span class="see">[см. раздел <a href="ch10_compiling_into_c.xhtml#cc/sect:call/cc">10.11</a>]</span></p>
 
 <!--\indexC{let/cc}-->
-<p>В диалекте <span class="logo">EuLisp</span> <span class="cite">[<a href="z1_bibliography.xhtml#pe92">pe92</a>]</span> есть специальная форма <code><span class="func">let/cc</span></code> со следующим
+<p>В диалекте <span class="logo">EuLisp</span> <span class="cite">[<a href="z1_bibliography.xhtml#pe92">PE92</a>]</span> есть специальная форма <code><span class="special">let/cc</span></code> со следующим
 синтаксисом:</p>
 
-<pre>(let/cc <i>переменная</i> <i>формы</i>...)  |\dialect<span class="logo">EuLisp</span>|</pre>
+<pre>(<span class="special">let/cc</span> <i>переменная</i> <i>формы</i>...)  <span class="dialect"><span class="logo">EuLisp</span></span></pre>
 
-<p>\phantomlabel{escape/comparing/par:bind-exit}
 <!--\indexC{bind-exit}-->
-В диалекте Dylan <span class="cite">[<a href="z1_bibliography.xhtml#app92b">app92b</a>]</span> тоже есть подобная форма:</p>
+<p id="escape/comparing/par:bind-exit">В диалекте Dylan <span class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span> тоже есть подобная форма:</p>
 
-<pre>(bind-exit (<i>переменная</i>) <i>формы</i>...)  |\dialect{Dylan}|</pre>
+<pre>(<span class="special">bind-exit</span> (<i>переменная</i>) <i>формы</i>...)  <span class="dialect">Dylan</span></pre>
 
-<p>\noindent
-Эта форма связывает текущее продолжение с <i>переменной</i>, имеющей область
-видимости, ограниченную телом <code><span class="func">let/cc</span></code> или <code><span class="func">bind-exit</span></code>. В этом случае
+<p>Эта форма связывает текущее продолжение с <i>переменной</i>, имеющей область
+видимости, ограниченную телом <code><span class="special">let/cc</span></code> или <code><span class="special">bind-exit</span></code>. В этом случае
 продолжение несомненно является полноценным объектом, имеющим интерфейс унарной
 функции. Но его <em>полезное</em> время жизни динамическое, его можно использовать
-лишь во время вычисления тела формы <code><span class="func">let/cc</span></code> или <code><span class="func">bind-exit</span></code>. Точнее, само
+лишь во время вычисления тела формы <code><span class="special">let/cc</span></code> или <code><span class="special">bind-exit</span></code>. Точнее, само
 продолжение, хранящееся в <i>переменной</i>, имеет неограниченное время жизни, но
 становится бесполезным при выходе из связывающей формы. Это характерная для
 <span class="logo">EuLisp</span> и Dylan черта, но её нет как в Scheme (где продолжения истинно
 неограниченны), так и в <span class="logo">Common Lisp</span> (где они вообще объекты второго класса).
 Тем не менее, такое поведение можно проэмулировать в Scheme:</p>
 
-<pre>(define-syntax let/cc
-  (syntax-rules ()
-    ((let/cc variable . body)
-     (block variable
-       (let ((variable (lambda (x) (return-from variable x))))
-         . body ) ) ) ) )</pre>
-
+<pre>(<span class="special">define-syntax</span> <span class="var">let/cc</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">let/cc</span> <span class="var">variable</span> . <span class="var">body</span>)
+     (<span class="special">block</span> <span class="var">variable</span>
+       (<span class="syntax">let</span> ((<span class="var">variable</span> (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="special">return-from</span> <span class="var">variable</span> <span class="var">x</span>))))
+         . <span class="var">body</span> ) ) ) ) )</pre>
 
 <!--\indexR{продолжения (continuations)!варианты представления}-->
 <p>В мире Scheme продолжения больше нельзя считать неявной частью стека, так как
@@ -1965,50 +1955,47 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 не пользоваться аппаратным стеком, размещая все фреймы в куче.</p>
 
 <p>Такой подход унифицирует выделение памяти под структуры данных и, по
-мнению <span class="cite">[<a href="z1_bibliography.xhtml#as94">as94</a>]</span>, облегчает портирование. Тем не менее, он приводит
+мнению <span class="cite">[<a href="z1_bibliography.xhtml#as94">AS94</a>]</span>, облегчает портирование. Тем не менее, он приводит
 к фрагментации, что вынуждает явно хранить ссылки между продолжениями. (Хотя
-в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">mb93</a>]</span> приведено несколько вариантов решения этих проблем.) Как правило,
+в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">MB93</a>]</span> приведено несколько вариантов решения этих проблем.) Как правило,
 ради эффективности в аппаратный стек стараются поместить максимум данных о ходе
 исполнения программы, так что каноническая реализация <code><span class="func">call/cc</span></code> делает снимки
 стека и сохраняет в куче именно их; таким образом, продолжения — это как раз
 такие снимки стека. Конечно, существуют и другие варианты реализации,
-рассмотренные, например, в \cite{cho88, hdb90}, где используются разделяемые
+рассмотренные, например, в <span class="cite">[<a href="z1_bibliography.xhtml#cho88">CHO88</a>, <a href="z1_bibliography.xhtml#hdb90">HDB90</a>]</span>, где используются разделяемые
 копии, отложенное копирование, частичное копирование и т. д. Естественно,
 каждый из этих вариантов даёт свои преимущества, но за определённую плату.</p>
 
-<p>Форма <code><span class="func">call/cc</span></code> больше похожа на <code><span class="func">block</span></code>, нежели на <code><span class="func">catch</span></code>. Оба типа
+<p>Форма <code><span class="func">call/cc</span></code> больше похожа на <code><span class="special">block</span></code>, нежели на <code><span class="special">catch</span></code>. Оба типа
 продолжений имеют лексическую область видимости, они различаются только временем
-жизни. В некоторых диалектах, вроде <span class="cite">[<a href="z1_bibliography.xhtml#im89">im89</a>]</span>, есть урезанный вариант
+жизни. В некоторых диалектах, вроде <span class="cite">[<a href="z1_bibliography.xhtml#im89">IM89</a>]</span>, есть урезанный вариант
 <code><span class="func">call/cc</span></code>. Называется он <code><span class="func">call/ep</span></code> (от <em class="term">call with exit procedure</em>);
-эта <em>процедура выхода</em> хорошо видна в <code><span class="func">block</span></code>/<code><span class="func">return-from</span></code>, равно
-как и в <code><span class="func">let/cc</span></code>. Интерфейс у <code><span class="func">call/ep</span></code> такой же, как и у <code><span class="func">call/cc</span></code>:</p>
-
+эта <em>процедура выхода</em> хорошо видна в <code><span class="special">block</span></code>/<code><span class="special">return-from</span></code>, равно
+как и в <code><span class="special">let/cc</span></code>. Интерфейс у <code><span class="func">call/ep</span></code> такой же, как и у <code><span class="func">call/cc</span></code>:</p>
 
 <!--\indexC{call/ep}-->
-<pre>(call/ep (lambda (exit) ...))</pre>
-
+<pre>(<span class="func">call/ep</span> (<span class="special">lambda</span> (<span class="var">exit</span>) ...))</pre>
 
 <!--\indexR{объекты!второго класса}-->
-<p>Переменная <code><span class="func">exit</span></code> унарной функции-аргумента связывается с продолжением формы
-<code><span class="func">call/ep</span></code> на время вычисления тела этой функции. Схожесть с <code><span class="func">block</span></code>
+<p>Переменная <code><span class="var">exit</span></code> унарной функции-аргумента связывается с продолжением формы
+<code><span class="func">call/ep</span></code> на время вычисления тела этой функции. Схожесть с <code><span class="special">block</span></code>
 налицо, разве что мы используем обычное окружение переменных, а не отдельное
 окружение лексических меток. Основное их отличие в том, что <code><span class="func">call/ep</span></code> делает
 продолжение полноценным объектом, который можно использовать так же, как любой
-другой объект вроде чисел, замыканий или списков. Имея <code><span class="func">block</span></code>, мы тоже можем
-создать функционально аналогичный объект, написав \ic{(lambda (x) (return-from
-<i>метка</i> x))}. Но все возможные места выхода из <code><span class="func">block</span></code> известны статически
-(это соответствующие формы <code><span class="func">return-from</span></code>), тогда как в <code><span class="func">call/ep</span></code> совсем
-по-другому: например, по выражению <code><span class="func">(call/ep foo)</span></code> нельзя понять, может ли
+другой объект вроде чисел, замыканий или списков. Имея <code><span class="special">block</span></code>, мы тоже можем
+создать функционально аналогичный объект, написав <code>(<span class="special">lambda</span> (<span class="var">x</span>) (<span class="special">return-from</span> <i>метка</i> <span class="var">x</span>))</code>. Но все возможные места выхода из <code><span class="special">block</span></code> известны статически
+(это соответствующие формы <code><span class="special">return-from</span></code>), тогда как в <code><span class="func">call/ep</span></code> совсем
+по-другому: например, по выражению <code>(<span class="func">call/ep</span> <span class="var">foo</span>)</code> нельзя понять, может ли
 произойти переход или нет. Единственный способ это узнать — проанализировать
-<code><span class="func">foo</span></code>, но эта функция может быть определена в совершенно другом месте, а то и
+<code><span class="var">foo</span></code>, но эта функция может быть определена в совершенно другом месте, а то и
 вовсе генерироваться динамически. Следовательно, функция <code><span class="func">call/ep</span></code> более
-сложна для компилятора, чем специальная форма <code><span class="func">block</span></code>, но вместе с тем имеет
+сложна для компилятора, чем специальная форма <code><span class="special">block</span></code>, но вместе с тем имеет
 и больше возможностей.</p>
 
-<p>Продолжая сравнивать <code><span class="func">call/ep</span></code> и <code><span class="func">block</span></code>, мы замечаем больше отличий.
+<p>Продолжая сравнивать <code><span class="func">call/ep</span></code> и <code><span class="special">block</span></code>, мы замечаем больше отличий.
 Например, для формы <code><span class="func">call/ep</span></code>, в которой аргумент записан в виде явной
-<code><span class="func">lambda</span></code>-формы, можно не создавать замыкание. Следовательно, эффективный
-компилятор должен отделять случай <code><span class="func">(call/ep (lambda ...))</span></code> от остальных. Это
+<code><span class="special">lambda</span></code>-формы, можно не создавать замыкание. Следовательно, эффективный
+компилятор должен отделять случай <code>(<span class="func">call/ep</span> (<span class="special">lambda</span> <span class="var">...</span>))</code> от остальных. Это
 похоже на специальные формы, так как они тоже трактуются по-особенному. В Scheme
 принято использовать функции как основной инструмент построения абстракций,
 тогда как специальные формы являются чем-то вроде подсказок компилятору. Они
@@ -2024,48 +2011,47 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 удивительные программы и без <code><span class="func">call/cc</span></code>), то используйте управляющие формы
 <span class="logo">Common Lisp</span>, простые и компилирующиеся в эффективный машинный код.</p>
 
-<h2 id="escape/sect:pr-cont">Продолжения в программировании</h2>
 
+<h2 id="escape/sect:pr-cont"><span class="seq">3.6.</span> Продолжения в программировании</h2>
 
 <!--\indexE{CPS}-->
 <!--\indexR{стиль передачи продолжений (CPS)}-->
 <!--\indexR{продолжения (continuations)|seealso{стиль передачи продолжений (CPS)}}-->
 <p>Существует стиль программирования, называемый «<em class="term">стилем передачи
-продолжений</em>» (\english{continuation passing style}, CPS). В нём во главу угла
+продолжений</em>» (continuation passing style, CPS). В нём во главу угла
 ставится явное указание не только того, что возвращать в качестве результата
 функции, но и кому. После завершения вычислений функция не возвращает результат
 абстрактному получателю куда-то «наверх», а применяет конкретного получателя,
 представленного продолжением, к результату. В общем, если у нас есть вычисление
-<code>(foo (bar))</code>, то оно выворачивается наизнанку, преобразуясь в следующий вид:
-<code>(new-bar foo)</code>, где <code><span class="func">foo</span></code> и является продолжением, которому <code><span class="func">new-bar</span></code>
-передаст результат вычислений. Давайте рассмотрим данное преобразование
-на примере многострадального факториала. Пусть мы хотим вычислить $n(n!)$:</p>
-
+<code>(<span class="func">foo</span> (<span class="func">bar</span>))</code>, то оно выворачивается наизнанку, преобразуясь в следующий вид:
+<code>(<span class="func">new-bar</span> <span class="var">foo</span>)</code>, где <code><span class="func">foo</span></code> и является продолжением, которому
+<code><span class="func">new-bar</span></code> передаст результат вычислений. Давайте рассмотрим
+данное преобразование на примере многострадального факториала. Пусть мы хотим вычислить
+<span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="punct">!</span><span class="close">)</span></span>:</p>
 
 <!--\indexC{fact}-->
-<pre>(define (fact n k)
-  (if (= n 0) (k 1)
-      (fact (- n 1) (lambda (r) (k (* n r)))) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) (<span class="func">k</span> <span class="num">1</span>)
+      (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) (<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))) ) )
 
-<p>(fact n (lambda (r) (* n r))) |\is| |$n(n!)$|</pre>
+(<span class="func">fact</span> <span class="var">n</span> (<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))) <span class="math"><span class="rel">→</span></span> <span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="punct">!</span><span class="close">)</span></span></pre>
 
-<p>Факториал теперь принимает дополнительный аргумент <code><span class="func">k</span></code>: получателя
+<p>Факториал теперь принимает дополнительный аргумент <code><span class="var">k</span></code>: получателя
 вычисленного факториала. Если результат равен единице, то к ней просто
-применяется <code><span class="func">k</span></code>. Если же результат сразу сказать нельзя, то следует ожидаемый
+применяется <code><span class="var">k</span></code>. Если же результат сразу сказать нельзя, то следует ожидаемый
 рекурсивный вызов. Проблема состоит в том, что хорошо было бы сначала умножить
-факториал $(<code><span class="func">n</span></code> - 1)$ на <code><span class="func">n</span></code> и только потом уже передавать произведение
-получателю, а форма <code>(k (* n (fact (- n 1) k)))</code> делает всё наоборот! Поэтому
+факториал <span class="math"><span class="open">(</span><code class="ord"><span class="var">n</span></code><span class="binop">−</span><span class="ord num">1</span><span class="close">)</span></span> на <code><span class="var">n</span></code> и только потом уже передавать произведение
+получателю, а форма <code>(<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">k</span>)))</code> делает всё наоборот! Поэтому
 и мы всё сделаем шиворот-навыворот: пусть получатель сам умножает результат
-на <code><span class="func">n</span></code>. Настоящий получатель оборачивается в функцию: <code>(lambda (r) (k
-(* n r)))</code>, и передаётся следующему рекурсивному вызову.</p>
+на <code><span class="var">n</span></code>. Настоящий получатель оборачивается в функцию:
+<code>(<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))</code>, и передаётся следующему рекурсивному вызову.</p>
 
 <p>Такое определение факториала даёт возможность вычислять различные величины
-с помощью одного и того же определения. Например, обычный факториал: \ic{(fact
-<i>n</i> (lambda (x) x))}, или удвоенный: \ic{(fact <i>n</i> (lambda (x) (* 2 x)))},
+с помощью одного и того же определения. Например, обычный факториал: <code>(<span class="func">fact</span> <i>n</i> (<span class="special">lambda</span> (<span class="var">x</span>) <span class="var">x</span>))</code>, или удвоенный: <code>(<span class="func">fact</span> <i>n</i> (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">*</span> <span class="num">2</span> <span class="var">x</span>)))</code>,
 или что-то более сложное.</p>
 
-<h3 id="escape/pr-cont/ssect:multiple">Составные значения</h3>
 
+<h3 id="escape/pr-cont/ssect:multiple"><span class="seq">3.6.1.</span> Составные значения</h3>
 
 <!--\indexR{возвращаемые значения!множественные}-->
 <!--\indexR{множественные значения}-->
@@ -2078,69 +2064,65 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 переданное продолжение к этим величинам. Например, вот так можно проверить
 правильность выполнения деления этой функцией:</p>
 
-<pre>(let* ((p (read)) (q (read)))
-  (divide p q (lambda (quotient remainder)
-                (= p (+ (* quotient q) remainder)) )) )</pre>
+<pre>(<span class="func">let*</span> ((<span class="var">p</span> (<span class="func">read</span>)) (<span class="var">q</span> (<span class="func">read</span>)))
+  (<span class="func">divide</span> <span class="var">p</span> <span class="var">q</span> (<span class="special">lambda</span> (<span class="var">quotient</span> <span class="var">remainder</span>)
+                (<span class="func">=</span> <span class="var">p</span> (<span class="func">+</span> (<span class="func">*</span> <span class="var">quotient</span> <span class="var">q</span>) <span class="var">remainder</span>)) )) )</pre>
 
-<p>Менее тривиальный пример — вычисление коэффициентов Безу.\footnote*{Фух!
-Наконец-то мне удалось опубликовать эту функцию! Она с 1981 года валяется
-у меня без дела.} Соотношение Безу утверждает, что для любых целых чисел $n$
-и $p$ можно найти такую пару целых $u$ и $v$, что $un + vp = \NOD(n, p)$. Для
-вычисления коэффициентов $u$ и $v$ можно использовать расширенный алгоритм
+<p>Менее тривиальный пример — вычисление коэффициентов Безу.<a class="footref" href="zz_footnotes.xhtml#foot3.14"><sup>14</sup></a> Соотношение Безу утверждает, что для любых целых чисел
+<span class="math"><span class="ord var">n</span></span>
+и <span class="math"><span class="ord var">p</span></span>
+можно найти такую пару целых <span class="math"><span class="ord var">u</span></span> и
+<span class="math"><span class="ord var">v</span></span>, что
+<span class="math"><span class="ord var">u</span><span class="ord var">n</span><span class="binop">+</span><span class="ord var">v</span><span class="ord var">p</span><span class="rel">=</span><span class="ord func">НОД</span><span class="open">(</span><span class="ord var">n</span><span class="punct">,</span><span class="ord var">p</span><span class="close">)</span></span>.
+Для вычисления коэффициентов <span class="math"><span class="ord var">u</span></span> и
+<span class="math"><span class="ord var">v</span></span> можно использовать расширенный алгоритм
 Евклида.</p>
 
-
 <!--\indexC{bezout}-->
-<pre>(define (bezout n p k)  ; пусть $n > p$
-  (divide
-   n p (lambda (q r)
-         (if (= r 0)
-             (k 0 1)    ; т.\,к. $0 \cdot qp + 1 \cdot p = p$
-             (bezout
-              p r (lambda (u v)
-                    (k v (- u (* v q))) ) ) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">bezout</span> <span class="var">n</span> <span class="var">p</span> <span class="var">k</span>)  <span class="comment">; пусть <span class="math"><span class="ord var">n</span><span class="rel">&gt;</span><span class="ord var">p</span></span></span>
+  (<span class="func">divide</span>
+   <span class="var">n</span> <span class="var">p</span> (<span class="special">lambda</span> (<span class="var">q</span> <span class="var">r</span>)
+         (<span class="special">if</span> (<span class="func">=</span> <span class="var">r</span> <span class="num">0</span>)
+             (<span class="func">k</span> <span class="num">0</span> <span class="num">1</span>)    <span class="comment">; т.\,к. <span class="math"><span class="ord num">0</span><span class="binop">⋅</span><span class="ord var">q</span><span class="ord var">p</span><span class="binop">+</span><span class="ord num">1</span><span class="binop">⋅</span><span class="ord var">p</span><span class="rel">=</span><span class="ord var">p</span></span></span>
+             (<span class="func">bezout</span>
+              <span class="var">p</span> <span class="var">r</span> (<span class="special">lambda</span> (<span class="var">u</span> <span class="var">v</span>)
+                    (<span class="func">k</span> <span class="var">v</span> (<span class="func">-</span> <span class="var">u</span> (<span class="func">*</span> <span class="var">v</span> <span class="var">q</span>))) ) ) ) ) ) )</pre>
 
-<p>Функция <code><span class="func">bezout</span></code> использует <code><span class="func">divide</span></code>, чтобы сохранить в <code><span class="func">q</span></code> и <code><span class="func">r</span></code>
-частное и остаток от деления <code><span class="func">n</span></code> на <code><span class="func">p</span></code>. Если $n$ делится нацело на $p$,
-то очевидно, что их наибольший общий делитель равен $p$ и есть тривиальное
-решение: $0$ и $1$. Если остаток не равен нулю, то\textdots\ попробуйте доказать
+<p>Функция <code><span class="func">bezout</span></code> использует <code><span class="func">divide</span></code>, чтобы сохранить в <code><span class="var">q</span></code> и <code><span class="var">r</span></code>
+частное и остаток от деления <code><span class="var">n</span></code> на <code><span class="var">p</span></code>. Если <span class="math"><span class="ord var">n</span></span> делится нацело на <span class="math"><span class="ord var">p</span></span>,
+то очевидно, что их наибольший общий делитель равен <span class="math"><span class="ord var">p</span></span> и есть тривиальное
+решение: <span class="math"><span class="ord num">0</span></span> и <span class="math"><span class="ord num">1</span></span>. Если остаток не равен нулю, то… попробуйте доказать
 правильность этого алгоритма самостоятельно; для этого не надо быть экспертом
 в теории чисел, достаточно знать свойства НОД. А здесь мы ограничимся простой
 проверкой:</p>
 
-<pre>(bezout 1991 1960 list) |\is| (-569 578)</pre>
+<pre>(<span class="func">bezout</span> <span class="num">1991</span> <span class="num">1960</span> <span class="var">list</span>) <span class="math"><span class="rel">→</span></span> (<span class="num">-569</span> <span class="num">578</span>)</pre>
 
-<h3 id="escape/pr-cont/ssect:tail-recusion">Хвостовая рекурсия</h3>
+
+<h3 id="escape/pr-cont/ssect:tail-recusion"><span class="seq">3.6.2.</span> Хвостовая рекурсия</h3>
 
 <p>В примере с вычислением факториала с помощью продолжений вызов <code><span class="func">fact</span></code> в конце
 концов приводил к ещё одному вызову <code><span class="func">fact</span></code>. Если мы проследим за вычислением
-<code>(fact 3 list)</code>, то, отбрасывая очевидные шаги, получим следующую картину:</p>
+<code>(<span class="func">fact</span> <span class="num">3</span> <span class="var">list</span>)</code>, то, отбрасывая очевидные шаги, получим следующую картину:</p>
 
-<pre>(fact 3 list)
-|\eq| (fact 2 (lambda (r) (k (* n r))))|\begin{where}
-                                        \- n {\is} 3
-                                        \- k {\eq} list
-                                        \end{where}|
-|\eq| (fact 1 (lambda (r) (k (* n r))))|\begin{where}
-                                \- n {\is} 2
-                                \- k {\is} (lambda (r) (k (* n r)))\begin{where}
-                                                                  \- n {\is} 3
-                                                                  \- k {\eq} list
-                                                                  \end{where}
-                                        \end{where}|
-|\eq| (k (* n 1))|\begin{where}
-                  \- n {\is} 2
-                  \- k {\is} (lambda (r) (k (* n r)))\begin{where}
-                                                    \- n {\is} 3
-                                                    \- k {\eq} list
-                                                    \end{where}
-                  \end{where}|
-|\eq| (k (* n 2))|\begin{where}
-                  \- n {\is} 3
-                  \- k {\eq} list
-                  \end{where}|
-|\is| (6)</pre>
-
+<pre>(<span class="func">fact</span> <span class="num">3</span> <span class="var">list</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">2</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">1</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span><span class="math"> <span class="rel">≡</span></span> <span class="var">list</span></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">1</span>))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">2</span>))<div class="where">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div>
+<span class="math"><span class="rel">→</span></span> (<span class="func">6</span>)</pre>
 
 <!--\indexR{рекурсия!хвостовая}-->
 <!--\indexR{хвостовые вызовы!рекурсивные}-->
@@ -2159,9 +2141,9 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 из хвостовой позиции. Это продолжение рекурсивно вызывает <code><span class="func">bezout</span></code> опять-таки
 из хвостовой позиции.</p>
 
-<p>Но в классическом факториале <code>(* n (fact (- n 1)))</code> рекурсивный вызов
+<p>Но в классическом факториале <code>(<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)))</code> рекурсивный вызов
 <code><span class="func">fact</span></code> происходит не из хвостовой позиции. Он <em>завёрнут</em> в продолжение,
-так как значение <code>(fact (- n 1))</code> ещё ожидается для умножения на <code><span class="func">n</span></code>;
+так как значение <code>(<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))</code> ещё ожидается для умножения на <code><span class="var">n</span></code>;
 вызов тут не является последней необходимой операцией, всё вычисление нельзя
 свести к нему.</p>
 
@@ -2169,75 +2151,73 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 как при таких вызовах они больше никогда не будут использоваться. Следовательно,
 их можно не сохранять, экономя таким образом драгоценную стековую память.
 Подобные оптимизации были детально изучены французским лисп-сообществом, что
-позволило существенно ускорить интерпретацию \cite{gre77,cha80,sj87};
-см. также <span class="cite">[<a href="z1_bibliography.xhtml#han90">han90</a>]</span>.</p>
+позволило существенно ускорить интерпретацию <span class="cite">[<a href="z1_bibliography.xhtml#gre77">Gre77</a> <a href="z1_bibliography.xhtml#cha80">Cha80</a> <a href="z1_bibliography.xhtml#sj87">SJ87</a>]</span>;
+см. также <span class="cite">[<a href="z1_bibliography.xhtml#han90">Han90</a>]</span>.</p>
 
 <div class="bigskip"/>
-
 
 <!--\indexCS{evaluate-begin}{хвостовая рекурсия}-->
 <p>Оптимизация хвостовой рекурсии — это очень желанное свойство интерпретатора;
 не только для пользователя, но и для самого интерпретатора. Самое очевидное
-место, где она была бы полезной, — это форма <code><span class="func">begin</span></code>. До сих пор она
+место, где она была бы полезной, — это форма <code><span class="special">begin</span></code>. До сих пор она
 определялась следующим образом:</p>
 
-<pre>(define (evaluate-begin e* r k)
-  (if (pair? e)
-      (if (pair? (cdr e*))
-          (evaluate (car e*) r (make-begin-cont k e* r))
-          (evaluate (car e*) r k) )
-      (resume k empty-begin-value) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">evaluate-begin</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e*</span>))
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>))
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">k</span>) )
+      (<span class="func">resume</span> <span class="var">k</span> <span class="var">empty-begin-value</span>) ) )
 
-<p>(define-method (resume (k begin-cont) v)
-  (evaluate-begin (cdr (begin-cont-e* k))
-                  (begin-cont-r k)
-                  (begin-cont-k k) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">begin-cont</span>) <span class="var">v</span>)
+  (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>))
+                  (<span class="func">begin-cont-r</span> <span class="var">k</span>)
+                  (<span class="func">begin-cont-k</span> <span class="var">k</span>) ) )</pre>
 
 <p>Заметьте, здесь каждый вызов является хвостовым. Также здесь используется одна
 небольшая оптимизация. Можно определить эту форму проще:</p>
 
-<pre>(define (evaluate-begin e* r k)
-  (if (pair? e*)
-      (evaluate (car e*) r (make-begin-cont k e* r))
-      (resume k empty-begin-value) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">evaluate-begin</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>))
+      (<span class="func">resume</span> <span class="var">k</span> <span class="var">empty-begin-value</span>) ) )
 
-<p>(define-method (resume (k begin-cont) v)
-  (let ((e* (cdr (begin-cond-e* k))))
-    (if (pair? e*)
-        (evaluate-begin e* (begin-cont-r k) (begin-cont-k k))
-        (resume (begin-cont-k k) v) ) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">begin-cont</span>) <span class="var">v</span>)
+  (<span class="syntax">let</span> ((<span class="var">e*</span> (<span class="func">cdr</span> (<span class="func">begin-cond-e*</span> <span class="var">k</span>))))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+        (<span class="func">evaluate-begin</span> <span class="var">e*</span> (<span class="func">begin-cont-r</span> <span class="var">k</span>) (<span class="func">begin-cont-k</span> <span class="var">k</span>))
+        (<span class="func">resume</span> (<span class="func">begin-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) ) ) )</pre>
 
 <p>Но первый вариант предпочтительнее, так как в этом случае при вычислении
 последнего оставшегося выражения мы не тратим время на создание лишнего
-продолжения <code>(make-begin-cont k e* r)</code>, которое фактически равно <code><span class="func">k</span></code>, а
+продолжения <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>)</code>, которое фактически равно <code><span class="var">k</span></code>, а
 сразу же переходим в нужное продолжение. Конечно, в Лиспе есть сборка мусора, но
 это не означает, что можно мусорить ненужными объектами на каждом шагу. Это
-небольшая, но важная оптимизация, ведь каждый <code><span class="func">begin</span></code> когда-нибудь
-заканчивается!</p>
-
+небольшая, но важная оптимизация, ведь каждый <code><span class="special">begin</span></code>
+когда-нибудь заканчивается!</p>
 
 <!--\indexCS{evaluate-arguments}{хвостовая рекурсия}-->
 <p>Аналогично можно оптимизировать и вычисление аргументов функции, переписав его
 следующим образом:</p>
 
-<pre>(define-class no-more-argument-cont continuation ())</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">no-more-argument-cont</span> <span class="class">continuation</span> ())
 
-<p>(define (evaluate-arguments e* r k)
-  (if (pair? e*)
-      (if (pair? (cdr e*))
-          (evaluate (car e*) r (make-argument-cont k e* r))
-          (evaluate (car e*) r (make-no-more-argument-cont k)) )
-      (resume k no-more-arguments) ) )</p>
+(<span class="special">define</span> (<span class="func">evaluate-arguments</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e*</span>))
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-argument-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>))
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> (<span class="func">make-no-more-argument-cont</span> <span class="var">k</span>)) )
+      (<span class="func">resume</span> <span class="var">k</span> <span class="var">no-more-arguments</span>) ) )
 
-<p>(define-method (resume k (make-no-more-argument-cont) v)
-  (resume (no-more-argument-cont-k k) (list v)) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">make-no-more-argument-cont</span>) <span class="var">v</span>)
+  (<span class="func">resume</span> (<span class="func">no-more-argument-cont-k</span> <span class="var">k</span>) (<span class="func">list</span> <span class="var">v</span>)) )</pre>
 
 <p>Это новое продолжение, хранящее список из последнего вычисленного значения,
-избавляет нас от необходимости передавать окружение <code><span class="func">r</span></code> целиком. Данный приём
-впервые использован Митчеллом Уондом и Дэниелом Фридманом в <span class="cite">[<a href="z1_bibliography.xhtml#wan80b">wan80b</a>]</span>.</p>
+избавляет нас от необходимости передавать окружение <code><span class="var">r</span></code> целиком. Данный приём
+впервые использован Митчеллом Уондом и Дэниелом Фридманом в <span class="cite">[<a href="z1_bibliography.xhtml#wan80b">Wan80b</a>]</span>.</p>
 
-<h2 id="escape/sect:partial">Частичные продолжения</h2>
 
+<h2 id="escape/sect:partial"><span class="seq">3.7.</span> Частичные продолжения</h2>
 
 <!--\indexR{продолжения (continuations)!частичные продолжения}-->
 <p>Среди прочих вопросов, поднимаемых продолжениями, есть ещё один довольно
@@ -2248,91 +2228,99 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 через него не перешагнули, то он бы принял какое-то значение, выполнил
 определённые действия и передал бы полученное значение своему продолжению.
 То есть вёл бы себя как обычная функция. Во многих работах, вроде
-\cite{ffdm87,ff87,fel88,df90,hd90,qs91,mq94}, приводятся способы сохранения и
+<span class="cite">[<a href="z1_bibliography.xhtml#ffdm87">FFDM87</a>,
+<a href="z1_bibliography.xhtml#ff87">FF87</a>,
+<a href="z1_bibliography.xhtml#fel88">Fel88</a>,
+<a href="z1_bibliography.xhtml#df90">DF90</a>,
+<a href="z1_bibliography.xhtml#hd90">HD90</a>,
+<a href="z1_bibliography.xhtml#qs91">QS91</a>,
+<a href="z1_bibliography.xhtml#mq94">MQ94</a>]</span>, приводятся способы сохранения и
 приёмы использования этих срезов — <em class="term">частичных продолжений</em>
-(\english{partial/delimited continuations}).</p>
+(partial/delimited continuations).</p>
 
 <p>Рассмотрим следующий простой пример:</p>
 
-<pre>(+ 1 (call/cc (lambda (k) (set! foo k) 2))) |\is| 3
-(foo 3)                                     |\is| 4</pre>
+<pre>(<span class="func">+</span> <span class="num">1</span> (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) (<span class="special">set!</span> <span class="var">foo</span> <span class="var">k</span>) <span class="num">2</span>))) <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+(<span class="func">foo</span> <span class="num">3</span>)                                     <span class="math"><span class="rel">→</span></span> <span class="num">4</span></pre>
 
-<p>\noindent
-Какое именно продолжение хранится в <code><span class="func">foo</span></code>? Казалось бы $\lambda u . 1 + u$,
-но чему тогда равно <code>(foo (foo 4))</code>?</p>
+<p>Какое именно продолжение хранится в <code><span class="var">foo</span></code>?
+Казалось бы <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>,
+но чему тогда равно <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code>?</p>
 
-<pre>(foo (foo 4))                               |\is| 5</pre>
-
+<pre>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))                               <span class="math"><span class="rel">→</span></span> <span class="num">5</span></pre>
 
 <!--\indexR{композициональность!продолжений}-->
 <!--\indexR{продолжения (continuations)!композициональность}-->
-<p>Получается <code><span class="func">5</span></code>, а не ожидаемое значение <code><span class="func">6</span></code>, которое бы получилось при
+<p>Получается <code><span class="num">5</span></code>, а не ожидаемое значение <code><span class="num">6</span></code>, которое бы получилось при
 правильной композиции функций. Дело в том, что вызов продолжения означает
 отбрасывание всех последующих вычислений ради продолжения других вычислений.
 Таким образом, вызов продолжения внутри <code><span class="func">foo</span></code> приводит к вычислению значения
-$\lambda u. 1 + u$ при $u = 4$, которое становится значением всего выражения, и
+<span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>
+при <span class="math"><span class="var ord">u</span><span class="rel">=</span><span class="num ord">4</span></span>, которое становится значением всего выражения, и
 второй вызов <code><span class="func">foo</span></code> вообще не происходит — он не нужен, ведь значение
 выражения уже вычислено и передано продолжению! Именно в этом проблема: мы
 захватили обычное продолжение, а не частичное. Обычные продолжения
 <em class="term">активируются</em> и полностью заменяют стек собой, а <em>не вызываются</em>
 как функции.</p>
 
-<p>Возможно, так будет понятнее. В <code><span class="func">foo</span></code> мы сохранили <code>(+ 1 [])</code>. Это всё,
+<p>Возможно, так будет понятнее. В <code><span class="var">foo</span></code> мы сохранили <code>(<span class="func">+</span> <span class="num">1</span> <span class="hash">[]</span>)</code>. Это всё,
 что ещё осталось вычислить. Так как аргументы передаются по значению, то
-вычисление аргумента-продолжения в <code>(foo (foo 4))</code> фактически завершает
-вычисления, отбрасывает <code>(foo [])</code> и возвращает значение формы <code>(+ 1 4)</code>,
-которое, очевидно, равно <code><span class="func">5</span></code>.</p>
-
+вычисление аргумента-продолжения в <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code> фактически завершает
+вычисления, отбрасывает <code>(<span class="func">foo</span> <span class="hash">[]</span>)</code> и возвращает значение формы <code>(<span class="func">+</span> <span class="num">1</span> <span class="num">4</span>)</code>,
+которое, очевидно, равно <code><span class="num">5</span></code>.</p>
 
 <!--\indexR{продолжения (continuations)!и интерактивная сессия}-->
 <!--\indexR{интерактивная сессия (REPL)!продолжения}-->
 <!--\indexE{REPL!продолжения}-->
 <p>Частичные продолжения представляют собой лишь часть оставшихся вычислений, тогда
 как обычные продолжения — это <em>все</em> оставшиеся вычисления.
-В статьях \cite{fwfd88,df90,hd90,qs91} приводятся способы захвата частичных и,
+В статьях <span class="cite">[<a href="z1_bibliography.xhtml#fwfd88">FWFD88</a>,
+<a href="z1_bibliography.xhtml#df90">DF90</a>, <a href="z1_bibliography.xhtml#hd90">HD90</a>,
+<a href="z1_bibliography.xhtml#qs91">QS91</a>]</span> приводятся способы захвата частичных и,
 следовательно, поддающихся композиции продолжений. Предположим, теперь
-с <code><span class="func">foo</span></code> связано продолжение <code>[(+ 1 [])]</code>, где внешние квадратные скобки
-означают, что оно ведёт себя как функция. Тогда <code>(foo (foo 4))</code> будет
-эквивалентно уже <code>(foo [(+ 1 [4])])</code>, что превращается в <code>(+ 1 5)</code>,
-которое в итоге даёт <code><span class="func">6</span></code>. Захваченное продолжение <code>[(+ 1 [])]</code> определяет
+с <code><span class="var">foo</span></code> связано продолжение <code><span class="hash">[</span>(<span class="func">+</span> <span class="num">1</span> <span class="hash">[]</span>)<span class="hash">]</span></code>, где внешние квадратные скобки
+означают, что оно ведёт себя как функция. Тогда <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code> будет
+эквивалентно уже <code>(<span class="func">foo</span> <span class="hash">[</span>(<span class="func">+</span> <span class="num">1</span> <span class="hash">[</span><span class="num">4</span><span class="hash">]</span>)<span class="hash">]</span>)</code>, что превращается в <code>(<span class="func">+</span> <span class="num">1</span> <span class="num">5</span>)</code>,
+которое в итоге даёт <code><span class="num">6</span></code>. Захваченное продолжение <code><span class="hash">[</span>(<span class="func">+</span> <span class="num">1</span> <span class="hash">[]</span>)<span class="hash">]</span></code> определяет
 не все последующие вычисления, которые когда-либо произойдут, а только их часть
 вплоть до момента возврата значения. Для интерактивной сессии продолжением
-обычных продолжений является <em class="term">главный цикл</em> (он же <code><span class="func">toplevel</span></code>), именно
+обычных продолжений является <em class="term">главный цикл</em>
+(он же <code><span class="func">toplevel</span></code>), именно
 ему продолжения передают своё значение, а он выводит его на экран, читает
 следующее выражение из входного потока, вычисляет его и так далее. Продолжение
 частичных продолжений неизвестно, именно поэтому они конечны и ведут себя как
 обычные функции — ведь функции тоже не знают, кому они вернут значение.</p>
 
-<p>Давайте взглянем на наш пример с <code>(set! foo k)</code> с другой стороны. Оставим всё
+<p>Давайте взглянем на наш пример с <code>(<span class="special">set!</span> <span class="var">foo</span> <span class="var">k</span>)</code> с другой стороны. Оставим всё
 по-прежнему, но объединим эти два выражения в явную последовательность:</p>
 
-<pre>(begin (+ 1 (call/cc (lambda (k) (set! foo k) 2)))
-       (foo 3) )</pre>
+<pre>(<span class="special">begin</span> (<span class="func">+</span> <span class="num">1</span> (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) (<span class="special">set!</span> <span class="var">foo</span> <span class="var">k</span>) <span class="num">2</span>)))
+       (<span class="func">foo</span> <span class="num">3</span>) )</pre>
 
-<p>Бабах! Мы получили бесконечный цикл, так как <code><span class="func">foo</span></code> оказывается теперь
-связанной с <code>(begin (+ 1 []) (foo 3))</code>, что приводит к рекурсии. Как видим,
+<p>Бабах! Мы получили бесконечный цикл, так как <code><span class="var">foo</span></code> оказывается теперь
+связанной с <code>(<span class="special">begin</span> (<span class="func">+</span> <span class="num">1</span> <span class="hash">[]</span>) (<span class="func">foo</span> <span class="num">3</span>))</code>, что приводит к рекурсии. Как видим,
 главный цикл — это не только последовательное вычисление выражений. Если мы
 хотим правильно его проэмулировать, то вдобавок необходимо изменять продолжение
 каждого вычисляемого в главном цикле выражения:</p>
 
-<pre>(let (foo sequel print?)
-  (define-syntax toplevel
-    (syntax-rules ()
-      ((toplevel e) (toplevel-eval (lambda () e))) ) )
-  (define (toplevel-eval thunk)
-    (call/cc (lambda (k)
-               (set! print? #t)
-               (set! sequel k)
-               (let ((v (thunk)))
-                 (when print? (display v) (set! print? #f))
-                 (sequel v) ) )) )
-  (toplevel (+ 1 (call/cc (lambda (k) (set! foo k) 2))))
-  (toplevel (foo 3))
-  (toplevel (foo (foo 4))) )</pre>
+<pre>(<span class="syntax">let</span> (<span class="var">foo</span> <span class="var">sequel</span> <span class="var">print?</span>)
+  (<span class="special">define-syntax</span> <span class="var">toplevel</span>
+    (<span class="syntax">syntax-rules</span> ()
+      ((<span class="syntax">toplevel</span> <span class="var">e</span>) (<span class="func">toplevel-eval</span> (<span class="special">lambda</span> () <span class="var">e</span>))) ) )
+  (<span class="special">define</span> (<span class="func">toplevel-eval</span> <span class="var">thunk</span>)
+    (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>)
+               (<span class="special">set!</span> <span class="var">print?</span> <span class="hash">#t</span>)
+               (<span class="special">set!</span> <span class="var">sequel</span> <span class="var">k</span>)
+               (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">thunk</span>)))
+                 (<span class="syntax">when</span> <span class="var">print?</span> (<span class="func">display</span> <span class="var">v</span>) (<span class="special">set!</span> <span class="var">print?</span> <span class="hash">#f</span>))
+                 (<span class="func">sequel</span> <span class="var">v</span>) ) )) )
+  (<span class="syntax">toplevel</span> (<span class="func">+</span> <span class="num">1</span> (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) (<span class="special">set!</span> <span class="var">foo</span> <span class="var">k</span>) <span class="num">2</span>))))
+  (<span class="syntax">toplevel</span> (<span class="func">foo</span> <span class="num">3</span>))
+  (<span class="syntax">toplevel</span> (<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))) )</pre>
 
-<p>Каждый раз, когда мы хотим вычислить выражение с помощью <code><span class="func">toplevel</span></code>, его
-продолжение — <em>продолжение</em> работы <code><span class="func">toplevel</span></code> — сохраняется
-в переменной <code><span class="func">sequel</span></code>. Любое продолжение, захватываемое внутри <code><span class="func">thunk</span></code>,
+<p>Каждый раз, когда мы хотим вычислить выражение с помощью <code><span class="syntax">toplevel</span></code>, его
+продолжение — <em>продолжение</em> работы <code><span class="syntax">toplevel</span></code> — сохраняется
+в переменной <code><span class="var">sequel</span></code>. Любое продолжение, захватываемое внутри <code><span class="func">thunk</span></code>,
 теперь будет ограничено текущей вычисляемой формой. Аналогичным образом применяя
 присваивание, можно сохранить любой срез стека в виде частичного продолжения.
 Как видим, все продолжения с неограниченным временем жизни для своего создания
@@ -2343,7 +2331,7 @@ $\lambda u. 1 + u$ при $u = 4$, которое становится знач�
 <p>Частичные продолжения явно указывают, когда необходимо остановить вычисления.
 Этот эффект может быть полезен в некоторых случаях, а также интересен сам по
 себе. Мы вполне можем даже переписать нашу <code><span class="func">call/cc</span></code> так, чтобы она
-захватывала именно частичные продолжения вплоть до <code><span class="func">toplevel</span></code>. Естественно,
+захватывала именно частичные продолжения вплоть до <code><span class="syntax">toplevel</span></code>. Естественно,
 кроме них потребуются также и переходы на тот случай, когда мы действительно
 не заинтересованы в сохранении срезов стека. Но, с другой стороны, частичные
 продолжения в реальности используются довольно редко; сложно привести пример
@@ -2352,7 +2340,8 @@ $\lambda u. 1 + u$ при $u = 4$, которое становится знач�
 управляющей формы, которую можно реализовать на Scheme с помощью <code><span class="func">call/cc</span></code>
 и присваивания.</p>
 
-<h2 id="escape/sect:conclusions">Заключение</h2>
+
+<h2 id="escape/sect:conclusions"><span class="seq">3.8.</span> Заключение</h2>
 
 <p>Продолжения вездесущи. Если вы понимаете продолжения, вы одновременно овладели
 ещё одним стилем программирования, получили широчайшие возможности управления
@@ -2370,108 +2359,108 @@ $\lambda u. 1 + u$ при $u = 4$, которое становится знач�
 действительно стоит создавать и сохранять.</p>
 
 
-<h2 id="escape/sect:exercises">Упражнения</h2>
 
-<h5 class="exercise" id="escape/ex:cc-cc">Упражнение <span class="seq">0.0</span></h5>
-<p>Что вернёт <code><span class="func">(call/cc call/cc)</span></code>? Зависит ли ответ от порядка вычислений?</p>
+<h2 id="escape/sect:exercises"><span class="seq">3.9.</span> Упражнения</h2>
 
-
-<h5 class="exercise" id="escape/ex:cc-cc-cc-cc">Упражнение <span class="seq">0.0</span></h5>
-<p>А что вернёт <code><span class="func">((call/cc call/cc) (call/cc call/cc))</span></code>?</p>
+<h5 class="exercise" id="escape/ex:cc-cc">Упражнение <span class="seq">3.1</span></h5>
+<p>Что вернёт <code>(<span class="func">call/cc</span> <span class="var">call/cc</span>)</code>? Зависит ли ответ от порядка вычислений?</p>
 
 
-<h5 class="exercise" id="escape/ex:tagbody">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:cc-cc-cc-cc">Упражнение <span class="seq">3.2</span></h5>
+<p>А что вернёт <code>((<span class="func">call/cc</span> <span class="var">call/cc</span>) (<span class="func">call/cc</span> <span class="var">call/cc</span>))</code>?</p>
+
+
+<h5 class="exercise" id="escape/ex:tagbody">Упражнение <span class="seq">3.3</span></h5>
 <!--\indexC{tagbody}-->
 <!--\indexC{go}-->
-<p>Реализуйте пару <code><span class="func">tagbody</span></code>/<code><span class="func">go</span></code> с помощью <code><span class="func">block</span></code>, <code><span class="func">catch</span></code> и
-<code><span class="func">labels</span></code>. Напомним синтаксис этой формы из <span class="logo">Common Lisp</span>:</p>
+<p>Реализуйте пару <code><span class="special">tagbody</span></code>/<code><span class="special">go</span></code> с помощью <code><span class="special">block</span></code>, <code><span class="special">catch</span></code> и
+<code><span class="special">labels</span></code>. Напомним синтаксис этой формы из <span class="logo">Common Lisp</span>:</p>
 
-<pre>(tagbody
-          |\ii{выражения\sub{0}}|...
-  |\hbox to 0pt{\ii{метка\sub{1}}}|        |\ii{выражения\sub{1}}|...
+<pre>(<span class="special">tagbody</span>
+          <i>выражения<sub>0</sub></i>...
+  <i>метка<sub>1</sub></i>  <i>выражения<sub>1</sub></i>...
           ...
-  |\hbox to 0pt{\ii{метка\sub{i}}}|        |\ii{выражения\sub{i}}|...
+  <i>метка<sub>i</sub></i>  <i>выражения<sub>i</sub></i>...
           ... )</pre>
 
-<p>Все \ii{выражения\sub{i}} (и только они) могут содержать безусловные переходы
-\ic{(go <i>метка</i>)} и возвраты \ic{(return <i>значение</i>)}. Если <code><span class="func">return</span></code>
-не будет, то форма <code><span class="func">tagbody</span></code> возвращает <code><span class="func">nil</span></code>.</p>
+<p>Все <i>выражения<sub>i</sub></i> (и только они) могут содержать безусловные переходы
+<code>(<span class="special">go</span> <i>метка</i>)</code> и возвраты <code>(<span class="special">return</span> <i>значение</i>)</code>. Если <code><span class="special">return</span></code>
+не будет, то форма <code><span class="special">tagbody</span></code> возвращает <code><span class="var">nil</span></code>.</p>
 
 
-<h5 class="exercise" id="escape/ex:arity-optimize">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:arity-optimize">Упражнение <span class="seq">3.4</span></h5>
 <p>Вы скорее всего заметили, что функции при вызове проверяют фактическую арность:
 количество переданных им аргументов. Измените механизм создания функций так,
 чтобы правильная арность рассчитывалась только один раз. Можете считать, что
 функции бывают только фиксированной арности.</p>
 
 
-<h5 class="exercise" id="escape/ex:apply">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:apply">Упражнение <span class="seq">3.5</span></h5>
 <p>Определите функцию <code><span class="func">apply</span></code> для интерпретатора из этой главы.</p>
 
 
-<h5 class="exercise" id="escape/ex:dotted">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:dotted">Упражнение <span class="seq">3.6</span></h5>
 <p>Реализуйте поддержку функций переменной арности для интерпретатора из этой
 главы.</p>
 
 
-<h5 class="exercise" id="escape/ex:evaluate">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:evaluate">Упражнение <span class="seq">3.7</span></h5>
 <p>Измените функцию запуска интерпретатора так, чтобы она вызывала <code><span class="func">evaluate</span></code>
 только единожды.</p>
 
 
-<h5 class="exercise" id="escape/ex:cc-value">Упражнение <span class="seq">0.0</span></h5>
-<p>Способ реализации продолжений из
-раздела \ref{escape/implementation/ssect:call/cc} отделяет продолжения от других
+<h5 class="exercise" id="escape/ex:cc-value">Упражнение <span class="seq">3.8</span></h5>
+<p>Способ реализации продолжений из раздела
+<a href="#escape/implementation/ssect:call/cc">3.4.1</a> отделяет продолжения от других
 значений. Поэтому мы вынуждены реализовывать метод <code><span class="func">invoke</span></code> лично для класса
 продолжений, представляемых функциями языка определения. Переопределите
 <code><span class="func">call/cc</span></code> так, чтобы она возвращала объекты определяемого языка, являющиеся
-экземплярами класса-наследника <code><span class="func">value</span></code>, соответствующего продолжениям.</p>
+экземплярами класса-наследника <code><span class="class">value</span></code>, соответствующего продолжениям.</p>
 
 
-<h5 class="exercise" id="escape/ex:eternal">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:eternal">Упражнение <span class="seq">3.9</span></h5>
 <!--\indexR{бесконечный цикл}-->
 <p>Напишите на <span class="logo">Common Lisp</span> функцию <code><span class="func">eternal-return</span></code>, принимающую замыкание и
 вызывающую его в бесконечном цикле. Этот цикл должен быть истинно бесконечным:
 перекройте абсолютно все выходы из него.</p>
 
 
-<h5 class="exercise" id="escape/ex:crazy-cc">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:crazy-cc">Упражнение <span class="seq">3.10</span></h5>
 <p>Рассмотрим следующую хитроумную функцию (спасибо за неё Алану Бодену):</p>
 
 
 <!--\indexR{коробки}-->
 <!--\indexC{make-box}-->
-<pre>(define (make-box value)
-  (let ((box
-         (call/cc
-          (lambda (exit)
-            (letrec
-             ((behavior
-               (call/cc
-                (lambda (store)
-                  (exit (lambda (msg . new)
-                          (call/cc
-                           (lambda (caller)
-                             (case msg
-                               ((get) (store (cons (car behavior)
-                                                   caller )))
-                               ((set)
-                                (store
-                                 (cons (car new)
-                                       caller ) ) ) ) ) ) )) ) ) ))
-             ((cdr behavior) (car behavior)) ) ) ) ))
-    (box 'set value)
-    box ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">make-box</span> <span class="var">value</span>)
+  (<span class="syntax">let</span> ((<span class="var">box</span>
+         (<span class="func">call/cc</span>
+          (<span class="special">lambda</span> (<span class="var">exit</span>)
+            (<span class="syntax">letrec</span>
+             ((<span class="var">behavior</span>
+               (<span class="func">call/cc</span>
+                (<span class="special">lambda</span> (<span class="var">store</span>)
+                  (<span class="func">exit</span> (<span class="special">lambda</span> (<span class="var">msg</span> . <span class="var">new</span>)
+                          (<span class="func">call/cc</span>
+                           (<span class="special">lambda</span> (<span class="var">caller</span>)
+                             (<span class="syntax">case</span> <span class="var">msg</span>
+                               ((<span class="var">get</span>) (<span class="func">store</span> (<span class="func">cons</span> (<span class="func">car</span> <span class="var">behavior</span>)
+                                                   <span class="var">caller</span> )))
+                               ((<span class="var">set</span>)
+                                (<span class="func">store</span>
+                                 (<span class="func">cons</span> (<span class="func">car</span> <span class="var">new</span>)
+                                       <span class="var">caller</span> ) ) ) ) ) ) )) ) ) ))
+             ((<span class="func">cdr</span> <span class="var">behavior</span>) (<span class="func">car</span> <span class="var">behavior</span>)) ) ) ) ))
+    (<span class="func">box</span> '<span class="var">set</span> <span class="var">value</span>)
+    <span class="var">box</span> ) )</pre>
 
-<p>Предположим, в <code><span class="func">box1</span></code> лежит значение <code>(make-box 33)</code>, тогда что получится
+<p>Предположим, в <code><span class="var">box1</span></code> лежит значение <code>(<span class="func">make-box</span> <span class="num">33</span>)</code>, тогда что получится
 в результате следующих вычислений?</p>
 
-<pre>(box1 'get)
-(begin (box1 'set 44) (box1 'get))
-\end{code:lisp}</p>
+<pre>(<span class="func">box1</span> '<span class="var">get</span>)
+(<span class="special">begin</span> (<span class="func">box1</span> '<span class="var">set</span> <span class="num">44</span>) (<span class="func">box1</span> '<span class="var">get</span>))</pre>
 
 
-<h5 class="exercise" id="escape/ex:generic-evaluate">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:generic-evaluate">Упражнение <span class="seq">3.11</span></h5>
 <p>Среди всех наших функций только <code><span class="func">evaluate</span></code> не является обобщённой. Можно
 создать класс программ, от которого будут наследоваться подклассы программ
 с различным синтаксисом. Правда, в этом случае мы не сможем хранить программы
@@ -2481,30 +2470,29 @@ $\lambda u. 1 + u$ при $u = 4$, которое становится знач�
 идею в жизнь.</p>
 
 
-<h5 class="exercise" id="escape/ex:throw">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:throw">Упражнение <span class="seq">3.12</span></h5>
 <p>Реализуйте оператор <code><span class="func">throw</span></code> как функцию, а не специальную форму.</p>
 
 
-<h5 class="exercise" id="escape/ex:cps-speed">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:cps-speed">Упражнение <span class="seq">3.13</span></h5>
 <p>Сравните скорость выполнения обычного кода и переписанного в стиле передачи
 продолжений.</p>
 
 
-<h5 class="exercise" id="escape/ex:the-current-cc">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="escape/ex:the-current-cc">Упражнение <span class="seq">3.14</span></h5>
 <!--\indexC{the-current-continuation}-->
 <p>Реализуйте <code><span class="func">call/cc</span></code> с помощью функции <code><span class="func">the-current-continuation</span></code>, которая
 определяется следующим образом:</p>
 
-<pre>(define (the-current-continuation)
-  (call/cc (lambda (k) k)) )
-\end{code:lisp}</p>
+<pre>(<span class="special">define</span> (<span class="func">the-current-continuation</span>)
+  (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) <span class="var">k</span>)) )</pre>
 
-<p>
-\section*{Рекомендуемая литература}\label{escape/sect:recommended-reading}</p>
+
+<h2>Рекомендуемая литература</h2>
 
 <p>Годный, нетривиальный пример использования продолжений приведён в
-<span class="cite">[<a href="z1_bibliography.xhtml#wan80a">wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.xhtml#hfw84">hfw84</a>]</span> об эмуляции сопрограмм.
-В <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dr87</a>]</span> прекрасно рассказано о развитии понимания важности рефлексии
+<span class="cite">[<a href="z1_bibliography.xhtml#wan80a">Wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.xhtml#hfw84">HFW84</a>]</span> об эмуляции сопрограмм.
+В <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dR87</a>]</span> прекрасно рассказано о развитии понимания важности рефлексии
 для управляющих форм.</p>
 
 </body>
