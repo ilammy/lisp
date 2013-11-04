@@ -478,7 +478,7 @@ $\pi$))}? Мы попытаемся ответить на эти вопросы 
        (dynamic-let ((*active-catchers*
                       (cons (cons tag (lambda (x)
                                         (return-from label x) ))
-                            (dynamic *active-catchers) ) ))
+                            (dynamic *active-catchers*) ) ))
         . body ) ) ) ) )
 \end{code:lisp}
 
@@ -1242,7 +1242,7 @@ bar~1)}>> не~наступает вообще. (Мы обсудим этот ф
 (define (evaluate e r k)
   (if (atom? e)
       (cond ((symbol? e) (evaluate-variable e r k))
-            (else        (evaluate-quote e r k)) ) 
+            (else        (evaluate-quote e r k)) )
       (case (car e)
         ((quote)  (evaluate-quote (cadr e) r k))
         ((if)     (evaluate-if (cadr e) (caddr e) (cadddr e) r k))
@@ -1772,7 +1772,7 @@ foo~bar)}. Пусть переменная \ic{foo} имеет значение~
 Как видите, \ic{catch} вычисляет первый аргумент (метку), связывает с~ней своё
 продолжение, создавая таким образом помеченный блок, и, наконец, последовательно
 вычисляет формы, составляющие её тело. Когда продолжение этого блока получает
-значение, оно просто перебрасывает его сохранённому продолжению самой формы 
+значение, оно просто перебрасывает его сохранённому продолжению самой формы
 \ic{catch}. Форма \ic{throw} чуть более сложная:
 
 \indexC{throw-cont}
@@ -2430,7 +2430,7 @@ foo~bar)}. Пусть переменная \ic{foo} имеет значение~
           (evaluate (car e*) r (make-no-more-argument-cont k)) )
       (resume k no-more-arguments) ) )
 
-(define-method (resume k (make-no-more-argument-cont) v)
+(define-method (resume (k make-no-more-argument-cont) v)
   (resume (no-more-argument-cont-k k) (list v)) )
 \end{code:lisp}
 
