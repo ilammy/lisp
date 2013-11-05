@@ -208,7 +208,7 @@ Scheme решает проблему иным путём, вводя понят�
   (lambda (msg)
     (case msg
       ((get) value)
-      ((set!) (lambda (new-value) (set! value new-value))) ) ) )
+      ((set) (lambda (new-value) (set! value new-value))) ) ) )
 
 (define (box-ref box)
   (box 'get) )
@@ -602,7 +602,7 @@ g                      ; ошибка: неизвестная переменна
 (define g 10)
 (define (P m) (* m g))
 (P 10)       |\is| 100
-(define g 9.81)        
+(define g 9.81)
 (P 10)       |\is| 100    ; \ic{P} использует старое значение \ic{g}
 (define (P m) (* m g))
 (P 10)       |\is| 98.1

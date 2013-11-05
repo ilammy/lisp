@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru"></p>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
-<p><body>
-\chapter{Присваивание и побочные эффекты}\label{chapter:assignment}</p>
+<head>
+    <title>Присваивание и побочные эффекты</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+</head>
 
-<p>\initial{0.25ex}{0.0ex}{П}{\kern0.65ex редыдущие главы} с их нескончаемыми
+<body>
+
+<h1 id="chapter:assignment"><span class="seq">Глава 4.</span> Присваивание и побочные эффекты</h1>
+
+<p><span class="initial"><span class="letter">П</span>редыдущие главы</span> с их нескончаемыми
 повторениями и вариациями чем-то напоминают «Болеро» Мориса Равеля. Но один
 мотив, как вы могли заметить, в них отсутствовал: присваивание и побочные
 эффекты. Чистые языки их презирают из-за некоторых скверных особенностей, но
@@ -15,7 +21,6 @@
 отвлекаться на смежные темы вроде равенства и семантики цитирования.</p>
 
 <div class="bigskip"/>
-
 
 <!--\indexR{присваивание}-->
 <p>Присваивание, пришедшее из традиционных алгоритмических языков, позволяет
@@ -36,31 +41,30 @@
 <code><span class="func">set-car!</span></code>, которые являлись лишь обёртками для родных функций языка
 определения.</p>
 
-<h2 id="assignment/sect:assignment">Присваивание</h2>
+
+<h2 id="assignment/sect:assignment"><span class="seq">4.1.</span> Присваивание</h2>
 
 <p>Присваивание, как мы сказали, позволяет изменить значение переменной. Например,
 давайте напишем программу для определения минимального и максимального элемента
 в двоичном дереве, используя две переменные для хранения наименьшего и
 наибольшего элемента из уже просмотренных. Мы получим что-то вроде следующего:</p>
 
-
 <!--\indexC{min-max}-->
-<pre>(define (min-max tree)
-  (define (first-number tree)
-    (if (pair? tree)
-        (first-number (car tree))
-        tree ) )
-  (let* ((min (first-number tree))
-         (max min) )
-    (define (scan! tree)
-      (cond ((pair? tree)
-             (scan! (car tree))
-             (scan! (cdr tree)) )
-            (else (if (> tree max) (set! max tree)
-                      (if (< tree min) (set! min tree)) )) ) )
-    (scan! tree)
-    (list min max) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">min-max</span> <span class="var">tree</span>)
+  (<span class="special">define</span> (<span class="func">first-number</span> <span class="var">tree</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">tree</span>)
+        (<span class="func">first-number</span> (<span class="func">car</span> <span class="var">tree</span>))
+        <span class="var">tree</span> ) )
+  (<span class="syntax">let*</span> ((<span class="var">min</span> (<span class="func">first-number</span> <span class="var">tree</span>))
+         (<span class="var">max</span> <span class="var">min</span>) )
+    (<span class="special">define</span> (<span class="func">scan!</span> <span class="var">tree</span>)
+      (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">tree</span>)
+             (<span class="func">scan!</span> (<span class="func">car</span> <span class="var">tree</span>))
+             (<span class="func">scan!</span> (<span class="func">cdr</span> <span class="var">tree</span>)) )
+            (<span class="syntax">else</span> (<span class="special">if</span> (<span class="func">&gt;</span> <span class="var">tree</span> <span class="var">max</span>) (<span class="special">set!</span> <span class="var">max</span> <span class="var">tree</span>)
+                      (<span class="special">if</span> (<span class="func">&lt;</span> <span class="var">tree</span> <span class="var">min</span>) (<span class="special">set!</span> <span class="var">min</span> <span class="var">tree</span>)) )) ) )
+    (<span class="func">scan!</span> <span class="var">tree</span>)
+    (<span class="func">list</span> <span class="var">min</span> <span class="var">max</span>) ) )</pre>
 
 <!--\indexR{побочные эффекты!доброкачественные}-->
 <p>Функция <code><span class="func">min-max</span></code> проста для понимания и требует лишь два числа и две
@@ -70,33 +74,33 @@
 локальных переменных не видны снаружи функции <code><span class="func">min-max</span></code>, то есть не влияют
 на остальные части программы. Это пример доброкачественных побочных эффектов:
 программа становится более понятной и эффективной, чем написанная в чисто
-функциональном стиле. \seeEx[assignment/ex:pure-min-max]</p>
+функциональном стиле.
+<span class="see">[см. упр. <a href="#assignment/ex:pure-min-max">4.1</a>]</span></p>
 
 <p>Присваивание локальным переменным, которые не используются совместно несколькими
 функциями, не вызывает существенных проблем. Например, следующая функция
 последовательно возвращает натуральные числа, начиная с нуля. Очевидно, что
-значением переменной <code><span class="func">n</span></code> сразу после присваивания является только что
+значением переменной <code><span class="var">n</span></code> сразу после присваивания является только что
 присвоенное значение.</p>
 
-<pre>(define enumerate
-  (let ((n -1))
-    (lambda () (set! n (+ n 1))
-               n ) ) )</pre>
-
+<pre>(<span class="special">define</span> <span class="var">enumerate</span>
+  (<span class="syntax">let</span> ((<span class="var">n</span> <span class="num">-1</span>))
+    (<span class="special">lambda</span> () (<span class="special">set!</span> <span class="var">n</span> (<span class="func">+</span> <span class="var">n</span> <span class="num">1</span>))
+               <span class="var">n</span> ) ) )</pre>
 
 <!--\indexR{присваивание!и семантика подстановки}-->
 <!--\indexR{семантика!подстановки}-->
 <p>Каждый вызов <code><span class="func">enumerate</span></code> возвращает новое натуральное число. Функция
-<code><span class="func">enumerate</span></code> имеет внутреннее состояние, представляемое переменной <code><span class="func">n</span></code>,
-которая изменяется с каждым следующим вызовом функции. Но то, что <code><span class="func">n</span></code>
+<code><span class="func">enumerate</span></code> имеет внутреннее состояние, представляемое переменной <code><span class="var">n</span></code>,
+которая изменяется с каждым следующим вызовом функции. Но то, что <code><span class="var">n</span></code>
 принадлежит замыканию, является проблемой. В λ-исчислении нет ни слова
 о присваивании. Ведь когда мы применяем функцию в математике (и, соответственно,
 в λ-исчислении), то просто заменяем в её теле все переменные
 соответствующими значениями аргументов. Из-за присваивания данная семантика
 подстановки становится неверной, а программы теряют ссылочную прозрачность.</p>
 
-<p>Если подставить вместе переменной <code><span class="func">n</span></code> её начальное значение в <code><span class="func">enumerate</span></code>,
-то эта функция возвращала бы не натуральные числа, а исключительно <code><span class="func">-1</span></code>.
+<p>Если подставить вместе переменной <code><span class="var">n</span></code> её начальное значение в <code><span class="func">enumerate</span></code>,
+то эта функция возвращала бы не натуральные числа, а исключительно <code><span class="num">-1</span></code>.
 Таким образом, присваивание вынуждает нас отказаться от модели вычислений
 с мгновенной подстановкой значений. Теперь подстановка является отложенной и
 выполняется только тогда, когда мы явно потребуем значение. Соответственно,
@@ -106,16 +110,16 @@
 <p>Но с расположением присваиваний есть свои проблемы. Рассмотрим следующую
 программу:</p>
 
-<pre>(let ((name "Nemo"))
-  (set! winner (lambda () name))
-  (set! set-winner! (lambda (new-name) (set! name new-name)
-                                       name ))
-  (set!-winner "Me")
-  (winner) )</pre>
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () <span class="var">name</span>))
+  (<span class="special">set!</span> <span class="var">set-winner!</span> (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="special">set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                                       <span class="var">name</span> ))
+  (<span class="func">set!-winner</span> <span class="string">"Me"</span>)
+  (<span class="func">winner</span>) )</pre>
 
 
 <!--\indexR{присваивание!и замыкания}-->
-<p>Что же вернёт <code>(winner)</code>: <code><span class="func">"Nemo"</span></code> или <code><span class="func">"Me"</span></code>? Другими словами,
+<p>Что же вернёт <code>(<span class="func">winner</span>)</code>: <code><span class="string">"Nemo"</span></code> или <code><span class="string">"Me"</span></code>? Другими словами,
 влияет ли присваивание внутри <code><span class="func">set-winner!</span></code> на значение, возвращаемое
 <code><span class="func">winner</span></code>?</p>
 
@@ -123,66 +127,70 @@
 немногословным: ведь присваивание чуждо ему. Ладно, мы вроде бы говорили, что
 создание функции захватывает окружение определения; значит, функции <code><span class="func">winner</span></code>
 и <code><span class="func">set!-winner</span></code> по крайней мере знают, что в момент их создания переменная
-<code><span class="func">name</span></code> имела значение <code><span class="func">"Nemo"</span></code>. Также кажется очевидным, что
-<code>(set-winner! "Me")</code> вернёт <code><span class="func">"Me"</span></code>, так как там чёрным по белому написано,
-что мы изменяем значение переменной <code><span class="func">name</span></code> на другое и возвращаем её текущее
+<code><span class="var">name</span></code> имела значение <code><span class="string">"Nemo"</span></code>. Также кажется очевидным, что
+<code>(<span class="func">set-winner!</span> <span class="string">"Me"</span>)</code> вернёт <code><span class="string">"Me"</span></code>, так как там чёрным по белому написано,
+что мы изменяем значение переменной <code><span class="var">name</span></code> на другое и возвращаем её текущее
 значение. Проблема в том, а видит ли <code><span class="func">winner</span></code> это значение? Ведь мы изменяем
-значение той же переменной <code><span class="func">name</span></code>, правда?</p>
+значение той же переменной <code><span class="var">name</span></code>, правда?</p>
 
 <p>Буквальное понимание идеи замыкания приводит к мысли, что у каждого замыкания
 хранятся личные копии свободных переменных со значениями, которые они имели на
 момент создания замыкания. В таком случае предыдущая программа эквивалентна
 следующей:</p>
 
-<pre>(let ((name "Nemo"))
-  (set! winner (lambda () name))
-  (winner) )</pre>
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () <span class="var">name</span>))
+  (<span class="func">winner</span>) )</pre>
 
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#sam79">sam79</a>]</span> предлагается считать эффекты присваиваний видимыми только тем,
+<p>В <span class="cite">[<a href="z1_bibliography.xhtml#sam79">Sam79</a>]</span> предлагается считать эффекты присваиваний видимыми только тем,
 кто это присваивание совершил. Тогда действительно <code><span class="func">set-winner!</span></code> вернёт новое
-значение, а <code><span class="func">winner</span></code> всегда будет возвращать <code><span class="func">"Nemo"</span></code>. В таком мире
+значение, а <code><span class="func">winner</span></code> всегда будет возвращать <code><span class="string">"Nemo"</span></code>. В таком мире
 не существует привязок. Нет, конечно у переменных есть значения, но они намертво
 установлены окружением. Если кому-то нужно значение переменной, то он может
 запросить его у окружения. Если же это значение надо изменить, то просто взамен
 старого окружения создаётся новое, где переменная имеет нужное значение.</p>
 
-
 <!--\indexC{closure}-->
 <!--\indexR{специальные формы!closure@\protect<code><span class="func">closure</span></code>}-->
-<p>\phantomlabel{assignement/assignement/para:closure}
-Такая точка зрения напоминает способ реализации замыканий в старых,
-исключительно динамических диалектах Лиспа. Там замыкания создавались явным
-использованием специальной формы <code><span class="func">closure</span></code>; она принимала первым аргументом
-список переменных, которые надо сохранить, а вторым аргументом следовала
-функция. В результате вызов <code>(closure (x) (lambda (y) (+ x y)))</code> раскрывался
-в \ic{(lambda (y) (let ((x '<i>значение-<code><span class="func">x</span></code></i>)) (+ x y)))}. С одной стороны,
-значение действительно захватывается, а с другой — всё укладывается
+<p id="assignement/assignement/para:closure">Такая точка зрения напоминает способ реализации
+замыканий в старых, исключительно динамических диалектах Лиспа. Там замыкания создавались явным
+использованием специальной формы <code><span class="special">closure</span></code>; она принимала
+первым аргументом список переменных, которые надо сохранить, а вторым аргументом следовала
+функция. В результате вызов <code>(<span class="special">closure</span> (<span class="var">x</span>) (<span class="special">lambda</span> (<span class="var">y</span>) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code> раскрывался
+в <code>(<span class="special">lambda</span> (<span class="var">y</span>) (<span class="syntax">let</span> ((<span class="var">x</span> '<i>значение-<code><span class="var">x</span></code></i>)) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code>.
+С одной стороны, значение действительно захватывается, а с другой — всё укладывается
 в парадигму подстановки, унаследованную от λ-исчисления.</p>
 
 <p>Но данная модель вычислений значительно усложняет как присваивание, так
 и совместное использование переменных. Возможны и другие варианты решения этой
-проблемы; в <span class="cite">[<a href="z1_bibliography.xhtml#sj87">sj87</a>]</span> предлагается научить форму <code><span class="func">closure</span></code> самостоятельно
+проблемы; в <span class="cite">[<a href="z1_bibliography.xhtml#sj87">SJ87</a>]</span>
+предлагается научить форму <code><span class="special">closure</span></code> самостоятельно
 искать выделять свободные переменные в функции. Также, как предлагается
-в \cite{bcsj86,sj93}, она может определённым образом модифицировать найденные
-присваивания, чтобы избежать неудобств с присваиванием свободным переменным.</p>
+в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>,
+<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>, она может определённым образом
+модифицировать найденные присваивания, чтобы избежать неудобств с присваиванием свободным
+переменным.</p>
 
 
 <!--\indexR{привязки (bindings)}-->
 <!--\indexR{объекты!второго класса}-->
 <p>Scheme решает проблему иным путём, вводя понятие <em class="term">привязок</em>, что также
-приводит к интересным <em>побочным эффектам</em>. Форма <code><span class="func">let</span></code> привязывает
-к переменной <code><span class="func">name</span></code> значение <code><span class="func">"Nemo"</span></code>. Замыкания, создаваемые в теле
-<code><span class="func">let</span></code>, захватывают не значение переменной <code><span class="func">name</span></code>, а её привязку. Таким
-образом, ссылка на переменную <code><span class="func">name</span></code> вызывает поиск соответствующей привязки
-с последующим извлечением значения из неё.</p>
+приводит к интересным <em>побочным эффектам</em>. Форма
+<code><span class="syntax">let</span></code> привязывает к переменной
+<code><span class="var">name</span></code> значение
+<code><span class="string">"Nemo"</span></code>. Замыкания, создаваемые в теле
+<code><span class="syntax">let</span></code>, захватывают не значение переменной
+<code><span class="var">name</span></code>, а её привязку. Таким
+образом, ссылка на переменную <code><span class="var">name</span></code> вызывает поиск
+соответствующей привязки с последующим извлечением значения из неё.</p>
 
 <p>Присваивание действует аналогично: сначала ищется привязка, затем изменяется
 хранимое значение. В таком случае привязки являются объектами второго класса,
 которые не существуют отдельно от своих переменных. Присваивание переменной
 изменяет не саму привязку, а значение, на которое она указывает.</p>
 
-<h3 id="assignment/assignment/ssect:boxes">Коробки</h3>
 
+<h3 id="assignment/assignment/ssect:boxes"><span class="seq">4.1.1.</span> Коробки</h3>
 
 <!--\indexR{коробки}-->
 <p>Чтобы конкретизировать понятие привязок, давайте обратим внимание на А-списки.
@@ -202,42 +210,42 @@
 что-то другое с помощью <code><span class="func">box-set!</span></code>. Набросаем реализацию коробок в стиле
 передачи сообщений:</p>
 
-
 <!--\indexC{make-box}-->
 <!--\indexC{box-ref}-->
 <!--\indexC{box-set"!}-->
-<pre>(define (make-box value)
-  (lambda (msg)
-    (case msg
-      ((get) value)
-      ((set!) (lambda (new-value) (set! value new-value))) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">make-box</span> <span class="var">value</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">get</span>) <span class="var">value</span>)
+      ((<span class="var">set</span>) (<span class="special">lambda</span> (<span class="var">new-value</span>) (<span class="special">set!</span> <span class="var">value</span> <span class="var">new-value</span>))) ) ) )
 
-<p>(define (box-ref box)
-  (box 'get) )</p>
+(<span class="special">define</span> (<span class="func">box-ref</span> <span class="var">box</span>)
+  (<span class="func">box</span> '<span class="var">get</span>) )
 
-<p>(define (box-set! box new-value)
-  ((box 'set) new-value) )</pre>
+(<span class="special">define</span> (<span class="func">box-set!</span> <span class="var">box</span> <span class="var">new-value</span>)
+  ((<span class="func">box</span> '<span class="var">set</span>) <span class="var">new-value</span>) )</pre>
 
 <p>Можно было бы реализовать их и без замыкания, используя точечные пары напрямую:</p>
 
-<pre>(define (other-make-box value)
-  (cons 'box value) )</p>
+<pre>(<span class="special">define</span> (<span class="func">other-make-box</span> <span class="var">value</span>)
+  (<span class="func">cons</span> '<span class="var">box</span> <span class="var">value</span>) )
 
-<p>(define (other-box-ref box)
-  (cdr box) )</p>
+(<span class="special">define</span> (<span class="func">other-box-ref</span> <span class="var">box</span>)
+  (<span class="func">cdr</span> <span class="var">box</span>) )
 
-<p>(define (other-box-set! box new-value)
-  (set-cdr! box new-value) )</pre>
+(<span class="special">define</span> (<span class="func">other-box-set!</span> <span class="var">box</span> <span class="var">new-value</span>)
+  (<span class="func">set-cdr!</span> <span class="var">box</span> <span class="var">new-value</span>) )</pre>
 
 <p>Или вообще создать класс:</p>
 
-<pre>(define-class box Object (content))</pre>
-
+<pre>(<span class="syntax">define-class</span> <span class="class">box</span> <span class="class">Object</span> (<span class="var">content</span>))</pre>
 
 <!--\indexR{коробки!и изменяемость переменных}-->
-<p>Во всех трёх случаях (даже четырёх, если считать
-упражнение \ref{escape/ex:crazy-cc}) мы явно указываем на неопределённость
-возвращаемого значения вызова <code><span class="func">set-box!</span></code>. Каждую переменную, значение которой
+<p>Во всех трёх случаях (даже четырёх, если считать упражнение
+<a href="ch03_escape_and_return.xhtml#escape/ex:crazy-cc">3.10</a>)
+мы явно указываем на неопределённость
+возвращаемого значения вызова <code><span class="func">set-box!</span></code>.
+Каждую переменную, значение которой
 способно изменяться в процессе вычислений, можно представить как абстрактную
 коробку, сосредотачивая таким образом все побочные эффекты в реализации этих
 коробок. Заодно мы приобретаем возможность определить, изменяема ли переменная;
@@ -246,59 +254,75 @@
 возможностей лексических окружений: чёткое определение области видимости
 переменных.)</p>
 
-<p>\begin{center}%
-\let\b\boxit \def\bc#1{\b{<code><span class="func">#1</span></code>}}%
-\def\P{$\pi$}\def\p#1{$\pi_{#1}$}%
-\def\EQ{$\:\Rightarrow\:$}%
-\setlength{\tabcolsep}{2pt}%
-\begin{tabular}{rcl}
-                       \b{$x$} & \EQ & если $x = v$,
-                                       то <code>(box-ref $v$)</code>,
-                                       иначе $x$                              \\
-       \bc{(quote $\epsilon$)} & \EQ & <code>(quote $\epsilon$)</code>                \\
-   \bc{(if \p{c} \p{t} \p{f})} & \EQ & \ic{(if \b{\p{c}} \b{\p{t}} \b{\p{f}})}\\
-  \bc{(begin \p{1} ... \p{n})} & \EQ & \ic{(begin \b{\p{1}} ... \b{\p{n}})}   \\
-            \bc{(set! $x$ \P)} & \EQ & если $x = v$,
-                                       то <code>(box-set! $v$ \b\P)</code>,           \\
-                               &     & иначе <code>(set! $x$ \b\P)</code>             \\
-\bc{(lambda (... $x$ ...) \P)} & \EQ & если $v \in \{{\dots}\,\ x\ \dots\}$,  \\
-                               &     & то <code>(lambda (... $x$ ...) \P)</code>,     \\
-                               &     & иначе <code>(lambda (... $x$ ...) \b\P)</code> \\
-  \bc{(\p{0} \p{1} ... \p{n})} & \EQ & \ic{(\b{\p{0}} \b{\p{1}} ... \b{\p{n}})}
-\end{tabular}\label{assignment/assignment/boxes/p:boxing}\end{center}</p>
-
+<table id="ch4-box-transform">
+<tr>
+  <td><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td>если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-ref</span> <span class="math"><span class="ord var">v</span></span>)</code>, иначе <span class="math"><span class="ord var">x</span></span></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π</span><sub><span class="ord var">c</span></sub></span> <span class="math"><span class="ord var">π</span><sub><span class="ord var">t</span></sub></span> <span class="math"><span class="ord var">π</span><sub><span class="ord var">f</span></sub></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord var">c</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord var">t</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord var">f</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π</span><sub><span class="ord num">1</span></sub></span> ... <span class="math"><span class="ord var">π</span><sub><span class="ord var">n</span></sub></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord num">1</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord var">n</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td>если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code>,</td>
+</tr>
+<tr><td/><td/>
+  <td>иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td>если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
+</tr>
+<tr><td/><td/>
+  <td>то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
+</tr>
+<tr><td/><td/>
+  <td>иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+</tr>
+<tr>
+  <td><span class="boxed"><code>(<span class="math"><span class="ord var">π</span><sub><span class="ord num">0</span></sub></span> <span class="math"><span class="ord var">π</span><sub><span class="ord num">1</span></sub></span> ... <span class="math"><span class="ord var">π</span><sub><span class="ord var">n</span></sub></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td><span class="math"><span class="rel">⇒</span></span></td>
+  <td><code>(<span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord num">0</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord num">1</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π</span><sub><span class="ord var">n</span></sub></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+</tr>
+</table>
 
 <!--\indexR{преобразование!в коробочный стиль}-->
 <!--\indexR{коробки!преобразование}-->
 <p>В приведённой выше таблице собраны правила перевода программ
-в «коробочный стиль». Запись \boxit{$\pi$} означает, что переменная $v$
-в программе $\pi$ помещается в коробку. Как обычно, за именами переменных важно
+в «коробочный стиль». Запись <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> означает, что переменная <span class="math"><span class="ord var">v</span></span>
+в программе <span class="math"><span class="ord var">π</span></span> помещается в коробку. Как обычно, за именами переменных важно
 тщательно следить, чтобы не случилось коллизий.</p>
 
 <p>Остаётся ввести ещё одно правило для собственно раскладывания по коробкам
 изменяемых переменных, чтобы полностью избавиться от присваиваний, заменив их
 побочными эффектами:</p>
 
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
+<pre>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="binop">∧</span></span> (<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> ...)<span class="math"><span class="ord"></span><span class="rel">∈</span><span class="ord var">π</span></span>
+<span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) (<span class="syntax">let</span> ((<span class="math"><span class="ord var">x</span></span> (<span class="func">make-box</span> <span class="math"><span class="ord var">x</span></span>))) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">x</span></span></sup>))</pre>
 
-<p>{\def\x{$x$}\def\p{$\pi$}
-\begin{code:lisp}
-(lambda (... |\x| ...) |\p|) |$\land$| (set! |\x| ...)|${} \in \pi$|
-|\is| (lambda (... |\x| ...) (let ((|\x| (make-box |\x|))) |\boxit[x]{\p}|))
-\end{code:lisp}}</p>
+<p>В результате, предыдущий пример переписывается следующим образом:</p>
 
-<p>\noindent
-В результате, предыдущий пример переписывается следующим образом:</p>
-
-<pre>(let ((name (make-box "Nemo")))
-  (set! winner (lambda () (box-ref name)))
-  (set! set-winner! (lambda (new-name) (box-set! name new-name)
-                                       (box-ref name) ))
-  (set-winner! "Me") (winner) )</pre>
-
-<p>\ForLayout{display}{\endgroup}</p>
-
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">make-box</span> <span class="var">"Nemo"</span>)))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () (<span class="func">box-ref</span> <span class="var">name</span>)))
+  (<span class="special">set!</span> <span class="var">set-winner!</span> (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="func">box-set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                                       (<span class="func">box-ref</span> <span class="var">name</span>) ))
+  (<span class="func">set-winner!</span> <span class="string">"Me"</span>)
+  (<span class="func">winner</span>) )</pre>
 
 <!--\indexR{коробки!аналогии}-->
 <!--\indexR{присваивание!семантика коробок}-->
@@ -315,7 +339,6 @@
 эффектов, так что ссылочная прозрачность всё так же остаётся утерянной. Тем
 не менее, это не мешает ввести систему типов содержимого коробок. С другой
 стороны, их использование вызывает свои специфичные проблемы.</p>
-
 
 <!--\indexR{привязки (bindings)!как полноценные объекты}-->
 <!--\indexR{полноценные объекты!привязки}-->
@@ -338,9 +361,8 @@
 присваивании изменяется не сама переменная (не её адрес), а именно расположенное
 в памяти значение.</p>
 
-<p>
-\subsection{Присваивание свободным переменным}%
-\label{assignment/assignment/ssect:free-vars}</p>
+
+<h3 id="assignment/assignment/ssect:free-vars"><span class="seq">4.1.2.</span> Присваивание свободным переменным</h3>
 
 <p>Следующая проблема с присваиванием касается свободных переменных: какой смысл
 оно имеет для них. Рассмотрим пример:</p>
@@ -2327,5 +2349,5 @@ $f\colon X \to Y$ называется частичной, если её зна�
 <p>Встройте в интерпретатор поддержку функций переменной арности (с точечным
 аргументом).</p>
 
-<p></body>
+</body>
 </html>

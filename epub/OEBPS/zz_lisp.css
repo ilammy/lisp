@@ -24,6 +24,10 @@ span.comb {
 
 }
 
+span.boxed {
+  border-top: 1px solid black;
+}
+
 span.see {
     font-weight: bolder;
 }
@@ -48,6 +52,10 @@ table.term-def td:nth-child(2) { text-align: left; }
 
 table#ch3-eval-stack td:nth-child(1) { float: left; padding-right: 1em; }
 table#ch3-eval-stack td:nth-child(2) { float: right; }
+
+table#ch4-box-transform td:nth-child(1) { text-align: right; }
+table#ch4-box-transform td:nth-child(2) { text-align: center; }
+table#ch4-box-transform td:nth-child(3) { text-align: left; }
 
 /* code */
 code span.special,
