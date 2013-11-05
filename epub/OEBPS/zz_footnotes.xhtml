@@ -483,5 +483,90 @@
     Будем писать эти имена через <code>k</code>, чтобы не путать их с обычными.</p>
 </div>
 
+<div class="footnote" id="foot4.5">
+  <p><span class="num"><sup>5</sup></span>
+    Например, <code><span class="func">equalp</span></code> и
+    <code><span class="func">tree-equal</span></code> в <span class="logo">Common Lisp</span>.</p>
+</div>
+
+<div class="footnote" id="foot4.6">
+  <p><span class="num"><sup>6</sup></span>
+    В случае распределённых вычислений <code><span class="func">eq?</span></code> должен
+    также уметь сравнивать переменные, расположенные на различных компьютерах. Так
+    что низкоуровневость этого предиката ещё не означает молниеносность его работы.</p>
+</div>
+
+<div class="footnote" id="foot4.7">
+  <p><span class="num"><sup>7</sup></span>
+    Например, в Scheme значение <code>(<span class="func">eq?</span> <span class="num">33</span> <span class="num">33</span>)</code> не определено.
+    Для правильного сравнения чисел существует <code><span class="func">eqv?</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Немецкое слово egal и французское égal буквально значат «равен».</p>
+</div>
+
+<div class="footnote" id="foot4.8">
+  <p><span class="num"><sup>8</sup></span>
+    Я запускал этот пример на четырёх различных интерпретаторах Scheme и
+    два из них зациклились. Я не буду их называть, так как у них есть полное право
+    так делать. <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
+</div>
+
+<div class="footnote" id="foot4.9">
+  <p><span class="num"><sup>9</sup></span>
+    По моему скромному мнению, изобретение хеш-таблиц является одним из величайших достижений
+    информатики.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-2">
+  <p><span class="num"><sup>**</sup></span>
+    Функция <span class="math"><span class="ord var">f</span><span class="ord">: </span><span class="ord var">X</span><span class="rel">→</span><span class="ord var">Y</span></span>
+    называется частичной, если её значения на <span class="math"><span class="ord var">X</span></span> могут быть не определены. Классический пример: операция вычитания для натуральных чисел
+    имеет тип <span class="math"><span class="ord var"><span class="bb">N</span></span><span class="binop">×</span><span class="ord var"><span class="bb">N</span></span><span class="rel">→</span><span class="ord var"><span class="bb">N</span></span></span>,
+    но определена не для всех пар натуральных чисел
+    <span class="math"><span class="open">(</span><span class="ord var">a</span><span class="punct">,</span><span class="ord var">b</span><span class="close">)</span><span class="rel">∈</span><span class="ord var"><span class="bb">N</span></span><span class="binop">×</span><span class="ord var"><span class="bb">N</span></span></span>,
+    только для тех, где
+    <span class="math"><span class="ord var">a</span><span class="rel">≥</span><span class="ord var">b</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-3">
+  <p><span class="num"><sup>***</sup></span>
+    Достаточно неплохое введение в сборку мусора есть в первом томе «Искусства программирования» Дональда Кнута.</p>
+</div>
+
+<div class="footnote" id="foot4.10">
+  <p><span class="num"><sup>10</sup></span>
+    Причём по результатам серьёзных исследований
+    вроде <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>,
+    <a href="z1_bibliography.xhtml#cg77">CG77</a>]</span>,
+    желательно, чтобы значение <code><span class="var">cdr</span></code>
+    (а не <code><span class="var">car</span></code>),
+    было доступно непосредственно. Другим преимуществом такого расположения может
+    быть то, что точечные пары используются для представления связных списков,
+    поэтому можно ввести общий класс «связных объектов» с единственным
+    полем <code><span class="var">cdr</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.11">
+  <p><span class="num"><sup>11</sup></span>
+    Ещё точнее: <code>'(<span class="var">a</span> . <span class="var">b</span>) <span class="math"><span class="rel">≡</span></span> `(,'<span class="var">a</span> . ,'<span class="var">b</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot4.12">
+  <p><span class="num"><sup>12</sup></span>
+    Окружение и продолжение вычислений выбираются на усмотрение реализации.</p>
+</div>
+
+<div class="footnote" id="foot4.13">
+  <p><span class="num"><sup>13</sup></span>
+    Здесь считываемый объект ссылается на самого себя. Следовательно, функция
+    <code><span class="func">read</span></code>
+    должна уметь создать в памяти точечную пару, «зациклить» её и подставить адрес
+    на место макроса. Ей также желательно быть достаточно сообразительной, чтобы
+    не попасть впросак на чём-нибудь вроде <code><span class="hash">#1=</span><span class="hash">#1#</span></code>.</p>
+</div>
+
 </body>
 </html>
