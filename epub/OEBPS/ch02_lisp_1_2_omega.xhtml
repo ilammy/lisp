@@ -136,7 +136,7 @@
             ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
                  (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
              <span class="var">e</span> )
-            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot <span class="func">evaluate</span>"</span> <span class="var">e</span>)) )
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot <span class="func">evaluate</span>"</span> <span class="var">e</span>)) )
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
         ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
         ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">f.evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span>)
@@ -197,7 +197,7 @@
          (<span class="func">f.eprogn</span> (<span class="func">cddr</span> <span class="var">fn</span>)
                    (<span class="func">extend</span> <span class="var">env</span> (<span class="func">cadr</span> <span class="var">fn</span>) <span class="var">args</span>)
                    <span class="var">fenv</span> ) )
-        (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )</pre>
+        (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )</pre>
 
 <p>И что же мы в итоге получили, а что потеряли? Первое очевидное преимущество
 состоит в том, что для поиска функции по имени необходим только простой вызов
@@ -220,7 +220,7 @@
 с функцией и ни с чем иным, а значит, проверку на то, что это действительно
 функция, надо выполнять лишь один раз: при помещении функции в окружение. И так
 как каждое имя должно быть связано с функцией, то все неиспользуемые имена можно
-просто связать с <code><span class="special">wrong</span></code>.</p>
+просто связать с <code><span class="func">wrong</span></code>.</p>
 
 <p>Ввиду того, что каждое имя из <code><span class="var">fenv</span></code> связано с функцией, мы можем вообще
 избавиться от вызова <code><span class="func">invoke</span></code>, а заодно и от вызова <code><span class="func">procedure?</span></code> внутри.
@@ -337,7 +337,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 <pre>(<span class="special">define</span> (<span class="func">funcall</span> . <span class="var">args</span>)
   (<span class="special">if</span> (<span class="func">&gt;</span> (<span class="func">length</span> <span class="var">args</span>) <span class="num">1</span>)
       (<span class="func">invoke</span> (<span class="func">car</span> <span class="var">args</span>) (<span class="func">cdr</span> <span class="var">args</span>))
-      (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">funcall</span>) ) )</pre>
+      (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">funcall</span>) ) )</pre>
 
 <p>В Lisp<sub>2</sub> <code><span class="func">funcall</span></code> используется для динамического вычисления функций. Во всех
 остальных случаях функция известна и не требуется проверять, действительно ли
@@ -386,7 +386,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 ((<span class="var">function)</span>
  (<span class="syntax">cond</span> ((<span class="func">symbol?</span> (<span class="func">cadr</span> <span class="var">e</span>))
         (<span class="func">lookup</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">fenv</span>) )
-       (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) ) ...</pre>
+       (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) ) ...</pre>
 
 <!--\indexCS{lambda}{как метка}-->
 <p>Мы легко можем расширить это определение, чтобы оно принимало и
@@ -442,7 +442,7 @@ Maclisp, заключается в том, что если <code><span class="fu
        (<span class="special">lambda</span> (<span class="var">values</span>)
          (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity</span> (<span class="func">length</span> <span class="var">values</span>))
              (<span class="func">apply</span> <span class="var">value</span> <span class="var">values</span>)
-             (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span>
+             (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>
               (<span class="func">list</span> '<span class="var">name</span> '<span class="var">values</span>) ) ) ) ) ) ) )
 
 (<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)
@@ -592,7 +592,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
 будет полезным собрать всё воедино и дать ещё одно определение — простейшее
 из возможных — очередного Lisp<sub>2</sub>-языка, похожего на <span class="logo">Common Lisp</span>. В этот раз
 мы ограничимся только введением функции <code><span class="func">f.lookup</span></code>, которая ищет функцию по
-имени в функциональном окружении, а если не находит, то вызывает <code><span class="special">wrong</span></code>. Это
+имени в функциональном окружении, а если не находит, то вызывает <code><span class="func">wrong</span></code>. Это
 позволит гарантировать конечное время выполнения <code><span class="func">f.lookup</span></code>. Конечно,
 следствием такого похода будет появление своеобразных ошибок замедленного
 действия, так как само по себе обращение к неопределённой функции не считается
@@ -608,7 +608,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
             ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
                  (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
              <span class="var">e</span> )
-            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
         ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
         ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">f.evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span>)
@@ -625,7 +625,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
                ((<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">eq?</span> (<span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) '<span class="var">lambda</span>))
                 (<span class="func">f.make-function</span>
                  (<span class="func">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">cddr</span> (<span class="func">cadr</span> <span class="var">e</span>)) <span class="var">env</span> <span class="var">fenv</span> ) )
-               (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
+               (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
         ((<span class="var">flet</span>)
          (<span class="func">f.progn</span> (<span class="func">cddr</span> <span class="var">e</span>)
                   <span class="var">env</span>
@@ -659,7 +659,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
          (<span class="func">f.eprogn</span> (<span class="func">cddr</span> <span class="var">fn</span>)
                    (<span class="func">extend</span> <span class="var">env</span> (<span class="func">cadr</span> <span class="var">fn</span>) <span class="var">args</span>)
                    <span class="var">fenv</span> ) )
-        (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )
+        (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )
 
 (<span class="special">define</span> (<span class="func">f.lookup</span> <span class="var">id</span> <span class="var">fenv</span>)
   (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fenv</span>)
@@ -667,7 +667,7 @@ Lisp<sub>2</sub>-язык, который удаётся лучше компил
           (<span class="func">cdar</span> <span class="var">fenv</span>)
           (<span class="func">f.lookup</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">fenv</span>)) )
       (<span class="special">lambda</span> (<span class="var">values</span>)
-        (<span class="special">wrong</span> <span class="string">"No such functional binding"</span> <span class="var">id</span>) ) ) )</pre>
+        (<span class="func">wrong</span> <span class="string">"No such functional binding"</span> <span class="var">id</span>) ) ) )</pre>
 
 <p>Ещё одно важное, по мнению <span class="cite">[<a href="z1_bibliography.xhtml#gp88">GP88</a>]</span>, практическое различие между Lisp<sub>1</sub> и
 Lisp<sub>2</sub> состоит в читабельности. Хотя, конечно, опытные программисты вряд ли
@@ -829,7 +829,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
             ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
                  (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
              <span class="var">e</span> )
-            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
         ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
         ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">df.evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)
@@ -845,7 +845,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
                ((<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">eq?</span> (<span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) '<span class="var">lambda</span>))
                 (<span class="func">df.make-function</span>
                  (<span class="func">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">cddr</span> (<span class="func">cadr</span> <span class="var">e</span>)) <span class="var">env</span> <span class="var">fenv</span> ) )
-               (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
+               (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
         ((<span class="var">dynamic</span>) (<span class="func">lookup</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">denv</span>))
         ((<span class="var">dynamic-set!</span>)
          (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>)
@@ -873,7 +873,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
                     (<span class="func">extend</span> <span class="var">env</span> (<span class="func">cadr</span> <span class="var">fn</span>) <span class="var">args</span>)
                     <span class="var">fenv</span>
                     <span class="var">denv</span> ) )
-        (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )
+        (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect functional term"</span> <span class="var">fn</span>)) ) )
 
 (<span class="special">define</span> (<span class="func">df.make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span> <span class="var">fenv</span>)
   (<span class="special">lambda</span> (<span class="var">values</span> <span class="var">denv</span>)
@@ -1057,7 +1057,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
             ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
                  (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
              <span class="var">e</span> )
-            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
         ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
         ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">df.evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)
@@ -1073,7 +1073,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                ((<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">eq?</span> (<span class="func">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) '<span class="var">lambda</span>))
                 (<span class="func">df.make-function</span>
                  (<span class="func">cadr</span> (<span class="func">cadr</span> <span class="var">e</span>)) (<span class="func">cddr</span> (<span class="func">cadr</span> <span class="var">e</span>)) <span class="var">env</span> <span class="var">fenv</span> ) )
-               (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
+               (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Incorrect function"</span> (<span class="func">cadr</span> <span class="var">e</span>))) ) )
         ((<span class="var">dynamic</span>) (<span class="func">lookup</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">denv</span>))
         ((<span class="var">dynamic-set!</span>)
          (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>)
@@ -1115,7 +1115,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                       <span class="comment">;; если не находим, ищем в глобальном лексическом</span>
                       (<span class="func">lookup</span> <span class="var">var</span> <span class="var">env.global</span>) ) )
                 (<span class="func">look</span> (<span class="func">cdr</span> <span class="var">env</span>)) ) )
-        (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">var</span>) ) ) )</pre>
+        (<span class="func">wrong</span> <span class="string">"No such binding"</span> <span class="var">var</span>) ) ) )</pre>
 
 <p>Теперь разберём, как это работает. Когда <code><span class="special">dynamic-let</span></code> создаёт динамическую
 переменная, она не только связывает её со значением в динамическом окружении, но
@@ -1171,7 +1171,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
             ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
                  (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
              <span class="var">e</span> )
-            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
       (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
         ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
         ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">dd.evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">denv</span>)
@@ -1221,7 +1221,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
               (<span class="var">thunk</span> (<span class="func">caddr</span> <span class="var">values</span>)) )
           (<span class="func">invoke</span> <span class="var">thunk</span> <span class="hash">'()</span>
                   (<span class="func">extend</span> <span class="var">denv</span> (<span class="func">list</span> <span class="var">tag</span>) (<span class="func">list</span> <span class="var">value</span>)) ) )
-        (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">bind/de</span>) ) ) )</pre>
+        (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">bind/de</span>) ) ) )</pre>
 
 <p>Следующая функция будет использовать динамическое окружение. Так как нам надо
 что-то делать в случае, если динамической переменной с запрошенным именем нет,
@@ -1241,7 +1241,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                     (<span class="func">cdar</span> <span class="var">denv</span>)
                     (<span class="func">look</span> (<span class="func">cdr</span> <span class="var">denv</span>)) )
                 (<span class="func">invoke</span> <span class="var">default</span> (<span class="func">list</span> <span class="var">tag</span>) <span class="var">current.denv</span>) ) ) )
-        (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">assoc/de</span>) ) ) )</pre>
+        (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">assoc/de</span>) ) ) )</pre>
 
 <p>Можно реализовать несколько вариантов её поведения в зависимости от используемого механизма
 сравнения (<code><span class="func">eqv?</span></code> или
@@ -1763,7 +1763,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span>)
   (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">n</span> '<span class="hash">#&lt;uninitialized&gt;</span>)
-      (<span class="special">wrong</span> <span class="string">"Uninitialized n"</span>)
+      (<span class="func">wrong</span> <span class="string">"Uninitialized n"</span>)
       (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
           (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) ) )</pre>
 
@@ -1833,7 +1833,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <p>Конечно, теперь необходимо встроить поддержку этого внутреннего значения
 в функцию <code><span class="func">lookup</span></code>. Функция <code><span class="func">update!</span></code> в изменениях не нуждается по
-очевидным причинам. Обращения к <code><span class="special">wrong</span></code> отвечают за два различных типа
+очевидным причинам. Обращения к <code><span class="func">wrong</span></code> отвечают за два различных типа
 ошибок: несуществующую привязку и неинициализированную привязку.</p>
 
 <!--\indexC{lookup}-->
@@ -1842,10 +1842,10 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
       (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">caar</span> <span class="var">env</span>) <span class="var">id</span>)
           (<span class="syntax">let</span> ((<span class="var">value</span> (<span class="func">cdar</span> <span class="var">env</span>)))
             (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">value</span> <span class="var">the-uninitialized-marker</span>)
-                (<span class="special">wrong</span> <span class="string">"Uninitialized binding"</span> <span class="var">id</span>)
+                (<span class="func">wrong</span> <span class="string">"Uninitialized binding"</span> <span class="var">id</span>)
                 <span class="var">value</span> ) )
           (<span class="func">lookup</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>)) )
-      (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
+      (<span class="func">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
 
 <p>После блужданий по пустыне семантики и синтаксиса, у нас наконец-то получилась
 форма <code><span class="syntax">letrec</span></code>, позволяющая определять локальные взаимно рекурсивные функции.</p>

@@ -379,7 +379,7 @@
             (<span class="var">escape</span> (<span class="func">assv</span> <span class="var">label</span> <span class="var">*active-catchers*</span>)) ) <span class="comment">; узкое место</span>
        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">escape</span>)
            ((<span class="func">cdr</span> <span class="var">escape</span>) <span class="var">value</span>)
-           (<span class="special">wrong</span> <span class="string">"No associated catch to"</span> <span class="var">label</span>) ) ) ) ) )
+           (<span class="func">wrong</span> <span class="string">"No associated catch to"</span> <span class="var">label</span>) ) ) ) ) )
 
 (<span class="special">define-syntax</span> <span class="var">catch</span>
   (<span class="syntax">syntax-rules</span> ()
@@ -439,7 +439,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
             (<span class="var">escape</span> (<span class="func">assv</span> <span class="var">label</span> (<span class="special">dynamic</span> <span class="var">*active-catchers*</span>))) )
        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">escape</span>)
            ((<span class="func">cdr</span> <span class="var">escape</span>) <span class="var">value</span>)
-           (<span class="special">wrong</span> <span class="string">"No associated catch to"</span> <span class="var">label</span>) ) ) ) ) )
+           (<span class="func">wrong</span> <span class="string">"No associated catch to"</span> <span class="var">label</span>) ) ) ) ) )
 
 (<span class="special">define-syntax</span> <span class="var">catch</span>
   (<span class="syntax">syntax-rules</span> ()
@@ -1064,13 +1064,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <em class="term">дискриминантом</em>; дискриминант записывается в скобках:</p>
 
 <pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
-  (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )</pre>
+  (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )</pre>
 
 <p>Таким образом определяется обобщённая функция <code><span class="func">invoke</span></code>, для которой можно
 в последующем задать специализированные варианты. Данная функция имеет четыре
 аргумента, первый из них — <code><span class="var">f</span></code> — это дискриминант. Если для
 класса <code><span class="var">f</span></code> не найдётся специализированного варианта функции (метода
-класса <code><span class="var">f</span></code>), то будет выбран вариант по умолчанию: вызов <code><span class="special">wrong</span></code>.</p>
+класса <code><span class="var">f</span></code>), то будет выбран вариант по умолчанию: вызов <code><span class="func">wrong</span></code>.</p>
 
 
 <h4>Определение методов</h4>
@@ -1153,16 +1153,16 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexC{lookup}-->
 <!--\indexC{update"!}-->
 <pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="var">f</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
-  (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )
+  (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span> <span class="var">r</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-generic</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">continuation</span>) <span class="var">v</span>)
-  (<span class="special">wrong</span> <span class="string">"Unknown continuation"</span> <span class="var">k</span>) )
+  (<span class="func">wrong</span> <span class="string">"Unknown continuation"</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-generic</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">environment</span>) <span class="var">n</span> <span class="var">k</span>)
-  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )
+  (<span class="func">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-generic</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">environment</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
-  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )</pre>
+  (<span class="func">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )</pre>
 
 <p>Все сущности, которыми мы будем оперировать, наследуются от трёх базовых
 классов:</p>
@@ -1280,7 +1280,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">lookup</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span>)
-  (<span class="special">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
+  (<span class="func">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">lookup</span> (<span class="var">r</span> <span class="class">full-env</span>) <span class="var">n</span> <span class="var">k</span>)
   (<span class="func">lookup</span> (<span class="func">full-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span>) )
@@ -1311,7 +1311,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">update!</span> (<span class="func">set!-cont-r</span> <span class="var">k</span>) (<span class="func">set!-cont-n</span> <span class="var">k</span>) (<span class="func">set!-cont-k</span> <span class="var">k</span>) <span class="var">v</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
-  (<span class="special">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
+  (<span class="func">wrong</span> <span class="string">"Unknown variable"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">update!</span> (<span class="var">r</span> <span class="class">full-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
   (<span class="func">update!</span> (<span class="func">full-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
@@ -1373,7 +1373,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
           (<span class="func">car</span> <span class="var">values</span>) ) )
         ((<span class="syntax">and</span> (<span class="func">null?</span> <span class="var">names</span>) (<span class="func">null?</span> <span class="var">values</span>)) <span class="var">env</span>)
         ((<span class="func">symbol?</span> <span class="var">names</span>) (<span class="func">make-variable-env</span> <span class="var">env</span> <span class="var">names</span> <span class="var">values</span>))
-        (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Arity mismatch"</span>)) ) )</pre>
+        (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Arity mismatch"</span>)) ) )</pre>
 
 <p>Осталось только определить собственно применение функций. Здесь надо помнить
 о том, что функция применяется к списку аргументов.</p>
@@ -1486,7 +1486,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
         '<span class="var">name</span> (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
                 (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity</span> (<span class="func">length</span> <span class="var">v*</span>))
                     (<span class="func">resume</span> <span class="var">k</span> (<span class="func">apply</span> <span class="var">value</span> <span class="var">v*</span>))
-                    (<span class="special">wrong</span> <span class="strin">"Incorrect arity"</span> '<span class="var">name</span> <span class="var">v*</span>) ) ) ) ) ) ) )
+                    (<span class="func">wrong</span> <span class="strin">"Incorrect arity"</span> '<span class="var">name</span> <span class="var">v*</span>) ) ) ) ) ) ) )
 
 (<span class="special">define</span> <span class="var">r.init</span> (<span class="func">make-null-env</span>))
 
@@ -1556,7 +1556,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
    (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
      (<span class="special">if</span> (<span class="func">=</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">v*</span>))
          (<span class="func">invoke</span> (<span class="func">car</span> <span class="var">v*</span>) (<span class="func">list</span> <span class="var">k</span>) <span class="var">r</span> <span class="var">k</span>)
-         (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">call/cc</span> <span class="var">v*</span>) ) ) ) )</pre>
+         (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">call/cc</span> <span class="var">v*</span>) ) ) ) )</pre>
 
 <p>Хоть тут и немного строчек, всё же стоит кое-что объяснить. <code><span class="func">call/cc</span></code> это
 функция, но мы определяем её с помощью <code><span class="syntax">defprimitive</span></code>, так как это
@@ -1573,7 +1573,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">continuation</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
   (<span class="special">if</span> (<span class="func">=</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">v*</span>))
       (<span class="func">resume</span> <span class="var">f</span> (<span class="func">car</span> <span class="var">v*</span>))
-      (<span class="special">wrong</span> <span class="string">"Continuations expect one argument"</span> <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) ) )</pre>
+      (<span class="func">wrong</span> <span class="string">"Continuations expect one argument"</span> <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) ) )</pre>
 
 
 <h3 id="escape/implementation/ssect:catch"><span class="seq">3.4.2.</span> Реализация <code><span class="special">catch</span></code></h3>
@@ -1631,13 +1631,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">catch-lookup</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">k</span>) )
 
 (<span class="syntax">define-generic</span> (<span class="func">catch-lookup</span> (<span class="var">k</span>) <span class="var">tag</span> <span class="var">kk</span>)
-  (<span class="special">wrong</span> <span class="string">"Not a continuation"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
+  (<span class="func">wrong</span> <span class="string">"Not a continuation"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">continuation</span>) <span class="var">tag</span> <span class="var">kk</span>)
   (<span class="func">catch-lookup</span> (<span class="func">continuation-k</span> <span class="var">k</span>) <span class="var">tag</span> <span class="var">kk</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">bottom-cont</span>) <span class="var">tag</span> <span class="var">kk</span>)
-  (<span class="special">wrong</span> <span class="string">"No associated catch"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
+  (<span class="func">wrong</span> <span class="string">"No associated catch"</span> <span class="var">k</span> <span class="var">tag</span> <span class="var">kk</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">catch-lookup</span> (<span class="var">k</span> <span class="class">labeled-cont</span>) <span class="var">tag</span> <span class="var">kk</span>)
   (<span class="special">if</span> (<span class="func">eqv?</span> <span class="var">tag</span> (<span class="func">labeled-cont-tag</span> <span class="var">k</span>))  <span class="comment">; внимание на компаратор</span>
@@ -1740,7 +1740,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
                 <span class="var">v</span> ) )
 
 (<span class="syntax">define-generic</span> (<span class="func">block-lookup</span> (<span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
-  (<span class="special">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
+  (<span class="func">wrong</span> <span class="string">"Not an environment"</span> <span class="var">r</span> <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">block-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
   (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">n</span> (<span class="func">block-env-name</span> <span class="var">r</span>))
@@ -1751,7 +1751,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">block-lookup</span> (<span class="func">variable-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) )
 
 (<span class="syntax">define-method</span> (<span class="func">block-lookup</span> (<span class="var">r</span> <span class="class">null-env</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>)
-  (<span class="special">wrong</span> <span class="string">"Unknown block label"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span> <span class="var">v</span>) )
+  (<span class="func">wrong</span> <span class="string">"Unknown block label"</span> <span class="var">n</span> <span class="var">r</span> <span class="var">k</span> <span class="var">v</span>) )
 
 (<span class="syntax">define-generic</span> (<span class="func">unwind</span> (<span class="var">k</span>) <span class="var">v</span> <span class="var">ktarget</span>))
 
@@ -1761,7 +1761,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
       (<span class="func">unwind</span> (<span class="func">continuation-k</span> <span class="var">k</span>) <span class="var">v</span> <span class="var">ktarget</span>) ) )
 
 (<span class="syntax">define-method</span> (<span class="func">unwind</span> (<span class="var">k</span> <span class="class">bottom-cont</span>) <span class="var">v</span> <span class="var">ktarget</span>)
-  (<span class="special">wrong</span> <span class="string">"Obsolete continuation"</span> <span class="var">v</span>) )</pre>
+  (<span class="func">wrong</span> <span class="string">"Obsolete continuation"</span> <span class="var">v</span>) )</pre>
 
 <p>После вычисления необходимого значения функция <code><span class="func">block-lookup</span></code> отправляется
 на поиски продолжения, связанного с меткой <code><span class="var">tag</span></code> в лексическом окружении
