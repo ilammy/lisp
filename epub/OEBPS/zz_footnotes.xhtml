@@ -450,5 +450,38 @@
     Фух! Наконец-то мне удалось опубликовать эту функцию! Она с 1981 года валяется у меня без дела.</p>
 </div>
 
+
+
+
+<h1><span class="seq">Глава 4.</span> Присваивание и побочные эффекты</h1>
+
+<div class="footnote" id="foot4.1">
+  <p><span class="num"><sup>1</sup></span>
+    К сожалению, непреднамеренно так вышло, что повторное определение
+    переменной сейчас имеет смысл. Для точного соответствия необходимо будет внести
+    коррективы в процедуру преобразования <code><span class="special">define</span></code> в
+    <code><span class="special">set!</span></code> во избежание
+    переопределения переменных.</p>
+</div>
+
+<div class="footnote" id="foot4.2">
+  <p><span class="num"><sup>2</sup></span>
+    После того, как <code><span class="special">define</span></code> объяснили, что
+    <code>(<span class="syntax">static</span> <i>переменная</i>)</code> — это ссылка на
+    глобальную переменную, а не вызов унарной функции
+    <code><span class="func">static</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.3">
+  <p><span class="num"><sup>3</sup></span>
+    Например, так сделано в {\TeX}е: определения, создаваемые <code>\def</code>,
+    автоматически отменяются при выходе из текущей группы.</p>
+</div>
+
+<div class="footnote" id="foot4.4">
+  <p><span class="num"><sup>4</sup></span>
+    Будем писать эти имена через <code>k</code>, чтобы не путать их с обычными.</p>
+</div>
+
 </body>
 </html>
