@@ -175,7 +175,7 @@ $\lambda$"=исчисление, так как оно имеет простую 
 синтаксически совпадает с~подмножеством программ на Scheme, использующих только
 одну специальную форму "--- \ic{lambda}:
 %
-\[  
+\[
 x \qquad\qquad \text{\ic{(lambda ($x$) $M$)}} \qquad\qquad \text{\ic{($M$ $N$)}}
 \]
 
@@ -723,8 +723,6 @@ $\Eval\sem*{(if $\p$ $\p_1$ $\p_2$)}\r\k\s =
 законам $\lambda$"=исчисления. В~этом случае мы видим простейший дистрибутивный
 закон.
 
-\ForLayout{display}{\begingroup\setlength{\denotepadding}{\smallskipamount}}
-
 \indexE{if-then-else-endif@$\protect\IF\ldots\protect\THEN\ldots%
 \protect\ELSE\ldots\protect\ENDIF$}
 Надеюсь, иероглифов было достаточно. Далее будет использоваться более
@@ -880,8 +878,6 @@ $\quad\Inj{Значение}(\lambda\e^*\k\s.$\.
 Сама денотация не~сложнее любого другого из способов определения \ic{call/cc},
 которые были рассмотрены ранее в~третьей главе.
 \seePage[escape/implementation/ssect:call/cc]
-
-\ForLayout{display}{\endgroup}% \setlength{\denotepadding}{\smallskipamount}
 
 
 \subsection{Предварительные выводы}%
@@ -1109,7 +1105,9 @@ $\quad\Inj{Значение}(\lambda \e^*\k\s.$\.
 необходимо пришить к~концу формируемой последовательности. После всех этих
 манипуляций выполняется собственно вызов функции.
 
-\ForLayout{display}{\begingroup\setlength{\denotepadding}{\smallskipamount}}
+\makeatletter
+\ForLayout{display}{\begingroup\setlength{\denote@padding}{\smallskipamount}}
+\makeatother
 
 \indexC{apply}
 \indexE{collect@\protect\ii{collect}}
@@ -1223,7 +1221,7 @@ $\quad(\k\ \Inj{Значение}(\lambda \e^*\k_1\s_1.$\.
   $\ENDIF)\ \s)$                                                         \-\|
 \*$\Bind\sem*{. $\n$}\mu = {}$\.
   $\lambda \e^*\r\k\s. \big(\fn{listify}\ \e^*\ \s\ $\*$\lambda \e\s_1.$   \\
-           \*$\ii{allocate}\ \s_1\ 1$                                      \\ 
+           \*$\ii{allocate}\ \s_1\ 1$                                      \\
                 $\lambda \s_2\a^*.$\.
              $\LET \a = \a^*\car1$                                         \\
              $\IN  (\mu\ \seq{}\ \r[\n\to\a]\ \k\ \s_2[\a\to\e])\big)$\-\-\-\-\\
@@ -1235,7 +1233,7 @@ $\quad(\k\ \Inj{Значение}(\lambda \e^*\k_1\s_1.$\.
               $\LET \k_2 = {}$\*$\lambda \e\s_3 .$                 \\
                              $(\k_1\ \Inj{Значение}
                                   (\a^*)\ \s_3[\a^*\car2 \to \e])$ \/
-              $\IN (\fn{listify}\ 
+              $\IN (\fn{listify}\
                     \e^*_1\cdr1\ \s_2[\a^*\car1 \to \e^*_1\car1]\ \k_2)$\-\-\\
         $\ELSE (\k_1\ \Inj{Значение}(\seq{})\ \s_1)$                        \\
         $\ENDIF$
@@ -2009,7 +2007,7 @@ $\p^*$))}, где $\n$~описывает форму вызова определ
 вычислений:
 
 \begin{code:lisp}
-(((lambda (x) (lambda (y) y))|\dialect{;\ic{ $\big((\lambda x. \lambda y.       
+(((lambda (x) (lambda (y) y))|\dialect{;\ic{ $\big((\lambda x. \lambda y.
                                                 y\ (\omega\ \omega))\ z\big)$}}|
   ((lambda (x) (x x)) (lambda (x) (x x))) ) z )
 \end{code:lisp}
