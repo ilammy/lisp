@@ -138,3 +138,21 @@ pre span.dialect span.logo { font-size: 100%; }
   letter-spacing: -0.125em;
   margin-right: 0.125em;
 }
+
+.denotation {
+  white-space: pre-line;
+}
+
+.math div.valign {
+  display: inline-block;
+  vertical-align: top;
+  white-space: pre-line;
+}
+
+.math .syntax {
+  font-weight: bold;
+}
+
+.math .bf {
+  font-weight: bold;
+}

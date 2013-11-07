@@ -175,7 +175,7 @@ $\lambda$"=исчисление, так как оно имеет простую 
 синтаксически совпадает с~подмножеством программ на Scheme, использующих только
 одну специальную форму "--- \ic{lambda}:
 %
-\[  
+\[
 x \qquad\qquad \text{\ic{(lambda ($x$) $M$)}} \qquad\qquad \text{\ic{($M$ $N$)}}
 \]
 
@@ -714,7 +714,7 @@ $\Eval\sem*{(if $\p$ $\p_1$ $\p_2$)}\r\k\s =
       \switch (\Eval\sem{\p_2}\ \r\ \k\ \s)
   \equiv
   ((\fn{boolify}\ \e) \to \Eval\sem{\p_1} \switch
-      \Eval\sem{\p_2}\ \r\ \k\ \s\big)
+      \Eval\sem{\p_2}\ \r\ \k\ \s)
 \]
 
 Это тождество очевидно ложно в~Scheme из"~за аппликативного порядка вычислений.
@@ -1223,7 +1223,7 @@ $\quad(\k\ \Inj{Значение}(\lambda \e^*\k_1\s_1.$\.
   $\ENDIF)\ \s)$                                                         \-\|
 \*$\Bind\sem*{. $\n$}\mu = {}$\.
   $\lambda \e^*\r\k\s. \big(\fn{listify}\ \e^*\ \s\ $\*$\lambda \e\s_1.$   \\
-           \*$\ii{allocate}\ \s_1\ 1$                                      \\ 
+           \*$\ii{allocate}\ \s_1\ 1$                                      \\
                 $\lambda \s_2\a^*.$\.
              $\LET \a = \a^*\car1$                                         \\
              $\IN  (\mu\ \seq{}\ \r[\n\to\a]\ \k\ \s_2[\a\to\e])\big)$\-\-\-\-\\
@@ -1235,7 +1235,7 @@ $\quad(\k\ \Inj{Значение}(\lambda \e^*\k_1\s_1.$\.
               $\LET \k_2 = {}$\*$\lambda \e\s_3 .$                 \\
                              $(\k_1\ \Inj{Значение}
                                   (\a^*)\ \s_3[\a^*\car2 \to \e])$ \/
-              $\IN (\fn{listify}\ 
+              $\IN (\fn{listify}\
                     \e^*_1\cdr1\ \s_2[\a^*\car1 \to \e^*_1\car1]\ \k_2)$\-\-\\
         $\ELSE (\k_1\ \Inj{Значение}(\seq{})\ \s_1)$                        \\
         $\ENDIF$
@@ -2009,7 +2009,7 @@ $\p^*$))}, где $\n$~описывает форму вызова определ
 вычислений:
 
 \begin{code:lisp}
-(((lambda (x) (lambda (y) y))|\dialect{;\ic{ $\big((\lambda x. \lambda y.       
+(((lambda (x) (lambda (y) y))|\dialect{;\ic{ $\big((\lambda x. \lambda y.
                                                 y\ (\omega\ \omega))\ z\big)$}}|
   ((lambda (x) (x x)) (lambda (x) (x x))) ) z )
 \end{code:lisp}
