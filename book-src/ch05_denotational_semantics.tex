@@ -1962,7 +1962,7 @@ $\p^*$))}, где $\n$~описывает форму вызова определ
         ((if)     (meaning-alternative (cadr e) (caddr e) (cadddr e)))
         ((begin)  (meaning-sequence (cdr e)))
         ((set!)   (meaning-assigment (cadr e) (caddr e)))
-        (else     (meaning-application (car e) (cdre))) ) ) )
+        (else     (meaning-application (car e) (cdr e))) ) ) )
 \end{code:lisp}
 
 
@@ -2379,7 +2379,7 @@ $\Eval\sem*{($\p$ $\p^*$)}\r\k\s =
     (\Eval\sem{\p}\ \r\ \lambda \f\s_1.
         (\rev\Eval\sem{\p^*}\ \seq{}\ \r\ \lambda \e^*\s_2.
             (\f|_{\Vset{Функции}}\ \e^*\ \k\ \s_2)\ \s_1)\ \s)$   \|
-$\rev\Eval\sem{\,}\e^*\r\k\s = (\k\ (\ii{reverse}\ e^*)\ \s)$     \|
+$\rev\Eval\sem{\,}\e^*\r\k\s = (\k\ (\ii{reverse}\ \e^*)\ \s)$     \|
 $\rev\Eval\sem{\p\ \p^*}\e^*\r\k\s = (\Eval\sem{\p}\ \r\ \lambda \e\s_1.
     (\rev\Eval\sem{\p^*}\ \seq{\e}\append\e^*\ \r\ \k\ \s_1)\ \s)$
 \end{denotation}

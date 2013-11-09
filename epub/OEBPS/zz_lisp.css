@@ -157,6 +157,10 @@ pre span.dialect span.logo { font-size: 100%; }
   font-weight: bold;
 }
 
+.math .overline {
+  border-top: 1px solid black;
+}
+
 .Vset {
   font-weight: bolder;
 }
