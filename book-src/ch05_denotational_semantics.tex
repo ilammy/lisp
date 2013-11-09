@@ -652,7 +652,7 @@ $\e_1 \is \e_2, \e_3$
 
 \begin{denotation}
 $\Eval\sem*{(if $\p$ $\p_1$ $\p_2$)}\r\k\s =$                                 \|
-$(\Eval\sem{\p}\ \r\ \lambda\e\s_1. (\fn{boolify}\ \e) \to
+$\quad(\Eval\sem{\p}\ \r\ \lambda\e\s_1. (\fn{boolify}\ \e) \to
   (\Eval\sem{\p_1}\ \r\ \k\ \s_1) \switch (\Eval\sem{\p_2}\ \r\ \k\ \s_1)\ \s)$
 \end{denotation}
 
@@ -714,7 +714,7 @@ $\Eval\sem*{(if $\p$ $\p_1$ $\p_2$)}\r\k\s =
       \switch (\Eval\sem{\p_2}\ \r\ \k\ \s)
   \equiv
   ((\fn{boolify}\ \e) \to \Eval\sem{\p_1} \switch
-      \Eval\sem{\p_2}\ \r\ \k\ \s\big)
+      \Eval\sem{\p_2}\ \r\ \k\ \s)
 \]
 
 Это тождество очевидно ложно в~Scheme из"~за аппликативного порядка вычислений.
@@ -1084,7 +1084,8 @@ $\quad\Inj{Значение}(\lambda \e^*\k\s.$\.
                 $\lambda \s_1\a^*.
                     (\k\ \Inj{Значение}(\seq{\a^*\car1,
                     a^*\car2})\ \s_1[\a^* \to*{*} \e^*])$   \/
-  $\ELSE \ii{wrong}\ \dc{"Incorrect arity"}$              \-\|
+  $\ELSE \ii{wrong}\ \dc{"Incorrect arity"}$                \\
+  $\ENDIF)$                                               \-\|
 $(\s_0\ (\r_0\ \sem*{car})) = $                     \|
 $\quad\Inj{Значение}(\lambda \e^*\k\s.$\.
   $\IF \#\e^* = 1$                                  \\
@@ -1117,7 +1118,7 @@ $\quad\Inj{Значение}(\lambda \e^*\k\s.$\.
 $(\s_0\ (\r_0\ \sem*{apply})) = $ \|
 $\quad\Inj{Значение}(\lambda \e^*\k\s.$\.
   $\IF   \#\e^* \geq 2$           \\
-  $\THEN {}$\.$(\e^*\car1\Prj{Функции}\ (\fn{collect}\ \e^*\ \cdr1)\ \k\ \s)$ \\
+  $\THEN {}$\.$(\e^*\car1\Prj{Функции}\ (\fn{collect}\ \e^*\cdr1)\ \k\ \s)$ \\
            $\WHERE \ii{collect} = \lambda \e^*_1.$\.
               $\IF   \e^*_1\cdr1 = \seq{}$                                \\
               $\THEN (\ii{flat}\ \e^*_1\car1)$                            \\
@@ -1352,7 +1353,7 @@ $\mathcal{P}(Q)$, то эти функции имеют следующие ти�
 
 \indexE{oneof@\protect\ii{oneof}}
 $\Noir$ определяется просто: она использует \ii{oneof}\!, чтобы выбрать один из
-возможных результатов. Определение функции~\ii{oneof}, естественно, возлагается
+возможных результатов. Определение функции~\ii{oneof}\!, естественно, возлагается
 на реализацию.
 
 \begin{denotation}
@@ -1959,7 +1960,7 @@ $\p^*$))}, где $\n$~описывает форму вызова определ
         ((if)     (meaning-alternative (cadr e) (caddr e) (cadddr e)))
         ((begin)  (meaning-sequence (cdr e)))
         ((set!)   (meaning-assigment (cadr e) (caddr e)))
-        (else     (meaning-application (car e) (cdre))) ) ) )
+        (else     (meaning-application (car e) (cdr e))) ) ) )
 \end{code:lisp}
 
 
@@ -2376,7 +2377,7 @@ $\Eval\sem*{($\p$ $\p^*$)}\r\k\s =
     (\Eval\sem{\p}\ \r\ \lambda \f\s_1.
         (\rev\Eval\sem{\p^*}\ \seq{}\ \r\ \lambda \e^*\s_2.
             (\f|_{\Vset{Функции}}\ \e^*\ \k\ \s_2)\ \s_1)\ \s)$   \|
-$\rev\Eval\sem{\,}\e^*\r\k\s = (\k\ (\ii{reverse}\ e^*)\ \s)$     \|
+$\rev\Eval\sem{\,}\e^*\r\k\s = (\k\ (\ii{reverse}\ \e^*)\ \s)$     \|
 $\rev\Eval\sem{\p\ \p^*}\e^*\r\k\s = (\Eval\sem{\p}\ \r\ \lambda \e\s_1.
     (\rev\Eval\sem{\p^*}\ \seq{\e}\append\e^*\ \r\ \k\ \s_1)\ \s)$
 \end{denotation}
