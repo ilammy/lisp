@@ -156,3 +156,7 @@ pre span.dialect span.logo { font-size: 100%; }
 .math .bf {
   font-weight: bold;
 }
+
+.Vset {
+  font-weight: bolder;
+}
