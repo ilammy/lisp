@@ -659,5 +659,96 @@
     в переменных, поэтому данные примитивы очень важны для эффективной компиляции.</p>
 </div>
 
+
+
+
+
+<h1><span class="seq">Глава 7.</span> Компиляция</h1>
+
+<div class="footnote" id="foot7.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вот здесь могут возникнуть некоторые проблемы, потому что смещение может оказаться
+    как меньшим 256, так и превышать это значение, то есть занимать
+    один или два байта. Это может оказаться причиной определённых
+    потерь производительности.</p>
+</div>
+
+<div class="footnote" id="foot7.2">
+  <p><span class="num"><sup>2</sup></span>
+    В <span class="logo">Common Lisp</span> даже есть специальная
+    константа <code><span class="func">LAMBDA-PARAMETERS-LIMIT</span></code>,
+    хранящая максимально возможно количество
+    аргументов функции. По стандарту оно не может быть меньше 50. Стандарт Scheme
+    ничего не говорит о подобных ограничениях, но его молчание можно толковать
+    по-разному.</p>
+  <p>Как бы то ни было, вопрос представления чисел интересен сам по
+    себе. В большинстве систем, поддерживающих длинную арифметику, максимально
+    представимое число немного меньше, чем <span class="math">256<sup><span class="ord num">2<sup><span class="ord num">32</span></sup></span></sup></span>.
+    (Чуть-чуть не хватило до бесконечности.) Хитрость в том, что перед длинным
+    числом записывается его длина в байтах. Аналогичное решение можно применить и здесь.</p>
+</div>
+
+<div class="footnote" id="foot7.3">
+  <p><span class="num"><sup>3</sup></span>
+    В последующих определениях мы не будем упоминать
+    <code><span class="func">check-byte</span></code> ради краткости.</p>
+</div>
+
+<div class="footnote" id="foot7.4">
+  <p><span class="num"><sup>4</sup></span>
+    Да-да, <code><span class="func">list</span></code>,
+    <code><span class="func">append</span></code>, неэффективно,
+    раздел <a href="ch07_compilation.xhtml#compilation/lang-and-target/par:slowpoke">7.2</a>.
+    Извините.</p>
+</div>
+
+<div class="footnote" id="foot7.5">
+  <p><span class="num"><sup>5</sup></span>
+    Инструкции с кодом <code><span class="num">0</span></code> не существует —
+    бедный ноль и без того особенный.</p>
+</div>
+
+<div class="footnote" id="foot7.6">
+  <p><span class="num"><sup>6</sup></span>
+    Вообще-то это не совсем верное предположение, ведь мы только что убедились в том,
+    что <i>j</i> чаще
+    всего оказывается меньше четырёх. Но так как свободные переменные используются
+    значительно реже локальных и глобальных, то можно не особо спешить с ускорением
+    доступа к ним.</p>
+</div>
+
+<div class="footnote" id="foot7.7">
+  <p><span class="num"><sup>7</sup></span>
+    Это досадно, но где-то же должна проходить граница между обычными числами и длинными.</p>
+</div>
+
+<div class="footnote" id="foot7.8">
+  <p><span class="num"><sup>8</sup></span>
+    На некоторых старых машинах, основанных на процессоре i8086, такое ограничение действительно
+    существовало.</p>
+</div>
+
+<div class="footnote" id="foot7.9">
+  <p><span class="num"><sup>9</sup></span>
+    Очевидно, что подобное разделение на <code>SHORT</code>- и
+    <code>LONG</code>-версию может быть применено, например, к
+    <code><span class="func">GLOBAL-REF</span></code>
+    с компанией, чтобы количество изменяемых глобальных переменных больше не было
+    ограничено 256-ю.</p>
+</div>
+
+<div class="footnote" id="foot7.10">
+  <p><span class="num"><sup>10</sup></span>
+    Говоря в общем, это всё же возможно при обработке асинхронных вызовов вроде сигналов UNIX.
+    В таком случае, очевидно, следует использовать время от времени проверяемый флаг, как
+    в <span class="cite">[<a href="z1_bibliography.xhtml#dev85">Dev85</a>]</span>,
+    или иной механизм синхронизации.</p>
+</div>
+
+<div class="footnote" id="foot7.11">
+  <p><span class="num"><sup>11</sup></span>
+    Вроде <code><span class="string">"Bus error: core not dumped"</span></code>.</p>
+</div>
+
 </body>
 </html>

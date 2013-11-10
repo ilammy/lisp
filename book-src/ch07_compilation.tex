@@ -84,7 +84,7 @@
                         (TR-REGULAR-CALL (DEEP-ARGUMENT-REF 1 2)
                          (STORE-ARGUMENT (CALL2 #<*>
                                           (DEEP-ARGUMENT-REF 1 0)
-                                          (SHALLOW-ARGUMENT REF 0) )
+                                          (SHALLOW-ARGUMENT-REF 0) )
                           (ALLOCATE-FRAME 1)
                           0 ) )
                         1 )
@@ -359,7 +359,7 @@
 \indexC*{CALL0}{CALL\protect\ii{n}}
 \begin{code:lisp}
 (define (CALL3 address m1 m2 m3)
-  (lambda (m)
+  (lambda ()
     (m1)
     (stack-push *val*)
     (m2)
@@ -662,7 +662,7 @@
 действительно~ли в~\ic{*val*} лежит значение инициализированной переменной, но
 это~бы замедлило интерпретацию. Так что скорее наоборот, некоторые инструкции
 имеет смысл объединить, например: \ic{POP-ARG2} используется только
-в~\ic{CALL3}, причём за \ic{POP-ARG2} всегда следует \ic{POP-ARG1}, поэтому 
+в~\ic{CALL3}, причём за \ic{POP-ARG2} всегда следует \ic{POP-ARG1}, поэтому
 данную пару вполне можно превратить в~отдельную инструкцию.
 
 \begin{table}[!htb]%
@@ -800,15 +800,15 @@
 
 \begin{enumerate}
   \item вывести инструкцию \ic{CREATE-CLOSURE};
-  
+
   \item вывести инструкцию \ic{GOTO}, но без смещения, запомнив при этом
         текущее состояние счётчика команд;
-  
+
   \item сгенерировать и вывести код тела функции;
-  
+
   \item зная текущее значение счётчика команд и помня сохранённое ранее,
         вычислить величину смещения для \ic{GOTO};
-  
+
   \item записать это число на зарезервированное\footnote{Вот здесь могут
         возникнуть некоторые проблемы, потому что смещение может оказаться
         как меньшим~256, так и превышать это значение, то~есть занимать
@@ -1330,7 +1330,7 @@
          (let ((offset1 (modulo offset 256))
                (offset2 (quotient offset 256)) )
            (list 28 offset1 offset2) ) )
-        (else (static-wrong "Too long jump" offset)) ) )
+        (else (static-wrong "Too far jump" offset)) ) )
 
 (define (JUMP-FALSE offset)
   (cond ((< offset 256) (list 31 offset))
@@ -1338,7 +1338,7 @@
          (let ((offset1 (modulo offset 256))
                (offset2 (quotient offset 256)) )
            (list 29 offset1 offset2) ) )
-        (else (static-wrong "Too long jump" offset)) ) )
+        (else (static-wrong "Too far jump" offset)) ) )
 
 (define-instruction (SHORT-GOTO offset) 30
   (set! *pc* (+ *pc* offset)) )
@@ -1730,17 +1730,17 @@
 \indexR{вычисления!контекст}
 Контекст исполнения программы "--- это стек и ничего, кроме стека.
 Действительно, регистры \ic{*fun*}, \ic{*arg1*} и \ic{*arg2*} используются лишь
-хранения промежуточных результатов вычислений, их значения лишены смысла между
-выражениями компилируемого языка. (Нельзя\footnote{Говоря в~общем, это всё~же
-возможно при обработке асинхронных вызовов вроде сигналов \UNIX. В~таком случае,
-очевидно, следует использовать время от времени проверяемый флаг, как
+для хранения промежуточных результатов вычислений, их значения лишены смысла
+между выражениями компилируемого языка. (Нельзя\footnote{Говоря в~общем, это
+всё~же возможно при обработке асинхронных вызовов вроде сигналов \UNIX. В~таком
+случае, очевидно, следует использовать время от времени проверяемый флаг, как
 в~\cite{dev85}, или иной механизм синхронизации.} вызвать \ic{call/cc} или
 что-нибудь ещё во~время процесса обработки вызова функции, когда эти регистры
 используются.)
 
 Регистр \ic{*val*} используется для передачи значений самим продолжениям, так
-что тут нечего сохранять. Регистр \ic{*env*} тоже бессмысленно смысла
-запоминать, потому как \ic{call/cc} "--- это не~встраиваемый примитив; если
+что тут нечего сохранять. Регистр \ic{*env*} тоже бессмысленно запоминать,
+потому как \ic{call/cc} "--- это не~встраиваемый примитив; если
 окружение надо было сохранить, то это уже сделано в~силу самого вызова
 \emph{функции} \ic{call/cc}. Таким образом, остаётся сохранить только стек.
 Следующие функции помогут работать с~ним:
@@ -2039,7 +2039,7 @@
 \indexC{dynamic}
 \indexC{dynamic-let}
 \begin{code:lisp}
-(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|)
+(dynamic-let (|\ii{переменная}| |\ii{значение}|) |\ii{тело}|...)
 (dynamic |\ii{переменная}|)
 \end{code:lisp}
 
@@ -2617,19 +2617,19 @@
     (lambda (out)
       (for-each (lambda (comment) (display comment out))
                 comments ) (newline out) (newline out)
-      
+
       (display ";;; Dynamic variables" out) (newline out)
       (write dynamics out) (newline out) (newline out)
-      
+
       (display ";;; Global modifiable variables" out) (newline out)
       (write global-names out) (newline out) (newline out)
-      
+
       (display ";;; Quotations" out) (newline out)
       (write constants out) (newline out) (newline out)
-      
+
       (display ";;; Bytecode" out) (newline out)
       (write code out) (newline out) (newline out)
-      
+
       (display ";;; Entry point" out) (newline out)
       (write entry out) (newline out) ) ) )
 \end{code:lisp}
