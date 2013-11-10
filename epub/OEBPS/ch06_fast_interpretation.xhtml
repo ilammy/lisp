@@ -90,7 +90,7 @@
 
 <!--\indexC{meaning-abstraction}-->
 <pre>(<span class="special">define</span> (<span class="func">meaning-abstraction</span> <span class="var">n*</span> <span class="var">e+</span>)
-  (<span class="func">let</span> ((<span class="var">m</span> (<span class="func">meaning*-sequence</span> <span class="var">e+</span>))
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning*-sequence</span> <span class="var">e+</span>))
         (<span class="var">arity</span> (<span class="func">length</span> <span class="var">n*</span>)) )
     (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">k</span> <span class="var">s</span>)
       (<span class="func">k</span> (<span class="func">inValue</span> (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">k1</span> <span class="var">s1</span>)
@@ -300,7 +300,7 @@ S-выражений, но принципиально остаётся тем ж
 <!--\indexE{n @\protect<code><span class="func">n</span></code> (идентификаторы)}-->
 <p>Как обычно, ради упрощения синтаксического анализа разбираемые программы
 считаются синтаксически корректными. Вспомним наши соглашения именования
-сущностей:
+сущностей:</p>
 
 <table class="term-def">
 <tr><td><code><span class="var">e</span></code></td><td>выражения, формы</td></tr>
@@ -434,9 +434,9 @@ S-выражений, но принципиально остаётся тем ж
   (<span class="special">set!</span> <span class="var">f</span> (<span class="syntax">let</span> ((<span class="var">g</span> ((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> () <span class="var">a</span>))
                     (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">nk</span>) (<span class="special">set!</span> <span class="var">k</span> <span class="var">nk</span>) (<span class="func">nk</span> <span class="num">1</span>))) )))
             (<span class="func">cons</span> <span class="var">g</span> <span class="var">f</span>) ))
-  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span> \approx <span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">1</span>)</code></span></span></span>
+  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">1</span>)</code></span></span></span>
   (<span class="special">if</span> (<span class="func">null?</span> (<span class="func">cdr</span> <span class="var">f</span>)) (<span class="func">k</span> <span class="num">2</span>))
-  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span> \approx <span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">2</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">1</span>)</code></span></span></span>
+  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">2</span> <span class="math"><span class="ord var">λ</span><span class="punct">.</span></span><span class="num">1</span>)</code></span></span></span>
   (<span class="func">list</span> ((<span class="func">car</span> <span class="var">f</span>)) ((<span class="func">cadr</span> <span class="var">f</span>))) )</pre>
 
 <p>Дело в том, что <code><span class="func">call/cc</span></code> захватывает
@@ -514,7 +514,7 @@ S-выражений, но принципиально остаётся тем ж
       (<span class="func">k</span> (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">k1</span>)
            (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
                (<span class="func">m+</span> (<span class="func">sr-extend*</span> <span class="var">sr</span> <span class="var">v*</span>) <span class="var">k1</span>)
-               (<span class="func">wrong</span> <span class="var">"Incorrect</span> <span class="var">arity"</span>) ) )) ) ) )</pre>
+               (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )) ) ) )</pre>
 
 
 <h3 id="fast/fast/ssest:classify"><span class="seq">6.1.4.</span> Классы переменных</h3>
@@ -656,7 +656,7 @@ S-выражений, но принципиально остаётся тем ж
                  (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>)
                    (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">global-fetch</span> <span class="var">i</span>)))
                      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">v</span> <span class="var">undefined-value</span>)
-                         (<span class="func">wrong</span> <span class="var">"Uninitialized-variable"</span> <span class="var">n</span>)
+                         (<span class="func">wrong</span> <span class="string">"Uninitialized variable"</span> <span class="var">n</span>)
                          (<span class="func">k</span> <span class="var">v</span>) ) ) )
                  (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>)
                    (<span class="func">k</span> (<span class="func">global-fetch</span> <span class="var">i</span>)) ) ) ) )
@@ -664,7 +664,7 @@ S-выражений, но принципиально остаётся тем ж
            (<span class="syntax">let*</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>))
                   (<span class="var">value</span> (<span class="func">predefined-fetch</span> <span class="var">i</span>)) )
              (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>) (<span class="func">k</span> <span class="var">value</span>)) ) ) )
-        (<span class="func">static-wrong</span> <span class="var">"No-such-variable"</span> <span class="var">n</span>) ) ) )</pre>
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )</pre>
 
 <p>Присваивание аналогично:</p>
 
@@ -845,7 +845,7 @@ S-выражений, но принципиально остаётся тем ж
            (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
                (<span class="special">begin</span> (<span class="func">listify!</span> <span class="var">v*</span> <span class="var">arity</span>)
                       (<span class="func">m+</span> (<span class="func">sr-extend*</span> <span class="var">sr</span> <span class="var">v*</span>) <span class="var">k1</span>) )
-               (<span class="func">wrong</span> <span class="var">"Incorrect-arity"</span>) ) )) ) ) )
+               (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )) ) ) )
 
 (<span class="special">define</span> (<span class="func">listify!</span> <span class="var">v*</span> <span class="var">arity</span>)
   (<span class="syntax">let</span> <span class="func">loop</span> ((<span class="var">index</span> (<span class="func">-</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="num">1</span>))
@@ -1201,14 +1201,16 @@ S-выражений, но принципиально остаётся тем ж
 <!--\indexR{коробки}-->
 <p>Другой вариант решения проблемы скорости доступа: избавиться от полноценного
 стека окружений. Для каждого создаваемого замыкания можно не просто слепо
-сохранять внутри всё состояние окружения <code><span class="func">sr</span></code>, а формировать для него
+сохранять внутри всё состояние окружения
+<code><span class="var">sr</span></code>, а формировать для него
 специальную запись активации, в которой собираются все его свободные переменные.
 В этом случае, конечно, чуть возрастает стоимость создания замыканий, но все
 свободные переменные будут доступны за постоянное время, так как в окружениях
 будет всего по две записи активации: одна с собственными локальными переменными
 активного замыкания, а другая — со свободными. Конечно, на случай, если
 потребуется разделять какую-либо переменную между несколькими замыканиями, имеет
-смысл реализовать коробки. \seePage[assignment/assignment/boxes/p:boxing]</p>
+смысл реализовать коробки.
+<span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#ch4-box-transform">4.1.1</a>]</span></p>
 
 <p>В идеале, естественно, стоит использовать все возможные варианты, применяя
 каждый из них в тех случаях, для которых он работает лучше остальных. Чтобы
@@ -1216,25 +1218,21 @@ S-выражений, но принципиально остаётся тем ж
 программ. Это работа для настоящего компилятора, а не для простого
 интерпретатора с небольшой предобработкой вроде нашего.</p>
 
-<p>
-\subsubsection{Определение глобальных переменных}%
-\label{fast/fast/variations/ssect:global-define}</p>
 
+<h4 id="fast/fast/variations/ssect:global-define">Определение глобальных переменных</h4>
 
 <!--\indexR{переменные!глобальные}-->
 <p>Наш интерпретатор считает, что переменная глобальная, если она находится
 в списке глобальных изменяемых или же предопределённых переменных.
 Следовательно, перед использованием переменную надо поместить в один из этих
 списков, иными словами: объявить. Внутри интерпретатора это выполняется
-с помощью макроса <code><span class="func">defvariable</span></code>:</p>
-
+с помощью макроса <code><span class="syntax">defvariable</span></code>:</p>
 
 <!--\indexC{defvariable}-->
-<pre>(define-syntax defvariable
-  (syntax-rules ()
-    ((defvariable name)
-     (g.current-initialize! 'name) ) ) )</pre>
-
+<pre>(<span class="special">define-syntax</span> <span class="var">defvariable</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">defvariable</span> <span class="var">name</span>)
+     (<span class="func">g.current-initialize!</span> '<span class="var">name</span>) ) ) )</pre>
 
 <!--\indexR{глобальные переменные!объявление}-->
 <p>Многие языки имеют что-то подобное для явного объявления переменных, но
@@ -1243,20 +1241,18 @@ S-выражений, но принципиально остаётся тем ж
 наиболее простых способов этого добиться: поместить механизм создания глобальных
 переменных прямиком в функцию <code><span class="func">compute-kind</span></code>:</p>
 
-
 <!--\indexC{adjoin-global-variable"!}-->
 <!--\indexC{compute-kind}-->
-<pre>(define (compute-kind r n)
-  (or (local-variable? r 0 n)
-      (global-variable? g.current n)
-      (global-variable? g.init n)
-      [(adjoin-global-variable! n)] ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)
+  (<span class="syntax">or</span> (<span class="func">local-variable?</span> <span class="var">r</span> <span class="num">0</span> <span class="var">n</span>)
+      (<span class="func">global-variable?</span> <span class="var">g.current</span> <span class="var">n</span>)
+      (<span class="func">global-variable?</span> <span class="var">g.init</span> <span class="var">n</span>)
+      <span class="highlight">(<span class="func">adjoin-global-variable!</span> <span class="var">n</span>)</span> ) )
 
-<p>(define (adjoin-global-variable! name)
-  (let ((index (g.current-extend! name)))
-    (vector-set! sg.current index undefined-value)
-    (cdr (car g.current)) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">adjoin-global-variable!</span> <span class="var">name</span>)
+  (<span class="syntax">let</span> ((<span class="var">index</span> (<span class="func">g.current-extend!</span> <span class="var">name</span>)))
+    (<span class="func">vector-set!</span> <span class="var">sg.current</span> <span class="var">index</span> <span class="var">undefined-value</span>)
+    (<span class="func">cdr</span> (<span class="func">car</span> <span class="var">g.current</span>)) ) )</pre>
 
 <!--\indexR{глобальные переменные!предрождение}-->
 <p>Но так делать не совсем хорошо, потому что тогда предобработка берёт на себя
@@ -1264,25 +1260,25 @@ S-выражений, но принципиально остаётся тем ж
 не во время исполнения программы. Приемлемо ли такое предрождение? Давайте ещё
 раз разберём, что именно происходит при упоминании новой переменной.</p>
 
-<p>\begin{enumerate}
-  \item Её имя добавляется в окружение глобальных изменяемых переменных
-        (известное как <code><span class="func">g.current</span></code>), а также с переменной связывается
-        уникальный номер.</p>
+<ol>
+  <li>Её имя добавляется в окружение глобальных изменяемых переменных
+    (известное как <code><span class="var">g.current</span></code>), а также
+    с переменной связывается уникальный номер.</li>
 
-<p>  \item Для хранения значения переменной выделяется ячейка памяти
-        с адресом, соответствующим её номеру.
-\end{enumerate}</p>
+  <li>Для хранения значения переменной выделяется ячейка памяти с адресом,
+    соответствующим её номеру.</li>
+</ol>
 
 <p>Держа это в уме, рассмотрим следующую программу:</p>
 
-<pre>(begin (define foo (lambda () (bar)))
-       (define bar (lambda () (if #t 33 hux))) )</pre>
+<pre>(<span class="special">begin</span> (<span class="special">define</span> <span class="var">foo</span> (<span class="special">lambda</span> () (<span class="func">bar</span>)))
+       (<span class="special">define</span> <span class="var">bar</span> (<span class="special">lambda</span> () (<span class="special">if</span> <span class="hash">#t</span> <span class="num">33</span> <span class="var">hux</span>))) )</pre>
 
 <p>Так как в процессе её предобработки были встречены неизвестные переменные
-с именами <code><span class="func">foo</span></code>, <code><span class="func">bar</span></code> и <code><span class="func">hux</span></code>, то они все получают свои номера, ячейки
+с именами <code><span class="var">foo</span></code>, <code><span class="var">bar</span></code> и <code><span class="var">hux</span></code>, то они все получают свои номера, ячейки
 памяти и добавляются в окружение. Но как их существование соотносится
-с семантикой обрабатываемой программы? Почему определение <code><span class="func">foo</span></code> игнорирует
-явно заданный порядок вычисления форм? Зависит ли существование <code><span class="func">hux</span></code> от
+с семантикой обрабатываемой программы? Почему определение <code><span class="var">foo</span></code> игнорирует
+явно заданный порядок вычисления форм? Зависит ли существование <code><span class="var">hux</span></code> от
 истинности условия?</p>
 
 <p>Как бы то ни было, во время исполнения программы значения всех используемых
@@ -1292,19 +1288,17 @@ S-выражений, но принципиально остаётся тем ж
 глобального окружения можно окончательно подогнать под требуемое количество
 глобальных переменных, а также выдать им начальные значения. Это выполняет
 функция <code><span class="func">standalone-producer</span></code>, которая обрабатывает программу, возвращая
-обычное замыкание <code>(lambda (sr k) ...)</code>, первым действием которого является
+обычное замыкание <code>(<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>) ...)</code>, первым действием которого является
 создание личного глобального окружения необходимых размеров.</p>
 
-
 <!--\indexC{standalone-producer}-->
-<pre>(define (standalone-producer e)
-  (set! g.current (original.g.current))
-  (let* ((m (meaning e r.init))
-         (size (length g.current)) )
-    (lambda (sr k)
-      (set! sg.current (make-vector size undefined-value))
-      (m sr k) ) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">standalone-producer</span> <span class="var">e</span>)
+  (<span class="special">set!</span> <span class="var">g.current</span> (<span class="func">original.g.current</span>))
+  (<span class="syntax">let*</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r.init</span>))
+         (<span class="var">size</span> (<span class="func">length</span> <span class="var">g.current</span>)) )
+    (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>)
+      (<span class="special">set!</span> <span class="var">sg.current</span> (<span class="func">make-vector</span> <span class="var">size</span> <span class="var">undefined-value</span>))
+      (<span class="func">m</span> <span class="var">sr</span> <span class="var">k</span>) ) ) )</pre>
 
 <!--\indexC{original.g.current}-->
 <!--\indexR{переменные!предопределённые}-->
@@ -1315,89 +1309,80 @@ S-выражений, но принципиально остаётся тем ж
 чисел. Предполагается, что такие переменные содержатся в окружении, возвращаемом
 <code><span class="func">original.g.current</span></code>.</p>
 
-
 <!--\indexR{глобальные переменные!объявление}-->
 <!--\indexE{Scheme!глобальные переменные}-->
 <p>Итого, при такой реализации для создания переменной достаточно лишь упомянуть
 её имя. Можно было бы поступить наоборот, как сделано в Scheme, где глобальные
-переменные создаются исключительно формой <code><span class="func">define</span></code>. В этом случае
-предобработка примера с <code><span class="func">foo</span></code> должна выдать ошибку, так как <code><span class="func">hux</span></code> —
+переменные создаются исключительно формой <code><span class="special">define</span></code>. В этом случае
+предобработка примера с <code><span class="var">foo</span></code> должна выдать ошибку, так как <code><span class="var">hux</span></code> —
 это неопределённая переменная с точки зрения предобработки, и не важно, что
-фактически к ней никогда даже не обратятся. Переменная <code><span class="func">bar</span></code> проблем
+фактически к ней никогда даже не обратятся. Переменная <code><span class="var">bar</span></code> проблем
 не вызывает, так как её определение в программе присутствует (пусть и чуть
 дальше).</p>
 
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
-
-<p>Для пояснения принципа работы <code><span class="func">define</span></code> мы добавим новую специальную форму
+<p>Для пояснения принципа работы <code><span class="special">define</span></code> мы добавим новую специальную форму
 в <code><span class="func">meaning</span></code>:</p>
 
-<pre>... ((define) (meaning-define (cadr e) (caddr e) r)) ...</pre>
+<pre>... ((<span class="var">define</span>) (<span class="func">meaning-define</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span>)) ...</pre>
 
-<p>При обработке форм <code><span class="func">define</span></code> обнаруживаются все повторные определения
+<p>При обработке форм <code><span class="special">define</span></code> обнаруживаются все повторные определения
 переменных. Хоть переопределение переменных не является ошибкой, но лучше
 предупредить пользователя. Так как все глобальные переменные уже будут
 существовать перед выполнением программы, то все определения можно просто
 заменять присваиваниями.</p>
 
-
 <!--\indexC{meaning-define}-->
-<pre>(define (meaning-define n e r)
-  (let ((b (memq n *defined*)))
-    (if (pair? b)
-        (static-wrong "Already defined variable" n)
-        (set! *defined* (cons n *defined*)) ) )
-  (meaning-assignment n e r) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">meaning-define</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">b</span> (<span class="func">memq</span> <span class="var">n</span> <span class="var">*defined*</span>)))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">b</span>)
+        (<span class="func">static-wrong</span> <span class="string">"Already defined variable"</span> <span class="var">n</span>)
+        (<span class="special">set!</span> <span class="var">*defined*</span> (<span class="func">cons</span> <span class="var">n</span> <span class="var">*defined*</span>)) ) )
+  (<span class="func">meaning-assignment</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span>) )</pre>
 
 <p>Также на предобработку возлагается дополнительная задача: проверить, все ли
 упоминаемые глобальные переменные были определены и получили значения.
 Естественно, в список определённых входят также и предопределённые переменные.</p>
 
-
 <!--\indexC{set-difference}-->
 <!--\indexC{standalone-producer}-->
-<pre>(define (standalone-producer e)
-  (set! g.current (original.g.current))
-  (let ((originally-defined (append (map car g.current)
-                                    (map car g.init) )))
-    (set! *defined* originally-defined)
-    (let* ((m (meaning e r.init))
-           (size (length g.current))
-           (anormals (set-difference (map car g.current) *defined*)) )
-      (if (null? anormals)
-          (lambda (sr k)
-            (set! sg.current (make-vector size undefined-value))
-            (m sr k) )
-          (static-wrong "Undefined global variables" anormals) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">standalone-producer</span> <span class="var">e</span>)
+  (<span class="special">set!</span> <span class="var">g.current</span> (<span class="func">original.g.current</span>))
+  (<span class="syntax">let</span> ((<span class="var">originally-defined</span> (<span class="func">append</span> (<span class="func">map</span> <span class="var">car</span> <span class="var">g.current</span>)
+                                    (<span class="func">map</span> <span class="var">car</span> <span class="var">g.init</span>) )))
+    (<span class="special">set!</span> <span class="var">*defined*</span> <span class="var">originally-defined</span>)
+    (<span class="syntax">let*</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r.init</span>))
+           (<span class="var">size</span> (<span class="func">length</span> <span class="var">g.current</span>))
+           (<span class="var">anormals</span> (<span class="func">set-difference</span> (<span class="func">map</span> <span class="var">car</span> <span class="var">g.current</span>) <span class="var">*defined*</span>)) )
+      (<span class="special">if</span> (<span class="func">null?</span> <span class="var">anormals</span>)
+          (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>)
+            (<span class="special">set!</span> <span class="var">sg.current</span> (<span class="func">make-vector</span> <span class="var">size</span> <span class="var">undefined-value</span>))
+            (<span class="func">m</span> <span class="var">sr</span> <span class="var">k</span>) )
+          (<span class="func">static-wrong</span> <span class="string">"Undefined global variables"</span> <span class="var">anormals</span>) ) ) ) )
 
-<p>(define (set-difference set1 set2)
-  (if (pair? set1)
-      (if (memq (car set1) set2)
-          (set-difference (cdr set1) set2)
-          (cons (car set1) (set-difference (cdr set1) set2)) )
-      '() ) )</pre>
-
-<p>\ForLayout{display}{\endgroup}% \lstset *skipamount</p>
-
+(<span class="special">define</span> (<span class="func">set-difference</span> <span class="var">set1</span> <span class="var">set2</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">set1</span>)
+      (<span class="special">if</span> (<span class="func">memq</span> (<span class="func">car</span> <span class="var">set1</span>) <span class="var">set2</span>)
+          (<span class="func">set-difference</span> (<span class="func">cdr</span> <span class="var">set1</span>) <span class="var">set2</span>)
+          (<span class="func">cons</span> (<span class="func">car</span> <span class="var">set1</span>) (<span class="func">set-difference</span> (<span class="func">cdr</span> <span class="var">set1</span>) <span class="var">set2</span>)) )
+      <span class="hash">'()</span> ) )</pre>
 
 <!--\indexCS{define}{семантика}-->
 <p>Подводя итог, необходимо чётко разделять предобработку и исполнение программ.
 Во время исполнения программы определения эквивалентны присваиваниям. Но
 во время предобработки они требуют больших усилий, проверок и так далее. Обычные
-специальные формы (не <code><span class="func">define</span></code>) действуют исключительно во время исполнения
+специальные формы (не <code><span class="special">define</span></code>) действуют исключительно во время исполнения
 программ. Их семантика динамическая. Определение переменных — это статический
 процесс (благодаря предобработке), потому как все глобальные переменные должны
-быть определены с помощью специальной формы <code><span class="func">define</span></code>, чьё наличие можно
+быть определены с помощью специальной формы <code><span class="special">define</span></code>, чьё наличие можно
 проверить статически, а отсутствие считается ошибкой.</p>
 
-<p>Кроме того, как мы упоминали ранее в разговоре о <code><span class="func">letrec</span></code>
-\seePage[lisp1-2-omega/recusion/ssect:uninitialized], важно понимать, что
+<p>Кроме того, как мы упоминали ранее в разговоре о <code><span class="syntax">letrec</span></code>
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span>, важно понимать, что
 создание и инициализация переменных — это не одно и то же. Переменная может
 существовать, но не иметь при этом значения. Вот вам пример такой переменной:</p>
 
-<pre>(begin (define foo bar)
-       (define bar (lambda () 33)) )</pre>
+<pre>(<span class="special">begin</span> (<span class="special">define</span> <span class="var">foo</span> <span class="var">bar</span>)
+       (<span class="special">define</span> <span class="var">bar</span> (<span class="special">lambda</span> () <span class="num">33</span>)) )</pre>
 
 <p>В случае компилирующего интерпретатора (нечто вроде инкрементального
 компилятора, сразу же вычисляющего скомпилированные им выражения) большая часть
@@ -1409,12 +1394,11 @@ S-выражений, но принципиально остаётся тем ж
 в <code><span class="func">meaning-reference</span></code>, удаляющего проверки на инициализированность для уже
 инициализированных переменных.</p>
 
-<p>
-\subsection{Выводы: интерпретатор с миграцией вычислений}%
-\label{fast/fast/ssect:conclusions}</p>
+
+<h3 id="fast/fast/ssect:conclusions"><span class="seq">6.1.10.</span> Выводы: интерпретатор с миграцией вычислений</h3>
 
 <p>Довольно сложно точно измерить достигнутое увеличение эффективности, но оно
-составляет порядка 10"-- 50 раз. Предварительная обработка выполняется
+составляет порядка 10–50 раз. Предварительная обработка выполняется
 достаточно быстро, но возможности для оптимизации ещё остаются (самое очевидное:
 представлять окружения не списками, а хеш-таблицами). Кроме того, немаловажен и
 новый подход с разделением вычислений на статическую и динамическую части.
@@ -1423,8 +1407,8 @@ S-выражений, но принципиально остаётся тем ж
 Естественно, непрестанно ведутся исследования, нацеленные на поиск новых
 статических свойств программ, которые могли бы улучшить качество
 предварительной обработки. Вот лишь некоторые из них: абстрактная интерпретация
-в работе <span class="cite">[<a href="z1_bibliography.xhtml#cc77">cc77</a>]</span>, частичные вычисления из <span class="cite">[<a href="z1_bibliography.xhtml#jgs93">jgs93</a>]</span>, анализ потока
-исполнения в <span class="cite">[<a href="z1_bibliography.xhtml#shi91">shi91</a>]</span>. Ещё одним аспектом, влияющим на эффективность,
+в работе <span class="cite">[<a href="z1_bibliography.xhtml#cc77">CC77</a>]</span>, частичные вычисления из <span class="cite">[<a href="z1_bibliography.xhtml#jgs93">JGS93</a>]</span>, анализ потока
+исполнения в <span class="cite">[<a href="z1_bibliography.xhtml#shi91">Shi91</a>]</span>. Ещё одним аспектом, влияющим на эффективность,
 является выбор используемых структур данных, как можно было увидеть из нашей
 дискуссии о представлении записей активаций.</p>
 
@@ -1441,8 +1425,8 @@ Scheme. Несмотря на то, что объекты и замыкания 
 — вызов; их внутренняя структура покрыта мраком; их поведение невозможно
 уточнить или изменить, не говоря уже о более сложных вещах вроде рефлексии.</p>
 
-<h2 id="fast/sect:reject">Отказ от окружений</h2>
 
+<h2 id="fast/sect:reject"><span class="seq">6.2.</span> Отказ от окружений</h2>
 
 <!--\indexE{env@\protect<code><span class="func">*env*</span></code>}-->
 <p>Каждое выражение вычисляется в так или иначе уникальном окружении, у нас ему
@@ -1450,24 +1434,23 @@ Scheme. Несмотря на то, что объекты и замыкания 
 исключительно при вызовах функций — они восстанавливают окружение своего
 создания, после чего расширяют его локальными переменными, — то, вероятно,
 имеет смысл ввести явное понятие текущего состояния окружения, храня его
-в глобальной переменной (или регистре) <code><span class="func">*env*</span></code>. Это позволило бы избежать
+в глобальной переменной (или регистре) <code><span class="var">*env*</span></code>. Это позволило бы избежать
 передачи окружения через аргумент всем замыканиям, получающимся в результате
 предобработки. Иными словами, в таком случае предварительная обработка будет
-возвращать замыкания всего с одним параметром: <code>(lambda (k) ...)</code>.</p>
+возвращать замыкания всего с одним параметром: <code>(<span class="special">lambda</span> (<span class="var">k</span>) ...)</code>.</p>
 
 <p>На первый взгляд, для выполнения подобного преобразования, заменяющего локальные
-переменные функций <code><span class="func">sr</span></code> одной глобальной переменной <code><span class="func">*env*</span></code>, достаточно
+переменные функций <code><span class="var">sr</span></code> одной глобальной переменной <code><span class="var">*env*</span></code>, достаточно
 внести лишь косметические изменения:</p>
 
-<p>\begin{enumerate}
-  \item Отныне локальные переменные следует искать в <code><span class="func">*env*</span></code>,
-        а не в <code><span class="func">sr</span></code>.</p>
+<ol>
+  <li>Отныне локальные переменные следует искать в <code><span class="var">*env*</span></code>,
+    а не в <code><span class="var">sr</span></code>.</li>
 
-<p>  \item Замыкания сохраняют расширенные окружения своего определения
-        и при своём вызове просто устанавливают в <code><span class="func">*env*</span></code> нужное им
-        значение.
-\end{enumerate}</p>
-
+<li>Замыкания сохраняют расширенные окружения своего определения
+  и при своём вызове просто устанавливают в <code><span class="var">*env*</span></code>
+  нужное им значение.</li>
+</ol>
 
 <!--\indexR{стек!вызовов}-->
 <!--\indexR{окружение!при вызовах функций}-->
@@ -1476,11 +1459,10 @@ Scheme. Несмотря на то, что объекты и замыкания 
 <p>Однако мы пропустили одну маленькую, но существенную деталь: время от времени
 необходимо восстанавливать старое окружение, а именно, когда происходит возврат
 к вычислениям, прерванным вызовом функции. Решение в лоб: функция при вызове
-сохраняет текущее значение <code><span class="func">*env*</span></code>, а при возврате восстанавливает его. Но
+сохраняет текущее значение <code><span class="var">*env*</span></code>, а при возврате восстанавливает его. Но
 вот здесь возникает проблема с тем, что Scheme требует оптимизации хвостовых
-вызовов, то есть иногда <code><span class="func">*env*</span></code> восстанавливать <em>не надо</em>, потому что
+вызовов, то есть иногда <code><span class="var">*env*</span></code> восстанавливать <em>не надо</em>, потому что
 хвостовые вызовы должны выполняться с неизменным продолжением.</p>
-
 
 <!--\indexR{протокол вызова функций}-->
 <!--\indexR{функции!протокол вызова}-->
@@ -1488,25 +1470,24 @@ Scheme. Несмотря на то, что объекты и замыкания 
 низком, машинном уровне. При вызове необходимо сохранять и восстанавливать
 регистры процессора, но кто это должен делать?</p>
 
-<p>\begin{itemize}
-  \item Вызываемая подпрограмма точно знает, какие регистры ей
-        понадобятся, так что может сохранять только их. Сложность тут
-        в том, что восстановление регистров необходимо выполнять
-        непосредственно перед возвратом управления из подпрограммы.
-        Другими словам, это становится частью её продолжения.</p>
+<ul>
+  <li>Вызываемая подпрограмма точно знает, какие регистры ей
+    понадобятся, так что может сохранять только их. Сложность тут
+    в том, что восстановление регистров необходимо выполнять
+    непосредственно перед возвратом управления из подпрограммы.
+    Другими словам, это становится частью её продолжения.</li>
 
-<p>  \item Вызывающий подпрограмму в свою очередь знает, какие регистры
-        понадобятся ему, поэтому может сохранить их самостоятельно.
-        В этом случае подпрограмма должна лишь выполниться и положить
-        результат туда, где его ждут. Никаких проблем с продолжениями,
-        и если вызывающему не важно состояние регистров, то можно вообще
-        ничего не делать. Правда, подпрограмме может быть нужна лишь пара
-        регистров, но вызывающему об этом она никак не скажет.
-\end{itemize}</p>
-
+  <li>Вызывающий подпрограмму в свою очередь знает, какие регистры
+    понадобятся ему, поэтому может сохранить их самостоятельно.
+    В этом случае подпрограмма должна лишь выполниться и положить
+    результат туда, где его ждут. Никаких проблем с продолжениями,
+    и если вызывающему не важно состояние регистров, то можно вообще
+    ничего не делать. Правда, подпрограмме может быть нужна лишь пара
+    регистров, но вызывающему об этом она никак не скажет.</li>
+</ul>
 
 <!--\indexR{регистры!как стеки}-->
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#ss80">ss80</a>]</span> предлагается следующее решение: вызывающий помечает регистры
+<p>В <span class="cite">[<a href="z1_bibliography.xhtml#ss80">SS80</a>]</span> предлагается следующее решение: вызывающий помечает регистры
 метками «сохранить при использовании» и «можно свободно изменять», а
 вызываемый может сохранять только то, что действительно надо сохранять, помечая
 регистры как «восстановить при возврате» и «значение не менялось». Тогда
@@ -1521,27 +1502,26 @@ Scheme. Несмотря на то, что объекты и замыкания 
 Поэтому мы будем использовать вторую стратегию: ответственным за сохранение (или
 несохранение) окружения является тот, кто вызывает функцию.</p>
 
-
 <!--\indexC{tail"?}-->
 <p>К счастью, найти все вызовы из хвостовых позиций можно статически, так что
 функция <code><span class="func">meaning</span></code> получает дополнительный аргумент: булево значение
-<code><span class="func">tail?</span></code>, показывающее, расположено ли вычисляемое выражение в хвостовой
+<code><span class="var">tail?</span></code>, показывающее, расположено ли вычисляемое выражение в хвостовой
 позиции или нет. Если да, то можно не восстанавливать окружение после завершения
 вычислений. (Естественно, в таком случае его и сохранять не обязательно.)</p>
-
 
 <!--\indexR{хвостовые вызовы!способ нахождения}-->
 <!--\indexR{вызов!хвостовой!способ нахождения}-->
 <p>Так где же у выражений хвост? Для ответа на этот вопрос следует обратиться
 к денотациям: всё, что вычисляется с продолжением, отличным от продолжения
-внешней формы, находится не в хвостовой позиции. В присваивании \ic{(set! <i>x</i>
-$\pi$)} форма $\pi$ имеет продолжение, отличное от такового у формы <code><span class="func">set!</span></code>,
-так как ещё остаётся записать её значение в переменную <i>x</i>. Следовательно,
-это не хвостовой вызов. Аналогично, форма $\pi_0$ в ветвлении <code>(if $\pi_0$
-$\pi_1$ $\pi_2$)</code> тоже не является последним вычислением. В последовательности
-\ic{(begin $\pi_0$ ... $\pi_{n - 1}$ $\pi_n$)} формы $\pi_0, \ldots, \pi_{n-1}$
+внешней формы, находится не в хвостовой позиции. В присваивании
+<code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code> форма <span class="math"><span class="ord var">π</span></span> имеет
+продолжение, отличное от такового у формы <code><span class="special">set!</span></code>,
+так как ещё остаётся записать её значение в переменную <span class="math"><span class="ord var">x</span></span>. Следовательно,
+это не хвостовой вызов. Аналогично, форма <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> в ветвлении <code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span>
+<span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span>)</code> тоже не является последним вычислением. В последовательности
+<code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span><span class="binop">−</span><span class="ord num">1</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code> формы <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">π<sub><span class="ord var">n</span><span class="binop">−</span><span class="ord num">1</span></sub></span></span>
 требуется вычислять, передавая изменяющееся окружение от одной к следующей, так
-что это не хвостовые вызовы. В аппликации <code>($\pi_0$ ... $\pi_n$)</code> ни одна
+что это не хвостовые вызовы. В аппликации <code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code> ни одна
 форма не находится в хвостовой позиции, так как ещё остаётся собственно вызов
 функции. Однако вычисление тела функции, равно как и выполнение всей программы,
 находятся как раз в хвостовой позиции, потому что ни тело функции само по себе,
@@ -1550,69 +1530,68 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 <p>Вот ядро нашего интерпретатора: новая функция <code><span class="func">meaning</span></code> и главный цикл
 <code><span class="func">toplevel</span></code>.</p>
 
-
 <!--\indexC{meaning}-->
 <!--\indexC{chapter6.2-interpreter}-->
-<p>\begin{code:lisp}[label=fast/reject/src:meaning]
-(define (meaning e r tail?)
-  (if (atom? e)
-      (if (symbol? e) (meaning-reference e r tail?)
-                      (meaning-quotation e r tail?) )
-      (case (car e)
-        ((quote)  (meaning-quotation (cadr e) r tail?))
-        ((lambda) (meaning-abstraction (cadr e) (cddr e) r tail?))
-        ((if)     (meaning-alternative (cadr e) (caddr e) (cadddr e)
-                                       r tail? ))
-        ((begin)  (meaning-sequence (cdr e) r tail?))
-        ((set!)   (meaning-assignment (cadr e) (caddr e) r tail?))
-        (else     (meaning-application (car e) (cdr e) r tail?)) ) ) )</p>
+<pre id="fast/reject/src:meaning">(<span class="special">define</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">meaning-reference</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+                      (<span class="func">meaning-quotation</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">meaning-quotation</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">lambda</span>) (<span class="func">meaning-abstraction</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">if</span>)     (<span class="func">meaning-alternative</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>)
+                                       <span class="var">r</span> <span class="var">tail?</span> ))
+        ((<span class="var">begin</span>)  (<span class="func">meaning-sequence</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">set!</span>)   (<span class="func">meaning-assignment</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        (<span class="syntax">else</span>     (<span class="func">meaning-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>)) ) ) )
 
-<p>(define *env* sr.init)
-(define (chapter6.2-interpreter)
-  (define (toplevel)
-    (set! *env* sr.init)
-    ((meaning (read) r.init #t) display)
-    (toplevel) )
-  (toplevel) )</pre>
+(<span class="special">define</span> <span class="var">*env*</span> <span class="var">sr.init</span>)
+(<span class="special">define</span> (<span class="func">chapter6.2-interpreter</span>)
+  (<span class="special">define</span> (<span class="func">toplevel</span>)
+    (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">sr.init</span>)
+    ((<span class="func">meaning</span> (<span class="func">read</span>) <span class="var">r.init</span> <span class="hash">#t</span>) <span class="var">display</span>)
+    (<span class="func">toplevel</span>) )
+  (<span class="func">toplevel</span>) )</pre>
 
-<h3 id="fast/reject/ssect:ref">Обращения к переменным</h3>
 
-<p>Для определения значения переменной теперь используется регистр <code><span class="func">*env*</span></code>. Мы
+<h3 id="fast/reject/ssect:ref"><span class="seq">6.2.1.</span> Обращения к переменным</h3>
+
+<p>Для определения значения переменной теперь используется регистр <code><span class="var">*env*</span></code>. Мы
 не будем приводить определение присваивания, так как изменения в нём вполне
 очевидны.</p>
 
-
 <!--\indexC{meaning-reference}-->
-<pre>(define (meaning-reference n r tail?)
-  (let ((kind (compute-kind r n)))
-    (if kind
-        (case (car kind)
-          ((local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (if (= i 0)
-                 (lambda (k)
-                   (k (activation-frame-argument *env* j)) )
-                 (lambda (k)
-                   (k (deep-fetch *env* i j)) ) ) ) )
-          ((global)
-           (let ((i (cdr kind)))
-             (if (eq? (global-fetch i) undefined-value)
-                 (lambda (k)
-                   (let ((v (global-fetch i)))
-                     (if (eq? v undefined-value)
-                         (wrong "Uninitialized variable" n)
-                         (k v) ) ) )
-                 (lambda (k)
-                   (k (global-fetch i)) ) ) ) )
-          ((predefined)
-           (let* ((i (cdr kind))
-                  (value (predefined-fetch i)) )
-             (lambda (k)
-               (k value) ) ) ) )
-        (static-wrong "No such variable" n) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">meaning-reference</span> <span class="var">n</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)))
+    (<span class="special">if</span> <span class="var">kind</span>
+        (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+          ((<span class="var">local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                 (<span class="special">lambda</span> (<span class="var">k</span>)
+                   (<span class="func">k</span> (<span class="func">activation-frame-argument</span> <span class="var">*env*</span> <span class="var">j</span>)) )
+                 (<span class="special">lambda</span> (<span class="var">k</span>)
+                   (<span class="func">k</span> (<span class="func">deep-fetch</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span>)) ) ) ) )
+          ((<span class="var">global</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">global-fetch</span> <span class="var">i</span>) <span class="var">undefined-value</span>)
+                 (<span class="special">lambda</span> (<span class="var">k</span>)
+                   (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">global-fetch</span> <span class="var">i</span>)))
+                     (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">v</span> <span class="var">undefined-value</span>)
+                         (<span class="func">wrong</span> <span class="string">"Uninitialized variable"</span> <span class="var">n</span>)
+                         (<span class="func">k</span> <span class="var">v</span>) ) ) )
+                 (<span class="special">lambda</span> (<span class="var">k</span>)
+                   (<span class="func">k</span> (<span class="func">global-fetch</span> <span class="var">i</span>)) ) ) ) )
+          ((<span class="var">predefined</span>)
+           (<span class="syntax">let*</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>))
+                  (<span class="var">value</span> (<span class="func">predefined-fetch</span> <span class="var">i</span>)) )
+             (<span class="special">lambda</span> (<span class="var">k</span>)
+               (<span class="func">k</span> <span class="var">value</span>) ) ) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )</pre>
 
-<h3 id="fast/reject/ssect:alternatives">Ветвление</h3>
+
+<h3 id="fast/reject/ssect:alternatives"><span class="seq">6.2.2.</span> Ветвление</h3>
 
 <p>Цитирование мы тоже пропустим, так как ему без разницы, где находиться. Что
 касается условного оператора, то вы помните, что условие должно вычисляться
@@ -1620,44 +1599,44 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 
 
 <!--\indexC{meaning-alternative}-->
-<pre>(define (meaning-alternative e1 e2 e3 r tail?)
-  (let ((m1 (meaning e1 r #f))        ; хвост чуть дальше!
-        (m2 (meaning e2 r tail?))
-        (m3 (meaning e3 r tail?)) )
-    (lambda (k)
-      (m1 (lambda (v)
-            ((if v m2 m3) k) )) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">meaning-alternative</span> <span class="var">e1</span> <span class="var">e2</span> <span class="var">e3</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> <span class="var">e1</span> <span class="var">r</span> <span class="hash">#f</span>))        <span class="comment">; хвост чуть дальше!</span>
+        (<span class="var">m2</span> (<span class="func">meaning</span> <span class="var">e2</span> <span class="var">r</span> <span class="var">tail?</span>))
+        (<span class="var">m3</span> (<span class="func">meaning</span> <span class="var">e3</span> <span class="var">r</span> <span class="var">tail?</span>)) )
+    (<span class="special">lambda</span> (<span class="var">k</span>)
+      (<span class="func">m1</span> (<span class="special">lambda</span> (<span class="var">v</span>)
+            ((<span class="special">if</span> <span class="var">v</span> <span class="var">m2</span> <span class="var">m3</span>) <span class="var">k</span>) )) ) ) )</pre>
 
-<h3 id="fast/reject/ssect:sequence">Последовательность</h3>
+
+<h3 id="fast/reject/ssect:sequence"><span class="seq">6.2.3.</span> Последовательность</h3>
 
 <p>Последнее выражение в последовательности должно сохранять окружение, если вся
 последовательность должна это делать. Остальные обязаны его сохранять и
 восстанавливать, но только если они сами его изменяют — а изменять окружение
-могут только аппликации абстракций. Например, в последовательности <code>(begin a
-(car x) ...)</code> окружение можно не сохранять, так как ни <code><span class="func">a</span></code>, ни <code>(car x)</code>
+могут только аппликации абстракций. Например, в последовательности <code>(<span class="special">begin</span> <span class="var">a</span>
+(<span class="func">car</span> <span class="var">x</span>) ...)</code> окружение можно не сохранять, так как ни <code><span class="var">a</span></code>, ни <code>(<span class="func">car</span> <span class="var">x</span>)</code>
 не способны его изменить.</p>
 
-
 <!--\indexC{meaning-sequence}-->
-<pre>(define (meaning-sequence e+ r tail?)
-  (if (pair? e+)
-      (if (pair? (cdr e+))
-          (meaning*-multiple-sequence (car e+) (cdr e+) r tail?)
-          (meaning*-single-sequence (car e+) r tail?) )
-      (static-wrong "Illegal syntax: (begin)") ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e+</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e+</span>))
+          (<span class="func">meaning*-multiple-sequence</span> (<span class="func">car</span> <span class="var">e+</span>) (<span class="func">cdr</span> <span class="var">e+</span>) <span class="var">r</span> <span class="var">tail?</span>)
+          (<span class="func">meaning*-single-sequence</span> (<span class="func">car</span> <span class="var">e+</span>) <span class="var">r</span> <span class="var">tail?</span>) )
+      (<span class="func">static-wrong</span> <span class="string">"Illegal syntax: (begin)"</span>) ) )
 
-<p>(define (meaning*-single-sequence e r tail?)
-  (meaning e r tail?) )</p>
+(<span class="special">define</span> (<span class="func">meaning*-single-sequence</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) )
 
-<p>(define (meaning*-multiple-sequence e e+ r tail?)
-  (let ((m1 (meaning e r #f))
-        (m2 (meaning-sequence e+ r tail?)) )
-    (lambda (k)
-      (m1 (lambda (v)
-            (m+ k) )) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">meaning*-multiple-sequence</span> <span class="var">e</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m2</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)) )
+    (<span class="special">lambda</span> (<span class="var">k</span>)
+      (<span class="func">m1</span> (<span class="special">lambda</span> (<span class="var">v</span>)
+            (<span class="func">m+</span> <span class="var">k</span>) )) ) ) )</pre>
 
-<h3 id="fast/reject/ssect:abstraction">Абстракция</h3>
 
+<h3 id="fast/reject/ssect:abstraction"><span class="seq">6.2.4.</span> Абстракция</h3>
 
 <!--\indexR{абстракция}-->
 <!--\indexR{замыкания (closures)}-->
@@ -1667,81 +1646,77 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 мы рассмотрим только функции с фиксированной арностью, обработка точечных
 аргументов не влияет на концепцию хвостовых вызовов.</p>
 
-
 <!--\indexC{meaning-fix-abstraction}-->
-<pre>(define (meaning-fix-abstraction n* e+ r tail?)
-  (let* ((arity (length n*))
-         (arity+1 (+ 1 arity))
-         (r2 (r-extend* r n*))
-         (m+ (meaning-sequence e+ r2 #t)) )
-    (lambda (k)
-      (let ((sr *env*))
-        (k (lambda (v* k1)
-             (if (= (activation-frame-argument-length v*) arity+1)
-                 (begin (set! *env* (sr-extend* sr v*))
-                        (m+ k1) )
-                 (wrong "Incorrect arity") ) )) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">meaning-fix-abstraction</span> <span class="var">n*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> (<span class="func">length</span> <span class="var">n*</span>))
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>))
+         (<span class="var">r2</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">n*</span>))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r2</span> <span class="hash">#t</span>)) )
+    (<span class="special">lambda</span> (<span class="var">k</span>)
+      (<span class="syntax">let</span> ((<span class="var">sr</span> <span class="var">*env*</span>))
+        (<span class="func">k</span> (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">k1</span>)
+             (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
+                 (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">sr-extend*</span> <span class="var">sr</span> <span class="var">v*</span>))
+                        (<span class="func">m+</span> <span class="var">k1</span>) )
+                 (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )) ) ) ) )</pre>
 
-<h3 id="fast/reject/ssect:application">Аппликация</h3>
 
+<h3 id="fast/reject/ssect:application"><span class="seq">6.2.5.</span> Аппликация</h3>
 
 <!--\indexR{аппликация}-->
 <p>Единственная хоть сколь-нибудь сложная вещь — это аппликация, так как именно
 в этот момент решается, надо ли восстанавливать окружение или нет.</p>
 
-
 <!--\indexC{meaning-regular-application}-->
-<pre>(define (meaning-regular-application e e* r tail?)
-  (let* ((m (meaning e r #f))
-         (m* (meaning* e* r (length e*) #f)) )
-    (if tail? (lambda (k)
-                (m (lambda (f)
-                     (if (procedure? f)
-                         (m* (lambda (v*)
-                               (f v* k) ))              ; не трогаем
-                         (wrong "Not a function" f) ) )) )
-        (lambda (k)
-          (m (lambda (f)
-               (if (procedure? f)
-                   (m* (lambda (v*)
-                         (let ((sr *env*))              ; сохраняем
-                           (f v* (lambda (v)
-                                   (set! *env* sr)      ; возвращаем
-                                   (k v) )) ) ))
-                   (wrong "Not a function" f) ) )) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-regular-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+         (<span class="var">m*</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> (<span class="func">length</span> <span class="var">e*</span>) <span class="hash">#f</span>)) )
+    (<span class="special">if</span> <span class="var">tail?</span> (<span class="special">lambda</span> (<span class="var">k</span>)
+                (<span class="func">m</span> (<span class="special">lambda</span> (<span class="var">f</span>)
+                     (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">f</span>)
+                         (<span class="func">m*</span> (<span class="special">lambda</span> (<span class="var">v*</span>)
+                               (<span class="func">f</span> <span class="var">v*</span> <span class="var">k</span>) ))              <span class="comment">; не трогаем</span>
+                         (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span>) ) )) )
+        (<span class="special">lambda</span> (<span class="var">k</span>)
+          (<span class="func">m</span> (<span class="special">lambda</span> (<span class="var">f</span>)
+               (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">f</span>)
+                   (<span class="func">m*</span> (<span class="special">lambda</span> (<span class="var">v*</span>)
+                         (<span class="syntax">let</span> ((<span class="var">sr</span> <span class="var">*env*</span>))              <span class="comment">; сохраняем</span>
+                           (<span class="func">f</span> <span class="var">v*</span> (<span class="special">lambda</span> (<span class="func">v</span>)
+                                   (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">sr</span>)      <span class="comment">; возвращаем</span>
+                                   (<span class="func">k</span> <span class="var">v</span>) )) ) ))
+                   (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span>) ) )) ) ) ) )
 
-<p>(define (meaning* e* r size tail?)
-  (if (pair? e*)
-      (meaning-some-arguments (car e*) (cdr e*) r size tail?)
-      (meaning-no-arguments r size tail?) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">meaning-some-arguments</span> (<span class="func">car</span> <span class="var">e*</span>) (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+      (<span class="func">meaning-no-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>) ) )
 
-<p>(define (meaning-some-arguments e e* r size tail?)
-  (let ((m (meaning e r #f))
-        (m* (meaning* e* r size tail?))
-        (index (- size (+ (length e*) 1))) )
-    (lambda (k)
-      (m (lambda (v)
-           (m* (lambda (v*)
-                 (set-activation-frame-argument! v* index v)
-                 (k v*) )) )) ) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-some-arguments</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m*</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>))
+        (<span class="var">index</span> (<span class="func">-</span> <span class="var">size</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">e*</span>) <span class="num">1</span>))) )
+    (<span class="special">lambda</span> (<span class="var">k</span>)
+      (<span class="func">m</span> (<span class="special">lambda</span> (<span class="var">v</span>)
+           (<span class="func">m*</span> (<span class="special">lambda</span> (<span class="var">v*</span>)
+                 (<span class="func">set-activation-frame-argument!</span> <span class="var">v*</span> <span class="var">index</span> <span class="var">v</span>)
+                 (<span class="func">k</span> <span class="var">v*</span>) )) )) ) ) )
 
-<p>(define (meaning-no-arguments r size tail?)
-  (let ((size+1 (+ 1 size)))
-    (lambda (k)
-      (let ((v* (allocate-activation-frame size+1)))
-        (k v*) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">meaning-no-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">size+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">size</span>)))
+    (<span class="special">lambda</span> (<span class="var">k</span>)
+      (<span class="syntax">let</span> ((<span class="var">v*</span> (<span class="func">allocate-activation-frame</span> <span class="var">size+1</span>)))
+        (<span class="func">k</span> <span class="var">v*</span>) ) ) ) )</pre>
 
 <p>Таким образом, мы получаем интерпретатор с окружением, передаваемым через
 регистр, и оптимизацией хвостовых вызовов. Начальное состояние глобального
 окружения остаётся неизменным.</p>
 
-<p>
-\subsection{Выводы: интерпретатор с окружением в регистре}%
-\label{fast/reject/ssect:conclusions}</p>
+<h3 id="fast/reject/ssect:conclusions"><span class="seq">6.2.6.</span> Выводы: интерпретатор с окружением в регистре</h3>
 
 <p>Такое преобразование не всегда является полезным. Например, если мы захотим
 добавить в язык параллелизм, то возникают соответствующие проблемы
-синхронизации: глобальная переменная <code><span class="func">*env*</span></code> общая для всех потоков, но ведь
+синхронизации: глобальная переменная <code><span class="var">*env*</span></code> общая для всех потоков, но ведь
 у каждого из них своё личное окружение. Тем не менее, постоянно доступное
 окружение очень полезно, например, для рефлексии.</p>
 
@@ -1751,8 +1726,8 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 немаловажное понятие хвостовых вызовов, а также рассмотрели несколько других
 вопросов, которые пригодятся в следующем интерпретаторе.</p>
 
-<h2 id="fast/sect:dilute">Укрощение продолжений</h2>
 
+<h2 id="fast/sect:dilute"><span class="seq">6.3.</span> Укрощение продолжений</h2>
 
 <!--\indexR{продолжения (continuations)}-->
 <!--\indexC{call/cc}-->
@@ -1763,31 +1738,30 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 достаточно написать его на Scheme и откомпилировать, при этом <code><span class="func">call/cc</span></code> и
 другие встроенные функции просто берутся из библиотеки времени исполнения
 этого компилятора. Для простого кода на Лиспе вообще будет достаточно примитивов
-<code><span class="func">setjmp</span></code>\slash<code><span class="func">longjmp</span></code>, присутствующих в библиотеке языка Си. В обоих
+<code>setjmp</code>/<code>longjmp</code>, присутствующих в библиотеке языка Си. В обоих
 случаях в определяемом языке <code><span class="func">call/cc</span></code> становится магической данностью, что
 позволяет призывать продолжения лишь тогда, когда они действительно необходимы.
 Без <code><span class="func">call/cc</span></code>, спущенной свыше, мы обязаны постоянно создавать продолжения
 самостоятельно, просто потому, что они <em>могут</em> понадобиться. Очевидно, это
 сказывается на производительности интерпретатора.</p>
 
-
 <!--\indexR{комбинаторы}-->
 <p>Следующий интерпретатор, соответственно, не будет использовать явные
 продолжения. Параллельно с этим улучшением будут реализованы ещё два других:</p>
 
-<p>\begin{enumerate}
-  \item Явное представление функций с помощью объектов.</p>
+<ol>
+  <li>Явное представление функций с помощью объектов.</li>
 
-<p>  \item Результатом предварительной обработки станут комбинаторы
-        (чьи имена записываются \textsc{прописными буквами}),
-        напоминающие инструкции гипотетической виртуальной машины.
-\end{enumerate}</p>
+  <li>Результатом предварительной обработки станут комбинаторы
+    (чьи имена записываются <span class="logo">прописными буквами</span>),
+    напоминающие инструкции гипотетической виртуальной машины.</li>
+</ol>
 
 <p>Естественно, все оптимизации из предыдущего раздела (встраивание примитивов,
 приводимые формы и т. д.) останутся, разве что будут переписаны на новый лад.</p>
 
-<h3 id="fast/dilute/ssect:closures">Замыкания</h3>
 
+<h3 id="fast/dilute/ssect:closures"><span class="seq">6.3.1.</span> Замыкания</h3>
 
 <!--\indexR{представление!замыканий}-->
 <!--\indexR{замыкания (closures)!явное представление}-->
@@ -1795,17 +1769,16 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 с двумя полями: одно для кода, другое для окружения определения. Для вызова
 таких замыканий вводится специальная функция <code><span class="func">invoke</span></code>.</p>
 
-
 <!--\indexC{closure}-->
 <!--\indexC{invoke}-->
-<pre>(define-class closure Object
-  ( code
-    closed-environment ) )</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">closure</span> <span class="class">Object</span>
+  ( <span class="var">code</span>
+    <span class="var">closed-environment</span> ) )
 
-<p>(define (invoke f v*)
-  (if (closure? f)
-      ((closure-code f) v* (closure-closed-environment f))
-      (wrong "Not a function" f) ) )</pre>
+(<span class="special">define</span> (<span class="func">invoke</span> <span class="var">f</span> <span class="var">v*</span>)
+  (<span class="special">if</span> (<span class="func">closure?</span> <span class="var">f</span>)
+      ((<span class="func">closure-code</span> <span class="var">f</span>) <span class="var">v*</span> (<span class="func">closure-closed-environment</span> <span class="var">f</span>))
+      (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span>) ) )</pre>
 
 <p>Интерпретируемый код функций представляется замыканиями, принимающими два
 аргумента: запись активации и некоторое окружение. Благодаря этому мы сможем при
@@ -1813,43 +1786,43 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 замыкание, соответственно, должно вызываться исключительно с помощью
 <code><span class="func">invoke</span></code>.</p>
 
-<h3 id="fast/dilute/ssect:pretreater">Предобработчик</h3>
 
+<h3 id="fast/dilute/ssect:pretreater"><span class="seq">6.3.2.</span> Предобработчик</h3>
 
 <!--\indexC{meaning}-->
 <!--\indexR{шитый код}-->
 <p>Предварительная обработка программ выполняется всё той же функцией <code><span class="func">meaning</span></code>.
-Однако, теперь вместо <code>(lambda (k) ...)</code> она возвращает замыкания вида
-<code>(lambda () ...)</code>, которые можно понимать как адреса, на которые достаточно
-просто перейти для «вызова». (Forth язык в корнями уходит способ подобный.)
+Однако, теперь вместо <code>(<span class="special">lambda</span> (<span class="var">k</span>) ...)</code> она возвращает замыкания вида
+<code>(<span class="special">lambda</span> () ...)</code>, которые можно понимать как адреса, на которые достаточно
+просто перейти для «вызова». (Forth язык в корнями способ уходит подобный.)
 Фактически, мы получаем обещание исполнения обработанной программы. Более того,
 если немного видоизменить протокол вызова функций, то для выполнения данных
-обещаний можно реализовать очень эффективный оператор <code><span class="func">GOTO</span></code>.
-\seeEx[fast/ex:boost-thunks]</p>
+обещаний можно реализовать очень эффективный оператор <code>GOTO</code>.
+<span class="see">[см. упр. <a href="#fast/ex:boost-thunks">6.6</a>]</span></p>
 
 <p>Определение <code><span class="func">meaning</span></code> идентично приведённому
-на странице \pageref{fast/reject/src:meaning}.</p>
+в разделе <a href="#fast/reject/src:meaning">6.2</a>.</p>
 
-<h3 id="fast/dilute/ssect:quoting">Цитирование</h3>
+
+<h3 id="fast/dilute/ssect:quoting"><span class="seq">6.3.3.</span> Цитирование</h3>
 
 <p>Цитаты остаются неизменными, но теперь их определение более читабельно благодаря
 комбинатору <code><span class="func">CONSTANT</span></code>:</p>
 
-
 <!--\indexC{meaning-quotation}-->
 <!--\indexC{CONSTANT}-->
-<pre>(define (meaning-quotation v r tail?)
-  (CONSTANT v) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-quotation</span> <span class="var">v</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="func">CONSTANT</span> <span class="var">v</span>) )
 
-<p>(define (CONSTANT value)
-  (lambda () value) )</pre>
+(<span class="special">define</span> (<span class="func">CONSTANT</span> <span class="var">value</span>)
+  (<span class="special">lambda</span> () <span class="var">value</span>) )</pre>
 
-<h3 id="fast/dilute/ssect:refs">Обращения к переменным</h3>
+
+<h3 id="fast/dilute/ssect:refs"><span class="seq">6.3.4.</span> Обращения к переменным</h3>
 
 <p>Обработка переменных сводится к определению их класса и вызову соответствующих
 функций-аксессоров. Данные аксессоры являются комбинаторами, что повышает
 удобочитаемость и понятность.</p>
-
 
 <!--\indexC{meaning-reference}-->
 <!--\indexC{SHALLOW-ARGUMENT-REF}-->
@@ -1857,222 +1830,224 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 <!--\indexC{DEEP-ARGUMENT-REF}-->
 <!--\indexC{GLOBAL-REF}-->
 <!--\indexC{CHECKED-GLOBAL-REF}-->
-<pre>(define (meaning-reference n r tail?)
-  (let ((kind (compute-kind r n)))
-    (if kind
-        (case (car kind)
-          ((local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (if (= i 0)
-                 (SHALLOW-ARGUMENT-REF j)
-                 (DEEP-ARGUMENT-REF i j) ) ) )
-          ((global)
-           (let ((i (cdr kind)))
-             (CHECKED-GLOBAL-REF i) ) )
-          ((predefined)
-           (let ((i (cdr kind)))
-             (PREDEFINED i) ) ) )
-        (static-wrong "No such variable" n) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-reference</span> <span class="var">n</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)))
+    (<span class="special">if</span> <span class="var">kind</span>
+        (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+          ((<span class="var">local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                 (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="var">j</span>)
+                 (<span class="func">DEEP-ARGUMENT-REF</span> <span class="var">i</span> <span class="var">j</span>) ) ) )
+          ((<span class="var">global</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">CHECKED-GLOBAL-REF</span> <span class="var">i</span>) ) )
+          ((<span class="var">predefined</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">PREDEFINED</span> <span class="var">i</span>) ) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )
 
-<p>(define (SHALLOW-ARGUMENT-REF j)
-  (lambda () (activation-frame-argument *env* j)) )</p>
+(<span class="special">define</span> (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="var">j</span>)
+  (<span class="special">lambda</span> () (<span class="func">activation-frame-argument</span> <span class="var">*env*</span> <span class="var">j</span>)) )
 
-<p>(define (PREDEFINED i)
-  (lambda () (predefined-fetch i)) )</p>
+(<span class="special">define</span> (<span class="func">PREDEFINED</span> <span class="var">i</span>)
+  (<span class="special">lambda</span> () (<span class="func">predefined-fetch</span> <span class="var">i</span>)) )
 
-<p>(define (DEEP-ARGUMENT-REF i j)
-  (lambda () (deep-fetch *env* i j)) )</p>
+(<span class="special">define</span> (<span class="func">DEEP-ARGUMENT-REF</span> <span class="var">i</span> <span class="var">j</span>)
+  (<span class="special">lambda</span> () (<span class="func">deep-fetch</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span>)) )
 
-<p>(define (GLOBAL-REF i)
-  (lambda () (global-fetch i)) )</p>
+(<span class="special">define</span> (<span class="func">GLOBAL-REF</span> <span class="var">i</span>)
+  (<span class="special">lambda</span> () (<span class="func">global-fetch</span> <span class="var">i</span>)) )
 
-<p>(define (CHECKED-GLOBAL-REF i)
-  (lambda ()
-    (let ((v (global-fetch i)))
-      (if (eq? v undefined-value)
-          (wrong "Uninitialized variable")
-          v ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">CHECKED-GLOBAL-REF</span> <span class="var">i</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">global-fetch</span> <span class="var">i</span>)))
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">v</span> <span class="var">undefined-value</span>)
+          (<span class="func">wrong</span> <span class="string">"Uninitialized variable"</span>)
+          <span class="var">v</span> ) ) ) )</pre>
 
-<p>\phantomlabel{fast/dilute/refs/par:meaningful}
 <!--\indexR{таблица символов}-->
-Заметьте, что в случае, если переменная окажется неинициализированной,
-комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code> будет иметь в распоряжении только её адрес
-в <code><span class="func">sg.current</span></code>, так что красивое сообщение об ошибке с именем переменной
+<p id="fast/dilute/refs/par:meaningful">Заметьте, что в случае, если переменная окажется
+неинициализированной, комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>
+будет иметь в распоряжении только её адрес
+в <code><span class="var">sg.current</span></code>, так что красивое сообщение
+об ошибке с именем переменной
 вывести не получится. Чтобы иметь возможность так делать, во время исполнения
 программы необходимо хранить то, что называется <em class="term">таблицей символов</em>:
 структуру данных, устанавливающую соответствия между адресами и именами
-переменных (во время предобработки ей соответствует список <code><span class="func">g.current</span></code>).
-\seeEx[fast/ex:symbol-table] Тогда в случае нахождения дефектной переменной мы
+переменных (во время предобработки ей соответствует список
+<code><span class="var">g.current</span></code>).
+<span class="see">[см. упр. <a href="#fast/ex:symbol-table">6.1</a>]</span>
+Тогда в случае нахождения дефектной переменной мы
 сможем выдать и её имя, а не только непонятный адрес.</p>
 
-<h3 id="fast/dilute/ssect:conditional">Ветвление</h3>
+
+<h3 id="fast/dilute/ssect:conditional"><span class="seq">6.3.5.</span> Ветвление</h3>
 
 <p>Условный оператор тоже становится гораздо яснее благодаря комбинатору
-<code><span class="func">ALTERNATIVE</span></code>, принимающему результаты предварительной обработки всех трёх
-подформ оператора.</p>
-
+<code><span class="func">ALTERNATIVE</span></code>, принимающему результаты
+предварительной обработки всех трёх подформ оператора.</p>
 
 <!--\indexC{meaning-alternative}-->
 <!--\indexC{ALTERNATIVE}-->
-<pre>(define (meaning-alternative e1 e2 e3 r tail?)
-  (let ((m1 (meaning e1 r #f))
-        (m2 (meaning e2 r tail?))
-        (m3 (meaning e3 r tail?)) )
-    (ALTERNATIVE m1 m2 m3) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-alternative</span> <span class="var">e1</span> <span class="var">e2</span> <span class="var">e3</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> <span class="var">e1</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m2</span> (<span class="func">meaning</span> <span class="var">e2</span> <span class="var">r</span> <span class="var">tail?</span>))
+        (<span class="var">m3</span> (<span class="func">meaning</span> <span class="var">e3</span> <span class="var">r</span> <span class="var">tail?</span>)) )
+    (<span class="func">ALTERNATIVE</span> <span class="var">m1</span> <span class="var">m2</span> <span class="var">m3</span>) ) )
 
-<p>(define (ALTERNATIVE m1 m2 m3)
-  (lambda ()
-    (if (m1) (m2) (m3))) )</pre>
+(<span class="special">define</span> (<span class="func">ALTERNATIVE</span> <span class="var">m1</span> <span class="var">m2</span> <span class="var">m3</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="special">if</span> (<span class="func">m1</span>) (<span class="func">m2</span>) (<span class="func">m3</span>))) )</pre>
 
-<h3 id="fast/dilute/ssect:assignment">Присваивание</h3>
+
+<h3 id="fast/dilute/ssect:assignment"><span class="seq">6.3.6.</span> Присваивание</h3>
 
 <p>Присваивание нового значения переменной напоминает получение её текущего
 значения, за исключением того, что здесь ещё надо вычислить дополнительную
 форму. Эта подформа будет передаваться во все нуждающиеся в ней комбинаторы.</p>
 
-
 <!--\indexC{meaning-assignment}-->
 <!--\indexC{SHALLOW-ARGUMENT-SET"!}-->
 <!--\indexC{DEEP-ARGUMENT-SET"!}-->
 <!--\indexC{GLOBAL-SET"!}-->
-<pre>(define (meaning-assignment n e r tail?)
-  (let ((m (meaning e r #f))
-        (kind (compute-kind r n)) )
-    (if kind
-        (case (car kind)
-          ((local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (if (= i 0)
-                 (SHALLOW-ARGUMENT-SET! j m)
-                 (DEEP-ARGUMENT-SET! i j m) ) ) )
-          ((global)
-           (let ((i (cdr kind)))
-             (GLOBAL-SET! i m) ) )
-          ((predefined)
-           (static-wrong "Immutable predefined variable" n) ) )
-        (static-wrong "No such variable" n) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-assignment</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)) )
+    (<span class="special">if</span> <span class="var">kind</span>
+        (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+          ((<span class="var">local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                 (<span class="func">SHALLOW-ARGUMENT-SET!</span> <span class="var">j</span> <span class="var">m</span>)
+                 (<span class="func">DEEP-ARGUMENT-SET!</span> <span class="var">i</span> <span class="var">j</span> <span class="var">m</span>) ) ) )
+          ((<span class="var">global</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">GLOBAL-SET!</span> <span class="var">i</span> <span class="var">m</span>) ) )
+          ((<span class="var">predefined</span>)
+           (<span class="func">static-wrong</span> <span class="string">"Immutable predefined variable"</span> <span class="var">n</span>) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )
 
-<p>(define (SHALLOW-ARGUMENT-SET! j m)
-  (lambda () (set-activation-frame-argument! *env* j (m))) )</p>
+(<span class="special">define</span> (<span class="func">SHALLOW-ARGUMENT-SET!</span> <span class="var">j</span> <span class="var">m</span>)
+  (<span class="special">lambda</span> () (<span class="func">set-activation-frame-argument!</span> <span class="var">*env*</span> <span class="var">j</span> (<span class="func">m</span>))) )
 
-<p>(define (DEEP-ARGUMENT-SET! i j m)
-  (lambda () (deep-update! *env* i j (m))) )</p>
+(<span class="special">define</span> (<span class="func">DEEP-ARGUMENT-SET!</span> <span class="var">i</span> <span class="var">j</span> <span class="var">m</span>)
+  (<span class="special">lambda</span> () (<span class="func">deep-update!</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span> (<span class="func">m</span>))) )
 
-<p>(define (GLOBAL-SET! i m)
-  (lambda () (global-update! i (m))) )</pre>
+(<span class="special">define</span> (<span class="func">GLOBAL-SET!</span> <span class="var">i</span> <span class="var">m</span>)
+  (<span class="special">lambda</span> () (<span class="func">global-update!</span> <span class="var">i</span> (<span class="func">m</span>))) )</pre>
 
-<h3 id="fast/dilute/ssect:sequence">Последовательность</h3>
+
+<h3 id="fast/dilute/ssect:sequence"><span class="seq">6.3.7.</span> Последовательность</h3>
 
 <p>Последовательное вычисление форм выражается с помощью комбинатора <code><span class="func">SEQUENCE</span></code>,
-являющегося бинарным аналогом <code><span class="func">begin</span></code>.</p>
-
+являющегося бинарным аналогом <code><span class="special">begin</span></code>.</p>
 
 <!--\indexC{meaning-sequence}-->
 <!--\indexC{SEQUENCE}-->
-<pre>(define (meaning-sequence e+ r tail?)
-  (if (pair? e+)
-      (if (pair? (cdr e+))
-          (meaning*-multiple-sequence (car e+) (cdr e+) r tail?)
-          (meaning*-single-sequence (car e+) r tail?) )
-      (static-wrong "Illegal syntax: (begin)") ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e+</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e+</span>))
+          (<span class="func">meaning*-multiple-sequence</span> (<span class="func">car</span> <span class="var">e+</span>) (<span class="func">cdr</span> <span class="var">e+</span>) <span class="var">r</span> <span class="var">tail?</span>)
+          (<span class="func">meaning*-single-sequence</span> (<span class="func">car</span> <span class="var">e+</span>) <span class="var">r</span> <span class="var">tail?</span>) )
+      (<span class="func">static-wrong</span> <span class="string">"Illegal syntax: (begin)"</span>) ) )
 
-<p>(define (meaning*-single-sequence e r tail?)
-  (meaning e r tail?) )</p>
+(<span class="special">define</span> (<span class="func">meaning*-single-sequence</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) )
 
-<p>(define (meaning*-multiple-sequence e e+ r tail?)
-  (let ((m1 (meaning e r #f))
-        (m+ (meaning-sequence e+ r tail?)) )
-    (SEQUENCE m1 m+) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning*-multiple-sequence</span> <span class="var">e</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)) )
+    (<span class="func">SEQUENCE</span> <span class="var">m1</span> <span class="var">m+</span>) ) )
 
-<p>(define (SEQUENCE m m+)
-  (lambda () (m) (m+)) )</pre>
+(<span class="special">define</span> (<span class="func">SEQUENCE</span> <span class="var">m</span> <span class="var">m+</span>)
+  (<span class="special">lambda</span> () (<span class="func">m</span>) (<span class="func">m+</span>)) )</pre>
 
-<h3 id="fast/dilute/ssect:abstraction">Абстракция</h3>
+
+<h3 id="fast/dilute/ssect:abstraction"><span class="seq">6.3.8.</span> Абстракция</h3>
 
 <p>Замыкания создают комбинаторы <code><span class="func">FIX-CLOSURE</span></code> и <code><span class="func">NARY-CLOSURE</span></code>. Различаются
 они предикатами, проверяющими арность, а также подходами к формированию списка
 аргументов.</p>
-
 
 <!--\indexC{meaning-abstraction}-->
 <!--\indexC{meaning-fix-abstraction}-->
 <!--\indexC{meaning-dotted-abstraction}-->
 <!--\indexC{FIX-CLOSURE}-->
 <!--\indexC{NARY-CLOSURE}-->
-<pre>(define (meaning-abstraction nn* e+ r tail?)
-  (let parse ((n* nn*)
-              (regular '()) )
-    (cond
-     ((pair? n*) (parse (cdr n*) (cons (car n*) regular)))
-     ((null? n*) (meaning-fix-abstraction nn* e+ r tail?))
-     (else       (meaning-dotted-abstraction
-                  (reverse regular) n* e+ r tail? )) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-abstraction</span> <span class="var">nn*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> <span class="func">parse</span> ((<span class="var">n*</span> <span class="var">nn*</span>)
+              (<span class="var">regular</span> <span class="hash">'()</span>) )
+    (<span class="syntax">cond</span>
+     ((<span class="func">pair?</span> <span class="var">n*</span>) (<span class="func">parse</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">cons</span> (<span class="func">car</span> <span class="var">n*</span>) <span class="var">regular</span>)))
+     ((<span class="func">null?</span> <span class="var">n*</span>) (<span class="func">meaning-fix-abstraction</span> <span class="var">nn*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>))
+     (<span class="syntax">else</span>       (<span class="func">meaning-dotted-abstraction</span>
+                  (<span class="func">reverse</span> <span class="var">regular</span>) <span class="var">n*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span> )) ) ) )
 
-<p>(define (meaning-fix-abstraction n* e+ r tail?)
-  (let* ((arity (length n*))
-         (r2 (r-extend* r n*))
-         (m+ (meaning-sequence e+ r2 #t)) )
-    (FIX-CLOSURE m+ arity) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-fix-abstraction</span> <span class="var">n*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> (<span class="func">length</span> <span class="var">n*</span>))
+         (<span class="var">r2</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">n*</span>))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r2</span> <span class="hash">#t</span>)) )
+    (<span class="func">FIX-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span>) ) )
 
-<p>(define (meaning-dotted-abstraction n* n e+ r tail?)
-  (let* ((arity (length n*))
-         (r2 (r-extend* r (append n* (list n))))
-         (m+ (meaning-sequence e+ r2 #t)) )
-    (NARY-CLOSURE m+ arity) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-dotted-abstraction</span> <span class="var">n*</span> <span class="var">n</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> (<span class="func">length</span> <span class="var">n*</span>))
+         (<span class="var">r2</span> (<span class="func">r-extend*</span> <span class="var">r</span> (<span class="func">append</span> <span class="var">n*</span> (<span class="func">list</span> <span class="var">n</span>))))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r2</span> <span class="hash">#t</span>)) )
+    (<span class="func">NARY-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span>) ) )
 
-<p>(define (FIX-CLOSURE m+ arity)
-  (let ((arity+1 (+ 1 arity)))
-    (lambda ()
-      (define (the-function v* sr)
-        (if (= (activation-frame-argument-length v*) arity+1)
-            (begin (set! *env* (sr-extend* sr v*))
-                   (m+) )
-            (wrong "Incorrect arity") ) )
-      (make-closure the-function *env*) ) ) )</p>
+(<span class="special">define</span> (<span class="func">FIX-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span>)
+  (<span class="syntax">let</span> ((<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)))
+    (<span class="special">lambda</span> ()
+      (<span class="special">define</span> (<span class="func">the-function</span> <span class="var">v*</span> <span class="var">sr</span>)
+        (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
+            (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">sr-extend*</span> <span class="var">sr</span> <span class="var">v*</span>))
+                   (<span class="func">m+</span>) )
+            (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )
+      (<span class="func">make-closure</span> <span class="var">the-function</span> <span class="var">*env*</span>) ) ) )
 
-<p>(define (NARY-CLOSURE m+ arity)
-  (let ((arity+1 (+ 1 arity)))
-    (lambda ()
-      (define (the-function v* sr)
-        (if (>= (activation-frame-argument-length v*) arity+1)
-            (begin
-              (listify! v* arity)
-              (set! *env* (sr-extend* sr v*))
-              (m+) )
-            (wrong "Incorrect arity") ) )
-      (make-closure the-function *env*) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">NARY-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span>)
+  (<span class="syntax">let</span> ((<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)))
+    (<span class="special">lambda</span> ()
+      (<span class="special">define</span> (<span class="func">the-function</span> <span class="var">v*</span> <span class="var">sr</span>)
+        (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
+            (<span class="special">begin</span>
+              (<span class="func">listify!</span> <span class="var">v*</span> <span class="var">arity</span>)
+              (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">sr-extend*</span> <span class="var">sr</span> <span class="var">v*</span>))
+              (<span class="func">m+</span>) )
+            (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )
+      (<span class="func">make-closure</span> <span class="var">the-function</span> <span class="var">*env*</span>) ) ) )</pre>
 
-<h3 id="fast/dilute/ssect:application">Аппликация</h3>
+
+<h3 id="fast/dilute/ssect:application"><span class="seq">6.3.9.</span> Аппликация</h3>
 
 <p>Осталось разобраться только с вызовами функций. <code><span class="func">meaning-application</span></code>
 анализирует форму аппликации и умеет определять приводимые формы, обращения
 к примитивам и все виды обычных аппликаций.</p>
 
-
 <!--\indexC{meaning-appliction}-->
-<pre>(define (meaning-application e e* r tail?)
-  (cond ((and (symbol? e)
-              (let ((kind (compute-kind r e)))
-                (and (pair? kind)
-                     (eq? 'predefined (car kind))
-                     (let ((desc (get-description e)))
-                       (and desc
-                            (eq? 'function (car desc))
-                            (or (= (length (cddr desc)) (length e*))
-                                (static-wrong
-                                 "Incorrect arity for primitive" e )
+<pre>(<span class="special">define</span> (<span class="func">meaning-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">cond</span> ((<span class="syntax">and</span> (<span class="func">symbol?</span> <span class="var">e</span>)
+              (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">e</span>)))
+                (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">kind</span>)
+                     (<span class="func">eq?</span> '<span class="var">predefined</span> (<span class="func">car</span> <span class="var">kind</span>))
+                     (<span class="syntax">let</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)))
+                       (<span class="syntax">and</span> <span class="var">desc</span>
+                            (<span class="func">eq?</span> '<span class="var">function</span> (<span class="func">car</span> <span class="var">desc</span>))
+                            (<span class="syntax">or</span> (<span class="func">=</span> (<span class="func">length</span> (<span class="func">cddr</span> <span class="var">desc</span>)) (<span class="func">length</span> <span class="var">e*</span>))
+                                (<span class="func">static-wrong</span>
+                                 <span class="string">"Incorrect arity for primitive"</span> <span class="var">e</span> )
                                 ) ) ) ) ) )
-         (meaning-primitive-application e e* r tail?) )
-        ((and (pair? e)
-              (eq? 'lambda (car e)) )
-         (meaning-closed-application e e* r tail?) )
-        (else (meaning-regular-application e e* r tail?)) ) )</pre>
+         (<span class="func">meaning-primitive-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>) )
+        ((<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">e</span>)
+              (<span class="func">eq?</span> '<span class="var">lambda</span> (<span class="func">car</span> <span class="var">e</span>)) )
+         (<span class="func">meaning-closed-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>) )
+        (<span class="syntax">else</span> (<span class="func">meaning-regular-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)) ) )</pre>
 
 <p>Все обычные аппликации обрабатываются с помощью четырёх комбинаторов. Термы
 вычисляются как всегда слева направо.</p>
-
 
 <!--\indexC{meaning-regular-application}-->
 <!--\indexC{meaning*}-->
@@ -2080,60 +2055,59 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 <!--\indexC{TR-REGULAR-CALL}-->
 <!--\indexC{REGULAR-CALL}-->
 <!--\indexC{STORE-ARGUMENT}-->
-<pre>(define (meaning-regular-application e e* r tail?)
-  (let* ((m (meaning e r #f))
-         (m* (meaning* e* r (length e*) #f)) )
-    (if tail? (TR-REGULAR-CALL m m*) (REGULAR-CALL m m*)) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-regular-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+         (<span class="var">m*</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> (<span class="func">length</span> <span class="var">e*</span>) <span class="hash">#f</span>)) )
+    (<span class="special">if</span> <span class="var">tail?</span> (<span class="func">TR-REGULAR-CALL</span> <span class="var">m</span> <span class="var">m*</span>) (<span class="func">REGULAR-CALL</span> <span class="var">m</span> <span class="var">m*</span>)) ) )
 
-<p>(define (meaning* e* r size tail?)
-  (if (pair? e*)
-      (meaning-some-arguments (car e*) (cdr e*) r size tail?)
-      (meaning-no-arguments r size tail?) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">meaning-some-arguments</span> (<span class="func">car</span> <span class="var">e*</span>) (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+      (<span class="func">meaning-no-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>) ) )
 
-<p>(define (meaning-some-arguments e e* r size tail?)
-  (let ((m (meaning e r #f))
-        (m* (meaning* e* r size tail?))
-        (index (- size (+ (length e*) 1))) )
-    (STORE-ARGUMENT m m* index) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-some-arguments</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m*</span> (<span class="func">meaning*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>))
+        (<span class="var">index</span> (<span class="func">-</span> <span class="var">size</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">e*</span>) <span class="num">1</span>))) )
+    (<span class="func">STORE-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">index</span>) ) )
 
-<p>(define (meaning-no-arguments r size tail?)
-  (ALLOCATE-FRAME size) )</p>
+(<span class="special">define</span> (<span class="func">meaning-no-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">tail?</span>)
+  (<span class="func">ALLOCATE-FRAME</span> <span class="var">size</span>) )
 
-<p>(define (TR-REGULAR-CALL m m*)
-  (lambda ()
-    (let ((f (m)))
-      (invoke f (m*)) ) ) )</p>
+(<span class="special">define</span> (<span class="func">TR-REGULAR-CALL</span> <span class="var">m</span> <span class="var">m*</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="func">m</span>)))
+      (<span class="func">invoke</span> <span class="var">f</span> (<span class="func">m*</span>)) ) ) )
 
-<p>(define (REGULAR-CALL m m*)
-  (lambda ()
-    (let* ((f  (m))
-           (v* (m*))
-           (sr *env*)
-           (result (invoke f v*)) )
-      (set! *env* sr)
-      result ) ) )</p>
+(<span class="special">define</span> (<span class="func">REGULAR-CALL</span> <span class="var">m</span> <span class="var">m*</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="syntax">let*</span> ((<span class="var">f</span>  (<span class="func">m</span>))
+           (<span class="var">v*</span> (<span class="func">m*</span>))
+           (<span class="var">sr</span> <span class="var">*env*</span>)
+           (<span class="var">result</span> (<span class="func">invoke</span> <span class="var">f</span> <span class="var">v*</span>)) )
+      (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">sr</span>)
+      <span class="var">result</span> ) ) )
 
-<p>(define (STORE-ARGUMENT m m* index)
-  (lambda ()
-    (let* ((v  (m))
-           (v* (m*)) )
-      (set-activation-frame-argument! v* index v)
-      v* ) ) )</p>
+(<span class="special">define</span> (<span class="func">STORE-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">index</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="syntax">let*</span> ((<span class="var">v</span>  (<span class="func">m</span>))
+           (<span class="var">v*</span> (<span class="func">m*</span>)) )
+      (<span class="func">set-activation-frame-argument!</span> <span class="var">v*</span> <span class="var">index</span> <span class="var">v</span>)
+      <span class="var">v*</span> ) ) )
 
-<p>(define (ALLOCATE-FRAME size)
-  (let ((size+1 (+ 1 size)))
-    (lambda ()
-      (allocate-activation-frame size+1) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">ALLOCATE-FRAME</span> <span class="var">size</span>)
+  (<span class="syntax">let</span> ((<span class="var">size+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">size</span>)))
+    (<span class="special">lambda</span> ()
+      (<span class="func">allocate-activation-frame</span> <span class="var">size+1</span>) ) ) )</pre>
 
-<h3 id="fast/dilute/ssect:reducible">Приводимые формы</h3>
+<h3 id="fast/dilute/ssect:reducible"><span class="seq">6.3.10.</span> Приводимые формы</h3>
 
-<p>Для обработки явно указанных в аппликациях <code><span class="func">lambda</span></code>-форм потребуется четыре
+<p>Для обработки явно указанных в аппликациях <code><span class="special">lambda</span></code>-форм потребуется четыре
 новых комбинатора. <code><span class="func">CONS-ARGUMENT</span></code> собирает избыточные аргументы в список.
 <code><span class="func">ALLOCATE-DOTTED-FRAME</span></code> создаёт запись активации, аналогичную создаваемой
-<code><span class="func">ALLOCATE-FRAME</span></code>, но с последним элементом, равным <code>()</code> (тогда как
+<code><span class="func">ALLOCATE-FRAME</span></code>, но с последним элементом, равным <code><span class="hash">()</span></code> (тогда как
 <code><span class="func">ALLOCATE-FRAME</span></code> не выполняет инициализацию из соображений
 производительности).</p>
-
 
 <!--\indexC{meaning-dotted-closed-application}-->
 <!--\indexC{meaning-dotted*}-->
@@ -2141,65 +2115,66 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 <!--\indexC{FIX-LET}-->
 <!--\indexC{TR-FIX-LET}-->
 <!--\indexC{CONS-ARGUMENT}-->
-<pre>(define (meaning-dotted-closed-application n* n body e* r tail?)
-  (let* ((m* (meaning-dotted* e* r (length e*) (length n*) #f))
-         (r2 (r-extend* r (append n* (list n))))
-         (m+ (meaning-sequence body r2 tail?)) )
-    (if tail? (TR-FIX-LET m* m+)
-              (FIX-LET m* m+) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-dotted-closed-application</span> <span class="var">n*</span> <span class="var">n</span> <span class="var">body</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">m*</span> (<span class="func">meaning-dotted*</span> <span class="var">e*</span> <span class="var">r</span> (<span class="func">length</span> <span class="var">e*</span>) (<span class="func">length</span> <span class="var">n*</span>) <span class="hash">#f</span>))
+         (<span class="var">r2</span> (<span class="func">r-extend*</span> <span class="var">r</span> (<span class="func">append</span> <span class="var">n*</span> (<span class="func">list</span> <span class="var">n</span>))))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">body</span> <span class="var">r2</span> <span class="var">tail?</span>)) )
+    (<span class="special">if</span> <span class="var">tail?</span> (<span class="func">TR-FIX-LET</span> <span class="var">m*</span> <span class="var">m+</span>)
+              (<span class="func">FIX-LET</span> <span class="var">m*</span> <span class="var">m+</span>) ) ) )
 
-<p>(define (meaning-dotted* e* r size arity tail?)
-  (if (pair? e*)
-      (meaning-some-dotted-arguments (car e*) (cdr e*)
-                                     r size arity tail? )
-      (meaning-no-dotted-arguments r size arity tail?) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-dotted*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">meaning-some-dotted-arguments</span> (<span class="func">car</span> <span class="var">e*</span>) (<span class="func">cdr</span> <span class="var">e*</span>)
+                                     <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span> )
+      (<span class="func">meaning-no-dotted-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span>) ) )
 
-<p>(define (meaning-some-dotted-arguments e e* r size arity tail?)
-  (let ((m (meaning e r #f))
-        (m* (meaning-dotted* e* r size arity tail?))
-        (index (- size (+ (length e*) 1))) )
-    (if (< index arity)
-        (STORE-ARGUMENT m m* index)
-        (CONS-ARGUMENT m m* arity) ) ) )</p>
+(<span class="special">define</span> (<span class="func">meaning-some-dotted-arguments</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">m*</span> (<span class="func">meaning-dotted*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span>))
+        (<span class="var">index</span> (<span class="func">-</span> <span class="var">size</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">e*</span>) <span class="num">1</span>))) )
+    (<span class="special">if</span> (<span class="func">&lt;</span> <span class="var">index</span> <span class="var">arity</span>)
+        (<span class="func">STORE-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">index</span>)
+        (<span class="func">CONS-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">arity</span>) ) ) )
 
-<p>(define (meaning-no-dotted-arguments r size arity tail?)
-  (ALLOCATE-DOTTED-FRAME arity) )</p>
+(<span class="special">define</span> (<span class="func">meaning-no-dotted-arguments</span> <span class="var">r</span> <span class="var">size</span> <span class="var">arity</span> <span class="var">tail?</span>)
+  (<span class="func">ALLOCATE-DOTTED-FRAME</span> <span class="var">arity</span>) )
 
-<p>(define (FIX-LET m* m+)
-  (lambda ()
-    (set! *env* (sr-extend* *env* (m*)))
-    (let ((result (m+)))
-      (set! *env* (environment-next *env*))
-      result ) ) )</p>
+(<span class="special">define</span> (<span class="func">FIX-LET</span> <span class="var">m*</span> <span class="var">m+</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">sr-extend*</span> <span class="var">*env*</span> (<span class="func">m*</span>)))
+    (<span class="syntax">let</span> ((<span class="var">result</span> (<span class="func">m+</span>)))
+      (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">environment-next</span> <span class="var">*env*</span>))
+      <span class="var">result</span> ) ) )
 
-<p>(define (TR-FIX-LET m* m+)
-  (lambda ()
-    (set! *env* (sr-extend* *env* (m*)))
-    (m+) ) )</p>
+(<span class="special">define</span> (<span class="func">TR-FIX-LET</span> <span class="var">m*</span> <span class="var">m+</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">sr-extend*</span> <span class="var">*env*</span> (<span class="func">m*</span>)))
+    (<span class="func">m+</span>) ) )
 
-<p>(define (CONS-ARGUMENT m m* arity)
-  (lambda ()
-    (let* ((v  (m))
-           (v* (m*)) )
-      (set-activation-frame-argument! v* arity
-       (cons v (activation-frame-argument v* arity)) )
-      v* ) ) )</p>
+(<span class="special">define</span> (<span class="func">CONS-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">arity</span>)
+  (<span class="special">lambda</span> ()
+    (<span class="syntax">let*</span> ((<span class="var">v</span>  (<span class="func">m</span>))
+           (<span class="var">v*</span> (<span class="func">m*</span>)) )
+      (<span class="func">set-activation-frame-argument!</span> <span class="var">v*</span> <span class="var">arity</span>
+       (<span class="func">cons</span> <span class="var">v</span> (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="var">arity</span>)) )
+      <span class="var">v*</span> ) ) )
 
-<p>(define (ALLOCATE-DOTTED-FRAME arity)
-  (let ((arity+1 (+ 1 arity)))
-    (lambda ()
-      (let ((v* (allocate-activation-frame arity+1)))
-        (set-activation-frame-argument! v* arity '())
-        v* ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">ALLOCATE-DOTTED-FRAME</span> <span class="var">arity</span>)
+  (<span class="syntax">let</span> ((<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)))
+    (<span class="special">lambda</span> ()
+      (<span class="syntax">let</span> ((<span class="var">v*</span> (<span class="func">allocate-activation-frame</span> <span class="var">arity+1</span>)))
+        (<span class="func">set-activation-frame-argument!</span> <span class="var">v*</span> <span class="var">arity</span> <span class="hash">'()</span>)
+        <span class="var">v*</span> ) ) ) )</pre>
 
-<p>
-Комбинатор <code><span class="func">FIX-LET</span></code> должен восстанавливать текущее окружение — а это
+<p>Комбинатор <code><span class="func">FIX-LET</span></code> должен
+восстанавливать текущее окружение — а это
 значит, что оно должно быть где-то сохранено, чтобы его можно было оттуда
 восстановить. К счастью, есть элегантное решение: так как записи активаций
 связаны, то по самой верхней записи (бывшей текущей) можно легко определить
 предыдущую.</p>
 
-<h3 id="fast/dilute/ssect:primitives">Примитивы</h3>
+
+<h3 id="fast/dilute/ssect:primitives"><span class="seq">6.3.11.</span> Примитивы</h3>
 
 <p>Осталось рассмотреть последний случай (по порядку, отнюдь не по важности): когда
 функциональным термом аппликации является имя глобальной неизменяемой
@@ -2207,147 +2182,136 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 активации не создаётся и <code><span class="func">invoke</span></code> не вызывается. Аппликация просто заменяется
 прямым вызовов нужного примитива.</p>
 
-
 <!--\indexC{meaning-primitive-application}-->
 <!--\indexC*{CALL0}{CALL\protect<i>n</i>}-->
-<pre>(define (meaning-primitive-application e e* r tail?)
-  (let* ((desc (get-description e))
-         ;; <code><span class="func">desc</span></code>${}={}$\ic{(function <i>адрес</i> . <i>аргументы</i>)}
-         (address (cadr desc))
-         (size (length e*)) )
-    (case size
-      ((0) (CALL0 address))
-      ((1)
-       (let ((m1 (meaning (car e*) r #f)))
-         (CALL1 address m1) ) )
-      ((2)
-       (let ((m1 (meaning (car e*) r #f))
-             (m2 (meaning (cadr e*) r #f)) )
-        (CALL2 address m1 m2) ) )
-      ((3)
-       (let ((m1 (meaning (car e*) r #f))
-             (m2 (meaning (cadr e*) r #f))
-             (m3 (meaning (caddr e*) r #f)) )
-        (CALL3 address m1 m2 m3) ) )
-      (else
-       (meaning-regular-application e e* r tail?) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-primitive-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)) <span class="comment">;; <code><span class="var">desc</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code>(<span class="var">function</span> <i>адрес</i> . <i>аргументы</i>)</code></span>
+         (<span class="var">address</span> (<span class="func">cadr</span> <span class="var">desc</span>))
+         (<span class="var">size</span> (<span class="func">length</span> <span class="var">e*</span>)) )
+    (<span class="syntax">case</span> <span class="var">size</span>
+      ((<span class="num">0</span>) (<span class="func">CALL0</span> <span class="var">address</span>))
+      ((<span class="num">1</span>)
+       (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>)))
+         (<span class="func">CALL1</span> <span class="var">address</span> <span class="var">m1</span>) ) )
+      ((<span class="num">2</span>)
+       (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>))
+             (<span class="var">m2</span> (<span class="func">meaning</span> (<span class="func">cadr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>)) )
+        (<span class="func">CALL2</span> <span class="var">address</span> <span class="var">m1</span> <span class="var">m2</span>) ) )
+      ((<span class="num">3</span>)
+       (<span class="syntax">let</span> ((<span class="var">m1</span> (<span class="func">meaning</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>))
+             (<span class="var">m2</span> (<span class="func">meaning</span> (<span class="func">cadr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>))
+             (<span class="var">m3</span> (<span class="func">meaning</span> (<span class="func">caddr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="hash">#f</span>)) )
+        (<span class="func">CALL3</span> <span class="var">address</span> <span class="var">m1</span> <span class="var">m2</span> <span class="var">m3</span>) ) )
+      (<span class="syntax">else</span>
+       (<span class="func">meaning-regular-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>) ) ) ) )
 
-<p>(define (CALL0 address)
-  (lambda () (address)) )</p>
+(<span class="special">define</span> (<span class="func">CALL0</span> <span class="var">address</span>)
+  (<span class="special">lambda</span> () (<span class="func">address</span>)) )
 
-<p>(define (CALL3 address m1 m2 m3)
-  (lambda () (let* ((v1 (m1))
-                    (v2 (m2))
-                    (v3 (m3)) )
-               (address v1 v2 v3) )) )</pre>
+(<span class="special">define</span> (<span class="func">CALL3</span> <span class="var">address</span> <span class="var">m1</span> <span class="var">m2</span> <span class="var">m3</span>)
+  (<span class="special">lambda</span> () (<span class="syntax">let*</span> ((<span class="var">v1</span> (<span class="func">m1</span>))
+                    (<span class="var">v2</span> (<span class="func">m2</span>))
+                    (<span class="var">v3</span> (<span class="func">m3</span>)) )
+               (<span class="func">address</span> <span class="var">v1</span> <span class="var">v2</span> <span class="var">v3</span>) )) )</pre>
 
 <p>Аргументы <code><span class="func">CALL3</span></code> явно вычисляются слева направо, чтобы не нарушать ранее
 установленный порядок.</p>
 
-<h3 id="fast/dilute/ssect:starting">Запускаем интерпретатор</h3>
+
+<h3 id="fast/dilute/ssect:starting"><span class="seq">6.3.12.</span> Запускаем интерпретатор</h3>
 
 <p>Так как продолжения теперь присутствуют в интерпретаторе неявно, то структура
 определения примитивов слегка изменилась. Здесь показан только новый вариант
-макроса <code><span class="func">defprimitive2</span></code>:</p>
-
+макроса <code><span class="syntax">defprimitive2</span></code>:</p>
 
 <!--\indexC{defprimitive}-->
-<pre>(define-syntax defprimitive2
-  (syntax-rules ()
-    ((defprimitive2 name value)
-     (definitial name
-       (letrec ((arity+1 (+ 2 1))
-                (behavior
-                 (lambda (v* sr)
-                   (if (= arity+1 (activation-frame-argument-length v*))
-                       (value (activation-frame-argument v* 0)
-                              (activation-frame-argument v* 1) )
-                       (wrong "Incorrect arity" 'name) ) ) ) )
-         (description-extend! 'name `(function ,value a b))
-         (make-closure behavior sr.init) ) ) ) ) )</pre>
+<pre>(<span class="special">define-syntax</span> <span class="var">defprimitive2</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">defprimitive2</span> <span class="var">name</span> <span class="var">value</span>)
+     (<span class="syntax">definitial</span> <span class="var">name</span>
+       (<span class="syntax">letrec</span> ((<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">2</span> <span class="num">1</span>))
+                (<span class="var">behavior</span>
+                 (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">sr</span>)
+                   (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity+1</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>))
+                       (<span class="func">value</span> (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="num">0</span>)
+                              (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="num">1</span>) )
+                       (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">name</span>) ) ) ) )
+         (<span class="func">description-extend!</span> '<span class="var">name</span> `(<span class="var">function</span> ,<span class="var">value</span> <span class="var">a</span> <span class="var">b</span>))
+         (<span class="func">make-closure</span> <span class="var">behavior</span> <span class="var">sr.init</span>) ) ) ) ) )</pre>
 
 <p>Запускается интерпретатор следующим образом:</p>
 
-
 <!--\indexC{chapter6.3-interpreter}-->
-<pre>(define (chapter6.3-interpreter)
-  (define (toplevel)
-    (set! *env* sr.init)
-    (display ((meaning (read) r.init #t)))
-    (toplevel) )
-  (toplevel) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">chapter6.3-interpreter</span>)
+  (<span class="special">define</span> (<span class="func">toplevel</span>)
+    (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">sr.init</span>)
+    (<span class="func">display</span> ((<span class="func">meaning</span> (<span class="func">read</span>) <span class="var">r.init</span> <span class="hash">#t</span>)))
+    (<span class="func">toplevel</span>) )
+  (<span class="func">toplevel</span>) )</pre>
 
-<p>
-\subsection{\texorpdfstring{Функция \protect<code><span class="func">call/cc</span></code>}{Функция call/cc}}%
-\label{fast/dilute/ssect:call/cc}</p>
+<h3 id="fast/dilute/ssect:call/cc"><span class="seq">6.3.13.</span> Функция <code><span class="func">call/cc</span></code></h3>
 
 <p><code><span class="func">call/cc</span></code> в этом интерпретаторе является магией, так что для её определения
 необходима <code><span class="func">call/cc</span></code> из библиотеки языка реализации. Это возвращает нас
 к тавтологическим определениям из первых глав.</p>
 
-
 <!--\indexC{call/cc}-->
-<pre>(definitial call/cc
-  (let* ((arity 1)
-         (arity+1 (+ 1 arity)) )
-    (make-closure
-      (lambda (v* sr)
-        (if (= arity+1 (activation-frame-argument-length v*))
-            (call/cc
-             (lambda (k)
-               (invoke
-                (activation-frame-argument v* 0)
-                (let ((frame (allocate-activation-frame (+ 1 1))))
-                  (set-activation-frame-argument!
-                   frame 0
-                   (make-closure
-                    (lambda (values r)
-                      (if (= (activation-frame-argument-length values)
-                             arity+1 )
-                          (k (activation-frame-argument values 0))
-                          (wrong "Incorrect arity" 'continuation) ) )
-                    sr.init ) )
-                  frame ) ) ) )
-            (wrong "Incorrect arity" 'call/cc) ) )
-      sr.init ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">call/cc</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-closure</span>
+      (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">sr</span>)
+        (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity+1</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>))
+            (<span class="func">call/cc</span>
+             (<span class="special">lambda</span> (<span class="var">k</span>)
+               (<span class="func">invoke</span>
+                (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="num">0</span>)
+                (<span class="syntax">let</span> ((<span class="var">frame</span> (<span class="func">allocate-activation-frame</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">1</span>))))
+                  (<span class="func">set-activation-frame-argument!</span>
+                   <span class="var">frame</span> <span class="num">0</span>
+                   (<span class="func">make-closure</span>
+                    (<span class="special">lambda</span> (<span class="var">values</span> <span class="var">r</span>)
+                      (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">values</span>)
+                             <span class="var">arity+1</span> )
+                          (<span class="func">k</span> (<span class="func">activation-frame-argument</span> <span class="var">values</span> <span class="num">0</span>))
+                          (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">continuation</span>) ) )
+                    <span class="var">sr.init</span> ) )
+                  <span class="var">frame</span> ) ) ) )
+            (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">call/cc</span>) ) )
+      <span class="var">sr.init</span> ) ) )</pre>
 
-<p>\ForLayout{display}{\smallskip}</p>
 
-<p>
-\subsection{\texorpdfstring{Функция \protect<code><span class="func">apply</span></code>}{Функция apply}}%
-\label{fast/dilute/ssect:apply}</p>
+<h3 id="fast/dilute/ssect:apply"><span class="seq">6.3.14.</span> Функция <code><span class="func">apply</span></code></h3>
 
 <p>Выходя за пределы обычного круга обсуждаемых вопросов, давайте определим функцию
 <code><span class="func">apply</span></code>. Её всегда довольно непросто написать, так как она сильно зависит от
 представления функций и протокола их вызова. Однако, этим нас не испугать.</p>
 
-
 <!--\indexC{apply}-->
-<pre>(definitial apply
-  (let* ((arity 2)
-         (arity+1 (+ 1 arity)) )
-    (make-closure
-     (lambda (v* sr)
-       (if (>= (activation-frame-argument-length v*) arity+1)
-           (let* ((proc (activation-frame-argument v* 0))
-                  (last-arg-index
-                   (- (activation-frame-argument-length v*) 2) )
-                  (last-arg
-                   (activation-frame-argument v* last-arg-index) )
-                  (size (+ last-arg-index (length last-arg)))
-                  (frame (allocate-activation-frame size)) )
-             (do ((i 1 (+ i 1)))
-                 ((= i last-arg-index))
-               (set-activation-frame-argument!
-                frame (- i 1) (activation-frame-argument v* i) ) )
-             (do ((i (- last-arg-index 1) (+ i 1))
-                  (last-arg last-arg (cdr last-arg)) )
-                 ((null? last-arg))
-               (set-activation-frame-argument! frame i (car last-arg)) )
-             (invoke proc frame) )
-         (wrong "Incorrect arity" 'apply) ) )
-     sr.init ) ) )</pre>
-
+<pre>(<span class="syntax">definitial</span> <span class="var">apply</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">2</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-closure</span>
+     (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">sr</span>)
+       (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="var">arity+1</span>)
+           (<span class="syntax">let*</span> ((<span class="var">proc</span> (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="num">0</span>))
+                  (<span class="var">last-arg-index</span>
+                   (<span class="func">-</span> (<span class="func">activation-frame-argument-length</span> <span class="var">v*</span>) <span class="num">2</span>) )
+                  (<span class="var">last-arg</span>
+                   (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="var">last-arg-index</span>) )
+                  (<span class="var">size</span> (<span class="func">+</span> <span class="var">last-arg-index</span> (<span class="func">length</span> <span class="var">last-arg</span>)))
+                  (<span class="var">frame</span> (<span class="func">allocate-activation-frame</span> <span class="var">size</span>)) )
+             (<span class="syntax">do</span> ((<span class="var">i</span> <span class="num">1</span> (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)))
+                 ((<span class="func">=</span> <span class="var">i</span> <span class="var">last-arg-index</span>))
+               (<span class="func">set-activation-frame-argument!</span>
+                <span class="var">frame</span> (<span class="func">-</span> <span class="var">i</span> <span class="num">1</span>) (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="var">i</span>) ) )
+             (<span class="syntax">do</span> ((<span class="var">i</span> (<span class="func">-</span> <span class="var">last-arg-index</span> <span class="num">1</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>))
+                  (<span class="var">last-arg</span> <span class="var">last-arg</span> (<span class="func">cdr</span> <span class="var">last-arg</span>)) )
+                 ((<span class="func">null?</span> <span class="var">last-arg</span>))
+               (<span class="func">set-activation-frame-argument!</span> <span class="var">frame</span> <span class="var">i</span> (<span class="func">car</span> <span class="var">last-arg</span>)) )
+             (<span class="func">invoke</span> <span class="var">proc</span> <span class="var">frame</span>) )
+         (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">apply</span>) ) )
+     <span class="var">sr.init</span> ) ) )</pre>
 
 <!--\indexCS{apply}{стоимость}-->
 <p>Этот примитив сначала проверяет, что ему передано по крайней мере два аргумента,
@@ -2359,16 +2323,15 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 записи в другую, а список «лишних» аргументов приходится распарывать и
 обрабатывать поэлементно. Условие окончания списка проверяется с помощью
 <code><span class="func">null?</span></code>. Использование <code><span class="func">atom?</span></code> кажется более здравым, но это бы сделало
-программу <code>(apply list '(a b . c))</code> допустимой — вопреки требованиям
+программу <code>(<span class="func">apply</span> <span class="var">list</span> '(<span class="var">a</span> <span class="var">b</span> . <span class="var">c</span>))</code> допустимой — вопреки требованиям
 стандарта.</p>
 
 <p>Как видим, <code><span class="func">apply</span></code> — это отнюдь не дешёвая операция, так как она вынуждена
 создавать новую запись активации, а также проходить по списку, хранимому
 в точечном аргументе.</p>
 
-<p>
-\subsection{Выводы: интерпретатор без продолжений}%
-\label{fast/dilute/ssect:conclusions}</p>
+
+<h3 id="fast/dilute/ssect:conclusions"><span class="seq">6.3.15.</span> Выводы: интерпретатор без продолжений</h3>
 
 <p>Новый интерпретатор приблизительно от двух до четырёх раз быстрее предыдущего,
 в основном из-за отсутствия постоянно создаваемых замыканий с продолжениями.
@@ -2380,25 +2343,27 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 в заблуждение, поясним эту мысль: количество памяти, необходимое для размещения
 продолжений, не зависит от того, будут ли они жить в стеке или в куче, но
 благодаря обычно небольшому времени жизни продолжений их эффективнее размещать
-именно на стеке. (В <span class="cite">[<a href="z1_bibliography.xhtml#app87">app87</a>]</span> есть иное мнение на этот счёт.) Как показано
-в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">mb93</a>]</span>, данное утверждение остаётся верным, даже если использовать
+именно на стеке. (В <span class="cite">[<a href="z1_bibliography.xhtml#app87">App87</a>]</span> есть иное мнение на этот счёт.) Как показано
+в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">MB93</a>]</span>, данное утверждение остаётся верным, даже если использовать
 отдельную кучу специально для продолжений.</p>
 
 
 <!--\indexR{шитый код}-->
 <p>Способ использования обещаний, показанный в этой главе, известен как <em class="term">шитый
-код</em> <span class="cite">[<a href="z1_bibliography.xhtml#bel73">bel73</a>]</span> и широко применяется при реализации языка Forth <span class="cite">[<a href="z1_bibliography.xhtml#hon93">hon93</a>]</span>.
+код</em> <span class="cite">[<a href="z1_bibliography.xhtml#bel73">Bel73</a>]</span> и широко применяется при реализации языка Forth <span class="cite">[<a href="z1_bibliography.xhtml#hon93">Hon93</a>]</span>.
 Вдохновение при создании этого интерпретатора также черпалось из работы
-Марка Филе и Гая Лапальма: <span class="cite">[<a href="z1_bibliography.xhtml#fl87">fl87</a>]</span>.</p>
+Марка Филе и Гая Лапальма: <span class="cite">[<a href="z1_bibliography.xhtml#fl87">FL87</a>]</span>.</p>
 
 <p>Комбинаторы фактически играют роль кодогенераторов. Они используются как простой
 интерфейс представления кода, позволяющий легко изменять реализацию исполнителя
 предобработанных программ. С их помощью довольно просто начать наконец
 представлять код функций настоящими объектами, а не замыканиями. По сути,
 компиляция, которую мы будем рассматривать в следующей главе, является лишь
-серьёзной доработкой одного из упражнений: \seeEx[fast/ex:disassemble].</p>
+серьёзной доработкой одного из упражнений:
+<span class="see">[см. упр. <a href="#fast/ex:disassemble">6.3</a>]</span>.</p>
 
-<h2 id="fast/sect:conclusions">Заключение</h2>
+
+<h2 id="fast/sect:conclusions"><span class="seq">6.4.</span> Заключение</h2>
 
 <p>На первый взгляд, вся эта глава и её три интерпретатора — это огромный шаг
 назад, лишивший нас всего приобретённого в первых четырёх. Действительно, память
@@ -2416,7 +2381,7 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 языков, виртуальной реальности и т. д. Конечно, нам легко сказать: «только»,
 а на самом деле за этим словом скрывается неимоверная сложность разработки
 удобного способа представления примитивных объектов в памяти, который бы
-обеспечил возможность быстрой проверки типов <span class="cite">[<a href="z1_bibliography.xhtml#gud93">gud93</a>]</span> и эффективной сборки
+обеспечил возможность быстрой проверки типов <span class="cite">[<a href="z1_bibliography.xhtml#gud93">Gud93</a>]</span> и эффективной сборки
 мусора, не говоря уже о как минимум равной трудоёмкости задачи написания
 прикладных библиотек.</p>
 
@@ -2427,73 +2392,72 @@ $\pi_1$ $\pi_2$)</code> тоже не является последним выч
 фундамент для нашего дальнейшего продвижения.</p>
 
 
-<h2 id="fast/sect:exercises">Упражнения</h2>
+<h2 id="fast/sect:exercises"><span class="seq">6.5.</span> Упражнения</h2>
 
-<h5 class="exercise" id="fast/ex:symbol-table">Упражнение <span class="seq">0.0</span></h5>
-<p>Доработайте комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>, научив его выводить более
-осмысленные сообщения о неинициализированных переменных.
-\seePage[fast/dilute/refs/par:meaningful]</p>
+<h5 class="exercise" id="fast/ex:symbol-table">Упражнение <span class="seq">6.1</span></h5>
+<p>Доработайте комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>,
+научив его выводить более осмысленные сообщения о неинициализированных переменных.
+<span class="see">[см. раздел <a href="#fast/dilute/refs/par:meaningful">6.3.4</a>]</span></p>
 
 
-<h5 class="exercise" id="fast/ex:list">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="fast/ex:list">Упражнение <span class="seq">6.2</span></h5>
 <p>Определите примитив <code><span class="func">list</span></code> для третьего интерпретатора из этой главы.
 Подсказка: это можно сделать <em>очень</em> элегантно.</p>
 
 
-<h5 class="exercise" id="fast/ex:disassemble">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="fast/ex:disassemble">Упражнение <span class="seq">6.3</span></h5>
 <!--\indexC{disassemble}-->
 <p>Вместо исполнения программы мы могли бы выводить на экран результат
 предварительной обработки. Как-то так это бы выглядело для факториала:</p>
 
-<pre>? (disassemble
-    '(lambda (n) (if (= n 0) 1 (* n (fact (- n 1))))) )</p>
+<pre>? (<span class="func">disassemble</span>
+    '(<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) )
 
-<p>= (FIX-CLOSURE
-    (ALTERNATIVE
-      (CALL2 #<=> (SHALLOW-ARGUMENT-REF 0) (CONSTANT 0))
-      (CONSTANT 1)
-      (CALL2 #<*> (SHALLOW-ARGUMENT-REF 0)
-                  (REGULAR-CALL
-                    (CHECKED-GLOBAL-REF 10)  ; $\leftarrow$ <code><span class="func">fact</span></code>
-                    (STORE-ARGUMENT
-                      (CALL2 #<-> (SHALLOW-ARGUMENT-REF 0)
-                                  (CONSTANT 1) )
-                      (ALLOCATE-FRAME 1)
-                      0 ) ) ) )
-    1 )</pre>
+= (<span class="func">FIX-CLOSURE</span>
+    (<span class="func">ALTERNATIVE</span>
+      (<span class="func">CALL2</span> <span class="hash">#&lt;=&gt;</span> (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>) (<span class="func">CONSTANT</span> <span class="num">0</span>))
+      (<span class="func">CONSTANT</span> <span class="num">1</span>)
+      (<span class="func">CALL2</span> <span class="hash">#&lt;*&gt;</span> (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)
+                  (<span class="func">REGULAR-CALL</span>
+                    (<span class="func">CHECKED-GLOBAL-REF</span> <span class="num">10</span>) <span class="var"></span> <span class="comment">; <span class="math"><span class="rel">←</span></span> <code><span class="var">fact</span></code></span>
+                    (<span class="func">STORE-ARGUMENT</span>
+                      (<span class="func">CALL2</span> <span class="hash">#&lt;-&gt;</span> (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)
+                                  (<span class="func">CONSTANT</span> <span class="num">1</span>) )
+                      (<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)
+                      <span class="num">0</span> ) ) ) )
+    <span class="num">1</span> )</pre>
 
-<p>\noindent
-Напишите подобный дизассемблер.</p>
+<p>Напишите подобный дизассемблер.</p>
 
 
-<h5 class="exercise" id="fast/ex:act-rec-before">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="fast/ex:act-rec-before">Упражнение <span class="seq">6.4</span></h5>
 <p>Измените последний рассмотренный интерпретатор так, чтобы записи активаций
 создавались перед вычислением аргументов. Тогда готовые аргументы можно будет
 сразу же укладывать в ячейки записи активации.
-\seePage[fast/fast/begin/application/par:act-rec-before]</p>
+<span class="see">[см. раздел <a href="#fast/fast/begin/application/par:act-rec-before">6.1.3</a>]</span></p>
 
 
-<h5 class="exercise" id="fast/ex:redefine">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="fast/ex:redefine">Упражнение <span class="seq">6.5</span></h5>
 <!--\indexC{redefine}-->
-<p>Определите специальную форму <code><span class="func">redefine</span></code>, позволяющую переопределять
+<p>Определите специальную форму <code><span class="special">redefine</span></code>, позволяющую переопределять
 глобальные неизменяемые переменные. Она должна принимать имя примитива и
 создавать одноименную переменную в глобальном изменяемом окружении, которая,
-как сказано на странице \pageref{fast/fast/classify/par:redefine}, скроет
+как сказано в разделе <a href="#fast/fast/classify/par:redefine">6.1.4</a>, скроет
 оригинал. Пусть начальным значением этой переменной будет переопределяемый
 примитив.</p>
 
 
-<h5 class="exercise" id="fast/ex:boost-thunks">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="fast/ex:boost-thunks">Упражнение <span class="seq">6.6</span></h5>
 <p>Оптимизируйте предобработку функций без аргументов.
-\seePage[fast/dilute/ssect:pretreater]</p>
+<span class="see">[см. раздел <a href="#fast/dilute/ssect:pretreater">6.3.2</a>]</span></p>
 
-<p>
-\section*{Рекомендуемая литература}\label{fast/sect:recommended-reading}</p>
 
-<p>Последний рассмотренный интерпретатор вдохновлён статьёй <span class="cite">[<a href="z1_bibliography.xhtml#fl87">fl87</a>]</span>. Идея
-перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.xhtml#cli84">cli84</a>]</span>. Если вам
+<h2>Рекомендуемая литература</h2>
+
+<p>Последний рассмотренный интерпретатор вдохновлён статьёй <span class="cite">[<a href="z1_bibliography.xhtml#fl87">FL87</a>]</span>. Идея
+перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.xhtml#cli84">Cli84</a>]</span>. Если вам
 действительно понравилось оптимизировать интерпретацию, то определённо стоит
-изучить работы <span class="cite">[<a href="z1_bibliography.xhtml#cha80">cha80</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#sj93">sj93</a>]</span>.</p>
+изучить работы <span class="cite">[<a href="z1_bibliography.xhtml#cha80">Cha80</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.</p>
 
 </body>
 </html>
