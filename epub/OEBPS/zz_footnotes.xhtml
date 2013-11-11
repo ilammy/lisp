@@ -750,5 +750,53 @@
     Вроде <code><span class="string">"Bus error: core not dumped"</span></code>.</p>
 </div>
 
+
+
+
+
+<h1><span class="seq">Глава 8.</span> Вычисления и рефлексия</h1>
+
+<div class="footnote" id="foot8.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вот именно их можно и разрешить: это не так сложно сделать, а они могли бы быть полезными,
+    например, при реализации <span class="logo">Meroonet</span>.</p>
+</div>
+
+<div class="footnote" id="foot8.2">
+  <p><span class="num"><sup>2</sup></span>
+    Как думаете, значение <code>(<span class="syntax">let</span> ((<span class="var">e</span> '(<span class="var">x</span>))) `(<span class="special">lambda</span>
+    ,<span class="var">e</span> ,<span class="var">e</span>))</code> считается допустимой программой?</p>
+</div>
+
+<div class="footnote" id="foot8.3">
+  <p><span class="num"><sup>3</sup></span>
+    Правда, такой способ определения <code><span class="special">eval</span></code> позволяет
+    её использовать только на глобальном уровне, воспользоваться локальным
+    окружением функций загружаемые программы не смогут. К вопросам управления
+    окружениями при явных вычислениях мы вернёмся чуть позже.</p>
+</div>
+
+<div class="footnote" id="foot8.4">
+  <p><span class="num"><sup>4</sup></span>
+    В отличие от остальных, переменная <code><span class="var">*dynamic-variables*</span></code>
+    общая дл компилятора и машины-исполнителя. Сейчас подобные присваивания ей бессмысленны,
+    но они напоминают, что их необходимо проводить, если данная переменная не будет
+    разделяемой.</p>
+</div>
+
+<div class="footnote" id="foot8.5">
+  <p><span class="num"><sup>5</sup></span>
+    Это утверждение носит слегка теоретический характер, так как с практической точки
+    зрения можно засечь время выполнения обеих программ. Более медленная, очевидно,
+    использует <code><span class="special">eval</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot8.6">
+  <p><span class="num"><sup>6</sup></span>
+    Конечно же, переменные вроде <code><span class="var">car</span></code> не включаются
+    в определение <code><span class="func">set-global-value!</span></code> для
+    обеспечения их неизменяемости.</p>
+</div>
+
 </body>
 </html>

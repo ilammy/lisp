@@ -164,3 +164,7 @@ pre span.dialect span.logo { font-size: 100%; }
 .Vset {
   font-weight: bolder;
 }
+
+blockquote.equation span.eqno{
+  float: right;
+}

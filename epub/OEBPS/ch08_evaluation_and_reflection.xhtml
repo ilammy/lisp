@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru"></p>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
-<p><body>
-\chapter{Вычисления и рефлексия}\label{chapter:reflection}</p>
+<head>
+    <title>Вычисления и рефлексия</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+</head>
 
+<body id="chapter:reflection">
+
+<h1><span class="seq">Глава 8.</span> Вычисления и рефлексия</h1>
 
 <!--\indexC{eval}-->
 <!--\indexR{вычислитель}-->
-<p>\initial{1.5ex}{2.0ex}{У}{\kern0.5ex никальной чертой} Лиспа является его
-вычислитель: <code><span class="func">eval</span></code>. Хотя в данной книге вычисления упоминаются чуть ли
-не на каждой странице, мы никогда не касались возможности явного использования
+<p><span class="initial"><span class="letter">У</span>никальной чертой</span> Лиспа
+является его вычислитель: <code><span class="func">eval</span></code>. Хотя в данной
+книге вычисления упоминаются чуть ли не на каждой странице, мы никогда не касались
+возможности явного использования
 вычислителя. И на то есть веские причины: явные вычисления создают определённые
 затруднения с их формализацией, они влияют на целостность окружения вычислений,
 поднимают неудобные вопросы лингвистического плана. Всё это дало жизнь расхожему
-выражению: «<code><span class="func">eval</span></code> is <i>evil</i>». Нахождение возможностей плодотворного
-применения <code><span class="func">eval</span></code> — это первый шаг к рефлексивному программированию —
+выражению: «<code><span class="func">eval</span></code> is <i>evil</i>».
+Нахождение возможностей плодотворного применения <code><span class="func">eval</span></code> —
+это первый шаг к рефлексивному программированию —
 теме, которая также будет затронута в этой главе.</p>
 
 <div class="bigskip"/>
@@ -24,9 +31,11 @@
 вычислений. Для большинства из них явное предоставление вычислителя
 пользователям не требует значительных усилий и выполняется всего парой строк
 кода. Это тривиальная задача по сравнению с реализацией самого интерпретатора.
-Однозначно можно сказать \seePage[basics/sect:evaluation], что облегчение её
-решения намеренно заложено в дизайн Лиспа. Явная функция <code><span class="func">eval</span></code>
-присутствовала ещё в первых работах отцов-основателей: \cite{mcc60,mae+62}.</p>
+Однозначно можно сказать <span class="see">[см. раздел <a href="ch01_basics.xhtml#basics/sect:evaluation">1.1</a>]</span>, что облегчение её
+решения намеренно заложено в дизайн Лиспа. Явная функция
+<code><span class="func">eval</span></code>
+присутствовала ещё в первых работах отцов-основателей:
+<span class="cite">[<a href="z1_bibliography.xhtml#mcc60">McC60</a>, <a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>.</p>
 
 <p>Наличие в языке явного вычислителя является его фундаментальным качеством,
 позволяющим реализовать мощную макросистему, объединить язык и среду разработки,
@@ -35,47 +44,47 @@
 и сующая свой нос куда попало интроспекция. Подобно волшебному джинну, <code><span class="func">eval</span></code>
 может быть как полезной, так и принести погибель.</p>
 
-<p>Итак, какой контракт нам стоит заключить с <code><span class="func">eval</span></code>? Безусловно, одним из его
-пунктов должно быть утверждение
-%
+<p>Итак, какой контракт нам стоит заключить с <code><span class="func">eval</span></code>?
+Безусловно, одним из его пунктов должно быть утверждение</p>
+
 <!--\indexCS{eval}{контракт!идемпотентности}-->
-\begin{equation}\label{reflection/eq:eval-idemp}
-  \text{<code>(eval '$\pi$)</code>} \eq \pi
-\end{equation}
-%
-Вскоре мы покажем, что это уравнение далеко от однозначности.</p>
+<blockquote id="reflection/eq:eval-idemp" class="equation math"><span class="normal ord"><code>(<span class="func">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="rel">≡</span><span class="ord var">π</span><span class="eqno">(1)</span></blockquote>
 
-<h2 id="reflection/sect:prog-and-val">Программы и значения</h2>
+<p>Вскоре мы покажем, что это уравнение далеко от однозначности.</p>
 
+
+<h2 id="reflection/sect:prog-and-val"><span class="seq">8.1.</span> Программы и значения</h2>
 
 <!--\indexR{вычисления!динамические}-->
-<p>Давайте попробуем добавить <code><span class="func">eval</span></code> в самый первый интерпретатор, рассмотренный
-в этой книге. \seePage[basics/sect:basic-evaluator] Он написан на чистом Scheme
-без использования каких-либо библиотек. Для начала сделаем <code><span class="func">eval</span></code> специальной
-формой. Следовательно, в <code><span class="func">evaluate</span></code> появляется соответствующая ветка:</p>
-
+<p>Давайте попробуем добавить <code><span class="func">eval</span></code> в самый первый
+интерпретатор, рассмотренный в этой книге.
+<span class="see">[<a href="ch01_basics.xhtml#basics/sect:basic-evaluator">1.2</a>]</span>
+Он написан на чистом Scheme без использования каких-либо библиотек. Для начала сделаем
+<code><span class="special">eval</span></code> специальной формой.
+Следовательно, в <code><span class="func">evaluate</span></code> появляется
+соответствующая ветка:</p>
 
 <!--\indexC{evaluate}-->
-<pre>(define (evaluate e env)
-  (if (atom? e)
-      (cond ((symbol? e) (lookup e env))
-            ((or (number? e)(string? e)(char? e)
-                 (boolean? e)(vector? e) )
-              e)
-            (else (wrong "Cannot evaluate" e)) )
-      (case (car e)
-        ((quote) (cadr e))
-        ((if)     (if (evaluate (cadr e) env)
-                      (evaluate (caddr e) env)
-                      (evaluate (cadddr e) env) ))
-        ((begin)  (eprogn (cdr e) env))
-        ((set!)   (update! (cadr e) env (evaluate (caddr e) env)))
-        ((lambda) (make-function (cadr e) (cddr e) env))
-        [((eval)   (evaluate (evaluate (cadr e) env) env))]
-        (else     (invoke (evaluate (cadr e) env)
-                          (evlis (cdr e) env) )) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="syntax">cond</span> ((<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">lookup</span> <span class="var">e</span> <span class="var">env</span>))
+            ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
+                 (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) )
+              <span class="var">e</span>)
+            (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>) (<span class="func">cadr</span> <span class="var">e</span>))
+        ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>)
+                      (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)
+                      (<span class="func">evaluate</span> (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">env</span>) ))
+        ((<span class="var">begin</span>)  (<span class="func">eprogn</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>))
+        ((<span class="var">set!</span>)   (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)))
+        ((<span class="var">lambda</span>) (<span class="func">make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>))
+        <span class="highlight">((<span class="var">eval</span>)   (<span class="func">evaluate</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>) <span class="var">env</span>))</span>
+        (<span class="syntax">else</span>     (<span class="func">invoke</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>)
+                          (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>) )) ) ) )</pre>
 
-<p>Специальная форма <code><span class="func">eval</span></code> вычисляет свой единственный аргумент (прямо как
+<p>Специальная форма <code><span class="special">eval</span></code> вычисляет свой единственный аргумент (прямо как
 функция), а затем ещё раз вычисляет полученное в результате значение в текущем
 окружении. К сожалению, в этом вроде как самоочевидном описании на самом деле
 полно неясностей.</p>
@@ -87,7 +96,7 @@
 исполнения. В последних интерпретаторах мы даже явно ввели две отдельные
 функции: <code><span class="func">meaning</span></code> и <code><span class="func">run</span></code>. Функция <code><span class="func">evaluate</span></code> принимает программы, а
 возвращает значения — результаты вычислений. Вот здесь и возникает первая
-проблема (назовём её проблемой типизации): в форме <code>(evaluate (evaluate ...)
+проблема (назовём её проблемой типизации): в форме <code>(<span class="func">evaluate</span> (<span class="func">evaluate</span> ...)
 ...)</code> внешняя <code><span class="func">evaluate</span></code> применяется к значению, а не к программе.
 Являются ли программы значениями? А значения программами?</p>
 
@@ -96,62 +105,58 @@
 <!--\indexR{грамматика!Scheme}-->
 <p>Определения языков программирования обычно включают в себя грамматику —
 описание допустимых синтаксических конструкций этого языка. Грамматика Scheme
-приведена в <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">kcr98</a>]</span>. Там написано, что определённые наборы букв и скобочек
+приведена в <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span>. Там написано, что определённые наборы букв и скобочек
 являются синтаксически допустимыми программами. Кроме того, грамматика задаёт
 синтаксис значений (данных), поэтому можно легко проверить, является ли
 программа значением с синтаксической точки зрения. Благо, в Scheme есть
 универсальная функция <code><span class="func">read</span></code>, умеющая читать как программы, так и данные.
 Ведь ничто не обязывает нас сразу же исполнять считанные <code><span class="func">read</span></code> программы.
-Многие интерпретаторы Smalltalk, вроде <span class="cite">[<a href="z1_bibliography.xhtml#gr83">gr83</a>]</span>, сперва проверяют синтаксис
+Многие интерпретаторы Smalltalk, вроде <span class="cite">[<a href="z1_bibliography.xhtml#gr83">GR83</a>]</span>, сперва проверяют синтаксис
 программы и отображают её в специальном окне, подсвечивая все найденные
 синтаксические ошибки. Это достаточно распространённая практика, так что при
 необходимости вполне можно трактовать программы как значения, если с точки
 зрения синтаксиса они являются нормальными значениями.</p>
 
 <p>Но вот обратное не всегда верно: существует множество значений, не являющихся
-синтаксически корректными программами, например, <code>(quote . 1)</code>. А есть и
+синтаксически корректными программами, например, <code>(<span class="special">quote</span> . <span class="num">1</span>)</code>. А есть и
 значения, которые нельзя однозначно отнести к той или иной группе.</p>
 
-<p>\begin{itemize}
-  \item Возьмём значение, являющееся корректной программой во всём,
-        кроме пары-тройки деталей. Например, <code>(if \#t 1 (quote . 2))</code>.
-        Это программа? Если передать данное выражение определённой ранее
-        <code><span class="func">eval</span></code>, то она вычислит его без особых проблем, так как не будет
-        даже смотреть на <code>(quote . 2)</code>. Но данное выражение нарушает
-        правила записи программ на Scheme.</p>
+<ul>
+  <li>Возьмём значение, являющееся корректной программой во всём,
+    кроме пары-тройки деталей. Например, <code>(<span class="special">if</span> <span class="hash">#t</span> <span class="num">1</span> (<span class="special">quote</span> . <span class="num">2</span>))</code>.
+    Это программа? Если передать данное выражение определённой ранее
+    <code><span class="special">eval</span></code>, то она вычислит его без особых проблем, так как не будет
+    даже смотреть на <code>(<span class="special">quote</span> . <span class="num">2</span>)</code>. Но данное выражение нарушает
+    правила записи программ на Scheme.</li>
 
-<p>  \item
-<!--\indexR{внешнее представление}-->
-        Или, например, значение, возвращаемое формой вроде <code>`(',car
-        '(a b))</code>, где первым термом является процитированное значение
-        функции <code><span class="func">car</span></code>. Это программа? В соответствии с синтаксисом
-        \RnRS, это значение не является программой, так как у него нет
-        <em>внешнего представления</em>: его нельзя непосредственно набрать
-        на клавиатуре. Тем не менее, <code><span class="func">eval</span></code> опять выполнит такую
-        программу без запинки.</p>
-
-<p>  \item % ## -- чтобы TeX не считал #1 за аргумент команды
+  <!--\indexR{внешнее представление}-->
+  <li>Или, например, значение, возвращаемое формой вроде <code>`(',<span class="var">car</span>
+    '(<span class="var">a</span> <span class="var">b</span>))</code>, где первым термом является
+    процитированное значение функции <code><span class="func">car</span></code>. Это программа?
+    В соответствии с синтаксисом R<sup>5</sup>RS, это значение не является программой,
+    так как у него нет <em>внешнего представления</em>: его нельзя непосредственно набрать
+    на клавиатуре. Тем не менее, <code><span class="special">eval</span></code> опять
+    выполнит такую программу без запинки.</li>
 
 <!--\indexE{##n##@\ic{\#<i>n</i>\#}, \ic{\#<i>n</i>=}}-->
-
 <!--\indexR{рекурсия!синтаксическая}-->
-        Теперь воспользуемся нотацией <span class="logo">Common Lisp</span>: пусть <code><span class="func">\#1=</span></code>
-        даёт имя следующему за ним выражению, а <code><span class="func">\#1\#</span></code> позволяет
-        сослаться на выражение с именем <code><span class="func">1</span></code>. Держа это в голове,
-        рассмотрим следующую программу, чьё графическое представление
-        показано на рисунке \ref{reflection/prog-and-val/pic:recusive}.
-        %
-\begin{code:lisp}
-(let ((n 4))
-  #1=(if (= n 1) 1
-         (* n ((lambda (n) #1#) (- n 1))) ) )
-\end{code:lisp}
-        %
-        Это значение содержит цикл. Можно сказать, это синтаксически
+  <li><p>Теперь воспользуемся нотацией <span class="logo">Common Lisp</span>:
+    пусть <code><span class="hash">#1=</span></code> даёт имя следующему за ним выражению,
+    а <code><span class="hash">#1#</span></code> позволяет сослаться на выражение
+    с именем <code><span class="num">1</span></code>. Держа это в голове,
+    рассмотрим следующую программу, чьё графическое представление
+    показано на рисунке <a href="#reflection/prog-and-val/pic:recusive">8.1</a>.</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">n</span> <span class="num">4</span>))
+  <span class="hash">#1=</span>(<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="num">1</span>
+         (<span class="func">*</span> <span class="var">n</span> ((<span class="special">lambda</span> (<span class="var">n</span>) <span class="hash">#1#</span>) (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )</pre>
+
+        <p>Это значение содержит цикл. Можно сказать, это синтаксически
         рекурсивная программа. К сожалению, синтаксис Scheme запрещает
-        подобные трюки. Осталось только объяснить это <code><span class="func">eval</span></code>, которую
-        данный цикл ничуть не смущает.
-\end{itemize}</p>
+        подобные трюки. Осталось только объяснить это
+        <code><span class="special">eval</span></code>, которую
+        данный цикл ничуть не смущает.</p></li>
+</ul>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.1}
@@ -163,113 +168,110 @@
 <p>Конечно, вам может показаться, что все эти примеры взяты из специальной книги
 «Тысяча и одно извращение на Лиспе», но зато они вполне доходчиво
 демонстрируют, насколько расплывчатой становится идея программы с появлением
-<code><span class="func">eval</span></code>. Похожие проблемы возникают и у макросов, проводящих разнообразные
+<code><span class="func">eval</span></code>.
+Похожие проблемы возникают и у макросов, проводящих разнообразные
 вычисления со значениями-программами.</p>
-
 
 <!--\indexR{ошибки!статические}-->
 <!--\indexR{ошибки!динамические}-->
 <!--\indexR{цитаты!запрещённые}-->
 <p>Кстати, вспомните наш разговор о статических и динамических ошибках.
-\seePage[fast/fast/classify/sssect:static-err] Где именно проводить границу
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/classify/sssect:static-err">6.1.4</a>]</span>
+Где именно проводить границу
 между ними? Наиболее либеральная позиция: допускать любые синтаксические
-аномалии вроде <code>(quote . 3)</code>, пока они не мешают проводить вычисления.
+аномалии вроде <code>(<span class="special">quote</span> . <span class="num">3</span>)</code>, пока они не мешают проводить вычисления.
 Наиболее строгая: допускать только такие программы, которые представимы в виде
 конечного ациклического графа синтаксически корректных выражений. В этом случае
 упомянутый ранее синтаксически рекурсивный факториал будет признан недопустимым,
 несмотря на то, что отдельные выражения, из которых он состоит, являются вполне
 корректными. Пожалуй, мы примем именно эту позицию (её же занимает и Scheme),
-потому как существует алгоритм, рассмотренный в <span class="cite">[<a href="z1_bibliography.xhtml#que92a">que92a</a>]</span>, позволяющий
+потому как существует алгоритм, рассмотренный в <span class="cite">[<a href="z1_bibliography.xhtml#que92a">Que92a</a>]</span>, позволяющий
 переписать произвольную синтаксически рекурсивную программу в виде дерева
 инструкций без циклов. Что касается цитат, то мы разрешим только цитаты,
 состоящие из конечного числа атомов, имеющих внешнее представление. Таким
 образом, под запретом цитирования оказываются замыкания, продолжения, порты,
-а также циклические\footnote{Вот именно их можно и разрешить: это не так сложно
-сделать, а они могли бы быть полезными, например, при реализации \Meroonet.}
+а также циклические<a class="footref" href="zz_footnotes.xhtml#foot8.1"><sup>1</sup></a>
 конструкции.</p>
-
 
 <!--\indexR{синтаксис!проверка}-->
 <p>Правила, формализующие понятие синтаксически корректной программы, можно
 записать в виде следующих предикатов. Они проверяют синтаксис выражений и
-обнаруживают\footnote{Как думаете, значение <code>(let ((e '(x))) `(lambda
-,e ,e))</code> считается допустимой программой?} циклы.</p>
-
+обнаруживают<a class="footref" href="zz_footnotes.xhtml#foot8.2"><sup>2</sup></a> циклы.</p>
 
 <!--\indexC{program"?}-->
 <!--\indexC{variables-list"?}-->
 <!--\indexC{quotation"?}-->
-<pre>(define (program? e)
-  (define (program? e m)
-    (if (atom? e)
-        (or (symbol? e) (number? e) (string? e) (char? e) (boolean? e))
-        (if (memq e m) #f
-            (let ((m (cons e m)))
-              (define (all-programs? e+ m+)
-                (if (memq e+ m+) #f
-                    (let ((m+ (cons e+ m+)))
-                      (and (pair? e+)
-                           (program? (car e+) m)
-                           (or (null? (cdr e+))
-                               (all-programs? (cdr e+) m+) ) ) ) ) )
-              (case (car e)
-                ((quote) (and (pair? (cdr e))
-                              (quotation? (cadr e))
-                              (null? (cddr e)) ))
-                ((if) (and (pair? (cdr e))
-                           (program? (cadr e) m)
-                           (pair? (cddr e))
-                           (program? (caddr e) m)
-                           (pair? (cdddr e))
-                           (program? (cadddr e) m)
-                           (null? (cddddr e)) ))
-                ((begin) (all-programs? (cdr e) '()))
-                ((set!) (and (pair? (cdr e))
-                             (symbol? (cadr e))
-                             (pair? (cddr e))
-                             (program? (caddr e) m)
-                             (null? (cdddr e)) ))
-                ((lambda) (and (pair? (cdr e))
-                               (variables-list? (cadr e))
-                               (all-programs? (cddr e) '()) ))
-                (else (all-programs? e '())) ) ) ) ) )
-  (program? e '()) )</p>
+<pre>(<span class="special">define</span> (<span class="func">program?</span> <span class="var">e</span>)
+  (<span class="special">define</span> (<span class="func">program?</span> <span class="var">e</span> <span class="var">m</span>)
+    (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+        (<span class="syntax">or</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">number?</span> <span class="var">e</span>) (<span class="func">string?</span> <span class="var">e</span>) (<span class="func">char?</span> <span class="var">e</span>) (<span class="func">boolean?</span> <span class="var">e</span>))
+        (<span class="special">if</span> (<span class="func">memq</span> <span class="var">e</span> <span class="var">m</span>) <span class="hash">#f</span>
+            (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">cons</span> <span class="var">e</span> <span class="var">m</span>)))
+              (<span class="special">define</span> (<span class="func">all-programs?</span> <span class="var">e+</span> <span class="var">m+</span>)
+                (<span class="special">if</span> (<span class="func">memq</span> <span class="var">e+</span> <span class="var">m+</span>) <span class="hash">#f</span>
+                    (<span class="syntax">let</span> ((<span class="var">m+</span> (<span class="func">cons</span> <span class="var">e+</span> <span class="var">m+</span>)))
+                      (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">e+</span>)
+                           (<span class="func">program?</span> (<span class="func">car</span> <span class="var">e+</span>) <span class="var">m</span>)
+                           (<span class="syntax">or</span> (<span class="func">null?</span> (<span class="func">cdr</span> <span class="var">e+</span>))
+                               (<span class="func">all-programs?</span> (<span class="func">cdr</span> <span class="var">e+</span>) <span class="var">m+</span>) ) ) ) ) )
+              (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+                ((<span class="var">quote</span>) (<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e</span>))
+                              (<span class="func">quotation?</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                              (<span class="func">null?</span> (<span class="func">cddr</span> <span class="var">e</span>)) ))
+                ((<span class="var">if</span>) (<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e</span>))
+                           (<span class="func">program?</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">m</span>)
+                           (<span class="func">pair?</span> (<span class="func">cddr</span> <span class="var">e</span>))
+                           (<span class="func">program?</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">m</span>)
+                           (<span class="func">pair?</span> (<span class="func">cdddr</span> <span class="var">e</span>))
+                           (<span class="func">program?</span> (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">m</span>)
+                           (<span class="func">null?</span> (<span class="func">cddddr</span> <span class="var">e</span>)) ))
+                ((<span class="var">begin</span>) (<span class="func">all-programs?</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="hash">'()</span>))
+                ((<span class="var">set!</span>) (<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e</span>))
+                             (<span class="func">symbol?</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                             (<span class="func">pair?</span> (<span class="func">cddr</span> <span class="var">e</span>))
+                             (<span class="func">program?</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">m</span>)
+                             (<span class="func">null?</span> (<span class="func">cdddr</span> <span class="var">e</span>)) ))
+                ((<span class="var">lambda</span>) (<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e</span>))
+                               (<span class="func">variables-list?</span> (<span class="func">cadr</span> <span class="var">e</span>))
+                               (<span class="func">all-programs?</span> (<span class="func">cddr</span> <span class="var">e</span>) <span class="hash">'()</span>) ))
+                (<span class="syntax">else</span> (<span class="func">all-programs?</span> <span class="var">e</span> <span class="hash">'()</span>)) ) ) ) ) )
+  (<span class="func">program?</span> <span class="var">e</span> <span class="hash">'()</span>) )
 
-<p>(define (variables-list? v*)
-  (define (variables-list? v* already-seen)
-    (or (null? v*)
-        (and (symbol? v*)
-             (not (memq v* already-seen)) )
-        (and (pair? v*)
-             (symbol? (car v*))
-             (not (memq (car v*) already-seen))
-             (variables-list? (cdr v*)
-                              (cons (car v*) already-seen) ) ) ) )
-  (variables-list? v* '()) )</p>
+(<span class="special">define</span> (<span class="func">variables-list?</span> <span class="var">v*</span>)
+  (<span class="special">define</span> (<span class="func">variables-list?</span> <span class="var">v*</span> <span class="var">already-seen</span>)
+    (<span class="syntax">or</span> (<span class="func">null?</span> <span class="var">v*</span>)
+        (<span class="syntax">and</span> (<span class="func">symbol?</span> <span class="var">v*</span>)
+             (<span class="func">not</span> (<span class="func">memq</span> <span class="var">v*</span> <span class="var">already-seen</span>)) )
+        (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">v*</span>)
+             (<span class="func">symbol?</span> (<span class="func">car</span> <span class="var">v*</span>))
+             (<span class="func">not</span> (<span class="func">memq</span> (<span class="func">car</span> <span class="var">v*</span>) <span class="var">already-seen</span>))
+             (<span class="func">variables-list?</span> (<span class="func">cdr</span> <span class="var">v*</span>)
+                              (<span class="func">cons</span> (<span class="func">car</span> <span class="var">v*</span>) <span class="var">already-seen</span>) ) ) ) )
+  (<span class="func">variables-list?</span> <span class="var">v*</span> <span class="hash">'()</span>) )
 
-<p>(define (quotation? e)
-  (define (quotation? e m)
-    (if (memq e m) #f
-        (let ((m (cons e m)))
-          (or (null? e) (symbol? e) (number? e)
-              (string? e) (char? e) (boolean? e)
-              (and (vector? e)
-                   (let loop ((i 0))
-                     (or (>= i (vector-length e))
-                         (and (quotation? (vector-ref e i) m)
-                              (loop (+ i 1)) ) ) ) )
-              (and (pair? e)
-                   (quotation? (car e) m)
-                   (quotation? (cdr e) m) ) ) ) ) )
-  (quotation? e '()) )</pre>
+(<span class="special">define</span> (<span class="func">quotation?</span> <span class="var">e</span>)
+  (<span class="special">define</span> (<span class="func">quotation?</span> <span class="var">e</span> <span class="var">m</span>)
+    (<span class="special">if</span> (<span class="func">memq</span> <span class="var">e</span> <span class="var">m</span>) <span class="hash">#f</span>
+        (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">cons</span> <span class="var">e</span> <span class="var">m</span>)))
+          (<span class="syntax">or</span> (<span class="func">null?</span> <span class="var">e</span>) (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">number?</span> <span class="var">e</span>)
+              (<span class="func">string?</span> <span class="var">e</span>) (<span class="func">char?</span> <span class="var">e</span>) (<span class="func">boolean?</span> <span class="var">e</span>)
+              (<span class="syntax">and</span> (<span class="func">vector?</span> <span class="var">e</span>)
+                   (<span class="syntax">let</span> <span class="func">loop</span> ((<span class="var">i</span> <span class="num">0</span>))
+                     (<span class="syntax">or</span> (<span class="func">&gt;=</span> <span class="var">i</span> (<span class="func">vector-length</span> <span class="var">e</span>))
+                         (<span class="syntax">and</span> (<span class="func">quotation?</span> (<span class="func">vector-ref</span> <span class="var">e</span> <span class="var">i</span>) <span class="var">m</span>)
+                              (<span class="func">loop</span> (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)) ) ) ) )
+              (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">e</span>)
+                   (<span class="func">quotation?</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">m</span>)
+                   (<span class="func">quotation?</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">m</span>) ) ) ) ) )
+  (<span class="func">quotation?</span> <span class="var">e</span> <span class="hash">'()</span>) )</pre>
 
 <p>Вооружившись предикатом <code><span class="func">program?</span></code>, можно уточнить определение специальной
-формы <code><span class="func">eval</span></code> следующим образом:</p>
+формы <code><span class="special">eval</span></code> следующим образом:</p>
 
-<pre>... ((eval) (let ((v (evaluate (cadr e) env)))
-              (if (program? v)
-                  (evaluate v env)
-                  (wrong "Illegal program" v) ) )) ...</pre>
+<pre>... ((<span class="var">eval</span>) (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>)))
+              (<span class="special">if</span> (<span class="func">program?</span> <span class="var">v</span>)
+                  (<span class="func">evaluate</span> <span class="var">v</span> <span class="var">env</span>)
+                  (<span class="func">wrong</span> <span class="string">"Illegal program"</span> <span class="var">v</span>) ) )) ...</pre>
 
 
 <!--\indexR{смысл программ!по отношению к синтаксису}-->
@@ -282,86 +284,81 @@
 ни программы, ни цитаты. Действительно, программа — это то, что интерпретатор
 считает программой, то же самое касается и цитат. Именно интерпретатор придаёт
 смысл значениям. Для уточнения этого момента перейдём к интерпретатору из
-четвёртой главы. \seePage[chapter:assignment] В нём память и продолжения
+<a href="ch04_assignment_and_side_effects.xhtml">четвёртой главы</a>. В нём память и продолжения
 используются явно, а значения интерпретируемого Scheme представляются
-объектами-замыканиями. Вот его вычислитель с добавленной формой <code><span class="func">eval</span></code>:</p>
-
+объектами-замыканиями. Вот его вычислитель с добавленной формой
+<code><span class="special">eval</span></code>:</p>
 
 <!--\indexC{evaluate}-->
-<pre>(define (evaluate e r s k)
-  (if (atom? e)
-      (if (symbol? e) (evaluate-variable e r s k)
-          (evaluate-quote e r s k) )
-      (case (car e)
-        ((quote)  (evaluate-quote (cadr e) r s k))
-        ((if)     (evaluate-if (cadr e) (caddr e) (cadddr e) r s k))
-        ((begin)  (evaluate-begin (cdr e) r s k))
-        ((set!)   (evaluate-set! (cadr e) (caddr e) r s k))
-        ((lambda) (evaluate-lambda (cadr e) (cddr e) r s k))
-        [((eval)   (evaluate-eval (cadr e) r s k))]
-        (else     (evaluate-application (car e) (cdr e) r s k)) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">evaluate-variable</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+          (<span class="func">evaluate-quote</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">evaluate-quote</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">if</span>)     (<span class="func">evaluate-if</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">begin</span>)  (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">set!</span>)   (<span class="func">evaluate-set!</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">lambda</span>) (<span class="func">evaluate-lambda</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        <span class="highlight">((<span class="var">eval</span>)   (<span class="func">evaluate-eval</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))</span>
+        (<span class="syntax">else</span>     (<span class="func">evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)) ) ) )
 
-<p>(define (evaluate-eval e r s k)
-  (evaluate e r s
-    (lambda (v ss)
-      (let ((ee (transcode-back v s)))
-        (if (program? ee)
-            (evaluate ee r ss k)
-            (wrong "Illegal program" ee) ) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">evaluate-eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+      (<span class="syntax">let</span> ((<span class="var">ee</span> (<span class="func">transcode-back</span> <span class="var">v</span> <span class="var">s</span>)))
+        (<span class="special">if</span> (<span class="func">program?</span> <span class="var">ee</span>)
+            (<span class="func">evaluate</span> <span class="var">ee</span> <span class="var">r</span> <span class="var">ss</span> <span class="var">k</span>)
+            (<span class="func">wrong</span> <span class="string">"Illegal program"</span> <span class="var">ee</span>) ) ) ) ) )</pre>
 
 
 <!--\indexC{load}-->
 <!--\indexC{transcode-back}-->
-<p>В этом интерпретаторе вычисленное значение первого аргумента формы <code><span class="func">eval</span></code>
+<p>В этом интерпретаторе вычисленное значение первого аргумента формы <code><span class="special">eval</span></code>
 дополнительно преобразуется (с помощью <code><span class="func">transcode-back</span></code>) из внутреннего
 представления во внешнее. Затем проверяется правильность записи программы, после
-чего она исполняется. Переменные <code><span class="func">e</span></code> и <code><span class="func">ee</span></code> хранят описания программ, а
-переменная <code><span class="func">v</span></code> — значения. Задача <code><span class="func">transcode-back</span></code>: взять значение и
+чего она исполняется. Переменные <code><span class="var">e</span></code> и <code><span class="var">ee</span></code> хранят описания программ, а
+переменная <code><span class="var">v</span></code> — значения. Задача <code><span class="func">transcode-back</span></code>: взять значение и
 что-то с ним сделать, чтобы его можно было считать корректным описанием
-программы. Примерно таким же путём можно получить <code><span class="func">eval</span></code> в интерпретаторе,
-где нет <code><span class="func">eval</span></code>, но есть функция <code><span class="func">load</span></code>: записываем программу в файл,
+программы. Примерно таким же путём можно получить <code><span class="special">eval</span></code> в интерпретаторе,
+где нет <code><span class="special">eval</span></code>, но есть функция <code><span class="func">load</span></code>: записываем программу в файл,
 задачу <code><span class="func">transcode-back</span></code> в этом случае выполняет <code><span class="func">display</span></code>; читаем и
 исполняем программу из файла с помощью <code><span class="func">load</span></code>. Таким образом, программа
-«компилируется»\footnote{Правда, такой способ определения <code><span class="func">eval</span></code> позволяет
-её использовать только на глобальном уровне, воспользоваться локальным
-окружением функций загружаемые программы не смогут. К вопросам управления
-окружениями при явных вычислениях мы вернёмся чуть позже.} в имя этого файла.</p>
+«компилируется»<a class="footref" href="zz_footnotes.xhtml#foot8.3"><sup>3</sup></a> в имя этого файла.</p>
 
-<p>Наконец, давайте рассмотрим также быстрый интерпретатор из шестой главы.
-\seePage[chapter:fast] Там обнаружится ещё несколько интересных моментов. В нём
+<p>Наконец, давайте рассмотрим также быстрый интерпретатор из <a href="ch06_fast_interpretation.xhtml">шестой главы</a>. Там обнаружится ещё несколько интересных моментов. В нём
 значения интерпретируемого языка представляются родными значениями Scheme, так
 что нужда в преобразованиях отпадает. Главной задачей этого интерпретатора было
 предварительное вычисление всех выражений, которые можно вычислить статически.</p>
 
-
 <!--\indexC{meaning}-->
 <!--\indexC{meaning-eval}-->
-<pre>(define (meaning e r tail?)
-  (if (atom? e)
-      (if (symbol? e) (meaning-reference e r tail?)
-                      (meaning-quotation e r tail?) )
-      (case (car e)
-        ((quote)  (meaning-quotation (cadr e) r tail?))
-        ((lambda) (meaning-abstraction (cadr e) (cddr e) r tail?))
-        ((if)     (meaning-alternative (cadr e) (caddr e) (cadddr e)
-                                       r tail?))
-        ((begin)  (meaning-sequence (cdr e) r tail?))
-        ((set!)   (meaning-assignment (cadr e) (caddr e) r tail?))
-        [((eval)   (meaning-eval (cadr e) r tail?))]
-        (else     (meaning-application (car e) (cdr e) r tail?)) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">meaning-reference</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+                      (<span class="func">meaning-quotation</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">meaning-quotation</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">lambda</span>) (<span class="func">meaning-abstraction</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">if</span>)     (<span class="func">meaning-alternative</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>)
+                                       <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">begin</span>)  (<span class="func">meaning-sequence</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        ((<span class="var">set!</span>)   (<span class="func">meaning-assignment</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))
+        <span class="highlight">((<span class="var">eval</span>)   (<span class="func">meaning-eval</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>))</span>
+        (<span class="syntax">else</span>     (<span class="func">meaning-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>)) ) ) )
 
-<p>(define (meaning-eval e r tail?)
-  (let ((m (meaning e r #f)))
-    (lambda ()
-      (let ((v (m)))
-        (if (program? v)
-            (let ((mm (meaning v r tail?)))
-              (mm) )
-            (wrong "Illegal program" v) ) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">meaning-eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>)))
+    (<span class="special">lambda</span> ()
+      (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">m</span>)))
+        (<span class="special">if</span> (<span class="func">program?</span> <span class="var">v</span>)
+            (<span class="syntax">let</span> ((<span class="var">mm</span> (<span class="func">meaning</span> <span class="var">v</span> <span class="var">r</span> <span class="var">tail?</span>)))
+              (<span class="func">mm</span>) )
+            (<span class="func">wrong</span> <span class="string">"Illegal program"</span> <span class="var">v</span>) ) ) ) ) )</pre>
 
 <p>Вот теперь, на примере компилирующего интерпретатора, преобразующего программы
 в деревья из инструкций-замыканий, становится окончательно понятным, что
-компиляция <code><span class="func">v</span></code> не может быть выполнена статически. Впервые узел дерева,
+компиляция <code><span class="var">v</span></code> не может быть выполнена статически. Впервые узел дерева,
 создаваемый компилятором, не является простой операцией вроде выделения памяти,
 проверки условия или обращения к структурам данных. Вместо этого (о ужас!)
 внутри замыкания находится вызов <code><span class="func">meaning</span></code>. Это значит, что во время
@@ -371,126 +368,113 @@
 
 <div class="bigskip"/>
 
-
 <!--\indexCS{eval}{параллель с <code><span class="func">quote</span></code>}-->
 <p>В этом разделе мы попытались уменьшить путаницу между понятиями значения и
 программы. Похожие отношения существуют также между цитатами и значениями.
-Поэтому иногда говорят, что <code><span class="func">eval</span></code> и <code><span class="func">quote</span></code> дополняют друг друга:
-<code><span class="func">quote</span></code> получает описание некоторого значения, которое она должна создать, а
-<code><span class="func">eval</span></code> получает значение, являющееся описанием некоторых действий, которые
+Поэтому иногда говорят, что <code><span class="special">eval</span></code> и <code><span class="special">quote</span></code> дополняют друг друга:
+<code><span class="special">quote</span></code> получает описание некоторого значения, которое она должна создать, а
+<code><span class="special">eval</span></code> получает значение, являющееся описанием некоторых действий, которые
 она должна выполнить. Важно понимать, что они обе преобразуют обозначения
 в обозначаемые объекты.</p>
 
-<p>
-\section{\texorpdfstring{\protect<code><span class="func">eval</span></code> как специальная форма}%
-{eval как специальная форма}}%
-\label{reflection/sect:eval-as-spec-form}</p>
 
+<h2 id="reflection/sect:eval-as-spec-form"><span class="seq">8.2.</span> <code><span class="special">eval</span></code> как специальная форма</h2>
 
 <!--\indexR{взаимозаменимость}-->
 <!--\indexCS{eval}{как специальная форма}-->
-<p><code><span class="func">eval</span></code> в виде специальной формы приближает нас к идеалу —
-уравнению \eqref{reflection/eq:eval-idemp}; то есть, <code>(eval (quote $\pi$))</code>
-становится эквивалентом $\pi$. Но это верно лишь при чисто алгебраическом
-понимании этого уравнения, как, например, в \cite{fh89,mul92}. Любая надёжная
+<p><code><span class="special">eval</span></code> в виде специальной формы приближает нас к идеалу —
+уравнению (<a href="#reflection/eq:eval-idemp">1</a>); то есть, <code>(<span class="special">eval</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>))</code>
+становится эквивалентом <span class="math"><span class="ord var">π</span></span>.
+Но это верно лишь при чисто алгебраическом понимании этого уравнения, как, например,
+в <span class="cite">[<a href="z1_bibliography.xhtml#fh89">FH89</a>,
+<a href="z1_bibliography.xhtml#mul92">Mul92</a>]</span>. Любая надёжная
 теория допускает взаимозаменимость двух объектов только в случае, когда они
 эквивалентны <em>в любом контексте</em>. Точнее говоря, получается, что
-\eqref{reflection/eq:eval-idemp} — это менее строгая форма
-уравнения \eqref{reflection/eq:eval-idemp-context}, где $C$ означает контекст
-вычислений:
-%
+(<a href="#reflection/eq:eval-idemp">1</a>) — это менее строгая форма
+уравнения (<a href="#reflection/eq:eval-idemp-context">2</a>),
+где <span class="math"><span class="ord var">C</span></span> означает контекст вычислений:
+
 <!--\indexCS{eval}{контракт!с контекстом}-->
-\begin{equation}\label{reflection/eq:eval-idemp-context}
-  \forall C\colon\ C[\text{<code>(eval '$\pi$)</code>}] \eq C[\pi]
-\end{equation}</p>
+<blockquote id="reflection/eq:eval-idemp-context" class="equation math"><span class="ord">∀</span><span class="ord var">C</span><span class="ord">: </span><span class="ord var">C</span><span class="open">[</span><span class="normal ord"><code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="close">]</span><span class="rel">≡</span><span class="ord var">C</span><span class="open">[</span><span class="ord var">π</span><span class="close">]</span><span class="eqno">(2)</span></blockquote>
 
 <p>Следовательно, значением замкнутой формы (не имеющей свободных переменных)
-вроде <code>(eval '((lambda (x y) x) 1 2))</code> всегда будет <code><span class="func">1</span></code>. Однако,
+вроде <code>(<span class="special">eval</span> '((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>) <span class="num">1</span> <span class="num">2</span>))</code> всегда будет <code><span class="num">1</span></code>. Однако,
 вычисляемая форма может иметь контекст в виде лексического окружения:</p>
 
-<pre>((lambda (x) (eval 'x))
- 3 )                       |\is| 3
-((lambda (x y) (eval y))
- 4 'x )                    |\is| 4
-((lambda (x y z) (eval y))
- 5 (list 'eval 'z) 'x )    |\is| 5</pre>
-
+<pre>((<span class="special">lambda</span> (<span class="var">x</span>) (<span class="special">eval</span> '<span class="var">x</span>))
+ <span class="num">3</span> )                       <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) (<span class="special">eval</span> <span class="var">y</span>))
+ <span class="num">4</span> '<span class="var">x</span> )                    <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
+((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span> <span class="var">z</span>) (<span class="special">eval</span> <span class="var">y</span>))
+ <span class="num">5</span> (<span class="func">list</span> '<span class="var">eval</span> '<span class="var">z</span>) '<span class="var">x</span> )    <span class="math"><span class="rel">→</span></span> <span class="num">5</span></pre>
 
 <!--\indexR{лексическое окружение!и eval@и \protect<code><span class="func">eval</span></code>}-->
-<p>Подобное поведение возможно только при условии, что <code><span class="func">eval</span></code> доступно
+<p>Подобное поведение возможно только при условии, что <code><span class="special">eval</span></code> доступно
 лексическое окружение. В быстром интерпретаторе замыканию, создаваемому
-<code><span class="func">meaning</span></code> для <code><span class="func">eval</span></code>, необходимо не только получить доступ к функции
-<code><span class="func">meaning</span></code>, но и захватить текущее лексическое окружение <code><span class="func">r</span></code> (а также
-<code><span class="func">tail?</span></code>), чтобы проводить внутренние вычисления в правильном локальном
+<code><span class="func">meaning</span></code> для <code><span class="special">eval</span></code>, необходимо не только получить доступ к функции
+<code><span class="func">meaning</span></code>, но и захватить текущее лексическое окружение <code><span class="var">r</span></code> (а также
+<code><span class="var">tail?</span></code>), чтобы проводить внутренние вычисления в правильном локальном
 лексическом окружении. Следовательно, во время исполнения программ потребуется
 хранить не только <code><span class="func">meaning</span></code>, а ещё и всевозможные окружения.</p>
 
-<p>Это видно ещё лучше на примере компилятора в байт-код из седьмой главы.
-\seePage[chapter:compilation] Функция-анализатор <code><span class="func">meaning-eval</span></code> вызывает
-функцию-генератор <code><span class="func">EVAL/CE</span></code> (от <em class="term">eval in cur\-rent en\-vi\-ron\-ment</em>).
+<p>Это видно ещё лучше на примере компилятора в байт-код из <a href="ch07_compilation.xhtml">седьмой главы</a>. Функция-анализатор <code><span class="func">meaning-eval</span></code> вызывает
+функцию-генератор <code><span class="func">EVAL/CE</span></code> (от <em class="term">eval in current environment</em>).
 Она принимает выражение, которое необходимо вычислить, и окружение для
 компиляции.</p>
 
-
 <!--\indexC{EVAL/CE}-->
-<pre>(define (meaning-eval e r tail?)
-  (let ((m (meaning e r #f)))
-    (EVAL/CE m r) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>)))
+    (<span class="func">EVAL/CE</span> <span class="var">m</span> <span class="var">r</span>) ) )
 
-<p>(define (EVAL/CE m r)
-  (append (PRESERVE-ENV) (CONSTANT r) (PUSH-VALUE)
-          m (COMPILE-RUN) (RESTORE-ENV) ) )</pre>
+(<span class="special">define</span> (<span class="func">EVAL/CE</span> <span class="var">m</span> <span class="var">r</span>)
+  (<span class="func">append</span> (<span class="func">PRESERVE-ENV</span>) (<span class="func">CONSTANT</span> <span class="var">r</span>) (<span class="func">PUSH-VALUE</span>)
+          <span class="var">m</span> (<span class="func">COMPILE-RUN</span>) (<span class="func">RESTORE-ENV</span>) ) )</pre>
 
-<p>Функция <code><span class="func">EVAL/CE</span></code> игнорирует <code><span class="func">tail?</span></code> и всегда сохраняет локальное
+<p>Функция <code><span class="func">EVAL/CE</span></code> игнорирует <code><span class="var">tail?</span></code> и всегда сохраняет локальное
 окружение. Новая «простейшая» инструкция <code><span class="func">COMPILE-RUN</span></code> содержит в себе
-весь компилятор-интерпретатор. Она забирает выражение из регистра <code><span class="func">*val*</span></code> и
+весь компилятор-интерпретатор. Она забирает выражение из регистра <code><span class="var">*val*</span></code> и
 окружение с верхушки стека, а затем применяет к ним функцию
 <code><span class="func">compile-on-the-fly</span></code>, которая выполняет компиляцию, загружает в память
 полученный байт-код и передаёт ему управление так, как если бы там была обычная
 функция.</p>
 
-
 <!--\indexC{COMPILE-RUN}-->
 <!--\indexC{compile-and-run}-->
 <!--\indexC{compile-on-the-fly}-->
-<pre>(define (COMPILE-RUN) (list 255))</p>
+<pre>(<span class="special">define</span> (<span class="func">COMPILE-RUN</span>) (<span class="func">list</span> <span class="num">255</span>))
 
-<p>(define-instruction (COMPILE-RUN) 255
-  (let ((v *val*)
-        (r (stack-pop)) )
-    (if (program? v)
-        (compile-and-run v r #f)
-        (signal-exception #t
-          (list "Illegal program" v) ) ) ) )</p>
+(<span class="syntax">define-instruction</span> (<span class="func">COMPILE-RUN</span>) <span class="num">255</span>
+  (<span class="syntax">let</span> ((<span class="var">v</span> <span class="var">*val*</span>)
+        (<span class="var">r</span> (<span class="func">stack-pop</span>)) )
+    (<span class="special">if</span> (<span class="func">program?</span> <span class="var">v</span>)
+        (<span class="func">compile-and-run</span> <span class="var">v</span> <span class="var">r</span> <span class="hash">#f</span>)
+        (<span class="func">signal-exception</span> <span class="hash">#t</span>
+          (<span class="func">list</span> <span class="string">"Illegal program"</span> <span class="var">v</span>) ) ) ) )
 
-<p>(define (compile-and-run v r tail?)
-  (unless tail? (stack-push *pc*))
-  (set! *pc* (compile-on-the-fly v r)) )</p>
+(<span class="special">define</span> (<span class="func">compile-and-run</span> <span class="var">v</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">unless</span> <span class="var">tail?</span> (<span class="func">stack-push</span> <span class="var">*pc*</span>))
+  (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">compile-on-the-fly</span> <span class="var">v</span> <span class="var">r</span>)) )
 
-<p>(define (compile-on-the-fly v r)
-  (set! g.current '())
-  (for-each g.current-extend! sg.current.names)
-  (set! *quotations* (vector->list *constants*))
-  (set! *dynamic-variables* *dynamic-variables*)
-  (let ((code (apply vector (append (meaning v r #f) (RETURN)))))
-    (set! sg.current.names (map car (reverse g.current)))
-    (let ((v (make-vector (length sg.current.names) undefined-value)))
-      (vector-copy! sg.current v 0 (vector-length sg.current))
-      (set! sg.current v) )
-    (set! *constants* (apply vector *quotations*))
-    (set! *dynamic-variables* *dynamic-variables*)
-    (install-code! code) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">compile-on-the-fly</span> <span class="var">v</span> <span class="var">r</span>)
+  (<span class="special">set!</span> <span class="var">g.current</span> <span class="hash">'()</span>)
+  (<span class="func">for-each</span> <span class="var">g.current-extend!</span> <span class="var">sg.current.names</span>)
+  (<span class="special">set!</span> <span class="var">*quotations*</span> (<span class="func">vector->list</span> <span class="var">*constants*</span>))
+  (<span class="special">set!</span> <span class="var">*dynamic-variables*</span> <span class="var">*dynamic-variables*</span>)
+  (<span class="syntax">let</span> ((<span class="var">code</span> (<span class="func">apply</span> <span class="var">vector</span> (<span class="func">append</span> (<span class="func">meaning</span> <span class="var">v</span> <span class="var">r</span> <span class="hash">#f</span>) (<span class="func">RETURN</span>)))))
+    (<span class="special">set!</span> <span class="var">sg.current.names</span> (<span class="func">map</span> <span class="var">car</span> (<span class="func">reverse</span> <span class="var">g.current</span>)))
+    (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">make-vector</span> (<span class="func">length</span> <span class="var">sg.current.names</span>) <span class="var">undefined-value</span>)))
+      (<span class="func">vector-copy!</span> <span class="var">sg.current</span> <span class="var">v</span> <span class="num">0</span> (<span class="func">vector-length</span> <span class="var">sg.current</span>))
+      (<span class="special">set!</span> <span class="var">sg.current</span> <span class="var">v</span>) )
+    (<span class="special">set!</span> <span class="var">*constants*</span> (<span class="func">apply</span> <span class="var">vector</span> <span class="var">*quotations*</span>))
+    (<span class="special">set!</span> <span class="var">*dynamic-variables*</span> <span class="var">*dynamic-variables*</span>)
+    (<span class="func">install-code!</span> <span class="var">code</span>) ) )</pre>
 
 <!--\indexR{компиляция!на лету}-->
 <!--\indexR{загрузчик!динамический}-->
 <p>При компиляции на лету, естественно, потребуются все глобальные переменные,
-используемые при обычной компиляции: <code><span class="func">g.current</span></code> (окружение изменяемых
-глобальных переменных), <code><span class="func">*quotations*</span></code> и <code><span class="func">*dynamic-variables*</span></code>.%
-\footnote*{В отличие от остальных, переменная <code><span class="func">*dynamic-variables*</span></code> общая для
-компилятора и машины-исполнителя. Сейчас подобные присваивания ей бессмысленны,
-но они напоминают, что их необходимо проводить, если данная переменная не будет
-разделяемой.} Откомпилированный код заканчивается инструкцией <code><span class="func">RETURN</span></code>,
+используемые при обычной компиляции: <code><span class="var">g.current</span></code> (окружение изменяемых
+глобальных переменных), <code><span class="var">*quotations*</span></code> и <code><span class="var">*dynamic-variables*</span></code><a class="footref" href="zz_footnotes.xhtml#foot8.4"><sup>4</sup></a>. Откомпилированный код заканчивается инструкцией <code><span class="func">RETURN</span></code>,
 возвращающей управление обратно вызывающей программе. После завершения
 компиляции окружение исполнения расширяется новыми цитатами, а также глобальными
 и динамическими переменными, созданными в процессе. В конце концов полученный
@@ -502,8 +486,8 @@
 <!--\indexR{динамически загружаемые библиотеки}-->
 <!--\indexR{сборка мусора!динамическая компиляция}-->
 <p>Подобная загрузка принципиально аналогична механизму динамически подключаемых
-библиотек. Для языков вроде Си <code><span class="func">eval</span></code> можно свести к записи строки
-с программой в файл, компиляции этого файла с помощью <code><span class="func">cc</span></code>, загрузке
+библиотек. Для языков вроде Си <code><span class="special">eval</span></code> можно свести к записи строки
+с программой в файл, компиляции этого файла с помощью <code>cc</code>, загрузке
 средствами операционной системы полученной библиотеки и вызову содержащихся
 внутри неё функций. К сожалению, на данном этапе наша машина не поддерживает
 удаление из памяти загружаемого подобным образом кода, так что он остаётся
@@ -512,43 +496,40 @@
 
 <p>Таким образом, стоимость новой специальной формы составляют:</p>
 
-<p>\begin{itemize}
-  \item новая инструкция <code><span class="func">COMPILE-RUN</span></code>, требующая наличия
-        функции <code><span class="func">meaning</span></code> и некоторых другими, что приводит
-        к значительному увеличению размера кода для небольших
-        приложений;</p>
+<ul>
+  <li>новая инструкция <code><span class="func">COMPILE-RUN</span></code>, требующая наличия
+    функции <code><span class="func">meaning</span></code> и некоторых другими, что приводит
+    к значительному увеличению размера кода для небольших
+    приложений;</li>
 
-<p>  \item расходы памяти на сохранение текущего окружения при каждом
-        вызове <code><span class="func">eval</span></code>.
-\end{itemize}</p>
+  <li>расходы памяти на сохранение текущего окружения при каждом
+    вызове <code><span class="special">eval</span></code>.</li>
+</ul>
 
-<p>\noindent
-К счастью, дополнительные окружения необходимо сохранять только при этих
-вызовах, так что суммарная стоимость использования <code><span class="func">eval</span></code> линейно зависит
+<p>К счастью, дополнительные окружения необходимо сохранять только при этих
+вызовах, так что суммарная стоимость использования
+<code><span class="special">eval</span></code> линейно зависит
 от количества данных форм в программе.</p>
 
-<p>Кроме того, <code><span class="func">eval</span></code> иногда используется для отладки: ведь она позволяет
+<p>Кроме того, <code><span class="special">eval</span></code> иногда используется для отладки: ведь она позволяет
 внедрить REPL в саму программу и просматривать или изменять переменные изнутри,
 обращаясь к ним по именам. А если туда встроен ещё и отладчик, позволяющий
 прервать исполнение программы в произвольный момент времени (например, по
 команде с клавиатуры), то кроме окружений необходимо вдобавок где-то хранить и
 весь исходный код вместе с таблицей символов.</p>
 
-<p>
-\subsection{Глобальные переменные}%
-\label{reflection/eval-as-spec-form/ssect:global}</p>
 
+<h3 id="reflection/eval-as-spec-form/ssect:global"><span class="seq">8.2.1.</span> Глобальные переменные</h3>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>}-->
-<p>Согласно контракту \eqref{reflection/eq:eval-idemp-context}, выражение <code>(eval
-'(set! foo 33))</code> должно быть эквивалентным <code>(set! foo 33)</code>. Впервые мы
-столкнулись с неоднозначностью семантики присваивания в четвёртой главе.
-\seePage[chapter:assignment] Затем в разделе \ref{fast/fast/ssect:variations}
+<p>Согласно контракту (<a href="#reflection/eq:eval-idemp-context">2</a>), выражение
+<code>(<span class="special">eval</span> '(<span class="special">set!</span> <span class="var">foo</span> <span class="num">33</span>))</code> должно быть эквивалентным <code>(<span class="special">set!</span> <span class="var">foo</span> <span class="num">33</span>)</code>. Впервые мы
+столкнулись с неоднозначностью семантики присваивания в <a href="ch04_assignment_and_side_effects.xhtml">четвёртой главе</a>. Затем в разделе <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:variations">6.1.9</a>
 были рассмотрены различные варианты реализации окружений и присваивания.
-\seePage[fast/fast/ssect:variations] Следовательно, если для создания переменной
-достаточно её упоминания, то и <code><span class="func">eval</span></code> это позволено. И наоборот, если
+Следовательно, если для создания переменной
+достаточно её упоминания, то и <code><span class="special">eval</span></code> это позволено. И наоборот, если
 переменные необходимо определять до использования, то данное ограничение
-касается в том числе и <code><span class="func">eval</span></code>. Функция <code><span class="func">compile-on-the-fly</span></code> расширяет
+касается в том числе и <code><span class="special">eval</span></code>. Функция <code><span class="func">compile-on-the-fly</span></code> расширяет
 в конце своей работы глобальное окружение корректно созданными глобальными
 переменными компилируемой программы.</p>
 
@@ -556,38 +537,33 @@
 <!--\indexCS{eval}{и побочные эффекты}-->
 <!--\indexR{побочные эффекты!и eval@и <code><span class="func">eval</span></code>}-->
 <p>Это замечание сделано для того, чтобы вы поняли, что уравнения
-\eqref{reflection/eq:eval-idemp} и \eqref{reflection/eq:eval-idemp-context}
-касаются не только значений $\pi$ и <code>(eval '$\pi$)</code>, а и всех иных побочных
+(<a href="#reflection/eq:eval-idemp">1</a>) и (<a href="#reflection/eq:eval-idemp-context">2</a>)
+касаются не только значений <span class="math"><span class="ord var">π</span></span> и
+<code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code>, а и всех иных побочных
 эффектов вроде создания новых переменных, изменения значений старых, переходов
 и т. д. Именно в таком смысле надо понимать эквивалентность выражений
-в уравнении \eqref{reflection/eq:eval-idemp-context}: они должны быть одинаковы
-во всём, везде и всегда. Должно быть абсолютно невозможным\footnote{Это
-утверждение носит слегка теоретический характер, так как с практической точки
-зрения можно засечь время выполнения обеих программ. Более медленная, очевидно,
-использует <code><span class="func">eval</span></code>.} составить программу, которая смогла бы различить $\pi$
-и <code>(eval '$\pi$)</code> по поведению.</p>
+в уравнении (<a href="#reflection/eq:eval-idemp-context">2</a>): они должны быть одинаковы
+во всём, везде и всегда. Должно быть абсолютно невозможным<a class="footref" href="zz_footnotes.xhtml#foot8.5"><sup>5</sup></a> составить программу, которая смогла бы различить
+<span class="math"><span class="ord var">π</span></span> и
+<code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code> по поведению.</p>
 
-<p>
-\section{\texorpdfstring{\protect<code><span class="func">eval</span></code> как функция}{eval как функция}}%
-\label{reflection/sect:eval-as-func}</p>
 
+<h2 id="reflection/sect:eval-as-func"><span class="seq">8.3.</span> <code><span class="func">eval</span></code> как функция</h2>
 
 <!--\indexCS{eval}{как примитив}-->
-<p>Специальная форма <code><span class="func">eval</span></code> вычисляет свой единственный аргумент подобно
-функциям, так что возникает логичный вопрос: можно ли добиться того же поведения
-с помощью функции, а не специальной формы? Для ответа на него давайте снова
-обратимся к нашим интерпретаторам и попробуем написать для каждого из них
-соответствующий примитив.</p>
+<p>Специальная форма <code><span class="special">eval</span></code> вычисляет свой
+единственный аргумент подобно функциям, так что возникает логичный вопрос: можно ли
+добиться того же поведения с помощью функции, а не специальной формы? Для ответа на
+него давайте снова обратимся к нашим интерпретаторам и попробуем написать для каждого
+из них соответствующий примитив.</p>
 
-<p>С наивным интерпретатором из первой главы \seePage[basics/sect:basic-evaluator]
-всё просто:</p>
+<p>С наивным интерпретатором из первой главы <span class="see">[см. раздел <a href="ch01_basics.xhtml#basics/sect:basic-evaluator">1.2</a>]</span> всё просто:</p>
 
-<pre>(defprimitive eval
-  (lambda (v)
-    (if (program? v)
-        (evaluate v env.global)
-        (wrong "Illegal program" v) ) ) )</pre>
-
+<pre>(<span class="syntax">defprimitive</span> <span class="var">eval</span>
+  (<span class="special">lambda</span> (<span class="var">v</span>)
+    (<span class="special">if</span> (<span class="func">program?</span> <span class="var">v</span>)
+        (<span class="func">evaluate</span> <span class="var">v</span> <span class="var">env.global</span>)
+        (<span class="func">wrong</span> <span class="string">"Illegal program"</span> <span class="var">v</span>) ) ) )</pre>
 
 <!--\indexC{eval/at}-->
 <!--\indexC{eval/ce}-->
@@ -603,76 +579,70 @@
 
 <p>Для пояснения поведения <code><span class="func">eval/at</span></code> воспользуемся предыдущим примером:</p>
 
-<pre>(set! x 2) (set! z 1)
-((lambda (x) (eval/at 'x))
- 3 )                          |\is| 2
-((lambda (x y) (eval/at y))
- 4 'x )                       |\is| 2
-((lambda (x y z) (eval/at y))
- 5 (list 'eval/at 'z) 'x )    |\is| 1</pre>
+<pre>(<span class="special">set!</span> <span class="var">x</span> <span class="num">2</span>) (<span class="special">set!</span> <span class="var">z</span> <span class="num">1</span>)
+((<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">eval/at</span> '<span class="var">x</span>))
+ <span class="num">3</span> )                          <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) (<span class="func">eval/at</span> <span class="var">y</span>))
+ <span class="num">4</span> '<span class="var">x</span> )                       <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span> <span class="var">z</span>) (<span class="func">eval/at</span> <span class="var">y</span>))
+ <span class="num">5</span> (<span class="func">list</span> '<span class="var">eval/at</span> '<span class="var">z</span>) '<span class="var">x</span> )    <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
 
-<p>\noindent
-При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>:</p>
+<p>При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>:</p>
 
-<pre>(define (eval/at x) (eval/ce x))</pre>
+<pre>(<span class="special">define</span> (<span class="func">eval/at</span> <span class="var">x</span>) (<span class="func">eval/ce</span> <span class="var">x</span>))</pre>
 
-<p>\noindent
-К сожалению, в захватываемом <code><span class="func">eval/ce</span></code> окружении оказывается одна лишняя
-переменная — локальная переменная <code><span class="func">x</span></code> скрывает одноимённую глобальную.
-\seeEx[reflection/ex:no-capture] Похоже, эту проблему можно решить, применив
+<p>К сожалению, в захватываемом <code><span class="func">eval/ce</span></code> окружении
+оказывается одна лишняя переменная — локальная переменная <code><span class="var">x</span></code>
+скрывает одноимённую глобальную.
+<span class="see">[см. упр. <a href="#reflection/ex:no-capture">8.3</a>]</span>
+Похоже, эту проблему можно решить, применив
 более тонкий подход к управлению окружениями, поэтому попробуем реализовать
 <code><span class="func">eval/at</span></code> для интерпретатора байт-кодов. Новое определение снова использует
 функцию <code><span class="func">compile-and-run</span></code>, но при этом просит её не сохранять адрес возврата,
 так как он уже был сохранён при вызове функции <code><span class="func">eval/at</span></code>. Как и в предыдущем
-случае, компиляция выполняется в единственно доступном окружении <code><span class="func">r.init</span></code>.</p>
+случае, компиляция выполняется в единственно доступном окружении <code><span class="var">r.init</span></code>.</p>
 
-<pre>(definitial eval
-  (let* ((arity 1)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-      (lambda ()
-        (if (= arity+1 (activation-frame-argument-length *val*))
-            (let ((v (activation-frame-argument *val* 0)))
-              (if (program? v)
-                  (compile-and-run v r.init #t)
-                  (signal-exception #t (list "Illegal program" v)) ) )
-            (signal-exception #t
-              (list "Incorrect arity" 'eval) ) ) ) ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">eval</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+      (<span class="special">lambda</span> ()
+        (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity+1</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>))
+            (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>)))
+              (<span class="special">if</span> (<span class="func">program?</span> <span class="var">v</span>)
+                  (<span class="func">compile-and-run</span> <span class="var">v</span> <span class="var">r.init</span> <span class="hash">#t</span>)
+                  (<span class="func">signal-exception</span> <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Illegal program"</span> <span class="var">v</span>)) ) )
+            (<span class="func">signal-exception</span> <span class="hash">#t</span>
+              (<span class="func">list</span> <span class="var">"Incorrect</span> <span class="var">arity"</span> '<span class="var">eval</span>) ) ) ) ) ) )</pre>
 
 <p>Не стоит понимать ограниченность <code><span class="func">eval/at</span></code> глобальным уровнем чересчур
 буквально, ведь ещё остаются динамические переменные. Совершенно не важно,
 реализована <code><span class="func">eval</span></code> как специальная форма или функция, — следующее
 выражение всегда будет работать так, как задумано:</p>
 
-<pre>(dynamic-let (a 22)
-  (eval '(dynamic a)) ) |\is| 22</pre>
+<pre>(<span class="special">dynamic-let</span> (<span class="var">a</span> <span class="num">22</span>)
+  (<span class="func">eval</span> '(<span class="special">dynamic</span> <span class="var">a</span>)) ) <span class="math"><span class="rel">→</span></span> <span class="num">22</span></pre>
 
 <p>Изначальный контракт <code><span class="func">eval</span></code>, выраженный
-уравнением \eqref{reflection/eq:eval-idemp}, не подразумевал какого-либо
-контекста вообще. Уравнению \eqref{reflection/eq:eval-idemp-context}, судя по
-рассмотренным примерам, <code><span class="func">eval/at</span></code> тоже не удовлетворяет. Поэтому для неё мы
-составим новый контракт, записанный ниже
-в уравнении \eqref{reflection/eq:eval-top-context};
-здесь переменная <i>v</i> не захватывается создаваемым замыканием.
-%
+уравнением (<a href="#reflection/eq:eval-idemp">1</a>), не подразумевал какого-либо
+контекста вообще. Уравнению (<a href="#reflection/eq:eval-idemp-context">2</a>), судя по
+рассмотренным примерам, <code><span class="func">eval/at</span></code> тоже не удовлетворяет.
+Поэтому для неё мы составим новый контракт, записанный ниже
+в уравнении (<a href="reflection/eq:eval-top-context">3</a>);
+здесь переменная <i>v</i> не захватывается создаваемым замыканием.</p>
+
 <!--\indexCS{eval}{контракт!eval/at@<code><span class="func">eval/at</span></code>}-->
-\begin{equation}\label{reflection/eq:eval-top-context}
-  C[\text{<code><span class="func">(eval/at '$\pi$)</span></code>}] \eq
-    \text{\ic{(let ((<i>v</i> (lambda () $\pi$)))
-      $\displaystyle C[\text{(<i>v</i>)}]$)}}
-\end{equation}</p>
+<blockquote id="reflection/eq:eval-top-context" class="equation math"><span class="ord var">C</span><span class="open">[</span><span class="normal ord"><code>(<span class="func">eval/at</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="close">]</span><span class="rel">≡</span><span class="normal ord"><code>(<span class="syntax">let</span> ((<i>v</i> (<span class="special">lambda</span> () <span class="math"><span class="ord var">π</span></span>))) <span class="math"><span class="ord var">C</span><span class="open">[</span><span class="normal ord"><code>(<i>v</i>)</code></span><span class="close">]</span></span>)</code></span><span class="eqno">(3)</span></blockquote>
 
 <p>Чаще всего <code><span class="func">eval</span></code>, реализуемая лисп-системами, является именно <code><span class="func">eval/at</span></code>.</p>
 
-<p>
-\section{\texorpdfstring{Цена \protect<code><span class="func">eval</span></code>}{Цена eval}}%
-\label{reflection/sect:cost}</p>
-
+<h2 id="reflection/sect:cost"><span class="seq">8.4.</span> Цена <code><span class="func">eval</span></code></h2>
 
 <!--\indexCS{eval}{стоимость}-->
-<p>Довольно сложно оценить суммарную стоимость <code><span class="func">eval</span></code>. Предположим,
-разрабатываемый программный продукт является ничем иным, как <code>(display
-"Hello world!")</code>. Если специальная форма <code><span class="func">eval/ce</span></code> не встречается в программе
+<p>Довольно сложно оценить суммарную стоимость <code><span class="func">eval</span></code>.
+Предположим, разрабатываемый программный продукт является ничем иным, как
+<code>(<span class="func">display</span> <span class="string">"Hello world!"</span>)</code>.
+Если специальная форма <code><span class="special">eval/ce</span></code> не встречается в программе
 (а это можно проверить статически), то стоимость её использования нулевая! Если
 она всё же используется, то тянет за собой весь компилятор, так что размер
 приложения увеличивается примерно на порядок; скажем, где-то с 50 килобайт
@@ -681,10 +651,10 @@
 Код <code><span class="func">eval/at</span></code> из приложения можно выбросить лишь тогда, когда компилятор
 абсолютно уверен в том, что она никогда не будет вызвана. Язык может серьёзно
 помочь с доказательством этого утверждения: например, в Scheme достаточно
-убедиться, что глобальная переменная <code><span class="func">eval/at</span></code> не упоминается в программе.
+убедиться, что глобальная переменная <code><span class="var">eval/at</span></code> не упоминается в программе.
 В <span class="logo">Common Lisp</span>, напротив, в общем случае данное утверждение недоказуемо, так
 как кроме всего прочего потребуется доказать, что никто и нигде не создал строку
-<code><span class="func">"eval/at"</span></code>, не превратил её в символ с помощью <code><span class="func">find-symbol</span></code> и не получил
+<code><span class="string">"eval/at"</span></code>, не превратил её в символ с помощью <code><span class="func">find-symbol</span></code> и не получил
 соответствующую функцию с помощью <code><span class="func">symbol-function</span></code>. Уже страшно? А теперь
 представьте, что сама <code><span class="func">symbol-function</span></code> вызывается таким же образом</p>
 
@@ -698,24 +668,22 @@
 вроде <span class="logo">Common Lisp</span> означает увеличение размеров получаемого приложения ещё на
 один порядок.</p>
 
-
 <!--\indexCS{eval}{и оптимизации}-->
 <p>И это ещё далеко не самое ужасное. Если не предпринять никаких мер для строгого
-контроля над использованием глобального окружения, как в <span class="cite">[<a href="z1_bibliography.xhtml#qp91b">qp91b</a>]</span>, где
+контроля над использованием глобального окружения, как в <span class="cite">[<a href="z1_bibliography.xhtml#qp91b">QP91b</a>]</span>, где
 система модулей позволяет управлять доступом на чтение и модификацию глобальных
-переменных, то <code><span class="func">eval</span></code> убивает на корню многие возможности для оптимизации.
+переменных, то <code><span class="func">eval</span></code>
+убивает на корню многие возможности для оптимизации.
 Рассмотрим следующий пример:</p>
 
-<p>\ForLayout{display}{\clearpage}</p>
-
-<pre>(define (fib n)
-  (if (< n 2) (eval (read))
-      (+ (fib (- n 1)) (fib (- n 2))) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">fib</span> <span class="var">n</span>)
+  (<span class="special">if</span> (<span class="func">&lt;</span> <span class="var">n</span> <span class="num">2</span>) (<span class="func">eval</span> (<span class="func">read</span>))
+      (<span class="func">+</span> (<span class="func">fib</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)) (<span class="func">fib</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">2</span>))) ) )</pre>
 
 <p>Не будем пока обращать внимание на другие возможные варианты поведения
 <code><span class="func">eval</span></code>, сконцентрируемся на том, что она способна изменить значение
-переменной <code><span class="func">fib</span></code>. Следовательно, при рекурсивном вызове потребуется заново
-извлекать адрес функции из глобальной переменной <code><span class="func">fib</span></code>, а не просто вслепую
+переменной <code><span class="var">fib</span></code>. Следовательно, при рекурсивном вызове потребуется заново
+извлекать адрес функции из глобальной переменной <code><span class="var">fib</span></code>, а не просто вслепую
 прыгать по <code><span class="func">GOTO</span></code>. Так как <code><span class="func">eval</span></code> может изменить любую переменную, нельзя
 больше полагаться на привычные методы анализа неизменяемости глобального
 окружения. Одно-единственное обращение к <code><span class="func">eval</span></code> может привести к абсолютно
@@ -731,11 +699,8 @@
 интерпретатор. Лисп — удивительно расширяемый язык, и наличие <code><span class="func">eval</span></code>
 в стандартной библиотеке — это его серьёзное преимущество.</p>
 
-<p>
-\section{\texorpdfstring{Интерпретируемая \protect<code><span class="func">eval</span></code>}%
-{Интерпретируемая eval}}%
-\label{reflection/sect:interpreted-eval}</p>
 
+<h2 id="reflection/sect:interpreted-eval"><span class="seq">8.5.</span> Интерпретируемая <code><span class="func">eval</span></code></h2>
 
 <!--\indexCS{eval}{интерпретируемая}-->
 <!--\indexR{интерпретатор!встроенный в язык}-->
@@ -749,10 +714,8 @@
 в Scheme нельзя определять новые специальные формы. Кроме того, возникают две
 проблемы иного рода.</p>
 
-<p>
-\subsection{Взаимозаменимость представлений}%
-\label{reflection/interpreted-eval/ssect:interchange}</p>
 
+<h3 id="reflection/interpreted-eval/ssect:interchange"><span class="seq">8.5.1.</span> Взаимозаменимость представлений</h3>
 
 <!--\indexR{протокол вызова функций!при явных вычислениях}-->
 <!--\indexR{взаимозаменимость}-->
@@ -766,62 +729,56 @@
 любых динамических вычислений должен быть пригоден для использования в основной
 программе, как в следующем примере:</p>
 
-<pre>((eval '(lambda (x) (cons x x)))
- 33 )    |\is| (33 . 33)</pre>
+<pre>((<span class="func">eval</span> '(<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">cons</span> <span class="var">x</span> <span class="var">x</span>)))
+ <span class="num">33</span> )    <span class="math"><span class="rel">→</span></span> (<span class="num">33</span> . <span class="num">33</span>)</pre>
 
 <p>И наоборот, интерпретатор тоже должен уметь пользоваться функциями базового
 языка:</p>
 
-<pre>(((eval '(lambda (f)
-           (lambda (x) (f x)) ))
-  list )
- 44 )    |\is| (44)</pre>
+<pre>(((<span class="func">eval</span> '(<span class="special">lambda</span> (<span class="var">f</span>)
+           (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">f</span> <span class="var">x</span>)) ))
+  <span class="var">list</span> )
+ <span class="num">44</span> )    <span class="math"><span class="rel">→</span></span> (<span class="num">44</span>)</pre>
 
 <p>Один из вариантов общего протокола вызова: всегда использовать функции
-с произвольной арностью: <code>(lambda values ...)</code>, тогда достаточно научить
+с произвольной арностью: <code>(<span class="special">lambda</span> <span class="var">values</span> ...)</code>, тогда достаточно научить
 интерпретатор вынимать аргументы из списков. Для интерпретатора из первой главы,
 к примеру, это делается соответственно его природе — элементарно и наивно:</p>
 
-
 <!--\indexC{invoke}-->
-<pre>(define (invoke fn args)
-  (if (procedure? fn)
-      (apply fn args)
-      (wrong "Not a function" fn) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">invoke</span> <span class="var">fn</span> <span class="var">args</span>)
+  (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">fn</span>)
+      (<span class="func">apply</span> <span class="var">fn</span> <span class="var">args</span>)
+      (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">fn</span>) ) )
 
-<p>(define (make-function variables body env)
-  (lambda values
-    (eprogn body (extend env variables values)) ) )</pre>
+(<span class="special">define</span> (<span class="func">make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> <span class="var">values</span>
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <span class="var">env</span> <span class="var">variables</span> <span class="var">values</span>)) ) )</pre>
 
 <p>Кроме того, необходимо позаботиться об ошибках: внешний интерпретатор должен
 уметь понимать и обрабатывать ошибки, возникающие во внутреннем. Этот вопрос
 мы обойдём стороной.</p>
 
-<p>
-\subsection{Глобальное окружение}%
-\label{reflection/interpreted-eval/ssect:global}</p>
 
+<h3 id="reflection/interpreted-eval/ssect:global"><span class="seq">8.5.2.</span> Глобальное окружение</h3>
 
 <!--\indexR{глобальное окружение!динамическое расширение}-->
 <p>Вторая проблема касается различия представлений глобального окружения. Каждый из
 наших интерпретаторов определяет глобальное окружение по-своему, используя
-макросы <code><span class="func">definitial</span></code>, <code><span class="func">defprimitive</span></code> и другие. Но теперь интерпретатор
+макросы <code><span class="syntax">definitial</span></code>, <code><span class="syntax">defprimitive</span></code> и другие. Но теперь интерпретатор
 обязан пользоваться глобальным окружением базового языка, или хотя бы обеспечить
 корректную синхронизацию его состояния. Что бы там ни было, следующая программа
 должна выполняться правильно и без ошибок:</p>
 
-<pre>(begin (set! foo 128)
-       (eval '(set! bar (+ foo foo)))
-       bar )                          |\is| 256</pre>
+<pre>(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">foo</span> <span class="num">128</span>)
+       (<span class="func">eval</span> '(<span class="special">set!</span> <span class="var">bar</span> (<span class="func">+</span> <span class="var">foo</span> <span class="var">foo</span>)))
+       <span class="var">bar</span> )                          <span class="math"><span class="rel">→</span></span> <span class="num">256</span></pre>
 
-<p>
-\subsubsection{Автономные скомпилированные приложения}%
-\label{reflection/interpreted-eval/global/sssect:autonomous}</p>
-
+<h4 id="reflection/interpreted-eval/global/sssect:autonomous">Автономные скомпилированные приложения</h4>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>!в автономных приложениях}-->
 <!--\indexR{автономные приложения}-->
-<p>Компиляторы вроде Scheme$\to$C <span class="cite">[<a href="z1_bibliography.xhtml#bar89">bar89</a>]</span> или Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">ser94</a>]</span> работают
+<p>Компиляторы вроде Scheme<span class="math"><span class="rel">→</span></span>C <span class="cite">[<a href="z1_bibliography.xhtml#bar89">Bar89</a>]</span> или Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span> работают
 с файлами, в которых хранится фиксированный исходный код. Получаемые таким
 образом автономные приложения принципиально не могут пользоваться переменными,
 которые не были явно упомянуты в исходном коде. Следовательно, переменные,
@@ -829,37 +786,32 @@
 возможно лишь обеспечить интерпретатору доступ к глобальным переменным внешней
 программы. Ответственной за это будет пара функций <code><span class="func">global-value</span></code> и
 <code><span class="func">set-global-value!</span></code>. Компилятор автоматически формирует эти функции
-в процессе чтения программы. \seeEx[compilation/ex:global-value] По окончании
-обработки они будут содержать все используемые\footnote{Конечно же, переменные
-вроде <code><span class="func">car</span></code> не включаются в определение <code><span class="func">set-global-value!</span></code> для
-обеспечения их неизменяемости.} глобальные переменные. Этот список является
+в процессе чтения программы. <span class="see">[см. упр. <a href="ch07_compilation.xhtml#compilation/ex:global-value">7.3</a>]</span> По окончании
+обработки они будут содержать все используемые<a class="footref" href="zz_footnotes.xhtml#foot8.6"><sup>6</sup></a> глобальные переменные. Этот список является
 статическим, неизменным во время работы скомпилированного приложения.</p>
-
 
 <!--\indexC{global-value}-->
 <!--\indexC{set-global-value"!}-->
-<pre>(define (global-value name)
-  (case name
-    ((car) car)
+<pre>(<span class="special">define</span> (<span class="func">global-value</span> <span class="var">name</span>)
+  (<span class="syntax">case</span> <span class="var">name</span>
+    ((<span class="var">car</span>) <span class="var">car</span>)
     ...
-    ((foo) foo)
-    (else (wrong "No such global variable" name)) ) )</p>
+    ((<span class="var">foo</span>) <span class="var">foo</span>)
+    (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"No such global variable"</span> <span class="var">name</span>)) ) )
 
-<p>(define (set-global-value! name value)
-  (case name
-    ((foo) (set! foo value))
+(<span class="special">define</span> (<span class="func">set-global-value!</span> <span class="var">name</span> <span class="var">value</span>)
+  (<span class="syntax">case</span> <span class="var">name</span>
+    ((<span class="var">foo</span>) (<span class="special">set!</span> <span class="var">foo</span> <span class="var">value</span>))
     ...
-    (else (wrong "No such mutable global variable" name)) ) )</pre>
+    (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"No such mutable global variable"</span> <span class="var">name</span>)) ) )</pre>
 
 <p>Интерпретатор может создавать у себя внутри столько глобальных переменных,
 сколько ему нужно, но ни одна из них не будет видна внешней программе. Тем
 не менее, интерпретатор может общаться с внешней программой посредством тех
 переменных, которые существовали в момент компиляции.</p>
 
-<p>
-\subsubsection{Интерактивная система}%
-\label{reflection/interpreted-eval/global/sssect:interactive}</p>
 
+<h4 id="reflection/interpreted-eval/global/sssect:interactive">Интерактивная система</h4>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>!в интерактивной сессии}-->
 <p>Если же работа с лисп-системой происходит с помощью REPL, то и система,
@@ -868,19 +820,17 @@
 значение переменной, созданной внутренним интерпретатором, который запросил
 значение переменной, созданной системой:</p>
 
-<pre>? (begin (set! foo 128)
-         (eval '(set! bar (+ foo foo)))
-         2001 )
-= 2001
-? bar
-= 256</pre>
+<pre>? (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">foo</span> <span class="num">128</span>)
+         (<span class="func">eval</span> '(<span class="special">set!</span> <span class="var">bar</span> (<span class="func">+</span> <span class="var">foo</span> <span class="var">foo</span>)))
+         <span class="num">2001</span> )
+= <span class="num">2001</span>
+? <span class="var">bar</span>
+= <span class="num">256</span></pre>
 
 <p>Есть несколько вариантов реализации подобного сотрудничества.</p>
 
-<p>
-\subsubsection{Символы}%
-\label{reflection/interpreted-eval/global/sssect:symbols}</p>
 
+<h4 id="reflection/interpreted-eval/global/sssect:symbols">Символы</h4>
 
 <!--\indexR{символы!связь с переменными}-->
 <p>Традиционное решение заключается в использовании символов. Одним из столпов
@@ -2429,5 +2379,5 @@ Dylan лишены такого удобства.} Данное продолже
 возможностей. Также стоит взглянуть на работы <span class="cite">[<a href="z1_bibliography.xhtml#jf92">jf92</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#imy92">imy92</a>]</span>,
 затрагивающие рефлексию в общем.</p>
 
-<p></body>
+</body>
 </html>
