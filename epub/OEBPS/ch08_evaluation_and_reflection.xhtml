@@ -58,7 +58,7 @@
 <!--\indexR{вычисления!динамические}-->
 <p>Давайте попробуем добавить <code><span class="func">eval</span></code> в самый первый
 интерпретатор, рассмотренный в этой книге.
-<span class="see">[<a href="ch01_basics.xhtml#basics/sect:basic-evaluator">1.2</a>]</span>
+<span class="see">[см. раздел <a href="ch01_basics.xhtml#basics/sect:basic-evaluator">1.2</a>]</span>
 Он написан на чистом Scheme без использования каких-либо библиотек. Для начала сделаем
 <code><span class="special">eval</span></code> специальной формой.
 Следовательно, в <code><span class="func">evaluate</span></code> появляется
@@ -392,7 +392,7 @@
 эквивалентны <em>в любом контексте</em>. Точнее говоря, получается, что
 (<a href="#reflection/eq:eval-idemp">1</a>) — это менее строгая форма
 уравнения (<a href="#reflection/eq:eval-idemp-context">2</a>),
-где <span class="math"><span class="ord var">C</span></span> означает контекст вычислений:
+где <span class="math"><span class="ord var">C</span></span> означает контекст вычислений:</p>
 
 <!--\indexCS{eval}{контракт!с контекстом}-->
 <blockquote id="reflection/eq:eval-idemp-context" class="equation math"><span class="ord">∀</span><span class="ord var">C</span><span class="ord">: </span><span class="ord var">C</span><span class="open">[</span><span class="normal ord"><code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="close">]</span><span class="rel">≡</span><span class="ord var">C</span><span class="open">[</span><span class="ord var">π</span><span class="close">]</span><span class="eqno">(2)</span></blockquote>
@@ -572,7 +572,7 @@
 мы берём единственное окружение, которое есть в наличии, — глобальное! Следовательно, эта
 функция-вычислитель работает на самом верхнем уровне вложенности — уровне
 глобальных определений. Назовём её <code><span class="func">eval/at</span></code>, от <em class="term">eval at top-level</em>,
-а предыдущий вариант будем называть <code><span class="func">eval/ce</span></code>, если нам потребуется их
+а предыдущий вариант будем называть <code><span class="special">eval/ce</span></code>, если нам потребуется их
 различать. Функция <code><span class="func">eval/at</span></code> не так уж и плоха, какой может показаться на
 первый взгляд: ей всё же не требуется сохранять текущее лексическое окружение,
 что экономит немного памяти.</p>
@@ -587,11 +587,11 @@
 ((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span> <span class="var">z</span>) (<span class="func">eval/at</span> <span class="var">y</span>))
  <span class="num">5</span> (<span class="func">list</span> '<span class="var">eval/at</span> '<span class="var">z</span>) '<span class="var">x</span> )    <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
 
-<p>При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>:</p>
+<p>При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="special">eval/ce</span></code>:</p>
 
-<pre>(<span class="special">define</span> (<span class="func">eval/at</span> <span class="var">x</span>) (<span class="func">eval/ce</span> <span class="var">x</span>))</pre>
+<pre>(<span class="special">define</span> (<span class="func">eval/at</span> <span class="var">x</span>) (<span class="special">eval/ce</span> <span class="var">x</span>))</pre>
 
-<p>К сожалению, в захватываемом <code><span class="func">eval/ce</span></code> окружении
+<p>К сожалению, в захватываемом <code><span class="special">eval/ce</span></code> окружении
 оказывается одна лишняя переменная — локальная переменная <code><span class="var">x</span></code>
 скрывает одноимённую глобальную.
 <span class="see">[см. упр. <a href="#reflection/ex:no-capture">8.3</a>]</span>
@@ -613,7 +613,7 @@
                   (<span class="func">compile-and-run</span> <span class="var">v</span> <span class="var">r.init</span> <span class="hash">#t</span>)
                   (<span class="func">signal-exception</span> <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Illegal program"</span> <span class="var">v</span>)) ) )
             (<span class="func">signal-exception</span> <span class="hash">#t</span>
-              (<span class="func">list</span> <span class="var">"Incorrect</span> <span class="var">arity"</span> '<span class="var">eval</span>) ) ) ) ) ) )</pre>
+              (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">eval</span>) ) ) ) ) ) )</pre>
 
 <p>Не стоит понимать ограниченность <code><span class="func">eval/at</span></code> глобальным уровнем чересчур
 буквально, ведь ещё остаются динамические переменные. Совершенно не важно,
@@ -1023,7 +1023,7 @@ P-списков, но нередко в этой роли можно встре
 
 <p>Естественно, захваченное окружение должно содержать не только список записей
 активаций, но также полный перечень имён и адресов переменных. Та же информация
-была нужна <code><span class="func">eval/ce</span></code>, как вы помните.
+была нужна <code><span class="special">eval/ce</span></code>, как вы помните.
 Поэтому реифицированные окружения будут
 представляться объектами с двумя полями: списком записей активаций и списком пар
 «имя — адрес», по которому программы смогут разобраться, что где находится.
@@ -1115,10 +1115,10 @@ P-списков, но нередко в этой роли можно встре
 перечислены все локальные переменные, созданные окружающими форму абстракциями.
 Имея форму <code>(<span class="special">export</span>)</code>, часто именуемую
 <code>(<span class="func">the-environment</span>)</code>, можно
-проэмулировать <code><span class="func">eval/ce</span></code> с помощью
+проэмулировать <code><span class="special">eval/ce</span></code> с помощью
 <code><span class="func">eval/b</span></code>:</p>
 
-<blockquote class="equation math"><span class="ord normal"><code>(<span class="func">eval/ce</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="rel">≡</span><span class="ord normal"><code>(<span class="func">eval/b</span> '<span class="math"><span class="ord var">π</span></span> (<span class="special">export</span>))</code></span></blockquote>
+<blockquote class="equation math"><span class="ord normal"><code>(<span class="special">eval/ce</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="rel">≡</span><span class="ord normal"><code>(<span class="func">eval/b</span> '<span class="math"><span class="ord var">π</span></span> (<span class="special">export</span>))</code></span></blockquote>
 
 <p>Реализовать эту возможность проще простого, так как теперь окружения изначально
 имеют необходимую структуру.</p>
@@ -1135,7 +1135,7 @@ P-списков, но нередко в этой роли можно встре
 
 <h3 id="reflection/reify-env/ssect:eval/b"><span class="seq">8.6.2.</span> Функция <code><span class="func">eval/b</span></code></h3>
 
-<p>На этом сходства <code><span class="func">eval/b</span></code> с <code><span class="func">eval/ce</span></code> не заканчиваются. Они похожи ещё
+<p>На этом сходства <code><span class="func">eval/b</span></code> с <code><span class="special">eval/ce</span></code> не заканчиваются. Они похожи ещё
 в том, как получают параметры и возвращают значения. Будет полезным сравнить
 рассматриваемую далее реализацию <code><span class="func">eval</span></code> с предыдущими. Функция <code><span class="func">eval/b</span></code>
 проверяет аргументы на корректность, после чего передаёт работу знакомой вам
@@ -1390,74 +1390,72 @@ P-списков, но нередко в этой роли можно встре
 \label{reflection/reify-env/closed/pic:subj}%
 \end{figure}</p>
 
-<p>Реализация данной идеи тривиальна.<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a> Для нужд <code><span class="func">procedure->environment</span></code> и
+<p>Реализация данной идеи тривиальна<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a>. Для нужд <code><span class="func">procedure->environment</span></code> и
 <code><span class="func">procedure->definition</span></code> в кодогенераторы абстракций
 необходимо передавать определения соответствующих функций и их окружения.
 <i>n</i>-арный вариант данной функции легко написать по аналогии:</p>
 
 <!--\indexC{meaning-fix-abstraction}-->
 <!--\indexC{REFLECTIVE-FIX-CLOSURE}-->
-<pre>(define (meaning-fix-abstraction n* e+ r tail?)
-  (let* ((arity (length n*))
-         (r2 (r-extend* r n*))
-         (m+ (meaning-sequence e+ r2 #t)) )
-    (REFLECTIVE-FIX-CLOSURE m+ arity
-      `(lambda ,n* . ,e+) r ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-fix-abstraction</span> <span class="var">n*</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> (<span class="func">length</span> <span class="var">n*</span>))
+         (<span class="var">r2</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">n*</span>))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r2</span> <span class="hash">#t</span>)) )
+    (<span class="func">REFLECTIVE-FIX-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span>
+      `(<span class="special">lambda</span> ,<span class="var">n*</span> . ,<span class="var">e+</span>) <span class="var">r</span> ) ) )
 
-<p>(define (REFLECTIVE-FIX-CLOSURE m+ arity definition r)
-  (let* ((the-function (append (ARITY=? (+ arity 1)) (EXTEND-ENV)
-                               m+ (RETURN) ))
-         (the-env (append (EXPLICIT-CONSTANT definition)
-                          (EXPLICIT-CONSTANT r) ))
-         (the-goto (GOTO (+ (length the-env) (length the-function)))) )
-    (append (CREATE-CLOSURE (+ (length the-goto) (length the-env)))
-            the-goto the-env the-function ) ) )</pre>
+(<span class="special">define</span> (<span class="func">REFLECTIVE-FIX-CLOSURE</span> <span class="var">m+</span> <span class="var">arity</span> <span class="var">definition</span> <span class="var">r</span>)
+  (<span class="syntax">let*</span> ((<span class="var">the-function</span> (<span class="func">append</span> (<span class="func">ARITY=?</span> (<span class="func">+</span> <span class="var">arity</span> <span class="num">1</span>)) (<span class="func">EXTEND-ENV</span>)
+                               <span class="var">m+</span> (<span class="func">RETURN</span>) ))
+         (<span class="var">the-env</span> (<span class="func">append</span> (<span class="func">EXPLICIT-CONSTANT</span> <span class="var">definition</span>)
+                          (<span class="func">EXPLICIT-CONSTANT</span> <span class="var">r</span>) ))
+         (<span class="var">the-goto</span> (<span class="func">GOTO</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">the-env</span>) (<span class="func">length</span> <span class="var">the-function</span>)))) )
+    (<span class="func">append</span> (<span class="func">CREATE-CLOSURE</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">the-goto</span>) (<span class="func">length</span> <span class="var">the-env</span>)))
+            <span class="var">the-goto</span> <span class="var">the-env</span> <span class="var">the-function</span> ) ) )</pre>
 
-<p>Функция <code><span class="func">procedure->definition</span></code> извлекает определение замыкания,
-расположенное на две инструкции позади его кода.</p>
-
+<p>Функция <code><span class="func">procedure->definition</span></code> извлекает определение
+замыкания, расположенное на две инструкции позади его кода.</p>
 
 <!--\indexC{procedure->definition}-->
-<pre>(definitial procedure->definition
-  (let* ((arity 1)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-     (lambda ()
-       (if (>= (activation-frame-argument-length *val*) arity+1)
-           (let ((proc (activation-frame-argument *val* 0)))
-             (if (closure? proc)
-                 (let ((pc (closure-code proc)))
-                   (set! *val* (vector-ref *constants*
-                                (vector-ref *code* (- pc 2)) ))
-                   (set! *pc* (stack-pop)) )
-                 (signal-exception #f (list "Not a procedure" proc)) ) )
-           (signal-exception #t
-            (list "Incorrect arity" 'procedure->definition) ) ) ) ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">procedure->definition</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+     (<span class="special">lambda</span> ()
+       (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>) <span class="var">arity+1</span>)
+           (<span class="syntax">let</span> ((<span class="var">proc</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>)))
+             (<span class="special">if</span> (<span class="func">closure?</span> <span class="var">proc</span>)
+                 (<span class="syntax">let</span> ((<span class="var">pc</span> (<span class="func">closure-code</span> <span class="var">proc</span>)))
+                   (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">vector-ref</span> <span class="var">*constants*</span>
+                                (<span class="func">vector-ref</span> <span class="var">*code*</span> (<span class="func">-</span> <span class="var">pc</span> <span class="num">2</span>)) ))
+                   (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
+                 (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a procedure"</span> <span class="var">proc</span>)) ) )
+           (<span class="func">signal-exception</span> <span class="hash">#t</span>
+            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure->definition</span>) ) ) ) ) ) )</pre>
 
 <p>Функция <code><span class="func">procedure->environment</span></code> извлекает замкнутое окружение и реифицирует
 его, устанавливая в нём соответствия между именами переменных и их адресами.
 Таблица символов хранится на одну инструкцию позади тела замыкания.</p>
 
-
 <!--\indexC{procedure->environment}-->
-<pre>(definitial procedure->environment
-  (let* ((arity 1)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-     (lambda ()
-       (if (>= (activation-frame-argument-length *val*) arity+1)
-           (let ((proc (activation-frame-argument *val* 0)))
-             (if (closure? proc)
-                 (let* ((pc (closure-code proc))
-                        (r (vector-ref *constants*
-                            (vector-ref *code* (- pc 1)) )) )
-                   (set! *val* (make-reified-environment
-                                (closure-closed-environment proc)
-                                r ))
-                   (set! *pc* (stack-pop)) )
-                 (signal-exception #f (list "Not a procedure" proc)) ) )
-           (signal-exception #t
-            (list "Incorrect arity" 'procedure->environment) ) ) ) ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">procedure->environment</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+     (<span class="special">lambda</span> ()
+       (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>) <span class="var">arity+1</span>)
+           (<span class="syntax">let</span> ((<span class="func">proc</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>)))
+             (<span class="special">if</span> (<span class="func">closure?</span> <span class="var">proc</span>)
+                 (<span class="syntax">let*</span> ((<span class="var">pc</span> (<span class="func">closure-code</span> <span class="var">proc</span>))
+                        (<span class="var">r</span> (<span class="func">vector-ref</span> <span class="var">*constants*</span>
+                            (<span class="func">vector-ref</span> <span class="var">*code*</span> (<span class="func">-</span> <span class="var">pc</span> <span class="num">1</span>)) )) )
+                   (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">make-reified-environment</span>
+                                (<span class="func">closure-closed-environment</span> <span class="var">proc</span>)
+                                <span class="var">r</span> ))
+                   (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
+                 (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a procedure"</span> <span class="var">proc</span>)) ) )
+           (<span class="func">signal-exception</span> <span class="hash">#t</span>
+            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure->environment</span>) ) ) ) ) ) )</pre>
 
 <p>Вкратце, <code><span class="func">procedure->definition</span></code> и <code><span class="func">procedure->environment</span></code> позволяют
 программам осознавать свой собственный код. Также их возможности полезны для
@@ -1469,25 +1467,23 @@ P-списков, но нередко в этой роли можно встре
 локальных оптимизаций, так как в подобных условиях неизменяемость и
 недоступность чего-либо не гарантируется.</p>
 
-
 <!--\indexR{рефлексивные абстракции}-->
 <!--\indexR{абстракция!рефлексивная}-->
 <p>Часть недостатков этих функций исправляется введением дополнительной
-специальной формы, скажем, <code><span class="func">reflective-lambda</span></code>, имеющей следующий
-синтаксис:</p>
-
+специальной формы, скажем, <code><span class="special">reflective-lambda</span></code>,
+имеющей следующий синтаксис:</p>
 
 <!--\indexC{reflective-lambda}-->
-<pre>(reflective-lambda (<i>переменные</i>) (<i>экспортируемые переменные</i>)
+<pre>(<span class="special">reflective-lambda</span> (<i>переменные</i>) (<i>экспортируемые переменные</i>)
   <i>тело</i> )</pre>
 
-<p>Подобно <code><span class="func">lambda</span></code>-абстракциям, которые она обобщает, первым аргументом ей
+<p>Подобно <code><span class="special">lambda</span></code>-абстракциям, которые она обобщает, первым аргументом ей
 передаются локальные переменные, а в конце идёт тело функции, но между ними
 расположен список экспортируемых переменных. Лишь перечисленные свободные
 переменные будут видны для внешнего мира, если извлечь сохранённое окружение
-из подобного замыкания. Обычной абстракции \ic{(lambda (<i>переменные</i>)
-<i>тело</i>)} соответствует новая \ic{(reflective-lambda (<i>переменные</i>)
-() <i>тело</i>)}, которая не экспортирует ничего. Такая специальная форма
+из подобного замыкания. Обычной абстракции <code>(<span class="special">lambda</span> (<i>переменные</i>)
+<i>тело</i>)</code> соответствует новая <code>(<span class="special">reflective-lambda</span> (<i>переменные</i>)
+() <i>тело</i>)</code>, которая не экспортирует ничего. Такая специальная форма
 позволяет контролировать доступ к привязкам, скрывая при необходимости
 то, что должно быть личным.</p>
 
@@ -1495,24 +1491,20 @@ P-списков, но нередко в этой роли можно встре
 функцией <code><span class="func">procedure->environment</span></code>. Какое именно окружение замыкает в себе
 следующая абстракция?</p>
 
-<pre>(let ((x 1) (y 2))
-  (lambda (z) x) )</pre>
+<pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">1</span>) (<span class="var">y</span> <span class="num">2</span>))
+  (<span class="special">lambda</span> (<span class="var">z</span>) <span class="var">x</span>) )</pre>
 
-<p>{\def\H{\discretionary{}{}{}}
-Это окружение однозначно содержит <code><span class="func">x</span></code>, так как она является свободной в теле
-абстракции. Но захватывается ли <code><span class="func">y</span></code>, которая тоже присутствует в лексическом
+<p>Это окружение однозначно содержит <code><span class="var">x</span></code>, так как она является свободной в теле
+абстракции. Но захватывается ли <code><span class="var">y</span></code>, которая тоже присутствует в лексическом
 окружении? Для рассмотренной реализации это так, потому что функция
 <code><span class="func">procedure->environment</span></code> вынуждена соблюдать контракт, который подразумевает,
 что с помощью полученного окружения возможно вычислить любое выражение (в том
-числе использующее переменную <code><span class="func">y</span></code>), как будто бы оно вычислялось внутри
-соответствующего замыкания. Поэтому <code><span class="func">procedure->\H environment</span></code> и возвращает
-целиком и полностью окружение, используемое при создании замыкания.}</p>
+числе использующее переменную <code><span class="var">y</span></code>), как будто бы оно вычислялось внутри
+соответствующего замыкания. Поэтому <code><span class="func">procedure->environment</span></code> и возвращает
+целиком и полностью окружение, используемое при создании замыкания.</p>
 
-<p>
-\subsection{\texorpdfstring{Специальная форма \protect<code><span class="func">import</span></code>}%
-{Специальная форма import}}%
-\label{reflection/reify-env/ssect:import}</p>
 
+<h3 id="reflection/reify-env/ssect:import"><span class="seq">8.6.5.</span> Специальная форма <code><span class="special">import</span></code></h3>
 
 <!--\indexR{динамические вычисления!неизменяемый код}-->
 <p>Часто форма, передаваемая динамическому вычислителю, является по сути
@@ -1520,137 +1512,129 @@ P-списков, но нередко в этой роли можно встре
 <code><span class="func">trace-procedure1</span></code>. Вместо полной компиляции на лету здесь бы отлично подошла
 предкомпиляция вычисляемой формы, оставляющая динамическим только выбор
 окружения, в котором будут проходить вычисления. Введём для этих целей новую
-специальную форму <code><span class="func">import</span></code> со следующим синтаксисом:</p>
+специальную форму <code><span class="special">import</span></code> со следующим синтаксисом:</p>
 
 
 <!--\indexR{специальные формы!import@\protect<code><span class="func">import</span></code>}-->
 <!--\indexC{import}-->
-<pre>(import (<i>переменные</i>...) <i>окружение</i>
+<pre>(<span class="special">import</span> (<i>переменные</i>...) <i>окружение</i>
   <i>формы</i>... )</pre>
 
-<p><i>Формы</i>, составляющие тело <code><span class="func">import</span></code>, вычисляются в специальном окружении.
-Свободные <i>переменные</i>, присутствующие\footnote{Пустой список, подобно
-<code><span class="func">export</span></code>, может означать все возможные переменные.} в переданном списке,
+<p><i>Формы</i>, составляющие тело <code><span class="special">import</span></code>, вычисляются в специальном окружении.
+Свободные <i>переменные</i>, присутствующие<a class="footref" href="zz_footnotes.xhtml#foot8.9"><sup>9</sup></a> в переданном списке,
 берутся из <i>окружения</i>, а остальные, как обычно, извлекаются из лексического
-окружения самой формы <code><span class="func">import</span></code>. Список заменяемых переменных статический,
+окружения самой формы <code><span class="special">import</span></code>. Список заменяемых переменных статический,
 их имена не могут быть вычислены; сначала вычисляется <i>окружение</i>, затем
 <i>формы</i>.</p>
 
 
 <!--\indexR{представление!обобщённых функций}-->
 <!--\indexR{замыкания (closures)!и объекты}-->
-<p>Рассмотрим пример её использования, вдохновлённый {\Meroonet}. Там возникли
-затруднения с представлением обобщённых функций, которые одновременно должны
+<p>Рассмотрим пример её использования, вдохновлённый <span class="logo">Meroonet</span>.
+Там возникли затруднения с представлением обобщённых функций, которые одновременно должны
 быть и функциями, и объектами. Если разрешить доступ к замкнутым свободным
 переменным извне, то замыкания можно считать объектами, полями которых являются
-свободные переменные. На этой идее основывается\footnote{Помимо этого необходимы
-ещё многие другие возможности, вроде механизма диспетчеризации методов по
-классам объектов.} отождествление замыканий с объектами. В {\Meroonet} для
+свободные переменные. На этой идее основывается<a class="footref" href="zz_footnotes.xhtml#foot8.10"><sup>10</sup></a> отождествление замыканий с объектами. В <span class="logo">Meroonet</span> для
 добавления метода обобщённой функции его необходимо разместить по определённому
 индексу в векторе методов. Если обобщённая функция замыкает в себе этот вектор
-под именем <code><span class="func">methods</span></code>, то данное действие можно записать прямо:</p>
-
+под именем <code><span class="var">methods</span></code>,
+то данное действие можно записать прямо:</p>
 
 <!--\indexC{add-method"!}-->
-<pre>(define (add-method! generic class method)
-  (import (methods) (procedure->environment generic)
-    (vector-set! methods (Class-number class) method) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">add-method!</span> <span class="var">generic</span> <span class="var">class</span> <span class="var">method</span>)
+  (<span class="special">import</span> (<span class="var">methods</span>) (<span class="func">procedure->environment</span> <span class="var">generic</span>)
+    (<span class="func">vector-set!</span> <span class="var">methods</span> (<span class="func">Class-number</span> <span class="var">class</span>) <span class="var">method</span>) ) )</pre>
 
 <!--\indexR{квазистатические привязки}-->
 <!--\indexR{привязки (bindings)!квазистатические}-->
 <!--\indexR{связывание!квазистатическое}-->
 <!--\indexR{модули!как полноценные объекты}-->
 <!--\indexR{полноценные объекты!модули}-->
-<p>Здесь отлично видно преимущество <code><span class="func">import</span></code> над <code><span class="func">eval/b</span></code>. Переменные
-<code><span class="func">class</span></code> и <code><span class="func">method</span></code> внутри функции известны статически, поэтому компилятор
-не может сразу же подставить лишь адрес переменной <code><span class="func">methods</span></code> — он станет
-известным только после вычисления второго аргумента <code><span class="func">import</span></code>. В итоге мы
+<p>Здесь отлично видно преимущество <code><span class="special">import</span></code> над <code><span class="func">eval/b</span></code>. Переменные
+<code><span class="var">class</span></code> и <code><span class="var">method</span></code> внутри функции известны статически, поэтому компилятор
+не может сразу же подставить лишь адрес переменной <code><span class="var">methods</span></code> — он станет
+известным только после вычисления второго аргумента <code><span class="special">import</span></code>. В итоге мы
 получаем динамическую компиляцию наподобие <code><span class="func">eval/b</span></code>, но выполняем статически
 большую часть работы: собственно синтез исполнимого кода. Фактически, форме
-<code><span class="func">import</span></code> остаётся только связать определённые переменные с вычисленными
-значениями. Подобное связывание в <span class="cite">[<a href="z1_bibliography.xhtml#lf93">lf93</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#nq89">nq89</a>]</span> называется
-<em class="term">квазистатическим</em>. Помимо этого, само слово <code><span class="func">import</span></code> намекает на
-тесную связь с <code><span class="func">export</span></code>: одна форма производит окружения, которыми
+<code><span class="special">import</span></code> остаётся только связать определённые переменные с вычисленными
+значениями. Подобное связывание в <span class="cite">[<a href="z1_bibliography.xhtml#lf93">LF93</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#nq89">NQ89</a>]</span> называется
+<em class="term">квазистатическим</em>. Помимо этого, само слово <code><span class="special">import</span></code> намекает на
+тесную связь с <code><span class="special">export</span></code>: одна форма производит окружения, которыми
 пользуется другая. С их помощью уже можно соорудить простую, но полноценную
 (в обоих смыслах) систему модулей.</p>
 
-<p>Итак, как же реализуется специальная форма <code><span class="func">import</span></code>? Прежде всего,
+<p>Итак, как же реализуется специальная форма <code><span class="special">import</span></code>? Прежде всего,
 конечно, в синтаксическом анализаторе <code><span class="func">meaning</span></code> появляется новая строка:</p>
 
 <pre>...
-((import) (meaning-import (cadr e) (caddr e) (cdddr e) r tail?)) ...</pre>
-
+((<span class="var">import</span>) (<span class="func">meaning-import</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cdddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>)) ...</pre>
 
 <!--\indexR{плавающие переменные}-->
 <!--\indexR{переменные!плавающие}-->
 <!--\indexR{привязки (bindings)!плавающие}-->
 <p>Генерируемый байт-код сохраняет список несвязанных переменных (назовём их
 <em class="term">плавающими</em>) в стеке, вычисляет переданное окружение и сохраняет результат
-в <code><span class="func">*val*</span></code>, после чего выполняет новую инструкцию <code><span class="func">CREATE-PSEUDO-ENV</span></code> и
-передаёт управление телу формы <code><span class="func">import</span></code>, принимая во внимание <code><span class="func">tail?</span></code>.</p>
-
+в <code><span class="var">*val*</span></code>, после чего выполняет новую инструкцию <code><span class="func">CREATE-PSEUDO-ENV</span></code> и
+передаёт управление телу формы <code><span class="special">import</span></code>, принимая во внимание <code><span class="var">tail?</span></code>.</p>
 
 <!--\indexC{meaning-import}-->
-<pre>(define (meaning-import n* e e+ r tail?)
-  (let* ((m (meaning e r #f))
-         (r2 (shadow-extend* r n*))
-         (m+ (meaning-sequence e+ r2 #f)) )
-    (append (CONSTANT n*) (PUSH-VALUE)
-            m (CREATE-PSEUDO-ENV)
-            (if tail? m+ (append m+ (UNLINK-ENV))) ) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">meaning-import</span> <span class="var">n*</span> <span class="var">e</span> <span class="var">e+</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let*</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+         (<span class="var">r2</span> (<span class="func">shadow-extend*</span> <span class="var">r</span> <span class="var">n*</span>))
+         (<span class="var">m+</span> (<span class="func">meaning-sequence</span> <span class="var">e+</span> <span class="var">r2</span> <span class="hash">#f</span>)) )
+    (<span class="func">append</span> (<span class="func">CONSTANT</span> <span class="var">n*</span>) (<span class="func">PUSH-VALUE</span>)
+            <span class="var">m</span> (<span class="func">CREATE-PSEUDO-ENV</span>)
+            (<span class="special">if</span> <span class="var">tail?</span> <span class="var">m+</span> (<span class="func">append</span> <span class="var">m+</span> (<span class="func">UNLINK-ENV</span>))) ) ) )</pre>
 
 <!--\indexR{записи активации!псевдозаписи активации}-->
 <!--\indexR{псевдозаписи активации}-->
-<p>Перед вычислением тела специальной формы <code><span class="func">import</span></code> текущее окружение
+<p>Перед вычислением тела специальной формы <code><span class="special">import</span></code> текущее окружение
 расширяется псевдозаписью активации (объектом класса
-<code><span class="func">pseudo-activation-frame</span></code>), хранящей информацию о плавающих переменных.
+<code><span class="class">pseudo-activation-frame</span></code>), хранящей информацию о плавающих переменных.
 Она может свободно связываться в цепочку с другими записями активаций, но внутри
 себя содержит не значения переменных, а их адреса вместе с окружением,
 относительно которого они вычислены. При создании псевдозаписи активации для
 выяснения адресов переменных используется функция <code><span class="func">compute-kind</span></code>.</p>
 
-
 <!--\indexC{CREATE-PSEUDO-ENV}-->
 <!--\indexC{pseudo-activation-frame}-->
 <!--\indexC{create-pseudo-environment}-->
-<pre>(define-instruction (CREATE-PSEUDO-ENV) 252
-  (create-pseudo-environment (stack-pop) *val* *env*) )</p>
+<pre>(<span class="syntax">define-instruction</span> (<span class="func">CREATE-PSEUDO-ENV</span>) <span class="num">252</span>
+  (<span class="func">create-pseudo-environment</span> (<span class="func">stack-pop</span>) <span class="var">*val*</span> <span class="var">*env*</span>) )
 
-<p>(define-class pseudo-activation-frame environment
-  ( sr (* address) ) )</p>
+(<span class="syntax">define-class</span> <span class="class">pseudo-activation-frame</span> <span class="class">environment</span>
+  ( <span class="var">sr</span> (<span class="syntax">*</span> <span class="var">address</span>) ) )
 
-<p>(define (create-pseudo-environment n* env sr)
-  (unless (reified-environment? env)
-    (signal-exception #f (list "Not an environment" env)) )
-  (let* ((len (length n*))
-         (frame (allocate-pseudo-activation-frame len)) )
-    (let setup ((n* n*) (i 0))
-      (when (pair? n*)
-        (set-pseudo-activation-frame-address!
-         frame i (compute-kind (reified-environment-r env) (car n*)) )
-        (setup (cdr n*) (+ i 1)) ) )
-    (set-pseudo-activation-frame-sr! frame
-     (reified-environment-sr env) )
-    (set-pseudo-activation-frame-next! frame sr)
-    (set! *env* frame) ) )</pre>
+(<span class="special">define</span> (<span class="func">create-pseudo-environment</span> <span class="var">n*</span> <span class="var">env</span> <span class="var">sr</span>)
+  (<span class="syntax">unless</span> (<span class="func">reified-environment?</span> <span class="var">env</span>)
+    (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not an environment"</span> <span class="var">env</span>)) )
+  (<span class="syntax">let*</span> ((<span class="var">len</span> (<span class="func">length</span> <span class="var">n*</span>))
+         (<span class="var">frame</span> (<span class="func">allocate-pseudo-activation-frame</span> <span class="var">len</span>)) )
+    (<span class="syntax">let</span> <span class="func">setup</span> ((<span class="var">n*</span> <span class="var">n*</span>) (<span class="var">i</span> <span class="num">0</span>))
+      (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">n*</span>)
+        (<span class="func">set-pseudo-activation-frame-address!</span>
+         <span class="var">frame</span> <span class="var">i</span> (<span class="func">compute-kind</span> (<span class="func">reified-environment-r</span> <span class="var">env</span>) (<span class="func">car</span> <span class="var">n*</span>)) )
+        (<span class="func">setup</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)) ) )
+    (<span class="func">set-pseudo-activation-frame-sr!</span> <span class="var">frame</span>
+     (<span class="func">reified-environment-sr</span> <span class="var">env</span>) )
+    (<span class="func">set-pseudo-activation-frame-next!</span> <span class="var">frame</span> <span class="var">sr</span>)
+    (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">frame</span>) ) )</pre>
 
-<p>Тело специальной формы <code><span class="func">import</span></code> следует компилировать с учётом новых
-плавающих переменных. Они помещаются в окружение компиляции <code><span class="func">r</span></code> с помощью
+<p>Тело специальной формы <code><span class="special">import</span></code> следует компилировать с учётом новых
+плавающих переменных. Они помещаются в окружение компиляции <code><span class="var">r</span></code> с помощью
 функции <code><span class="func">shadow-extend*</span></code>. Как известно, есть только одна проблема, которую
 нельзя решить введением дополнительного уровня косвенности. Поэтому значения
 плавающих переменных определяются с помощью косвенной адресации: сначала из
 псевдозаписи активации извлекается адрес, а затем в соответствующем
 окружении ищется необходимое значение. На
-рисунке \ref{reflection/reify-env/import/pic:env-struct} приведена иллюстрация
+рисунке <a href="#reflection/reify-env/import/pic:env-struct">8.5</a> приведена иллюстрация
 структуры окружений для следующей программы:</p>
 
-<pre>(let ((x 11))
-  (let ((z 22)
-        (env (let ((z 33)) (export))) )
-    (import (x y) env
-      (list (set! x y) z) ) ) )</pre>
+<pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">11</span>))
+  (<span class="syntax">let</span> ((<span class="var">z</span> <span class="num">22</span>)
+        (<span class="var">env</span> (<span class="syntax">let</span> ((<span class="var">z</span> <span class="num">33</span>)) (<span class="special">export</span>))) )
+    (<span class="special">import</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">env</span>
+      (<span class="func">list</span> (<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>) ) ) )</pre>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.5}
@@ -1663,142 +1647,129 @@ P-списков, но нередко в этой роли можно встре
 <p>Плавающие переменные должны компилироваться по-своему, так что они помечаются
 для компилятора специальной функцией <code><span class="func">shadow-extend*</span></code>:</p>
 
-
 <!--\indexC{shadow-extend*}-->
-<pre>(define (shadow-extend* r n*)
-  (let enum ((n* n*) (j 0))
-    (if (pair? n*)
-        (cons (list (car n*) `(shadowable 0 . ,j))
-              (enum (cdr n*) (+ j 1)) )
-        (bury-r r 1) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">shadow-extend*</span> <span class="var">r</span> <span class="var">n*</span>)
+  (<span class="syntax">let</span> <span class="func">enum</span> ((<span class="var">n*</span> <span class="var">n*</span>) (<span class="var">j</span> <span class="num">0</span>))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">n*</span>)
+        (<span class="func">cons</span> (<span class="func">list</span> (<span class="func">car</span> <span class="var">n*</span>) `(<span class="var">shadowable</span> <span class="num">0</span> . ,<span class="var">j</span>))
+              (<span class="func">enum</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">+</span> <span class="var">j</span> <span class="num">1</span>)) )
+        (<span class="func">bury-r</span> <span class="var">r</span> <span class="num">1</span>) ) ) )</pre>
 
 <p>Также необходимо дополнить определения <code><span class="func">meaning-reference</span></code> и
 <code><span class="func">meaning-assignment</span></code> предобработкой нового типа переменных. Помимо этого ещё
 потребуется ввести две новые инструкции: <code><span class="func">SHADOW-REF</span></code> и <code><span class="func">SHADOW-SET!</span></code>,
 отвечающие за взаимодействие с подобными переменными на машинном уровне.</p>
 
-<p>\ForLayout{display}{\bigskip}</p>
-
-
 <!--\indexC{meaning-reference}-->
 <!--\indexC{SHADOW-REF}-->
 <!--\indexC{shadowable-fetch}-->
 <!--\indexC{variable-value-lookup}-->
-<pre>(define (meaning-reference n r tail?)
-  (let ((kind (compute-kind r n)))
-    (if kind
-        (case (car kind)
-          ((checked-local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (CHECKED-DEEP-REF i j) ) )
-          ((local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (if (= i 0)
-                 (SHALLOW-ARGUMENT-REF j)
-                 (DEEP-ARGUMENT-REF i j) ) ) )
-          ((shadowable)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (SHADOW-REF i j) ) )
-          ((global)
-           (let ((i (cdr kind)))
-             (CHECKED-GLOBAL-REF i) ) )
-          ((predefined)
-           (let ((i (cdr kind)))
-             (PREDEFINED i) ) ) )
-        (static-wrong "No such variable" n) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-reference</span> <span class="var">n</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)))
+    (<span class="special">if</span> <span class="var">kind</span>
+        (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+          ((<span class="var">checked-local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="func">CHECKED-DEEP-REF</span> <span class="var">i</span> <span class="var">j</span>) ) )
+          ((<span class="var">local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                 (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="var">j</span>)
+                 (<span class="func">DEEP-ARGUMENT-REF</span> <span class="var">i</span> <span class="var">j</span>) ) ) )
+          ((<span class="var">shadowable</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="func">SHADOW-REF</span> <span class="var">i</span> <span class="var">j</span>) ) )
+          ((<span class="var">global</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">CHECKED-GLOBAL-REF</span> <span class="var">i</span>) ) )
+          ((<span class="var">predefined</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">PREDEFINED</span> <span class="var">i</span>) ) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )
 
-<p>(define-instruction (SHADOW-REF i j) 231
-  (shadowable-fetch *env* i j) )</p>
+(<span class="syntax">define-instruction</span> (<span class="func">SHADOW-REF</span> <span class="var">i</span> <span class="var">j</span>) <span class="num">231</span>
+  (<span class="func">shadowable-fetch</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span>) )
 
-<p>(define (shadowable-fetch sr i j)
-  (if (= i 0)
-      (let ((kind (pseudo-activation-frame-address sr j))
-            (sr (pseudo-activation-frame-sr sr)) )
-        (variable-value-lookup kind sr) )
-      (shadowable-fetch (environment-next sr) (- i 1) j) ) )</p>
+(<span class="special">define</span> (<span class="func">shadowable-fetch</span> <span class="var">sr</span> <span class="var">i</span> <span class="var">j</span>)
+  (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+      (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">pseudo-activation-frame-address</span> <span class="var">sr</span> <span class="var">j</span>))
+            (<span class="var">sr</span> (<span class="func">pseudo-activation-frame-sr</span> <span class="var">sr</span>)) )
+        (<span class="func">variable-value-lookup</span> <span class="var">kind</span> <span class="var">sr</span>) )
+      (<span class="func">shadowable-fetch</span> (<span class="func">environment-next</span> <span class="var">sr</span>) (<span class="func">-</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">j</span>) ) )
 
-<p>(define (variable-value-lookup kind sr)
-  (if (pair? kind)
-      (case (car kind)
-        ((checked-local)
-         (let ((i (cadr kind))
-               (j (cddr kind)) )
-           (set! *val* (deep-fetch sr i j))
-           (when (eq? *val* undefined-value)
-             (signal-exception #t
-               (list "Uninitialized local variable") ) ) ) )
-        ((local)
-         (let ((i (cadr kind))
-               (j (cddr kind)) )
-           (set! *val*
-            (if (= i 0)
-                (activation-frame-argument sr j)
-                (deep-fetch sr i j) ) ) ) )
-        ((shadowable)
-         (let ((i (cadr kind))
-               (j (cddr kind)) )
-           (shadowable-fetch sr i j) ) )
-        ((global)
-         (let ((i (cdr kind)))
-           (set! *val* (global-fetch i))
-           (when (eq? *val* undefined-value)
-             (signal-exception #t
-               (list "Uninitialized global variable") ) ) ) )|%
-\ForLayout{display}{\\}|
-        ((predefined)
-         (let ((i (cdr kind)))
-           (set! *val* (predefined-fetch i)) ) ) )
-      (signal-exception #f (list "No such variable")) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">variable-value-lookup</span> <span class="var">kind</span> <span class="var">sr</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">kind</span>)
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+        ((<span class="var">checked-local</span>)
+         (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+               (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+           (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">deep-fetch</span> <span class="var">sr</span> <span class="var">i</span> <span class="var">j</span>))
+           (<span class="syntax">when</span> (<span class="func">eq?</span> <span class="var">*val*</span> <span class="var">undefined-value</span>)
+             (<span class="func">signal-exception</span> <span class="hash">#t</span>
+               (<span class="func">list</span> <span class="string">"Uninitialized local variable"</span>) ) ) ) )
+        ((<span class="var">local</span>)
+         (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+               (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+           (<span class="special">set!</span> <span class="var">*val*</span>
+            (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                (<span class="func">activation-frame-argument</span> <span class="var">sr</span> <span class="var">j</span>)
+                (<span class="func">deep-fetch</span> <span class="var">sr</span> <span class="var">i</span> <span class="var">j</span>) ) ) ) )
+        ((<span class="var">shadowable</span>)
+         (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+               (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+           (<span class="func">shadowable-fetch</span> <span class="var">sr</span> <span class="var">i</span> <span class="var">j</span>) ) )
+        ((<span class="var">global</span>)
+         (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+           (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">global-fetch</span> <span class="var">i</span>))
+           (<span class="syntax">when</span> (<span class="func">eq?</span> <span class="var">*val*</span> <span class="var">undefined-value</span>)
+             (<span class="func">signal-exception</span> <span class="hash">#t</span>
+               (<span class="func">list</span> <span class="string">"Uninitialized global variable"</span>) ) ) ) )
+        ((<span class="var">predefined</span>)
+         (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+           (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">predefined-fetch</span> <span class="var">i</span>)) ) ) )
+      (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"No such variable"</span>)) ) )</pre>
 
 <!--\indexCS{import}{как макрос}-->
 <p>Функция <code><span class="func">shadowable-fetch</span></code> использует статически известный промежуточный
 адрес, чтобы получить динамический адрес, по которому фактически располагается
 искомая переменная. При этом необходимо различать все возможные типы фактических
-адресов, а именно: <code><span class="func">local</span></code> и <code><span class="func">checked-local</span></code>, <code><span class="func">global</span></code> и
-<code><span class="func">predefined</span></code>, и даже <code><span class="func">shadowable</span></code>, ведь это вполне возможный вариант.
+адресов, а именно: <code><span class="var">local</span></code> и <code><span class="var">checked-local</span></code>, <code><span class="var">global</span></code> и
+<code><span class="var">predefined</span></code>, и даже <code><span class="var">shadowable</span></code>, ведь это вполне возможный вариант.
 Функция <code><span class="func">variable-value-lookup</span></code> выполняет эту работу. В некотором смысле
-<code><span class="func">import</span></code> можно понимать как макрос, преобразующий ссылки на плавающие
-переменные в вызовы <code><span class="func">eval/b</span></code>. Например, форма <code>(import (x y) env (list
-(set! x y) z))</code> из предыдущего примера эквивалентна\footnote{Чтобы избежать
-потенциально ошибочного цитирования присваиваемого значения, используется
-промежуточное замыкание, принимающее это значение.} следующей:</p>
+<code><span class="special">import</span></code> можно понимать как макрос, преобразующий ссылки на плавающие
+переменные в вызовы <code><span class="func">eval/b</span></code>. Например, форма <code>(<span class="special">import</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">env</span> (<span class="func">list</span>
+(<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>))</code> из предыдущего примера эквивалентна<a class="footref" href="zz_footnotes.xhtml#foot8.11"><sup>11</sup></a> следующей:</p>
 
-<pre>(list ((eval/b '(lambda (v) (set! x v)) env)
-       (eval/b 'y env) )
-      z )</pre>
+<pre>(<span class="func">list</span> ((<span class="func">eval/b</span> '(<span class="special">lambda</span> (<span class="var">v</span>) (<span class="special">set!</span> <span class="var">x</span> <span class="var">v</span>)) <span class="var">env</span>)
+       (<span class="func">eval/b</span> '<span class="var">y</span> <span class="var">env</span>) )
+      <span class="var">z</span> )</pre>
 
 <p>Подведём некоторый итог, ещё раз взглянув на все типы привязок, с которыми мы
 встречались.</p>
-
 
 <!--\indexR{лексическое связывание}-->
 <!--\indexR{связывание!лексическое}-->
 <!--\indexR{привязки (bindings)!лексические}-->
 <!--\indexC{lambda}-->
-<p>Форма <code><span class="func">lambda</span></code> создаёт лексические привязки — коробки для хранения
+<p>Форма <code><span class="special">lambda</span></code> создаёт лексические привязки — коробки для хранения
 значений переменных. Коробки имеют имена, позволяющие ссылаться на них. Время жизни
 коробок не ограничено: они исчезают лишь тогда, когда никто больше не сможет
 ими воспользоваться. Область видимости имён коробок ограничивается телом
-<code><span class="func">lambda</span></code>-формы, которая их создала.</p>
-
+<code><span class="special">lambda</span></code>-формы, которая их создала.</p>
 
 <!--\indexR{динамическое связывание}-->
 <!--\indexR{привязки (bindings)!динамические}-->
 <!--\indexR{связывание!динамическое}-->
 <!--\indexC{dynamic-let}-->
 <!--\indexC{dynamic-set"!}-->
-<p>Форма <code><span class="func">dynamic-let</span></code> создаёт динамические привязки — связи имён
-со значениями,\footnote*{Рассмотренная реализация <code><span class="func">dynamic-let</span></code> не позволяет
-напрямую изменять такие связи; не существует соответствующей <code><span class="func">dynamic-set!</span></code>.
-Но ничто не мешает связать с именем изменяемый объект и таким образом обойти
-данное ограничение.} устанавливая их на время определённых вычислений. Область
+<p>Форма <code><span class="special">dynamic-let</span></code> создаёт динамические привязки —
+связи имён со значениями<a class="footref" href="zz_footnotes.xhtml#foot8.12"><sup>12</sup></a>,
+устанавливая их на время определённых вычислений. Область
 видимости данных привязок не ограничена, однако они перестают существовать
 с окончанием соответствующих вычислений.</p>
-
 
 <!--\indexR{привязки (bindings)!квазистатические}-->
 <!--\indexR{квазистатические привязки}-->
@@ -1806,24 +1777,13 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{reflective-lambda}-->
 <!--\indexR{альфа@$\alpha$-конверсия}-->
 <p>Квазистатические привязки являются альтернативными именами уже существующих
-привязок. Подобная множественность имён несовместима с $\alpha$-конверсией.%
-\trnote*{В λ-исчислении $\alpha$-конверсией называется правило
-$\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возможность свободно
-переименовывать связанные переменные абстракции при условии, что новое имя $y$
-не встречается в $N$\!.} Почему? Потому что даже ограниченные способы%
-\footnote{Кстати, можно улучшить <code><span class="func">reflective-lambda</span></code>, дав ей возможность
-указывать операции, допустимые над экспортируемыми привязками; например,
-разрешать только чтение, но не изменение значений. Также можно,
-подобно <span class="cite">[<a href="z1_bibliography.xhtml#lf93">lf93</a>]</span>, реализовать механизм переименования экспортируемых
-переменных.} реификации окружений, не такие всеобъемлющие, как
-<code><span class="func">procedure->environment</span></code>, дают возможность пользоваться привязками
-в совершенно произвольных местах, без учёта их нормальной области видимости и
-изначального имени.</p>
+привязок. Подобная множественность имён несовместима с α-конверсией<a class="footref" href="zz_footnotes.xhtml#foot8.tr-1"><sup>*</sup></a>. Почему? Потому что даже ограниченные способы<a class="footref" href="zz_footnotes.xhtml#foot8.13"><sup>13</sup></a> реификации окружений,
+не такие всеобъемлющие, как <code><span class="func">procedure->environment</span></code>,
+дают возможность пользоваться привязками в совершенно произвольных местах, без учёта их
+нормальной области видимости и изначального имени.</p>
 
-<p>
-\subsection{Упрощённый доступ к окружениям}%
-\label{reflection/reify-env/ssect:simplified}</p>
 
+<h3 id="reflection/reify-env/ssect:simplified"><span class="seq">8.6.6.</span> Упрощённый доступ к окружениям</h3>
 
 <!--\indexR{окружение!реификация}-->
 <!--\indexR{окружение!операции!чтение}-->
@@ -1849,57 +1809,57 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 <code><span class="func">set-variable-value!</span></code> не приводится для краткости, но его довольно легко
 восстановить по имеющимся.</p>
 
-<pre>(definitial variable-value
-  (let* ((arity 2)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-     (lambda ()
-       (if (= (activation-frame-argument-length *val*) arity+1)
-           (let ((name (activation-frame-argument *val* 0))
-                 (env (activation-frame-argument *val* 1)) )
-             (if (reified-environment? env)
-                 (if (symbol? name)
-                     (let* ((r (reified-environment-r env))
-                            (sr (reified-environment-sr env))
-                            (kind
-                             (or (let ((var (assq name r)))
-                                   (and (pair? var) (cadr var)) )
-                                 (global-variable? g.current name)
-                                 (global-variable? g.init name) ) ) )
-                       (variable-value-lookup kind sr)
-                       (set! *pc* (stack-pop)) )
-                     (signal-exception
-                      #f (list "Not a variable name" name) ) )
-                 (signal-exception
-                  #t (list "Not an environment" env) ) ) )
-           (signal-exception
-            #t (list "Incorrect arity" 'variable-value) ) ) ) ) ) )
-|\ForLayout{display}{\\}|
-(definitial variable-defined?
-  (let* ((arity 2)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-     (lambda ()
-       (if (= (activation-frame-argument-length *val*) arity+1)
-           (let ((name (activation-frame-argument *val* 0))
-                 (env (activation-frame-argument *val* 1)) )
-             (if (reified-environment? env)
-                 (if (symbol? name)
-                     (let* ((r (reified-environment-r env))
-                            (sr (reified-environment-sr env)) )
-                       (set! *val*
-                             (if (or (let ((var (assq name r)))
-                                       (and (pair? var) (cadr var)) )
-                                     (global-variable? g.current name)
-                                     (global-variable? g.init name) )
-                                 #t #f ) )
-                       (set! *pc* (stack-pop)) )
-                     (signal-exception
-                      #f (list "Not a variable name" name) ) )
-                 (signal-exception
-                  #t (list "Not an environment" env) ) ) )
-           (signal-exception
-            #t (list "Incorrect arity" 'variable-value) ) ) ) ) ) )</pre>
+<pre>(<span class="syntax">definitial</span> <span class="var">variable-value</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">2</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+     (<span class="special">lambda</span> ()
+       (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>) <span class="var">arity+1</span>)
+           (<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>))
+                 (<span class="var">env</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">1</span>)) )
+             (<span class="special">if</span> (<span class="func">reified-environment?</span> <span class="var">env</span>)
+                 (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">name</span>)
+                     (<span class="syntax">let*</span> ((<span class="var">r</span> (<span class="func">reified-environment-r</span> <span class="var">env</span>))
+                            (<span class="var">sr</span> (<span class="func">reified-environment-sr</span> <span class="var">env</span>))
+                            (<span class="var">kind</span>
+                             (<span class="syntax">or</span> (<span class="syntax">let</span> ((<span class="var">var</span> (<span class="func">assq</span> <span class="var">name</span> <span class="var">r</span>)))
+                                   (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">var</span>) (<span class="func">cadr</span> <span class="var">var</span>)) )
+                                 (<span class="func">global-variable?</span> <span class="var">g.current</span> <span class="var">name</span>)
+                                 (<span class="func">global-variable?</span> <span class="var">g.init</span> <span class="var">name</span>) ) ) )
+                       (<span class="func">variable-value-lookup</span> <span class="var">kind</span> <span class="var">sr</span>)
+                       (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
+                     (<span class="func">signal-exception</span>
+                      <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a variable name"</span> <span class="var">name</span>) ) )
+                 (<span class="func">signal-exception</span>
+                  <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Not an environment"</span> <span class="var">env</span>) ) ) )
+           (<span class="func">signal-exception</span>
+            <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">variable-value</span>) ) ) ) ) ) )
+
+(<span class="syntax">definitial</span> <span class="var">variable-defined?</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">2</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+     (<span class="special">lambda</span> ()
+       (<span class="special">if</span> (<span class="func">=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>) <span class="var">arity+1</span>)
+           (<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>))
+                 (<span class="var">env</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">1</span>)) )
+             (<span class="special">if</span> (<span class="func">reified-environment?</span> <span class="var">env</span>)
+                 (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">name</span>)
+                     (<span class="syntax">let*</span> ((<span class="var">r</span> (<span class="func">reified-environment-r</span> <span class="var">env</span>))
+                            (<span class="var">sr</span> (<span class="func">reified-environment-sr</span> <span class="var">env</span>)) )
+                       (<span class="special">set!</span> <span class="var">*val*</span>
+                             (<span class="special">if</span> (<span class="syntax">or</span> (<span class="syntax">let</span> ((<span class="var">var</span> (<span class="func">assq</span> <span class="var">name</span> <span class="var">r</span>)))
+                                       (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">var</span>) (<span class="func">cadr</span> <span class="var">var</span>)) )
+                                     (<span class="func">global-variable?</span> <span class="var">g.current</span> <span class="var">name</span>)
+                                     (<span class="func">global-variable?</span> <span class="var">g.init</span> <span class="var">name</span>) )
+                                 <span class="hash">#t</span> <span class="hash">#f</span> ) )
+                       (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
+                     (<span class="func">signal-exception</span>
+                      <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a variable name"</span> <span class="var">name</span>) ) )
+                 (<span class="func">signal-exception</span>
+                  <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Not an environment"</span> <span class="var">env</span>) ) ) )
+           (<span class="func">signal-exception</span>
+            <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">variable-value</span>) ) ) ) ) ) )</pre>
 
 <p>Функция <code><span class="func">variable-defined?</span></code> служит для исследования реифицированных
 окружений. Она определяет, можно ли пользоваться какой-либо переменной в данном
@@ -1910,10 +1870,8 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 Однако, если глобальное окружение может измениться, то точно так же может
 измениться и ответ <code><span class="func">variable-defined?</span></code>.</p>
 
-<p>
-\section{Рефлексивный интерпретатор}%
-\label{reflection/sect:reflective-interpreter}</p>
 
+<h2 id="reflection/sect:reflective-interpreter"><span class="seq">8.7</span> Рефлексивный интерпретатор</h2>
 
 <!--\indexR{интерпретатор!рефлексивный}-->
 <!--\indexR{рефлексивный интерпретатор}-->
@@ -1923,9 +1881,9 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 посреди неё тянущуюся ввысь башню, вершина которой растворяется в сером
 пасмурном небе, — прямо как у Рэкхема! Подобные мистические ассоциации
 проистекают из первых экспериментов с продолжениями, реификацией окружений и
-\textsc{fexpr} диалекта Interlisp (над последними Кент Питман в <span class="cite">[<a href="z1_bibliography.xhtml#pit80">pit80</a>]</span>
+<span class="logo">fexpr</span> диалекта Interlisp (над последними Кент Питман
+в <span class="cite">[<a href="z1_bibliography.xhtml#pit80">Pit80</a>]</span>
 провёл хорошую расстановку точек).</p>
-
 
 <!--\indexR{переопределение!всего}-->
 <p>Ну кто из нас не мечтал создать (или хотя бы иметь) язык, где возможно
@@ -1937,11 +1895,10 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 
 <p>Как бы то ни было, в этом разделе рассматривается небольшой рефлексивный
 интерпретатор, мало что оставляющий недоступным или неявным. Естественно, он
-является далеко не первым в своём роде, например: <span class="cite">[<a href="z1_bibliography.xhtml#drs84">drs84</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#fw84">fw84</a>]</span>,
-<span class="cite">[<a href="z1_bibliography.xhtml#wan86">wan86</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#dm88">dm88</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#baw88">baw88</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#que89">que89</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#imy92">imy92</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#jf92">jf92</a>]</span>
+является далеко не первым в своём роде, например: <span class="cite">[<a href="z1_bibliography.xhtml#drs84">dRS84</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#fw84">FW84</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#wan86">Wan86</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#dm88">DM88</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#baw88">Baw88</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#que89">Que89</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#imy92">IMY92</a>]</span>, <span class="cite">[<a href="z1_bibliography.xhtml#jf92">JF92</a>]</span>
 и множество других. Все эти интерпретаторы отличаются друг от друга конкретными
 аспектами рефлексии и принципами реализации.</p>
-
 
 <!--\indexC{call/cc}-->
 <!--\indexC{the-environment}-->
@@ -1953,7 +1910,7 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 Под контекстом вычислений здесь понимаются продолжение и лексическое окружение.
 Текущее продолжение можно получить с помощью знакомой вам функции <code><span class="func">call/cc</span></code>.
 Для получения требуемого окружения давайте используем рассмотренную ранее форму
-<code>(export)</code>, также известную как функция <code><span class="func">the-environment</span></code>, которая
+<code>(<span class="special">export</span>)</code>, также известную как функция <code><span class="func">the-environment</span></code>, которая
 реифицирует текущее лексическое окружение. Реификация, осознание понятий
 является необходимым требованием рефлексии, но существует множество способов её
 проведения, и выбор способа влияет на доступные в будущем возможности.</p>
@@ -1961,194 +1918,187 @@ $\lambda x . N \eq \lambda y . N[x \to y]$, которое даёт возмож
 
 <!--\indexE{fexpr@\textsc{fexpr}}-->
 <!--\indexR{специальные формы!fexpr@\protect<code><span class="func">fexpr</span></code>}-->
-<p>Как сказано в <span class="cite">[<a href="z1_bibliography.xhtml#chr95">chr95</a>]</span>: «\french{Puisqu'une fois la borne franchie, il
-n'est plus de limite}». И правда, ограничения бессмысленны для тех, кто уже
-вышел за пределы дозволенного, поэтому мы дадим пользователям возможность
+<p>Как сказано в <span class="cite">[<a href="z1_bibliography.xhtml#chr95">Chr95</a>]</span>: «Puisqu’une fois la borne franchie, il n’est plus de limite». И правда, ограничения бессмысленны
+для тех, кто уже вышел за пределы дозволенного, поэтому мы дадим пользователям возможность
 определять собственные специальные формы. Interlisp экспериментировал
-с механизмом, присутствовавшим в <span class="logo">Lisp 1.5</span> под названием \textsc{fexpr}. При
-вызове эта форма получала не значения аргументов, а буквально их текст вместе
-с текущим лексическим окружением. После этого она могла вычислять их в любом
-необходимом порядке, или, обобщая, делать с ними вообще всё, что ей
-заблагорассудится. Мы введём подобную ей специальную форму <code><span class="func">flambda</span></code>
-со следующим синтаксисом:</p>
-
+с механизмом, присутствовавшим в <span class="logo">Lisp 1.5</span> под названием
+<span class="logo">fexpr</span>. При вызове эта форма получала не значения аргументов,
+а буквально их текст вместе с текущим лексическим окружением. После этого она могла
+вычислять их в любом необходимом порядке, или, обобщая, делать с ними вообще всё, что ей
+заблагорассудится. Мы введём подобную ей специальную форму
+<code><span class="special">flambda</span></code> со следующим синтаксисом:</p>
 
 <!--\indexC{flambda}-->
-<pre>(flambda (<i>переменные</i>...) <i>формы</i>...)</pre>
+<pre>(<span class="special">flambda</span> (<i>переменные</i>...) <i>формы</i>...)</pre>
 
 <p>Первая переменная связывается с текущим лексическим окружением, а все остальные
 — с текстом аргументов, переданных при вызове. Например, вот так через
-<code><span class="func">flambda</span></code> определяется цитирование:</p>
+<code><span class="special">flambda</span></code> определяется цитирование:</p>
 
-<pre>(set! quote (flambda (r quotation) quotation))</pre>
+<pre>(<span class="special">set!</span> <span class="var">quote</span> (<span class="special">flambda</span> (<span class="var">r</span> <span class="var">quotation</span>) <span class="var">quotation</span>))</pre>
 
 <p>Естественно, рефлексивный интерпретатор должен позволять изменение и самого себя
 (захватывающая возможность, несомненно), поэтому мы сделаем все его внутренние
 функции доступными интерпретируемым программам. Функция <code><span class="func">the-environment</span></code>
 будет ответственной за помещение данных функций в глобальное окружение.</p>
 
-<p>Итак, вот он — рефлексивный интерпретатор. Он занимает всего лишь 1362 байта%
-\footnote*{В откомпилированном виде, конечно же, потому как его исходный код
-содержит чуть менее 3000 символов, плюс ещё столько же пробелов.} —
+<p>Итак, вот он — рефлексивный интерпретатор. Он занимает всего лишь 1362 байта<a class="footref" href="zz_footnotes.xhtml#foot8.14"><sup>14</sup></a> —
 достаточно мало, чтобы с лёгкостью поместиться в стандартную библиотеку.
 Интерпретатор написан языком, доступным нашему компилятору в байт-код.</p>
 
-<pre>(apply
- (lambda (make-toplevel make-flambda flambda? flambda-apply)
-   (set! make-toplevel
-     (lambda (prompt-in prompt-out)
-       (call/cc
-        (lambda (exit)
-          (monitor (lambda (c b) (exit b))
-            ((lambda (it extend error global-env toplevel
-                      eval evlis eprogn reference )
-               (set! extend
-                     (lambda (env names values)
-                       (if (pair? names)
-                           (if (pair? values)
-                               ((lambda (newenv)
-                                  (begin
-                                   (set-variable-value!
-                                    (car names) newenv (car values) )
-                                   (extend newenv (cdr names)
-                                           (cdr values) ) ) )
-                                (enrich env (car names)) )
-                               (error "Too few arguments" names) )
-                           (if (symbol? names)
-                               ((lambda (newenv)
-                                  (begin
-                                   (set-variable-value!
-                                    names newenv values )
-                                   newenv ) )
-                                (enrich env names) )
-                               (if (null? names)
-                                   (if (null? values) env
-                                       (error "Too many arguments"
-                                              values ) )
-                                   env ) ) ) ) )
-               (set! error
-                     (lambda (msg hint)
-                       (exit (list msg hint)) ) )
-               (set! toplevel
-                     (lambda (genv)
-                       (set! global-env genv)
-                       (display prompt-in)
-                       ((lambda (result)
-                          (set! it result)
-                          (display prompt-out)
-                          (display result) (newline) )
-                        ((lambda (e)
-                           (if (eof-object? e) (exit e)
-                               (eval e global-env) ) )
-                         (read) ) )
-                       (toplevel global-env) ) )
-               (set! eval
-                     (lambda (e r)
-                       (if (pair? e)
-                           ((lambda (f)
-                              (if (flambda? f)
-                                  (flambda-apply f r (cdr e))
-                                  (apply f (evlis (cdr e) r)) ) )
-                            (eval (car e) r) )
-                           (if (symbol? e) (reference e r) e) ) ) )
-               (set! evlis
-                     (lambda (e* r)
-                       (if (pair? e*)
-                           ((lambda (v)
-                              (cons v (evlis (cdr e*) r)) )
-                            (eval (car e*) r) )
-                           '() ) ) )
-               (set! eprogn
-                     (lambda (e+ r)
-                       (if (pair? (cdr e+))
-                           (begin (eval (car e+) r)
-                                  (eprogn (cdr e+) r) )
-                           (eval (car e+) r) ) ) )
-               (set! reference
-                     (lambda (name r)
-                       (if (variable-defined? name r)
-                           (variable-value name r)
-                           (if (variable-defined? name global-env)
-                               (variable-value name global-env)
-                               (error "No such variable" name) ) ) ) )
-               ((lambda (quote if set! lambda flambda monitor)
-                  (toplevel (the-environment)) )
-                (make-flambda
-                 (lambda (r quotation) quotation) )
-                (make-flambda
-                 (lambda (r condition then else)
-                   (eval (if (eval condition r) then else) r) ) )
-                (make-flambda
-                 (lambda (r name form)
-                   ((lambda (v)
-                      (if (variable-defined? name r)
-                          (set-variable-value! name r v)
-                          (if (variable-defined? name global-env)
-                              (set-variable-value! name global-env v)
-                              (error "No such variable" name) ) ) )
-                    (eval form r) ) ) )
-                (make-flambda
-                 (lambda (r variables . body)
-                   (lambda values
-                     (eprogn body (extend r variables values)) ) ) )
-                (make-flambda
-                 (lambda (r variables . body)
-                   (make-flambda
-                    (lambda (rr . parameters)
-                      (eprogn body
-                              (extend r variables
-                                      (cons rr parameters) ) ) ) ) ) )
-                (make-flambda
-                 (lambda (r handler . body)
-                   (monitor (eval handler r)
-                     (eprogn body r) ) ) ) ) )
-             'it 'extend 'error 'global-env 'toplevel
-             'eval 'evlis 'eprogn 'reference ) ) ) ) ) )
-   (make-toplevel "?? " -= ") )
- 'make-toplevel
- ((lambda (flambda-tag)
-    (list (lambda (behavior) (cons flambda-tag behavior))
-          (lambda (o) (if (pair? o) (= (car o) flambda-tag) #f))
-          (lambda (f r params) (apply (cdr f) r params)) ) )
-  98127634 ) )</pre>
+<pre>(<span class="func">apply</span>
+ (<span class="special">lambda</span> (<span class="var">make-toplevel</span> <span class="var">make-flambda</span> <span class="var">flambda?</span> <span class="var">flambda-apply</span>)
+   (<span class="special">set!</span> <span class="var">make-toplevel</span>
+     (<span class="special">lambda</span> (<span class="var">prompt-in</span> <span class="var">prompt-out</span>)
+       (<span class="func">call/cc</span>
+        (<span class="special">lambda</span> (<span class="var">exit</span>)
+          (<span class="special">monitor</span> (<span class="special">lambda</span> (<span class="var">c</span> <span class="var">b</span>) (<span class="func">exit</span> <span class="var">b</span>))
+            ((<span class="special">lambda</span> (<span class="var">it</span> <span class="var">extend</span> <span class="var">error</span> <span class="var">global-env</span> <span class="var">toplevel</span>
+                      <span class="var">eval</span> <span class="var">evlis</span> <span class="var">eprogn</span> <span class="var">reference</span> )
+               (<span class="special">set!</span> <span class="var">extend</span>
+                     (<span class="special">lambda</span> (<span class="var">env</span> <span class="var">names</span> <span class="var">values</span>)
+                       (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">names</span>)
+                           (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">values</span>)
+                               ((<span class="special">lambda</span> (<span class="var">newenv</span>)
+                                  (<span class="special">begin</span>
+                                   (<span class="func">set-variable-value!</span>
+                                    (<span class="func">car</span> <span class="var">names</span>) <span class="var">newenv</span> (<span class="func">car</span> <span class="var">values</span>) )
+                                   (<span class="func">extend</span> <span class="var">newenv</span> (<span class="func">cdr</span> <span class="var">names</span>)
+                                           (<span class="func">cdr</span> <span class="var">values</span>) ) ) )
+                                (<span class="func">enrich</span> <span class="var">env</span> (<span class="func">car</span> <span class="var">names</span>)) )
+                               (<span class="func">error</span> <span class="string">"Too few arguments"</span> <span class="var">names</span>) )
+                           (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">names</span>)
+                               ((<span class="special">lambda</span> (<span class="var">newenv</span>)
+                                  (<span class="special">begin</span>
+                                   (<span class="func">set-variable-value!</span>
+                                    <span class="var">names</span> <span class="var">newenv</span> <span class="var">values</span> )
+                                   <span class="var">newenv</span> ) )
+                                (<span class="func">enrich</span> <span class="var">env</span> <span class="var">names</span>) )
+                               (<span class="special">if</span> (<span class="func">null?</span> <span class="var">names</span>)
+                                   (<span class="special">if</span> (<span class="func">null?</span> <span class="var">values</span>) <span class="var">env</span>
+                                       (<span class="func">error</span> <span class="string">"Too many arguments"</span>
+                                              <span class="var">values</span> ) )
+                                   <span class="var">env</span> ) ) ) ) )
+               (<span class="special">set!</span> <span class="var">error</span>
+                     (<span class="special">lambda</span> (<span class="var">msg</span> <span class="var">hint</span>)
+                       (<span class="func">exit</span> (<span class="func">list</span> <span class="var">msg</span> <span class="var">hint</span>)) ) )
+               (<span class="special">set!</span> <span class="var">toplevel</span>
+                     (<span class="special">lambda</span> (<span class="var">genv</span>)
+                       (<span class="special">set!</span> <span class="var">global-env</span> <span class="var">genv</span>)
+                       (<span class="func">display</span> <span class="var">prompt-in</span>)
+                       ((<span class="special">lambda</span> (<span class="var">result</span>)
+                          (<span class="special">set!</span> <span class="var">it</span> <span class="var">result</span>)
+                          (<span class="func">display</span> <span class="var">prompt-out</span>)
+                          (<span class="func">display</span> <span class="var">result</span>) (<span class="func">newline</span>) )
+                        ((<span class="special">lambda</span> (<span class="var">e</span>)
+                           (<span class="special">if</span> (<span class="func">eof-object?</span> <span class="var">e</span>) (<span class="func">exit</span> <span class="var">e</span>)
+                               (<span class="func">eval</span> <span class="var">e</span> <span class="var">global-env</span>) ) )
+                         (<span class="func">read</span>) ) )
+                       (<span class="func">toplevel</span> <span class="var">global-env</span>) ) )
+               (<span class="special">set!</span> <span class="var">eval</span>
+                     (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+                       (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e</span>)
+                           ((<span class="special">lambda</span> (<span class="var">f</span>)
+                              (<span class="special">if</span> (<span class="func">flambda?</span> <span class="var">f</span>)
+                                  (<span class="func">flambda-apply</span> <span class="var">f</span> <span class="var">r</span> (<span class="func">cdr</span> <span class="var">e</span>))
+                                  (<span class="func">apply</span> <span class="var">f</span> (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span>)) ) )
+                            (<span class="func">eval</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">r</span>) )
+                           (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">reference</span> <span class="var">e</span> <span class="var">r</span>) <span class="var">e</span>) ) ) )
+               (<span class="special">set!</span> <span class="var">evlis</span>
+                     (<span class="special">lambda</span> (<span class="var">e*</span> <span class="var">r</span>)
+                       (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+                           ((<span class="special">lambda</span> (<span class="var">v</span>)
+                              (<span class="func">cons</span> <span class="var">v</span> (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span>)) )
+                            (<span class="func">eval</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span>) )
+                           <span class="hash">'()</span> ) ) )
+               (<span class="special">set!</span> <span class="var">eprogn</span>
+                     (<span class="special">lambda</span> (<span class="var">e+</span> <span class="var">r</span>)
+                       (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e+</span>))
+                           (<span class="special">begin</span> (<span class="func">eval</span> (<span class="func">car</span> <span class="var">e+</span>) <span class="var">r</span>)
+                                  (<span class="func">eprogn</span> (<span class="func">cdr</span> <span class="var">e+</span>) <span class="var">r</span>) )
+                           (<span class="func">eval</span> (<span class="func">car</span> <span class="var">e+</span>) <span class="var">r</span>) ) ) )
+               (<span class="special">set!</span> <span class="var">reference</span>
+                     (<span class="special">lambda</span> (<span class="var">name</span> <span class="var">r</span>)
+                       (<span class="special">if</span> (<span class="func">variable-defined?</span> <span class="var">name</span> <span class="var">r</span>)
+                           (<span class="func">variable-value</span> <span class="var">name</span> <span class="var">r</span>)
+                           (<span class="special">if</span> (<span class="func">variable-defined?</span> <span class="var">name</span> <span class="var">global-env</span>)
+                               (<span class="func">variable-value</span> <span class="var">name</span> <span class="var">global-env</span>)
+                               (<span class="func">error</span> <span class="string">"No such variable"</span> <span class="var">name</span>) ) ) ) )
+               ((<span class="special">lambda</span> (<span class="var">quote</span> <span class="var">if</span> <span class="var">set!</span> <span class="var">lambda</span> <span class="var">flambda</span> <span class="var">monitor</span>)
+                  (<span class="func">toplevel</span> (<span class="func">the-environment</span>)) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">quotation</span>) <span class="var">quotation</span>) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">condition</span> <span class="var">then</span> <span class="var">else</span>)
+                   (<span class="func">eval</span> (<span class="special">if</span> (<span class="func">eval</span> <span class="var">condition</span> <span class="var">r</span>) <span class="var">then</span> <span class="var">else</span>) <span class="var">r</span>) ) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">name</span> <span class="var">form</span>)
+                   ((<span class="special">lambda</span> (<span class="var">v</span>)
+                      (<span class="special">if</span> (<span class="func">variable-defined?</span> <span class="var">name</span> <span class="var">r</span>)
+                          (<span class="func">set-variable-value!</span> <span class="var">name</span> <span class="var">r</span> <span class="var">v</span>)
+                          (<span class="special">if</span> (<span class="func">variable-defined?</span> <span class="var">name</span> <span class="var">global-env</span>)
+                              (<span class="func">set-variable-value!</span> <span class="var">name</span> <span class="var">global-env</span> <span class="var">v</span>)
+                              (<span class="func">error</span> <span class="string">"No such variable"</span> <span class="var">name</span>) ) ) )
+                    (<span class="func">eval</span> <span class="var">form</span> <span class="var">r</span>) ) ) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">variables</span> . <span class="var">body</span>)
+                   (<span class="special">lambda</span> <span class="var">values</span>
+                     (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <span class="var">r</span> <span class="var">variables</span> <span class="var">values</span>)) ) ) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">variables</span> . <span class="var">body</span>)
+                   (<span class="func">make-flambda</span>
+                    (<span class="special">lambda</span> (<span class="var">rr</span> . <span class="var">parameters</span>)
+                      (<span class="func">eprogn</span> <span class="var">body</span>
+                              (<span class="func">extend</span> <span class="var">r</span> <span class="var">variables</span>
+                                      (<span class="func">cons</span> <span class="var">rr</span> <span class="var">parameters</span>) ) ) ) ) ) )
+                (<span class="func">make-flambda</span>
+                 (<span class="special">lambda</span> (<span class="var">r</span> <span class="var">handler</span> . <span class="var">body</span>)
+                   (<span class="special">monitor</span> (<span class="func">eval</span> <span class="var">handler</span> <span class="var">r</span>)
+                     (<span class="func">eprogn</span> <span class="var">body</span> <span class="var">r</span>) ) ) ) ) )
+             '<span class="var">it</span> '<span class="var">extend</span> '<span class="var">error</span> '<span class="var">global-env</span> '<span class="var">toplevel</span>
+             '<span class="var">eval</span> '<span class="var">evlis</span> '<span class="var">eprogn</span> '<span class="var">reference</span> ) ) ) ) ) )
+   (<span class="func">make-toplevel</span> <span class="string">"?? "</span> <span class="string">"== "</span>) )
+ '<span class="var">make-toplevel</span>
+ ((<span class="special">lambda</span> (<span class="var">flambda-tag</span>)
+    (<span class="func">list</span> (<span class="special">lambda</span> (<span class="var">behavior</span>) (<span class="func">cons</span> <span class="var">flambda-tag</span> <span class="var">behavior</span>))
+          (<span class="special">lambda</span> (<span class="var">o</span>) (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">o</span>) (<span class="func">=</span> (<span class="func">car</span> <span class="var">o</span>) <span class="var">flambda-tag</span>) <span class="hash">#f</span>))
+          (<span class="special">lambda</span> (<span class="var">f</span> <span class="var">r</span> <span class="var">params</span>) (<span class="func">apply</span> (<span class="func">cdr</span> <span class="var">f</span>) <span class="var">r</span> <span class="var">params</span>)) ) )
+  <span class="num">98127634</span> ) )</pre>
 
-<p>Как сказала бы Юлия Кристева,\footnote*{Ну, она сказала нечто подобное на радио
-France Musique тем воскресным утром 19 сентября 1993 года, когда я писал эти
-строки.} данное определение пропитано изощрённостью как минимум в плане
-используемых обозначений. Вероятно, вам придётся сначала немного поработать
-с этим интерпретатором, прежде чем вы уверуете в него.</p>
-
+<p>Как сказала бы Юлия Кристева<a class="footref" href="zz_footnotes.xhtml#8.15"><sup>15</sup></a>,
+данное определение пропитано изощрённостью как минимум в плане используемых обозначений.
+Вероятно, вам придётся сначала немного поработать с этим интерпретатором,
+прежде чем вы уверуете в него.</p>
 
 <!--\indexC{==}-->
 <!--\indexC{??}-->
-<p>Внешняя форма <code><span class="func">apply</span></code> создаёт четыре локальные переменные. Последние три из
-них отвечают за рефлексивные абстракции, <code><span class="func">flambda</span></code>-формы, а именно:
+<p>Внешняя форма <code><span class="func">apply</span></code> создаёт четыре локальные переменные.
+Последние три из них отвечают за рефлексивные абстракции,
+<code><span class="special">flambda</span></code>-формы, а именно:
 <code><span class="func">make-flambda</span></code> создаёт их; <code><span class="func">flambda?</span></code> опознаёт их; <code><span class="func">flambda-apply</span></code>
 применяет их. Эти абстракции обладают весьма своеобразным протоколом вызова, так
 что у вас может уйти некоторое время на его понимание. Первая переменная,
-<code><span class="func">make-toplevel</span></code>, инициализируется в теле применяемой функции, дабы она могла
+<code><span class="func">make-toplevel</span></code>,
+инициализируется в теле применяемой функции, дабы она могла
 сделать доступными пользователям все четыре локальные переменные. По завершении
 инициализации она запускает интерактивную сессию с настраиваемыми приглашениями
-ко вводу. Изначально это <code><span class="func">??</span></code> и <code><span class="func">==</span></code>.</p>
-
+ко вводу. Изначально это <code>??</code> и <code>==</code>.</p>
 
 <!--\indexC{it}-->
 <!--\indexC{extend}-->
 <!--\indexC{exit}-->
 <p>Перед началом инициализации захватывается продолжение — оно будет
 активировано в случае возникновения ошибки или при прямом вызове функции
-<code><span class="func">exit</span></code>.\footnote*{Наконец-то у нас есть Лисп, из которого можно нормально
-выйти! Можете самостоятельно убедиться в том, что <span class="logo">Common Lisp</span>, Scheme и даже
-Dylan лишены такого удобства.} Данное продолжение также доступно
+<code><span class="func">exit</span></code>.<a class="footref" href="zz_footnotes.xhtml#foot8.16"><sup>16</sup></a> Данное продолжение также доступно
 интерпретируемым программам. Цикл, реализующий интерактивную сессию, защищён от
-необработанных исключений формой <code><span class="func">monitor</span></code>.
-\seePage[compilation/exception/par:monitor] Далее следуют объявление и
-инициализация служебных переменных и функций, которые, естественно, будут
-доступны и пользователям. Переменная <code><span class="func">it</span></code> связывается со значением последней
-вычисленной формы. Функция <code><span class="func">extend</span></code>, конечно же, расширяет окружение новыми
-привязками. Функция <code><span class="func">error</span></code> печатает сообщение об ошибке и завершает работу
+необработанных исключений формой <code><span class="special">monitor</span></code>.
+<span class="see">[см. раздел <a href="ch07_compilation.xhtml#compilation/exception/par:monitor">7.9</a>]</span>
+Далее следуют объявление и инициализация служебных переменных и функций, которые, естественно,
+будут доступны и пользователям. Переменная <code><span class="var">it</span></code> связывается
+со значением последней вычисленной формы. Функция <code><span class="func">extend</span></code>,
+конечно же, расширяет окружение новыми привязками. Функция
+<code><span class="func">error</span></code> печатает сообщение об ошибке и завершает работу
 программы, вызывая <code><span class="func">exit</span></code>.</p>
-
 
 <!--\indexC{toplevel}-->
 <!--\indexC{eval}-->
@@ -2164,7 +2114,6 @@ Dylan лишены такого удобства.} Данное продолже
 функцией, то ей передаётся текущее окружение вместе с параметрами вызова;
 если же это обычная функция, то она и вызывается как обычная функция.</p>
 
-
 <!--\indexC{stammer}-->
 <!--\indexR{компиляция!рефлексивная}-->
 <!--\indexR{рефлексивный интерпретатор}-->
@@ -2172,16 +2121,16 @@ Dylan лишены такого удобства.} Данное продолже
 из-за его невероятной гибкости. Предположим, мы определили следующую нормальную
 функцию:</p>
 
-<pre>(set! stammer (lambda (f x) (f f x)))</pre>
+<pre>(<span class="special">set!</span> <span class="var">stammer</span> (<span class="special">lambda</span> (<span class="var">f</span> <span class="var">x</span>) (<span class="func">f</span> <span class="var">f</span> <span class="var">x</span>)))</pre>
 
 <p>Теперь посмотрим, как она себя ведёт с рефлексивными абстракциями:</p>
 
-<pre>(stammer (lambda (ff yy) yy) 33)  |\is| 33
-(stammer (flambda (ff yy) yy) 33) |\is| x</pre>
+<pre>(<span class="func">stammer</span> (<span class="special">lambda</span> (<span class="var">ff</span> <span class="var">yy</span>) <span class="var">yy</span>) <span class="num">33</span>)  <span class="math"><span class="rel">→</span></span> <span class="num">33</span>
+(<span class="func">stammer</span> (<span class="special">flambda</span> (<span class="var">ff</span> <span class="var">yy</span>) <span class="var">yy</span>) <span class="num">33</span>) <span class="math"><span class="rel">→</span></span> <span class="var">x</span></pre>
 
 <p>Получается, что первый вызов <code><span class="func">stammer</span></code> применяет переданную функцию саму
 к себе, а второй — реифицирует своё собственное тело и применяет функцию
-<em>к самому себе</em>. Следовательно, в присутствии <code><span class="func">flambda</span></code> необходимо
+<em>к самому себе</em>. Следовательно, в присутствии <code><span class="special">flambda</span></code> необходимо
 компилировать все аппликации каждой абстракции двумя различными способами:
 рефлексивным и обычным. И это касается не только функций, но и всех обращений
 к специальным формам — ведь теперь они тоже являются абстракциями, которые
@@ -2191,34 +2140,33 @@ Dylan лишены такого удобства.} Данное продолже
 
 <p>Перед запуском главного цикла определяются несколько рефлексивных функций,
 просто потому, что их проще определить именно там. Таким образом получаются
-<code><span class="func">quote</span></code>, <code><span class="func">if</span></code>, <code><span class="func">set!</span></code>, <code><span class="func">lambda</span></code>, <code><span class="func">flambda</span></code> и <code><span class="func">monitor</span></code>. Все
+<code><span class="special">quote</span></code>, <code><span class="special">if</span></code>, <code><span class="special">set!</span></code>, <code><span class="special">lambda</span></code>, <code><span class="special">flambda</span></code> и <code><span class="special">monitor</span></code>. Все
 остальные можно добавить потом:</p>
 
-<pre>(set! global-env
-      (enrich global-env 'begin 'the-environment) )
-(set! the-environment
-      (flambda (r) r) )
-(set! begin
-      (flambda (r . forms)
-        (eprogn forms r) ) )</pre>
+<pre>(<span class="special">set!</span> <span class="var">global-env</span>
+      (<span class="func">enrich</span> <span class="var">global-env</span> '<span class="var">begin</span> '<span class="var">the-environment</span>) )
+(<span class="special">set!</span> <span class="var">the-environment</span>
+      (<span class="special">flambda</span> (<span class="var">r</span>) <span class="var">r</span>) )
+(<span class="special">set!</span> <span class="var">begin</span>
+      (<span class="special">flambda</span> (<span class="var">r</span> . <span class="var">forms</span>)
+        (<span class="func">eprogn</span> <span class="var">forms</span> <span class="var">r</span>) ) )</pre>
 
 
 <!--\indexC{global-env}-->
-<p>Переменная <code><span class="func">global-env</span></code> связана с реифицированным окружением, содержащим все
+<p>Переменная <code><span class="var">global-env</span></code> связана с реифицированным окружением, содержащим все
 предшествующие определения, включая саму себя, — и это её главное
 достоинство. Глобальное окружение не только доступно интерпретируемым
 программам, но и произведённые ими изменения имеют обратную силу. Интерпретатор
-и исполняемые им программы пользуются одной и той же <code><span class="func">global-env</span></code>. Действия
+и исполняемые им программы пользуются одной и той же <code><span class="var">global-env</span></code>. Действия
 любой стороны имеют одинаковые последствия, приносят те же радости и печали.
 Предыдущий пример работает именно благодаря этой взаимосвязи. Давайте рассмотрим
-ещё один, определяющий новую специальную форму <code><span class="func">when</span></code>.</p>
-
+ещё один, определяющий новую специальную форму <code><span class="special">when</span></code>.</p>
 
 <!--\indexC{when}-->
-<pre>(set! global-env (enrich global-env 'when))
-(set! when
-      (flambda (r condition . body)
-        (if (eval condition r) (eprogn body r) #f) ) )</pre>
+<pre>(<span class="special">set!</span> <span class="var">global-env</span> (<span class="func">enrich</span> <span class="var">global-env</span> '<span class="var">when</span>))
+(<span class="special">set!</span> <span class="var">when</span>
+      (<span class="special">flambda</span> (<span class="var">r</span> <span class="var">condition</span> . <span class="var">body</span>)
+        (<span class="special">if</span> (<span class="func">eval</span> <span class="var">condition</span> <span class="var">r</span>) (<span class="func">eprogn</span> <span class="var">body</span> <span class="var">r</span>) <span class="hash">#f</span>) ) )</pre>
 
 <p>Сначала глобальное окружение расширяется новой переменной, которая, конечно же,
 пока не имеет никакого значения. Сразу же после этого она инициализируется
@@ -2227,7 +2175,6 @@ Dylan лишены такого удобства.} Данное продолже
 с ней так же, как и с любой другой специальной формой.</p>
 
 <div class="bigskip"/>
-
 
 <!--\indexR{абстракция!рефлексивная}-->
 <!--\indexR{рефлексивные абстракции}-->
@@ -2246,12 +2193,12 @@ Dylan лишены такого удобства.} Данное продолже
 строгого следования двум правилам. Во-первых, нельзя напрямую использовать
 специальные формы для определения других специальных форм. Надеюсь, вам понятно,
 что перестраивать фундамент башни, сидя при этом в ней же, — не самая хорошая
-идея. Именно поэтому абстракция, связывающая переменные вроде <code><span class="func">quote</span></code> и
-<code><span class="func">set!</span></code> с их определениями, имеет такое простое тело: <code>(toplevel
-(the-environment))</code>. Во-вторых, <code><span class="func">flambda</span></code>-замыкания должны быть понятны всем
+идея. Именно поэтому абстракция, связывающая переменные вроде <code><span class="var">quote</span></code> и
+<code><span class="var">set!</span></code> с их определениями, имеет такое простое тело: <code>(<span class="func">toplevel</span>
+(<span class="func">the-environment</span>))</code>. Во-вторых, <code><span class="special">flambda</span></code>-замыкания должны быть понятны всем
 уровням интерпретации (вернее, любым двум соседним уровням). Поэтому
 соответствующие функции определяются отдельно и используют для идентификации
-специальную уникальную метку <code><span class="func">flambda-tag</span></code>. Хотя, конечно же, при таком
+специальную уникальную метку <code><span class="var">flambda-tag</span></code>. Хотя, конечно же, при таком
 определении их легко можно обмануть.</p>
 
 
@@ -2262,47 +2209,46 @@ Dylan лишены такого удобства.} Данное продолже
 проанализировать своё поведение, запрограммировать себя на что-то другое и
 продолжить работу по новому плану. Интроспекция такого уровня предоставляет
 поистине захватывающие возможности. Анализ и модификация контекста вычислений
-рассмотрены, например, в <span class="cite">[<a href="z1_bibliography.xhtml#que93a">que93a</a>]</span>. Именно благодаря подобным возможностям
+рассмотрены, например, в <span class="cite">[<a href="z1_bibliography.xhtml#que93a">Que93a</a>]</span>. Именно благодаря подобным возможностям
 эти интерпретаторы и называются <em>рефлексивными</em>, а Лисп сыскал славу языка
 искусственного интеллекта.</p>
 
-<p>
-\subsubsection{\texorpdfstring{Форма \protect<code><span class="func">define</span></code>}{Форма define}}%
-\label{reflection/reflective-interpreter/sssect:define}</p>
 
+<h4 id="reflection/reflective-interpreter/sssect:define">Форма <code><span class="special">define</span></code></h4>
 
 <!--\indexC{define}-->
 <!--\indexR{синтаксис!define@\protect<code><span class="func">define</span></code>}-->
 <p>Забавно, но предыдущий рефлексивный интерпретатор позволяет весьма просто
-определить довольно сложную форму — <code><span class="func">define</span></code>. Как было сказано ранее,
-<code><span class="func">define</span></code> — это <em>очень</em> специальная форма: она ведёт себя одновременно
+определить довольно сложную форму — <code><span class="special">define</span></code>. Как было сказано ранее,
+<code><span class="special">define</span></code> — это <em>очень</em> специальная форма: она ведёт себя одновременно
 как определение и как присваивание. С одной стороны, после выполнения
-<code><span class="func">define</span></code> переменная имеет чётко определённое значение. С другой стороны, ещё
-до выполнения тела <code><span class="func">define</span></code> в окружении магическим образом появляется новая
-переменная, известная как внутри самой <code><span class="func">define</span></code>, так и повсюду после неё. Все
-эти аспекты семантики специальной формы <code><span class="func">define</span></code> хорошо видны в приведённом
+<code><span class="special">define</span></code> переменная имеет чётко определённое значение. С другой стороны, ещё
+до выполнения тела <code><span class="special">define</span></code> в окружении магическим образом появляется новая
+переменная, известная как внутри самой <code><span class="special">define</span></code>, так и повсюду после неё. Все
+эти аспекты семантики специальной формы <code><span class="special">define</span></code> хорошо видны в приведённом
 определении. Для краткости мы не стали реализовывать её чисто синтаксические
-возможности, позволяющие писать выражения вроде <code>(define (foo x) (define
-(bar) ...) ...)</code>, а также остальные правила преобразования вложенных форм
-<code><span class="func">define</span></code>. (Серьёзно, <code><span class="func">define</span></code> — это сложно.)</p>
+возможности, позволяющие писать выражения вроде <code>(<span class="special">define</span> (<span class="func">foo</span> <span class="var">x</span>) (<span class="special">define</span>
+(<span class="func">bar</span>) ...) ...)</code>, а также остальные правила преобразования вложенных форм
+<code><span class="special">define</span></code>. (Серьёзно, <code><span class="special">define</span></code> — это сложно.)</p>
 
-<pre>(set! global-env (enrich global-env 'define))
-(set! define
-      (flambda (r name form)
-        (if (variable-defined? name r)
-            (set-variable-value! name r (eval form r))
-            ((lambda (rr)
-               (set! global-env rr)
-               (set-variable-value! name rr (eval form rr)) )
-             (enrich r name) ) ) ) )</pre>
+<pre>(<span class="special">set!</span> <span class="var">global-env</span> (<span class="func">enrich</span> <span class="var">global-env</span> '<span class="var">define</span>))
+(<span class="special">set!</span> <span class="var">define</span>
+      (<span class="special">flambda</span> (<span class="var">r</span> <span class="var">name</span> <span class="var">form</span>)
+        (<span class="special">if</span> (<span class="func">variable-defined?</span> <span class="var">name</span> <span class="var">r</span>)
+            (<span class="func">set-variable-value!</span> <span class="var">name</span> <span class="var">r</span> (<span class="func">eval</span> <span class="var">form</span> <span class="var">r</span>))
+            ((<span class="special">lambda</span> (<span class="var">rr</span>)
+               (<span class="special">set!</span> <span class="var">global-env</span> <span class="var">rr</span>)
+               (<span class="func">set-variable-value!</span> <span class="var">name</span> <span class="var">rr</span> (<span class="func">eval</span> <span class="var">form</span> <span class="var">rr</span>)) )
+             (<span class="func">enrich</span> <span class="var">r</span> <span class="var">name</span>) ) ) ) )</pre>
 
-<p>Прежде всего <code><span class="func">define</span></code> проверяет, существует ли уже переменная. Если это так,
-то её (пере)определение, в соответствии с \RnRS, сводится к присваиванию нового
+<p>Прежде всего <code><span class="special">define</span></code> проверяет, существует ли уже переменная. Если это так,
+то её (пере)определение, в соответствии с R<sup>5</sup>RS, сводится к присваиванию нового
 значения. В противном случае в глобальном окружении создаётся новая переменная,
 и её начальное значение вычисляется в новом, расширенном окружении, позволяющем
 рекурсивные определения.</p>
 
-<h2 id="reflection/sect:conclusions">Заключение</h2>
+
+<h2 id="reflection/sect:conclusions"><span class="seq">8.8.</span> Заключение</h2>
 
 <p>В этой главе были рассмотрены различные аспекты использования явного
 вычислителя, касающиеся как обычных функций, так и специальных форм.
@@ -2318,41 +2264,41 @@ Dylan лишены такого удобства.} Данное продолже
 открывается широчайшее поле для экспериментов.</p>
 
 
-<h2 id="reflection/sect:exercises">Упражнения</h2>
+<h2 id="reflection/sect:exercises"><span class="seq">8.9.</span> Упражнения</h2>
 
-<h5 class="exercise" id="reflection/ex:no-cycles">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="reflection/ex:no-cycles">Упражнение <span class="seq">8.1</span></h5>
 <p>Почему функция <code><span class="func">variables-list?</span></code> ничего не предпринимает во избежание
 зацикливания при обработке списка переменных?</p>
 
 
-<h5 class="exercise" id="reflection/ex:optimize-ce">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="reflection/ex:optimize-ce">Упражнение <span class="seq">8.2</span></h5>
 <!--\indexCS{eval/ce}{оптимизация}-->
 <!--\indexR{мемоизация}-->
-<p>Специальная форма <code><span class="func">eval/ce</span></code> компилирует на лету передаваемые ей выражения.
+<p>Специальная форма <code><span class="special">eval/ce</span></code> компилирует на лету передаваемые ей выражения.
 Но она делает это каждый раз заново, что не особо эффективно, если требуется
 вычислить одно и то же выражение несколько раз. Придумайте, как исправить этот
 недостаток.</p>
 
 
-<h5 class="exercise" id="reflection/ex:no-capture">Упражнение <span class="seq">0.0</span></h5>
-<p>Улучшите определение <code><span class="func">eval/at</span></code> через <code><span class="func">eval/ce</span></code>, избавившись от нечаянно
+<h5 class="exercise" id="reflection/ex:no-capture">Упражнение <span class="seq">8.3</span></h5>
+<p>Улучшите определение <code><span class="func">eval/at</span></code> через <code><span class="special">eval/ce</span></code>, избавившись от нечаянно
 захватываемой переменной. Подсказка: <code><span class="func">gens...</span></code></p>
 
 
-<h5 class="exercise" id="reflection/ex:defined">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="reflection/ex:defined">Упражнение <span class="seq">8.4</span></h5>
 <p>Может ли пользователь определить <code><span class="func">variable-defined?</span></code> самостоятельно?
-Почему нет\slash как именно?</p>
+Почему нет/как именно?</p>
 
 
-<h5 class="exercise" id="reflection/ex:rnrs">Упражнение <span class="seq">0.0</span></h5>
-<p>Переопределите рефлексивный интерпретатор с помощью стандартного Scheme.</p>
+<h5 class="exercise" id="reflection/ex:rnrs">Упражнение <span class="seq">8.5</span></h5>
+<p>Переведите определение рефлексивного интерпретатора на стандартный Scheme.</p>
 
-<p>
-\section*{Рекомендуемая литература}\label{reflection/sect:recommended-reading}</p>
 
-<p>Статья <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dr87</a>]</span> отлично показывает, насколько всё же Лисп рефлексивен.
-В <span class="cite">[<a href="z1_bibliography.xhtml#mul92">mul92</a>]</span> рассматривается алгебраическая семантика его рефлексивных
-возможностей. Также стоит взглянуть на работы <span class="cite">[<a href="z1_bibliography.xhtml#jf92">jf92</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#imy92">imy92</a>]</span>,
+<h2>Рекомендуемая литература</h2>
+
+<p>Статья <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dR87</a>]</span> отлично показывает, насколько всё же Лисп рефлексивен.
+В <span class="cite">[<a href="z1_bibliography.xhtml#mul92">Mul92</a>]</span> рассматривается алгебраическая семантика его рефлексивных
+возможностей. Также стоит взглянуть на работы <span class="cite">[<a href="z1_bibliography.xhtml#jf92">JF92</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#imy92">IMY92</a>]</span>,
 затрагивающие рефлексию в общем.</p>
 
 </body>

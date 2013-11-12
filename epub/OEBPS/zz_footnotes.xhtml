@@ -814,5 +814,70 @@
     вместо ожидаемого <code>(<span class="func">CONSTANT</span> <span class="hash">'()</span>)</code>.</p>
 </div>
 
+<div class="footnote" id="foot8.9">
+  <p><span class="num"><sup>9</sup></span>
+    Пустой список, подобно <code><span class="special">export</span></code>,
+    может означать все возможные переменные.</p>
+</div>
+
+<div class="footnote" id="foot8.10">
+  <p><span class="num"><sup>10</sup></span>
+    Помимо этого необходимы ещё многие другие возможности, вроде механизма диспетчеризации
+    методов по классам объектов.</p>
+</div>
+
+<div class="footnote" id="foot8.11">
+  <p><span class="num"><sup>11</sup></span>
+    Чтобы избежать потенциально ошибочного цитирования присваиваемого значения, используется
+    промежуточное замыкание, принимающее это значение.</p>
+</div>
+
+<div class="footnote" id="foot8.12">
+  <p><span class="num"><sup>12</sup></span>
+    Рассмотренная реализация <code><span class="special">dynamic-let</span></code> не позволяет
+    напрямую изменять такие связи; не существует соответствующей
+    <code><span class="special">dynamic-set!</span></code>.
+    Но ничто не мешает связать с именем изменяемый объект и таким образом обойти
+    данное ограничение.</p>
+</div>
+
+<div class="footnote" id="foot8.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    В λ-исчислении α-конверсией называется правило
+<span class="math"><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">N</span><span class="rel">≡</span><span class="ord var">λ</span><span class="ord var">y</span><span class="punct">.</span><span class="ord var">N</span><span class="open">[</span>x<span class="rel">→</span><span class="ord var">y</span><span class="close">]</span></span>,
+    которое даёт возможность свободно переименовывать связанные переменные абстракции
+    при условии, что новое имя <span class="math"><span class="ord var">y</span></span>
+    не встречается в <span class="math"><span class="ord var">N</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot8.13">
+  <p><span class="num"><sup>13</sup></span>
+    Кстати, можно улучшить <code><span class="special">reflective-lambda</span></code>,
+    дав ей возможность указывать операции, допустимые над экспортируемыми привязками; например,
+    разрешать только чтение, но не изменение значений. Также можно,
+    подобно <span class="cite">[<a href="z1_bibliography.xhtml#lf93">LF93</a>]</span>, реализовать механизм переименования экспортируемых
+    переменных.</p>
+</div>
+
+<div class="footnote" id="foot8.14">
+  <p><span class="num"><sup>14</sup></span>
+    В откомпилированном виде, конечно же, потому как его исходный код
+    содержит чуть менее 3000 символов, плюс ещё столько же пробелов.</p>
+</div>
+
+<div class="footnote" id="foot8.15">
+  <p><span class="num"><sup>15</sup></span>
+    Ну, она сказала нечто подобное на радио
+    France Musique тем воскресным утром 19 сентября 1993 года, когда я писал эти
+    строки.</p>
+</div>
+
+<div class="footnote" id="foot8.16">
+  <p><span class="num"><sup>16</sup></span>
+    Наконец-то у нас есть Лисп, из которого можно нормально
+    выйти! Можете самостоятельно убедиться в том, что <span class="logo">Common Lisp</span>,
+    Scheme и даже Dylan лишены такого удобства.</p>
+</div>
+
 </body>
 </html>
