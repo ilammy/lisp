@@ -798,5 +798,21 @@
     обеспечения их неизменяемости.</p>
 </div>
 
+<div class="footnote" id="foot8.7">
+  <p><span class="num"><sup>7</sup></span>
+    А вот и архитектурная ошибочка нашлась: <code><span class="special">export</span></code>
+    не позволяет захватить <em>пустое</em> окружение! Поэтому мы захватываем хоть что-нибудь —
+    в данном случае функцию умножения, — чтобы получить начальное окружение для
+    манипуляций (аналогичный костыль применён в
+    <span class="cite">[<a href="z1_bibliography.xhtml#qd96">QD96</a>]</span>).</p>
+</div>
+
+<div class="footnote" id="foot8.8">
+  <p><span class="num"><sup>8</sup></span>
+    <code><span class="func">EXPLICIT-CONSTANT</span></code> используется
+    для того, чтобы не получить <code>(<span class="func">PREDEFINED0</span>)</code>
+    вместо ожидаемого <code>(<span class="func">CONSTANT</span> <span class="hash">'()</span>)</code>.</p>
+</div>
+
 </body>
 </html>

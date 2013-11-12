@@ -838,7 +838,6 @@
 переменные записываются с помощью символов, а символы (как показано далее)
 могут играть роль переменных.</p>
 
-
 <!--\indexC{string->symbol}-->
 <!--\indexR{хеш-таблицы}-->
 <p>Символы — это составные структуры данных, имеющие как минимум одно поле:
@@ -851,7 +850,6 @@
 Иногда ради ускорения поиска используются различные вспомогательные скрытые
 поля, связывающие группы символов между собой.</p>
 
-
 <!--\indexR{символы!списки свойств}-->
 <!--\indexR{списки свойств}-->
 <p>Часто символы имеют также списки свойств. Обычно они реализуются в виде
@@ -862,7 +860,6 @@ P-списков, но нередко в этой роли можно встре
 свойствам вроде особенностей форматирования внешнего представления форм,
 начинающихся с данного символа.</p>
 
-
 <!--\indexR{глобальные переменные!как поля символов}-->
 <!--\indexR{переменные!глобальные}-->
 <!--\indexE{Cval}-->
@@ -871,10 +868,12 @@ P-списков, но нередко в этой роли можно встре
 для хранения значения одноимённой глобальной переменной? В случае Lisp<sub>2</sub>,
 конечно, понадобятся два поля: для переменной и для функции. Ничто не ново под
 солнцем, именно так часто и поступают при реализации (например,
-\cite{cha80,gp88}), называя эти поля Cval и Fval. Вдобавок предоставляются
-функции для доступа к этим полям. В <span class="logo">Common Lisp</span> они носят имена
-<code><span class="func">symbol-value</span></code> и <code>(setf symbol-value)</code>, а также <code><span class="func">symbol-function</span></code>
-и <code>(setf symbol-function)</code>.</p>
+<span class="cite">[<a href="z1_bibliography.xhtml#cha80">Cha80</a>,
+<a href="z1_bibliography.xhtml#gp88">GP88</a>]</span>), называя эти поля Cval и Fval.
+Вдобавок предоставляются функции для доступа к этим полям. В <span class="logo">Common Lisp</span>
+они носят имена <code><span class="var">symbol-value</span></code> и
+<code>(<span class="special">setf</span> <span class="var">symbol-value</span>)</code>, а также <code><span class="var">symbol-function</span></code>
+и <code>(<span class="special">setf</span> <span class="var">symbol-function</span>)</code>.</p>
 
 <p>Такое решение привлекательно своей стопроцентной гарантией правильной работы.
 Каждый символ, используемый в программе, уже был создан <code><span class="func">string->symbol</span></code>,
@@ -890,29 +889,27 @@ P-списков, но нередко в этой роли можно встре
 в принципе — она автомагически решается механизмом доступа к символам.</p>
 
 <p>Покажем на примере интерпретатора из первой главы, как использовать эти функции.
-Окружение <code><span class="func">env</span></code> теперь будет содержать только локальные переменные, а
+Окружение <code><span class="var">env</span></code> теперь будет содержать только локальные переменные, а
 глобальные будут использоваться напрямую — теперь они совпадают с глобальными
 переменными того Scheme, на котором написан интерпретатор. Таким образом,
 получаем:</p>
 
-
 <!--\indexC{lookup}-->
 <!--\indexC{update"!}-->
-<pre>(define (lookup id env)
-  (if (pair? env)
-      (if (eq? id (caar env))
-          (cdar env)
-          (lookup id (cdr env)) )
-      (global-value id) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">lookup</span> <span class="var">id</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">env</span>)
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">id</span> (<span class="func">caar</span> <span class="var">env</span>))
+          (<span class="func">cdar</span> <span class="var">env</span>)
+          (<span class="func">lookup</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>)) )
+      (<span class="func">global-value</span> <span class="var">id</span>) ) )
 
-<p>(define (update! id env value)
-  (if (pair? env)
-      (if (eq? id (caar env))
-          (begin (set-cdr! (car env) value)
-                 value )
-          (update! id (cdr env) value) )
-      (set-global-value! id value) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">update!</span> <span class="var">id</span> <span class="var">env</span> <span class="var">value</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">env</span>)
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">id</span> (<span class="func">caar</span> <span class="var">env</span>))
+          (<span class="special">begin</span> (<span class="func">set-cdr!</span> (<span class="func">car</span> <span class="var">env</span>) <span class="var">value</span>)
+                 <span class="var">value</span> )
+          (<span class="func">update!</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>) <span class="var">value</span>) )
+      (<span class="func">set-global-value!</span> <span class="var">id</span> <span class="var">value</span>) ) )</pre>
 
 <!--\indexCS{global-value}{цена}-->
 <!--\indexCS{set-global-value"!}{цена}-->
@@ -927,19 +924,17 @@ P-списков, но нередко в этой роли можно встре
 изменяемой глобальной переменной, что, конечно же, оказывает закономерный эффект
 на оптимизации компилятора.</p>
 
-
 <!--\indexC{symeval}-->
 <p>Пару функций <code><span class="func">global-value</span></code> и <code><span class="func">set-global-value!</span></code> можно понимать как
 специализированную версию <code><span class="func">eval</span></code> для переменных. Между прочим, в некоторых
 старых лисп-системах так оно и было: этот специализированный вычислитель
-назывался <code><span class="func">symeval</span></code>. Также можно их считать парой рефлексивных функций,
-реифицирующих доступ к глобальным переменным. Написать «<code><span class="func">foo</span></code>», чтобы
-получить значение глобальной переменной <code><span class="func">foo</span></code>, — это то же самое, что
-неявно вычислить значение формы <code>(global 'foo)</code>.</p>
+назывался <code><span class="special">symeval</span></code>. Также можно их считать парой рефлексивных функций,
+реифицирующих доступ к глобальным переменным. Написать «<code><span class="var">foo</span></code>», чтобы
+получить значение глобальной переменной <code><span class="var">foo</span></code>, — это то же самое, что
+неявно вычислить значение формы <code>(<span class="special">global</span> '<span class="var">foo</span>)</code>.</p>
 
-<p>
-\subsubsection{Полноценные окружения}%
-\label{reflection/interpreted-eval/global/sssect:first-class}</p>
+
+<h4 id="reflection/interpreted-eval/global/sssect:first-class">Полноценные окружения</h4>
 
 <p>Другой вариант решения проблемы окружений состоит в определении <code><span class="func">eval</span></code> как
 функции двух переменных: выражения, которое необходимо вычислить, и окружения,
@@ -955,8 +950,8 @@ P-списков, но нередко в этой роли можно встре
 с окружениями внешней системы. Такой подход поднимает множество специфичных
 вопросов, которые мы сейчас и рассмотрим.</p>
 
-<h2 id="reflection/sect:reify-env">Реификация окружений</h2>
 
+<h2 id="reflection/sect:reify-env"><span class="seq">8.6.</span> Реификация окружений</h2>
 
 <!--\indexR{контекст вычислений}-->
 <!--\indexR{окружение!как тип данных}-->
@@ -967,82 +962,76 @@ P-списков, но нередко в этой роли можно встре
 <p>Денотационный интерпретатор чётко показал, что контекст вычислений в Scheme
 является тройкой из окружения, продолжения и памяти. Отложив память в дальний
 угол, сфокусируемся на оставшейся паре. Продолжения уже могут становиться
-полноценными объектами языка благодаря <code><span class="func">call/cc</span></code> или <code><span class="func">bind-exit</span></code>.
+полноценными объектами языка благодаря <code><span class="func">call/cc</span></code>
+или <code><span class="special">bind-exit</span></code>.
 Окружениями же возможно пользоваться только неявно. В данном разделе мы
 рассмотрим, как превратить их в объекты, допускающие явную программную
 манипуляцию.</p>
-
 
 <!--\indexR{окружение!операции}-->
 <!--\indexR{захват привязок}-->
 <!--\indexR{привязки (bindings)}-->
 <p>Добиться этого можно различными способами, сохраняющими те или иные свойства,
 допускающими те или иные операции. Подробную классификацию можно найти
-в \cite{ra82,mr91}. Существуют три фундаментальные операции над окружениями:
+в <span class="cite">[<a href="z1_bibliography.xhtml#ra82">RA82</a>,
+<a href="z1_bibliography.xhtml#mr91">MR91</a>]</span>. Существуют
+три фундаментальные операции над окружениями:
 поиск значения переменной, изменение значения переменной и добавление новой
 переменной в окружение. Реификация окружений фактически сводится к захвату
 соответствующих привязок переменных к значениям. Привязки при этом становятся
 явными, что позволяет реализовать вышеприведённые операции как обычные функции
 языка.</p>
 
-<p>
-\subsection{\texorpdfstring{Специальная форма \protect<code><span class="func">export</span></code>}%
-{Специальная форма export}}%
-\label{reflection/reify-env/ssect:export}</p>
 
+<h3 id="reflection/reify-env/ssect:export"><span class="seq">8.6.1.</span>Специальная форма <code><span class="special">export</span></code></h3>
 
 <!--\indexR{специальные формы!export@\protect<code><span class="func">export</span></code>}-->
 <!--\indexC{export}-->
 <!--\indexC{eval/b}-->
-<p>Начнём со специальной формы, называемой <code><span class="func">export</span></code>: ей передаётся список имён
+<p>Начнём со специальной формы, называемой <code><span class="special">export</span></code>: ей передаётся список имён
 переменных, а в ответ она возвращает окружение с соответствующими привязками.
 Полученное окружение можно будет впоследствии передать вторым аргументом
 в бинарную функцию <code><span class="func">eval</span></code> (впредь будем называть её <code><span class="func">eval/b</span></code>). Например:</p>
 
-<p>\ForLayout{display}{\begingroup\lstset{aboveskip=\smallskipamount}}</p>
+<pre>(<span class="syntax">let</span> ((<span class="var">r</span> (<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">3</span>)) (<span class="special">export</span> <span class="var">x</span>))))
+  (<span class="func">eval/b</span> '<span class="var">x</span> <span class="var">r</span>) )                    <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 
-<pre>(let ((r (let ((x 3)) (export x))))
-  (eval/b 'x r) )                    |\is| 3</p>
+(<span class="syntax">let</span> ((<span class="var">f+r</span> (<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">3</span>))
+             (<span class="func">cons</span> (<span class="special">lambda</span> () <span class="var">x</span>) (<span class="special">export</span> <span class="var">x</span>)) )))
+  (<span class="func">eval/b</span> '(<span class="special">set!</span> <span class="var">x</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">x</span>)) (<span class="func">cdr</span> <span class="var">f+r</span>))
+  ((<span class="func">car</span> <span class="var">f+r</span>)) )                      <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
 
-<p>(let ((f+r (let ((x 3))
-             (cons (lambda () x) (export x)) )))
-  (eval/b '(set! x (+ 1 x)) (cdr f+r))
-  ((car f+r)) )                      |\is| 4</p>
-
-<p>(let ((r (export car cons)))
-  (let ((car cdr))
-    (eval/b '(car (cons 1 2)) r) ) ) |\is| 1</pre>
-
-<p>\ForLayout{display}{\endgroup}</p>
+(<span class="syntax">let</span> ((<span class="var">r</span> (<span class="special">export</span> <span class="var">car</span> <span class="var">cons</span>)))
+  (<span class="syntax">let</span> ((<span class="var">car</span> <span class="var">cdr</span>))
+    (<span class="func">eval/b</span> '(<span class="func">car</span> (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>)) <span class="var">r</span>) ) ) <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
 
 <p>Первый пример показывает, что объект-окружение, содержащий привязку
-переменной <code><span class="func">x</span></code>, действительно создаётся, а <code><span class="func">eval/b</span></code> это окружение успешно
-переваривает. Второй пример демонстрирует изменяемость переменной <code><span class="func">x</span></code> и
+переменной <code><span class="var">x</span></code>, действительно создаётся, а <code><span class="func">eval/b</span></code> это окружение успешно
+переваривает. Второй пример демонстрирует изменяемость переменной <code><span class="var">x</span></code> и
 доказывает, что захватывается действительно привязка, так как иным способом
 изменить значение свободной переменной замыкания невозможно. Третий пример
 показывает, что можно захватывать и глобальные привязки.</p>
 
-
 <!--\indexR{окружение!операции!создание}-->
-<p>Специальная форма <code><span class="func">export</span></code> позволяет жонглировать окружениями по желанию:
+<p>Специальная форма <code><span class="special">export</span></code> позволяет жонглировать окружениями по желанию:
 захватить окружение в одном месте, а использовать в совершенно другом.
 Реализация данной формы нетривиальна, так что её стоит рассмотреть подробнее.
 Как обычно, начинаем с добавления новой формы в синтаксический анализатор
 <code><span class="func">meaning</span></code>:</p>
 
-<pre>... ((export) (meaning-export (cdr e) r tail?)) ...</pre>
+<pre>... ((<span class="var">export</span>) (<span class="func">meaning-export</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">tail?</span>)) ...</pre>
 
 <p>Естественно, захваченное окружение должно содержать не только список записей
 активаций, но также полный перечень имён и адресов переменных. Та же информация
-была нужна <code><span class="func">eval/ce</span></code>, как вы помните. Поэтому реифицированные окружения будут
+была нужна <code><span class="func">eval/ce</span></code>, как вы помните.
+Поэтому реифицированные окружения будут
 представляться объектами с двумя полями: списком записей активаций и списком пар
 «имя — адрес», по которому программы смогут разобраться, что где находится.
-(См. рисунок \ref{reflection/reifiy-env/export/pic:reified-env}.)</p>
-
+(См. рисунок <a href="#reflection/reifiy-env/export/pic:reified-env">8.2</a>.)</p>
 
 <!--\indexC{reified-environment}-->
-<pre>(define-class reified-environment Object
-  ( sr r ) )</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">reified-environment</span> <span class="class">Object</span>
+  ( <span class="var">sr</span> <span class="var">r</span> ) )</pre>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.2}
@@ -1051,110 +1040,100 @@ P-списков, но нередко в этой роли можно встре
 \label{reflection/reifiy-env/export/pic:reified-env}%
 \end{figure}</p>
 
-<p>Не особо (пока) углубляясь в детали, будем компилировать форму <code><span class="func">export</span></code>
-следующим образом:</p>
-
+<p>Не особо (пока) углубляясь в детали, будем компилировать форму
+<code><span class="special">export</span></code> следующим образом:</p>
 
 <!--\indexC{meaning-export}-->
 <!--\indexC{CREATE-1ST-CLASS-ENV}-->
 <!--\indexC{create-first-class-environment}-->
-<pre>(define (meaning-export n* r tail?)
-  (unless (every? symbol? n*)
-          (static-wrong "Incorrect variables" n*) )
-  (append (CONSTANT (extract-addresses n* r)) (CREATE-1ST-CLASS-ENV)) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-export</span> <span class="var">n*</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">unless</span> (<span class="func">every?</span> <span class="var">symbol?</span> <span class="var">n*</span>)
+          (<span class="func">static-wrong</span> <span class="string">"Incorrect variables"</span> <span class="var">n*</span>) )
+  (<span class="func">append</span> (<span class="func">CONSTANT</span> (<span class="func">extract-addresses</span> <span class="var">n*</span> <span class="var">r</span>)) (<span class="func">CREATE-1ST-CLASS-ENV</span>)) )
 
-<p>(define (CREATE-1ST-CLASS-ENV) (list 254))</p>
+(<span class="special">define</span> (<span class="func">CREATE-1ST-CLASS-ENV</span>) (<span class="func">list</span> <span class="num">254</span>))
 
-<p>(define-instruction (CREATE-1ST-CLASS-ENV) 254
-  (create-first-class-environment *val* *env*) )</p>
+(<span class="syntax">define-instruction</span> (<span class="func">CREATE-1ST-CLASS-ENV</span>) <span class="num">254</span>
+  (<span class="func">create-first-class-environment</span> <span class="var">*val*</span> <span class="var">*env*</span>) )
 
-<p>(define (create-first-class-environment r sr)
-  (set! *val* (make-reified-environment sr r)) )</pre>
+(<span class="special">define</span> (<span class="func">create-first-class-environment</span> <span class="var">r</span> <span class="var">sr</span>)
+  (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">make-reified-environment</span> <span class="var">sr</span> <span class="var">r</span>)) )</pre>
 
-<p>Список пар «имя — адрес» передаётся как цитата через регистр <code><span class="func">*val*</span></code>,
-его оттуда забирает новая инструкция <code><span class="func">CREATE-1ST-CLASS-ENV</span></code>, которая создаст
+<p>Список пар «имя — адрес» передаётся как цитата через регистр
+<code><span class="var">*val*</span></code>, его оттуда забирает новая инструкция
+<code><span class="func">CREATE-1ST-CLASS-ENV</span></code>, которая создаст
 соответствующий объект.</p>
-
 
 <!--\indexR{представление!лексических окружений}-->
 <!--\indexR{лексическое окружение}-->
 <p>Для упрощения вычислений мы немного изменим представление статической части
-окружений (значений переменной <code><span class="func">r</span></code>). Вместо «гирлянд» они теперь будут
-просто ассоциативными списками, как на
-рисунке \ref{reflection/reifiy-env/export/pic:reified-env}. Это небольшое
-изменение, но упрощение <code><span class="func">compute-kind</span></code> приобретается ценой усложнения
-<code><span class="func">r-extend*</span></code>: теперь при каждом расширении окружения необходимо переносить
+окружений (значений переменной <code><span class="var">r</span></code>).
+Вместо «гирлянд» они теперь будут просто ассоциативными списками, как на
+рисунке <a href="#reflection/reifiy-env/export/pic:reified-env">8.2</a>. Это небольшое
+изменение, но упрощение <code><span class="func">compute-kind</span></code>
+приобретается ценой усложнения <code><span class="func">r-extend*</span></code>:
+теперь при каждом расширении окружения необходимо переносить
 уже существующие переменные на один уровень глубже.</p>
-
 
 <!--\indexC{compute-kind}-->
 <!--\indexC{r-extend*}-->
 <!--\indexC{bury-r}-->
-<pre>(define (compute-kind r n)
-  (or (let ((var (assq n r)))
-        (and (pair? var) (cadr var)) )
-      (global-variable? g.current n)
-      (global-variable? g.init n)
-      (adjoin-global-variable! n) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)
+  (<span class="syntax">or</span> (<span class="syntax">let</span> ((<span class="var">var</span> (<span class="func">assq</span> <span class="var">n</span> <span class="var">r</span>)))
+        (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">var</span>) (<span class="func">cadr</span> <span class="var">var</span>)) )
+      (<span class="func">global-variable?</span> <span class="var">g.current</span> <span class="var">n</span>)
+      (<span class="func">global-variable?</span> <span class="var">g.init</span> <span class="var">n</span>)
+      (<span class="func">adjoin-global-variable!</span> <span class="var">n</span>) ) )
 
-<p>(define (r-extend* r n*)
-  (let ((old-r (bury-r r 1)))
-    (let scan ((n* n*) (i 0))
-      (cond ((pair? n*) (cons (list (car n*) `(local 0 . ,i))
-                              (scan (cdr n*) (+ i 1)) ))
-            ((null? n*) old-r)
-            (else (cons (list n* `(local 0 . ,i)) old-r)) ) ) ) )</p>
+(<span class="special">define</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">n*</span>)
+  (<span class="syntax">let</span> ((<span class="var">old-r</span> (<span class="func">bury-r</span> <span class="var">r</span> <span class="num">1</span>)))
+    (<span class="syntax">let</span> <span class="func">scan</span> ((<span class="var">n*</span> <span class="var">n*</span>) (<span class="func">i</span> <span class="num">0</span>))
+      (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">n*</span>) (<span class="func">cons</span> (<span class="func">list</span> (<span class="func">car</span> <span class="var">n*</span>) `(<span class="var">local</span> <span class="num">0</span> . ,<span class="var">i</span>))
+                              (<span class="func">scan</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)) ))
+            ((<span class="func">null?</span> <span class="var">n*</span>) <span class="var">old-r</span>)
+            (<span class="syntax">else</span> (<span class="func">cons</span> (<span class="func">list</span> <span class="var">n*</span> `(<span class="var">local</span> <span class="num">0</span> . ,<span class="var">i</span>)) <span class="var">old-r</span>)) ) ) ) )
 
-<p>(define (bury-r r offset)
-  (map (lambda (d)
-         (let ((name (car d))
-               (type (car (cadr d))) )
-           (case type
-             ((local checked-local)
-              (let* ((addr (cadr d))
-                     (i (cadr addr))
-                     (j (cddr addr)) )
-                `(,name (,type ,(+ i offset) . ,j) . ,(cddr d)) ) )
-             (else d) ) ) )
-       r ) )</pre>
-
-<p>\ForLayout{display}{\begingroup
-\setlength{\abovedisplayskip}{\medskipamount}
-\setlength{\belowdisplayskip}{\medskipamount}}</p>
-
+(<span class="special">define</span> (<span class="func">bury-r</span> <span class="var">r</span> <span class="var">offset</span>)
+  (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">d</span>)
+         (<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">car</span> <span class="var">d</span>))
+               (<span class="var">type</span> (<span class="func">car</span> (<span class="func">cadr</span> <span class="var">d</span>))) )
+           (<span class="syntax">case</span> <span class="var">type</span>
+             ((<span class="var">local</span> <span class="var">checked-local</span>)
+              (<span class="syntax">let*</span> ((<span class="var">addr</span> (<span class="func">cadr</span> <span class="var">d</span>))
+                     (<span class="var">i</span> (<span class="func">cadr</span> <span class="var">addr</span>))
+                     (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">addr</span>)) )
+                `(,<span class="var">name</span> (,<span class="var">type</span> ,(<span class="func">+</span> <span class="var">i</span> <span class="var">offset</span>) . ,<span class="var">j</span>) . ,(<span class="func">cddr</span> <span class="var">d</span>)) ) )
+             (<span class="syntax">else</span> <span class="var">d</span>) ) ) )
+       <span class="var">r</span> ) )</pre>
 
 <!--\indexCS{eval/ce}{определение через eval/b@определение через <code><span class="func">eval/b</span></code>}-->
 <!--\indexC{the-environment}-->
 <!--\indexCS{export}{всеобъемлющая}-->
 <p>Помимо возможности создания окружения исключительно из упомянутых переменных,
 мы также реализуем возможность захвата всего окружения целиком: форма
-<code>(export)</code> будет эквивалентна \ic{(export <i>переменные</i>...)}, где
+<code>(<span class="special">export</span>)</code> будет эквивалентна <code>(<span class="special">export</span> <i>переменные</i>...)</code>, где
 перечислены все локальные переменные, созданные окружающими форму абстракциями.
-Имея форму <code>(export)</code>, часто именуемую <code>(the-environment)</code>, можно
-проэмулировать <code><span class="func">eval/ce</span></code> с помощью <code><span class="func">eval/b</span></code>:
-%
-\[
-  \text{<code><span class="func">(eval/ce '$\pi$)</span></code>} \eq \text{<code><span class="func">(eval/b '$\pi$ (export))</span></code>}
-\]</p>
+Имея форму <code>(<span class="special">export</span>)</code>, часто именуемую
+<code>(<span class="func">the-environment</span>)</code>, можно
+проэмулировать <code><span class="func">eval/ce</span></code> с помощью
+<code><span class="func">eval/b</span></code>:</p>
 
-<p>\ForLayout{display}{\endgroup}</p>
+<blockquote class="equation math"><span class="ord normal"><code>(<span class="func">eval/ce</span> '<span class="math"><span class="ord var">π</span></span>)</code></span><span class="rel">≡</span><span class="ord normal"><code>(<span class="func">eval/b</span> '<span class="math"><span class="ord var">π</span></span> (<span class="special">export</span>))</code></span></blockquote>
 
 <p>Реализовать эту возможность проще простого, так как теперь окружения изначально
 имеют необходимую структуру.</p>
 
-
 <!--\indexC{extract-addresses}-->
-<pre>(define (extract-addresses n* r)
-  (if (null? n*) r
-      (let scan ((n* n*))
-        (if (pair? n*)
-            (cons (list (car n*) (compute-kind r (car n*)))
-                  (scan (cdr n*)) )
-            '() ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">extract-addresses</span> <span class="var">n*</span> <span class="var">r</span>)
+  (<span class="special">if</span> (<span class="func">null?</span> <span class="var">n*</span>) <span class="var">r</span>
+      (<span class="syntax">let</span> <span class="func">scan</span> ((<span class="var">n*</span> <span class="var">n*</span>))
+        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">n*</span>)
+            (<span class="func">cons</span> (<span class="func">list</span> (<span class="func">car</span> <span class="var">n*</span>) (<span class="func">compute-kind</span> <span class="var">r</span> (<span class="func">car</span> <span class="var">n*</span>)))
+                  (<span class="func">scan</span> (<span class="func">cdr</span> <span class="var">n*</span>)) )
+            <span class="hash">'()</span> ) ) ) )</pre>
 
-<p>
-\subsection{\texorpdfstring{Функция \protect<code><span class="func">eval/b</span></code>}{Функция eval/b}}%
-\label{reflection/reify-env/ssect:eval/b}</p>
+
+<h3 id="reflection/reify-env/ssect:eval/b"><span class="seq">8.6.2.</span> Функция <code><span class="func">eval/b</span></code></h3>
 
 <p>На этом сходства <code><span class="func">eval/b</span></code> с <code><span class="func">eval/ce</span></code> не заканчиваются. Они похожи ещё
 в том, как получают параметры и возвращают значения. Будет полезным сравнить
@@ -1164,35 +1143,34 @@ P-списков, но нередко в этой роли можно встре
 разместила результат в памяти и передала ему управление. Текущее окружение
 сохранять не требуется, так как за это отвечает протокол вызова функций.</p>
 
-
 <!--\indexC{eval/b}-->
 <!--\indexC{compile-and-evaluate}-->
-<pre>(definitial eval/b
-  (let* ((arity 2)
-         (arity+1 (+ 1 arity)) )
-    (make-primitive
-      (lambda ()
-        (if (= arity+1 (activation-frame-argument-length *val*))
-            (let ((exp (activation-frame-argument *val* 0))
-                  (env (activation-frame-argument *val* 1)) )
-              (if (program? exp)
-                  (if (reified-environment? env)
-                      (compile-and-evaluate exp env)
-                      (signal-exception
-                       #t (list "Not an environment" env) ) )
-                  (signal-exception
-                   #t (list "Illegal program" exp) ) ) )
-            (signal-exception
-             #t (list "Incorrect arity" 'eval/b) ) ) ) ) ) )</p>
+<pre>(<span class="syntax">definitial</span> <span class="var">eval/b</span>
+  (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">2</span>)
+         (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+    (<span class="func">make-primitive</span>
+      (<span class="special">lambda</span> ()
+        (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity+1</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>))
+            (<span class="syntax">let</span> ((<span class="var">exp</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>))
+                  (<span class="var">env</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">1</span>)) )
+              (<span class="special">if</span> (<span class="func">program?</span> <span class="var">exp</span>)
+                  (<span class="special">if</span> (<span class="func">reified-environment?</span> <span class="var">env</span>)
+                      (<span class="func">compile-and-evaluate</span> <span class="var">exp</span> <span class="var">env</span>)
+                      (<span class="func">signal-exception</span>
+                       <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Not an environment"</span> <span class="var">env</span>) ) )
+                  (<span class="func">signal-exception</span>
+                   <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Illegal program"</span> <span class="var">exp</span>) ) ) )
+            (<span class="func">signal-exception</span>
+             <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">eval/b</span>) ) ) ) ) ) )
 
-<p>(define (compile-and-evaluate v env)
-  (let ((r (reified-environment-r env))
-        (sr (reified-environment-sr env)) )
-    (set! *env* sr)
-    (set! *pc* (compile-on-the-fly v r)) ) )</pre>
+(<span class="special">define</span> (<span class="func">compile-and-evaluate</span> <span class="var">v</span> <span class="var">env</span>)
+  (<span class="syntax">let</span> ((<span class="var">r</span> (<span class="func">reified-environment-r</span> <span class="var">env</span>))
+        (<span class="var">sr</span> (<span class="func">reified-environment-sr</span> <span class="var">env</span>)) )
+    (<span class="special">set!</span> <span class="var">*env*</span> <span class="var">sr</span>)
+    (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">compile-on-the-fly</span> <span class="var">v</span> <span class="var">r</span>)) ) )</pre>
 
-<h3 id="reflection/reify-env/ssect:enrich">Расширяем окружения</h3>
 
+<h3 id="reflection/reify-env/ssect:enrich"><span class="seq">8.6.3.</span> Расширяем окружения</h3>
 
 <!--\indexC{letrec}-->
 <!--\indexC{enrich}-->
@@ -1202,86 +1180,85 @@ P-списков, но нередко в этой роли можно встре
 принимающую окружение и список добавляемых имён. Возвращаемым значением будет
 <em>новое</em> расширенное окружение. <code><span class="func">enrich</span></code> — это чисто функциональный
 модификатор, она не изменяет свои аргументы. Рассмотрим пример её использования
-— ручную эмуляцию <code><span class="func">letrec</span></code>. Сначала захватывается глобальная привязка,%
-\footnote*{А вот и архитектурная ошибочка нашлась: <code><span class="func">export</span></code> не позволяет
-захватить <em>пустое</em> окружение! Поэтому мы захватываем хоть что-нибудь —
-в данном случае функцию умножения, — чтобы получить начальное окружение для
-манипуляций (аналогичный костыль применён в <span class="cite">[<a href="z1_bibliography.xhtml#qd96">qd96</a>]</span>).} затем к ней
-добавляются привязки двух локальных переменных <code><span class="func">odd?</span></code> и <code><span class="func">even?</span></code>, после
+— ручную эмуляцию <code><span class="syntax">letrec</span></code>. Сначала захватывается глобальная привязка<a class="footref" href="zz_footnotes.xhtml#foot8.7"><sup>7</sup></a>,
+затем к ней добавляются привязки двух локальных переменных
+<code><span class="var">odd?</span></code> и
+<code><span class="var">even?</span></code>, после
 чего определяется пара взаимно рекурсивных функций и, наконец, выполняются
 вычисления с их помощью.</p>
 
-
 <!--\indexC{odd"?}-->
 <!--\indexC{even"?}-->
-<pre>((lambda (e)
-   (set! e (enrich (export *) 'even? 'odd?))
-   (eval/b '(set! even? (lambda (n) (if (= n 0) #t (odd? (- n 1))))) e)
-   (eval/b '(set! odd? (lambda (n) (if (= n 0) #f (even? (- n 1))))) e)
-   (eval/b '(even? 4) e) )
- 'ee )                     |\is| #t</pre>
+<pre>((<span class="special">lambda</span> (<span class="var">e</span>)
+   (<span class="special">set!</span> <span class="var">e</span> (<span class="func">enrich</span> (<span class="special">export</span> <span class="var">*</span>) '<span class="var">even?</span> '<span class="var">odd?</span>))
+   (<span class="func">eval/b</span> '(<span class="special">set!</span> <span class="var">even?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) <span class="var">e</span>)
+   (<span class="func">eval/b</span> '(<span class="special">set!</span> <span class="var">odd?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span> (<span class="func">even?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) <span class="var">e</span>)
+   (<span class="func">eval/b</span> '(<span class="func">even?</span> <span class="num">4</span>) <span class="var">e</span>) )
+ '<span class="var">ee</span> )                     <span class="math"><span class="rel">→</span></span> <span class="hash">#t</span></pre>
 
-<p>Структура используемых окружений показана на
-рисунке \ref{reflection/reify-env/enrich/pic:subj}. Вначале создаётся запись
+<p>Структура используемых окружений показана на рисунке
+<a href="#reflection/reify-env/enrich/pic:subj">8.3</a>. Вначале создаётся запись
 активации для хранения новых переменных, затем создаётся окружение, связывающее
 имена переменных с новыми адресами. Единственная проблема состоит в том, что
 новые переменные объективно существуют, но ещё не имеют значений. С аналогичными
-затруднениями при реализации формы <code><span class="func">letrec</span></code> мы уже сталкивались ранее.
-\seePage[lisp1-2-omega/recusion/ssect:uninitialized]</p>
+затруднениями при реализации формы <code><span class="syntax">letrec</span></code>
+мы уже сталкивались ранее.
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span></p>
 
 
 <!--\indexC{checked-local}-->
 <!--\indexR{привязки (bindings)!неинициализированные}-->
-<p>Решением будет новый тип адресов: <code><span class="func">checked-local</span></code>, являющийся локальным
-аналогом <code><span class="func">checked-global</span></code>. Текущее определение <code><span class="func">enrich</span></code> допускает
+<p>Решением будет новый тип адресов: <code><span class="var">checked-local</span></code>,
+являющийся локальным аналогом <code><span class="var">checked-global</span></code>.
+Текущее определение <code><span class="func">enrich</span></code> допускает
 существование локальных переменных, которые не имеют значений, что было
-невозможным при использовании <code><span class="func">lambda</span></code>. Поэтому нам потребуется специальная
+невозможным при использовании <code><span class="special">lambda</span></code>.
+Поэтому нам потребуется специальная
 разновидность привязок для данного случая. Конечно, как вариант можно было бы
 разрешить расширять окружения исключительно инициализированными переменными.</p>
 
-<p>Написать определение <code><span class="func">enrich</span></code> теперь не составит большого труда, пусть оно и
-получилось весьма объёмным:</p>
-
+<p>Написать определение <code><span class="func">enrich</span></code> теперь не
+составит большого труда, пусть оно и получилось весьма объёмным:</p>
 
 <!--\indexC{enrich}-->
 <!--\indexC{checked-r-extend*}-->
-<pre>(definitial enrich
-  (let ((arity+1 (+ 1 1)))
-    (make-primitive
-     (lambda ()
-       (if (>= (activation-frame-argument-length *val*) arity+1)
-         (let ((env (activation-frame-argument *val* 0)))
-           (listify! *val* 1)
-           (if (reified-environment? env)
-             (let* ((names (activation-frame-argument *val* 1))
-                    (len (- (activation-frame-argument-length *val*)
-                            2 ))
-                    (r (reified-environment-r env))
-                    (sr (reified-environment-sr env))
-                    (frame (allocate-activation-frame
-                            (length names) )) )
-               (set-activation-frame-next! frame sr)
-               (do ((i (- len 1) (- i 1)))
-                   ((< i 0))
-                 (set-activation-frame-argument! frame i
-                                                 undefined-value ) )
-               (unless (every? symbol? names)
-                 (signal-exception
-                  #f (list "Incorrect variable names" names) ) )
-               (set! *val* (make-reified-environment frame
-                            (checked-r-extend* r names) ))
-               (set! *pc* (stack-pop)) )
-             (signal-exception
-              #t (list "Not an environment" env) ) ) )
-         (signal-exception
-          #t (list "Incorrect arity" 'enrich) ) ) ) ) ) )</p>
+<pre>(<span class="syntax">definitial</span> <span class="var">enrich</span>
+  (<span class="syntax">let</span> ((<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">1</span>)))
+    (<span class="func">make-primitive</span>
+     (<span class="special">lambda</span> ()
+       (<span class="special">if</span> (<span class="func">>=</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>) <span class="var">arity+1</span>)
+         (<span class="syntax">let</span> ((<span class="var">env</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">0</span>)))
+           (<span class="func">listify!</span> <span class="var">*val*</span> <span class="num">1</span>)
+           (<span class="special">if</span> (<span class="func">reified-environment?</span> <span class="var">env</span>)
+             (<span class="syntax">let*</span> ((<span class="var">names</span> (<span class="func">activation-frame-argument</span> <span class="var">*val*</span> <span class="num">1</span>))
+                    (<span class="var">len</span> (<span class="func">-</span> (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>)
+                            <span class="num">2</span> ))
+                    (<span class="var">r</span> (<span class="func">reified-environment-r</span> <span class="var">env</span>))
+                    (<span class="var">sr</span> (<span class="func">reified-environment-sr</span> <span class="var">env</span>))
+                    (<span class="var">frame</span> (<span class="func">allocate-activation-frame</span>
+                            (<span class="func">length</span> <span class="var">names</span>) )) )
+               (<span class="func">set-activation-frame-next!</span> <span class="var">frame</span> <span class="var">sr</span>)
+               (<span class="syntax">do</span> ((<span class="var">i</span> (<span class="func">-</span> <span class="var">len</span> <span class="num">1</span>) (<span class="func">-</span> <span class="var">i</span> <span class="num">1</span>)))
+                   ((<span class="func">&lt;</span> <span class="var">i</span> <span class="num">0</span>))
+                 (<span class="func">set-activation-frame-argument!</span> <span class="var">frame</span> <span class="var">i</span>
+                                                 <span class="var">undefined-value</span> ) )
+               (<span class="syntax">unless</span> (<span class="func">every?</span> <span class="var">symbol?</span> <span class="var">names</span>)
+                 (<span class="func">signal-exception</span>
+                  <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Incorrect variable names"</span> <span class="var">names</span>) ) )
+               (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">make-reified-environment</span> <span class="var">frame</span>
+                            (<span class="func">checked-r-extend*</span> <span class="var">r</span> <span class="var">names</span>) ))
+               (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
+             (<span class="func">signal-exception</span>
+              <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Not an environment"</span> <span class="var">env</span>) ) ) )
+         (<span class="func">signal-exception</span>
+          <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">enrich</span>) ) ) ) ) ) )
 
-<p>(define (checked-r-extend* r n*)
-  (let ((old-r (bury-r r 1)))
-    (let scan ((n* n*) (i 0))
-      (cond ((pair? n*) (cons (list (car n*) `(checked-local 0 . ,i))
-                              (scan (cdr n*) (+ i 1)) ))
-            ((null? n*) old-r) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">checked-r-extend*</span> <span class="var">r</span> <span class="var">n*</span>)
+  (<span class="syntax">let</span> ((<span class="var">old-r</span> (<span class="func">bury-r</span> <span class="var">r</span> <span class="num">1</span>)))
+    (<span class="syntax">let</span> <span class="func">scan</span> ((<span class="var">n*</span> <span class="var">n*</span>) (<span class="func">i</span> <span class="num">0</span>))
+      (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">n*</span>) (<span class="func">cons</span> (<span class="func">list</span> (<span class="func">car</span> <span class="var">n*</span>) <span class="var">`</span>(<span class="func">checked-local</span> <span class="num">0</span> . <span class="var">,i</span>))
+                              (<span class="func">scan</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)) ))
+            ((<span class="func">null?</span> <span class="var">n*</span>) <span class="var">old-r</span>) ) ) ) )</pre>
 
 <p>\begin{figure}\centering
 \input{figures/fig8.3}
@@ -1289,106 +1266,108 @@ P-списков, но нередко в этой роли можно встре
 \label{reflection/reify-env/enrich/pic:subj}%
 \end{figure}</p>
 
-<p>Также необходимо дополнить определения <code><span class="func">meaning-reference</span></code> и
-<code><span class="func">meaning-assignment</span></code>, дабы они учитывали новый тип привязок
-(<code><span class="func">checked-local</span></code>).</p>
-
+<p>Также необходимо дополнить определения <code><span class="func">meaning-reference</span></code>
+и <code><span class="func">meaning-assignment</span></code>, дабы они учитывали новый тип привязок
+(<code><span class="var">checked-local</span></code>).</p>
 
 <!--\indexC{meaning-reference}-->
 <!--\indexC{meaning-assignment}-->
-<pre>(define (meaning-reference n r tail?)
-  (let ((kind (compute-kind r n)))
-    (if kind (case (car kind)
-               ((checked-local)
-                (let ((i (cadr kind))
-                      (j (cddr kind)) )
-                  (CHECKED-DEEP-REF i j) ) )
-               ((local)
-                (let ((i (cadr kind))
-                      (j (cddr kind)) )
-                  (if (= i 0)
-                      (SHALLOW-ARGUMENT-REF j)
-                      (DEEP-ARGUMENT-REF i j) ) ) )
-               ((global)
-                (let ((i (cdr kind)))
-                  (CHECKED-GLOBAL-REF i) ) )
-               ((predefined)
-                (let ((i (cdr kind)))
-                  (PREDEFINED i) ) ) )
-        (static-wrong "No such variable" n) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">meaning-reference</span> <span class="var">n</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)))
+    (<span class="special">if</span> <span class="var">kind</span> (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+               ((<span class="var">checked-local</span>)
+                (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                      (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+                  (<span class="func">CHECKED-DEEP-REF</span> <span class="var">i</span> <span class="var">j</span>) ) )
+               ((<span class="var">local</span>)
+                (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                      (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+                  (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                      (<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="var">j</span>)
+                      (<span class="func">DEEP-ARGUMENT-REF</span> <span class="var">i</span> <span class="var">j</span>) ) ) )
+               ((<span class="var">global</span>)
+                (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+                  (<span class="func">CHECKED-GLOBAL-REF</span> <span class="var">i</span>) ) )
+               ((<span class="var">predefined</span>)
+                (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+                  (<span class="func">PREDEFINED</span> <span class="var">i</span>) ) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )
 
-<p>(define (meaning-assignment n e r tail?)
-  (let ((m (meaning e r #f))
-        (kind (compute-kind r n)))
-    (if kind
-        (case (car kind)
-          ((local checked-local)
-           (let ((i (cadr kind))
-                 (j (cddr kind)) )
-             (if (= i 0)
-                 (SHALLOW-ARGUMENT-SET! j m)
-                 (DEEP-ARGUMENT-SET! i j m) ) ) )
-          ((global)
-           (let ((i (cdr kind)))
-             (GLOBAL-SET! i m) ) )
-          ((predefined)
-           (static-wrong "Immutable predefined variable" n) ) )
-        (static-wrong "No such variable" n) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">meaning-assignment</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>)
+  (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="hash">#f</span>))
+        (<span class="var">kind</span> (<span class="func">compute-kind</span> <span class="var">r</span> <span class="var">n</span>)))
+    (<span class="special">if</span> <span class="var">kind</span>
+        (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">kind</span>)
+          ((<span class="var">local</span> <span class="var">checked-local</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cadr</span> <span class="var">kind</span>))
+                 (<span class="var">j</span> (<span class="func">cddr</span> <span class="var">kind</span>)) )
+             (<span class="special">if</span> (<span class="func">=</span> <span class="var">i</span> <span class="num">0</span>)
+                 (<span class="func">SHALLOW-ARGUMENT-SET!</span> <span class="var">j</span> <span class="var">m</span>)
+                 (<span class="func">DEEP-ARGUMENT-SET!</span> <span class="var">i</span> <span class="var">j</span> <span class="var">m</span>) ) ) )
+          ((<span class="var">global</span>)
+           (<span class="syntax">let</span> ((<span class="var">i</span> (<span class="func">cdr</span> <span class="var">kind</span>)))
+             (<span class="func">GLOBAL-SET!</span> <span class="var">i</span> <span class="var">m</span>) ) )
+          ((<span class="var">predefined</span>)
+           (<span class="func">static-wrong</span> <span class="string">"Immutable predefined variable"</span> <span class="var">n</span>) ) )
+        (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )</pre>
 
 <p>И, конечно же, не забываем о новой инструкции <code><span class="func">CHECKED-DEEP-REF</span></code>:</p>
 
-
 <!--\indexC{CHECKED-DEEP-REF}-->
-<pre>(define-instruction (CHECKED-DEEP-REF i j) 253
-  (set! *val* (deep-fetch *env* i j))
-  (when (eq? *val* undefined-value)
-    (signal-exception #t (list "Uninitialized local variable")) ) )</pre>
+<pre>(<span class="syntax">define-instruction</span> (<span class="func">CHECKED-DEEP-REF</span> <span class="var">i</span> <span class="var">j</span>) <span class="num">253</span>
+  (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">deep-fetch</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span>))
+  (<span class="syntax">when</span> (<span class="func">eq?</span> <span class="var">*val*</span> <span class="var">undefined-value</span>)
+    (<span class="func">signal-exception</span> <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Uninitialized local variable"</span>)) ) )</pre>
 
-<h3 id="reflection/reify-env/ssect:closed">Анатомия замыканий</h3>
 
+<h3 id="reflection/reify-env/ssect:closed"><span class="seq">8.6.4.</span> Анатомия замыканий</h3>
 
 <!--\indexC{procedure->environment}-->
 <!--\indexC{procedure->definition}-->
 <!--\indexR{замыкания (closures)!структура}-->
 <p>Некоторые интерпретаторы предоставляют примитивы, позволяющие извлечь из
-замыкания хранимое в нём окружение. Кроме функции <code><span class="func">procedure->environment</span></code>
-также часто имеется и <code><span class="func">procedure->definition</span></code>, которая возвращает код
+замыкания хранимое в нём окружение. Кроме функции
+<code><span class="func">procedure->environment</span></code>
+также часто имеется и
+<code><span class="func">procedure->definition</span></code>, которая возвращает код
 замыкания. Эту пару функций довольно легко реализовать для интерпретатора,
 но в случае компилятора задача уже не такая тривиальная и требует несколько
 большего объёма памяти. Им необходимо сохранить определения функций (которые
 занимают место в памяти), а также явно представить (в памяти) структуру
-замкнутых окружений. Более того, функция <code><span class="func">procedure->environment</span></code> пагубно
+замкнутых окружений. Более того, функция
+<code><span class="func">procedure->environment</span></code> пагубно
 влияет на оптимизацию, так как теперь становится возможным добраться даже до
-святая святых — замкнутых свободных переменных, прежде недоступных вообще никому, кроме собственно замыканий. Функция <code><span class="func">procedure->environment</span></code> в этом плане ещё хуже,
-чем <code><span class="func">export</span></code>: последняя хотя бы ограничивает негативные последствия явно
+святая святых — замкнутых свободных переменных, прежде недоступных вообще никому,
+кроме собственно замыканий. Функция <code><span class="func">procedure->environment</span></code>
+в этом плане ещё хуже, чем <code><span class="special">export</span></code>: последняя хотя бы
+ограничивает негативные последствия явно
 указанными переменными.</p>
-
 
 <!--\indexR{интроспекция}-->
 <!--\indexR{трассировка}-->
-<p>Функция <code><span class="func">procedure->definition</span></code> полезна своими интроспективными
-возможностями. С её помощью можно создать отладчик, обладающий полным контролем
-над отлаживаемыми программами. Например, рассмотрим функцию
-<code><span class="func">trace-procedure1</span></code>, которая принимает унарную функцию, разбирает её на части
-и собирает из них новую унарную функцию, аналогичную исходной, но выводящую на
-экран свой аргумент и результат выполнения.</p>
+<p>Функция <code><span class="func">procedure->definition</span></code> полезна
+своими интроспективными возможностями. С её помощью можно создать отладчик, обладающий
+полным контролем над отлаживаемыми программами. Например, рассмотрим функцию
+<code><span class="func">trace-procedure1</span></code>, которая принимает унарную функцию,
+разбирает её на части и собирает из них новую унарную функцию, аналогичную исходной,
+но выводящую на экран свой аргумент и результат выполнения.</p>
 
-<pre>(define (trace-procedure1 f)
-  (let* ((env (procedure->environment f))
-         (definition (procedure->definition f))
-         (variable (car (car definition)))
-         (body (cddr definition)) )
-    (lambda (variable)
-      (display (list 'entering f 'with value))
-      (eval/b `(begin (set! ,variable ',value)
-                      (let ((result (begin . ,body)))
-                        (display (list 'result 'is result))
-                        result ) )
-              (enrich env variable) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">trace-procedure1</span> <span class="var">f</span>)
+  (<span class="syntax">let*</span> ((<span class="var">env</span> (<span class="func">procedure->environment</span> <span class="var">f</span>))
+         (<span class="var">definition</span> (<span class="func">procedure->definition</span> <span class="var">f</span>))
+         (<span class="var">variable</span> (<span class="func">car</span> (<span class="func">car</span> <span class="var">definition</span>)))
+         (<span class="var">body</span> (<span class="func">cddr</span> <span class="var">definition</span>)) )
+    (<span class="special">lambda</span> (<span class="var">variable</span>)
+      (<span class="func">display</span> (<span class="func">list</span> '<span class="var">entering</span> <span class="var">f</span> '<span class="var">with</span> <span class="var">value</span>))
+      (<span class="func">eval/b</span> `(<span class="special">begin</span> (<span class="special">set!</span> ,<span class="var">variable</span> ',<span class="var">value</span>)
+                      (<span class="syntax">let</span> ((<span class="var">result</span> (<span class="special">begin</span> . ,<span class="var">body</span>)))
+                        (<span class="func">display</span> (<span class="func">list</span> '<span class="var">result</span> '<span class="var">is</span> <span class="var">result</span>))
+                        <span class="var">result</span> ) )
+              (<span class="func">enrich</span> <span class="var">env</span> <span class="var">variable</span>) ) ) ) )</pre>
 
 <p>Если быть честным, эта программа немного жульничает. Встраиваемая функция вроде
 <code><span class="func">car</span></code> её сломает, а код, синтезируемый для <code><span class="func">eval/b</span></code>, не обязательно
-является корректным, так как цитирует значение переменной <code><span class="func">value</span></code>, которое
+является корректным, так как цитирует значение переменной <code><span class="var">value</span></code>, которое
 может оказаться нецитируемым (к примеру, замыканием). Тем не менее,
 <code><span class="func">trace-procedure1</span></code> является хорошим примером взаимодействия интроспекции,
 полноценных окружений и динамических вычислений.</p>
@@ -1402,7 +1381,7 @@ P-списков, но нередко в этой роли можно встре
 данной абстракции ссылаются на один и тот же код, так что цитируемое определение
 разумно разместить где-то поблизости. Подобное перемежение кода и данных хорошо
 известно программистам на ассемблере. Иллюстрация идеи приведена на
-рисунке \ref{reflection/reify-env/closed/pic:subj}.</p>
+рисунке <a href="#reflection/reify-env/closed/pic:subj">8.4</a>.</p>
 
 <p>\begin{figure}\begin{center}
 \input{figures/fig8.4}
@@ -1411,13 +1390,10 @@ P-списков, но нередко в этой роли можно встре
 \label{reflection/reify-env/closed/pic:subj}%
 \end{figure}</p>
 
-<p>Реализация данной идеи тривиальна.\footnote*{<code><span class="func">EXPLICIT-CONSTANT</span></code> используется
-для того, чтобы не получить <code>(PREDEFINED0)</code> вместо ожидаемого
-<code>(CONSTANT '())</code>.} Для нужд <code><span class="func">procedure->environment</span></code> и
-<code><span class="func">procedure->definition</span></code> в кодогенераторы абстракций необходимо передавать
-определения соответствующих функций и их окружения. $n$-арный вариант данной
-функции легко написать по аналогии:</p>
-
+<p>Реализация данной идеи тривиальна.<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a> Для нужд <code><span class="func">procedure->environment</span></code> и
+<code><span class="func">procedure->definition</span></code> в кодогенераторы абстракций
+необходимо передавать определения соответствующих функций и их окружения.
+<i>n</i>-арный вариант данной функции легко написать по аналогии:</p>
 
 <!--\indexC{meaning-fix-abstraction}-->
 <!--\indexC{REFLECTIVE-FIX-CLOSURE}-->
