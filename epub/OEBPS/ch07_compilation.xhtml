@@ -1454,10 +1454,10 @@
 
 <!--\indexC{invoke}-->
 <!--\indexCS{invoke}{<code><span class="func">closure</span></code>}-->
-<pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="func">f</span>) <span class="var">tail?</span>)
+<pre>(<span class="syntax">define-generic</span> (<span class="func">invoke</span> (<span class="var">f</span>) <span class="var">tail?</span>)
   (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a function"</span> <span class="var">f</span>)) )
 
-(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="func">f</span> <span class="class">closure</span>) <span class="var">tail?</span>)
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">closure</span>) <span class="var">tail?</span>)
   (<span class="syntax">unless</span> <span class="var">tail?</span> (<span class="func">stack-push</span> <span class="var">*pc*</span>))
   (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">closure-closed-environment</span> <span class="var">f</span>))
   (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">closure-code</span> <span class="var">f</span>)) )</pre>
@@ -1466,7 +1466,7 @@
 другие объекты: например, на примитивы, представляемые замыканиями.</p>
 
 <!--\indexCS{invoke}{<code><span class="func">primitive</span></code>}-->
-<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="func">f</span> <span class="var">primitive</span>) <span class="var">tail?</span>)
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">primitive</span>) <span class="var">tail?</span>)
   (<span class="syntax">unless</span> <span class="var">tail?</span> (<span class="func">stack-push</span> <span class="var">*pc*</span>))
   ((<span class="func">primitive-address</span> <span class="var">f</span>)) )</pre>
 
@@ -1717,7 +1717,7 @@
 <pre>(<span class="syntax">define-class</span> <span class="class">continuation</span> <span class="class">Object</span>
   ( <span class="var">stack</span> ) )
 
-(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="func">f</span> <span class="class">continuation</span>) <span class="var">tail?</span>)
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">continuation</span>) <span class="var">tail?</span>)
   (<span class="special">if</span> (<span class="func">=</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">1</span>) (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>))
       (<span class="special">begin</span>
         (<span class="func">restore-stack</span> (<span class="func">continuation-stack</span> <span class="var">f</span>))
@@ -1895,7 +1895,7 @@
 
 <!--\indexCS{invoke}{<code><span class="func">escape</span></code>}-->
 <!--\indexC{escape-valid"?}-->
-<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="func">f</span> <span class="class">escape</span>) <span class="var">tail?</span>)
+<pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">escape</span>) <span class="var">tail?</span>)
   (<span class="special">if</span> (<span class="func">=</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">1</span>) (<span class="func">activation-frame-argument-length</span> <span class="var">*val*</span>))
       (<span class="special">if</span> (<span class="func">escape-valid?</span> <span class="var">f</span>)
           (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">*stack-index*</span> (<span class="func">escape-stack-index</span> <span class="var">f</span>))
