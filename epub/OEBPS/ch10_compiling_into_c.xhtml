@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru"></p>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
-<p><body>
-\chapter{Компиляция в Си}\label{chapter:cc}</p>
+<head>
+    <title>Компиляция в Си</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+</head>
 
+<body id="chapter:cc">
 
-<h1>!!sed похерил тильдочки в формах format, верни их обратно!!</h1>
+<h1><span class="seq">Глава 10.</span> Компиляция в Си</h1>
 
 <!--\indexR{язык!целевой}-->
-<p>\initial{0.25ex}{0.0ex}{И}{\kern0.95ex ещё одна глава} о компиляции. Но в этот
-раз мы разберём несколько новых подходов, в частности, плоские окружения, а ещё
+<p><span class="initial"><span class="letter">И</span> ещё одна глава</span> о компиляции.
+Но в этот раз мы разберём несколько новых подходов, в частности, плоские окружения, а ещё
 у нас сменился целевой язык: теперь им будет Си. Подобное сочетание языков
 поднимает несколько своеобразных вопросов, стоящих рассмотрения. С одной
 стороны, брак с представителем более высокого сословия сулит определённые
@@ -20,7 +23,6 @@
 мусора.</p>
 
 <div class="bigskip"/>
-
 
 <!--\indexR{компиляция!в язык высокого уровня}-->
 <p>Компиляция в язык высокого уровня, вроде Си, интересна во многих отношениях. Так
@@ -48,7 +50,7 @@
 языка исходного, это плохо сказывается как на сложности самого процесса
 преобразования, так и на эффективности использования возможностей целевого
 языка. Си разрабатывался как язык системного программирования (изначально для
-написания \UNIX), поэтому в нём намеренно применяется явное управление памятью.
+написания UNIX), поэтому в нём намеренно применяется явное управление памятью.
 Вследствие этого могут возникать невероятно каверзные ошибки, если программист
 не будет предельно осторожен с указателями, — иначе это лишь вопрос времени,
 когда программа выйдет из-под контроля и начнёт творить непоправимое. В Лиспе
@@ -64,48 +66,53 @@
 замкнутый круг.</p>
 
 <p>Как бы то ни было, нельзя сказать, что Си непопулярен в качестве целевого языка
-компиляции Лиспа. Достаточно упомянуть Kyoto <span class="logo">Common Lisp</span> <span class="cite">[<a href="z1_bibliography.xhtml#yh85">yh85</a>]</span> (а также
-улучшенный Уильямом Скэлтером AKCL), WCL <span class="cite">[<a href="z1_bibliography.xhtml#hen92b">hen92b</a>]</span>, CLICC <span class="cite">[<a href="z1_bibliography.xhtml#hof93">hof93</a>]</span>,
-ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</span>, Scheme$\to$C <span class="cite">[<a href="z1_bibliography.xhtml#bar89">bar89</a>]</span>, Sqil <span class="cite">[<a href="z1_bibliography.xhtml#sen91">sen91</a>]</span>, ILOG Talk
-<span class="cite">[<a href="z1_bibliography.xhtml#ilo94">ilo94</a>]</span>, Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">ser94</a>]</span>.</p>
+компиляции Лиспа. Достаточно упомянуть Kyoto <span class="logo">Common Lisp</span>
+<span class="cite">[<a href="z1_bibliography.xhtml#yh85">YH85</a>]</span> (а также
+улучшенный Уильямом Скэлтером AKCL), WCL <span class="cite">[<a href="z1_bibliography.xhtml#hen92b">Hen92b</a>]</span>,
+CLICC <span class="cite">[<a href="z1_bibliography.xhtml#hof93">Hof93</a>]</span>,
+ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">Att95</a>]</span>,
+Scheme<span class="math"><span class="rel">→</span></span>C <span class="cite">[<a href="z1_bibliography.xhtml#bar89">Bar89</a>]</span>,
+Sqil <span class="cite">[<a href="z1_bibliography.xhtml#sen91">Sén91</a>]</span>,
+ILOG Talk <span class="cite">[<a href="z1_bibliography.xhtml#ilo94">ILO94</a>]</span>,
+Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>.</p>
 
 <p>Наш компилятор им не соперник. Это лишь набросок, однако имеющий достаточное
 количество интересных деталей. Конечно, можно было бы пойти простым путём
-(кто-то поправит: тривиальным) — взять компилятор в байт-код из седьмой
-главы \seePage[chapter:compilation] и переработать его, чтобы он выводил код на
-Си, а не байты. Ведь для каждой машинной инструкции определена её операционная
-семантика, так что не составит труда перевести их все на Си. Однако нас ожидает
-совершенно иной путь, пролегающий сквозь страну плоских окружений.
-\seePage[fast/fast/variations/ssect:flat] Рассматриваемый компилятор будет
+(кто-то поправит: тривиальным) — взять компилятор в байт-код из
+<a href="ch07_compilation.xhtml">седьмой главы</a> и переработать его, чтобы он
+выводил код на Си, а не байты. Ведь для каждой машинной инструкции определена её
+операционная семантика, так что не составит труда перевести их все на Си. Однако
+нас ожидает совершенно иной путь, пролегающий сквозь страну плоских окружений.
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/variations/ssect:flat">6.1.9</a>]</span> Рассматриваемый компилятор будет
 многопроходным. Объектное представление обрабатываемых программ значительно
 облегчит их анализ и трансформацию. По сути, именно систематический
 объектно-ориентированный подход делает излагаемый в данной главе материал столь
 элегантным и расширяемым.</p>
 
-<h2 id="cc/sect:objectification">Объектификация</h2>
 
+<h2 id="cc/sect:objectification"><span class="seq">10.1.</span> Объектификация</h2>
 
 <!--\indexR{объектификация}-->
-<p>В разделе \ref{macros/macrosystem/ssect:object}
-\seePage[macros/macrosystem/ssect:object] рассматривался алгоритм преобразования
-программ в объектную форму. Он раскрывает все макросы и в конечном итоге
-возвращает готовый объект класса <code><span class="func">Program</span></code>. Чтобы разбавить это весьма
+<p>В разделе <a href="ch09_macros.xhtml#macros/macrosystem/ssect:object">9.11.1</a>
+рассматривался алгоритм преобразования программ в объектную форму. Он раскрывает
+все макросы и в конечном итоге возвращает готовый объект класса
+<code><span class="class">Program</span></code>. Чтобы разбавить это весьма
 лаконичное описание, вашему вниманию предлагается
-рисунок \ref{cc/objectification/pic:result} с результатом объектификации
+рисунок <a href="#cc/objectification/pic:result">10.1</a> с результатом объектификации
 следующей далее программы. В ней, если присмотреться, можно найти каждый
 изученный нами существенный аспект Scheme. Страницы не безграничны, так что
 имена классов записаны сокращённо, а часть дерева и вовсе не показана. На
 протяжении этой главы мы не раз будем возвращаться к данному примеру.</p>
 
-<pre>(begin
-  (set! index 1)
-  ((lambda (cnter . tmp)
-     (set! tmp (cnter (lambda (i) (lambda x (cons i x)))))
-     (if cnter (cnter tmp) index) )
-   (lambda (f)
-     (set! index (+ 1 index))
-     (f index) )
-   'foo) )        |$\is$| (2 3)</pre>
+<pre>(<span class="special">begin</span>
+  (<span class="special">set!</span> <span class="var">index</span> <span class="num">1</span>)
+  ((<span class="special">lambda</span> (<span class="var">cnter</span> . <span class="var">tmp</span>)
+     (<span class="special">set!</span> <span class="var">tmp</span> (<span class="func">cnter</span> (<span class="special">lambda</span> (<span class="var">i</span>) (<span class="special">lambda</span> <span class="var">x</span> (<span class="func">cons</span> <span class="var">i</span> <span class="var">x</span>)))))
+     (<span class="special">if</span> <span class="var">cnter</span> (<span class="func">cnter</span> <span class="var">tmp</span>) <span class="var">index</span>) )
+   (<span class="special">lambda</span> (<span class="var">f</span>)
+     (<span class="special">set!</span> <span class="var">index</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">index</span>))
+     (<span class="func">f</span> <span class="var">index</span>) )
+   '<span class="var">foo</span>) )        <span class="math"><span class="rel">→</span></span> (<span class="num">2</span> <span class="num">3</span>)</pre>
 
 <p>\begin{figure}\centering
 \input{figures/fig10.1}
@@ -113,22 +120,23 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 \label{cc/objectification/pic:result}
 \end{figure}</p>
 
-<h2 id="cc/sect:code-walk">Обход кода</h2>
 
+<h2 id="cc/sect:code-walk"><span class="seq">10.2.</span> Обход кода</h2>
 
 <!--\indexR{обход кода}-->
 <!--\indexR{синтаксическое дерево}-->
 <p>Обход кода является чрезвычайно важным приёмом при построении компиляторов.
-\cite{cur89,wat93} Суть его состоит в обходе построенного ранее дерева,
+<span class="cite">[<a href="z1_bibliography.xhtml#cur89">Cur89</a>,
+<a href="z1_bibliography.xhtml#wat93">Wat93</a>]</span>
+Суть его состоит в обходе построенного ранее дерева,
 представляющего обрабатываемую программу. В процессе него собирается информация,
 в узлах дерева оставляются разнообразные пометки, и так далее; всё это делается
 ради облегчения следующего этапа — кодогенерации. Порядок обхода, а также
 используемые структуры данных сильно зависят от поставленных целей, поэтому
 какого-либо универсального алгоритма не существует. Если вдуматься, то все наши
 интерпретаторы — это именно обходчики кода, которые исполняют его в процессе;
-и предобработчик <code><span class="func">meaning</span></code> из главы про быструю интерпретацию
-\seePage[chapter:fast] также является специализированным обходчиком.</p>
-
+и предобработчик <code><span class="func">meaning</span></code> из <a href="ch06_fast_interpretation.xhtml">главы про быструю интерпретацию</a>
+также является специализированным обходчиком.</p>
 
 <!--\indexR{метаметод}-->
 <!--\indexR{методы!метаметоды}-->
@@ -136,26 +144,25 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 время действия могут быть различными. Для такого случая отлично подходит идиома
 <em class="term">метаметода</em> (или метода высшего порядка, если хотите). Функция
 <code><span class="func">update-walk!</span></code> принимает следующие аргументы: обобщённую функцию <i>g</i>,
-объект <i>o</i> класса <code><span class="func">Program</span></code>, а также неопределённое количество
+объект <i>o</i> класса <code><span class="class">Program</span></code>, а также неопределённое количество
 дополнительных аргументов для <i>g</i>. Для каждого поля <i>f</i> объекта <i>o</i>,
-содержащего экземпляр <code><span class="func">Program</span></code>, она заменяет его значение результатом
-аппликации \ic{(<i>g</i> <i>f</i>)}. Возвращаемым значением <code><span class="func">update-walk!</span></code>
+содержащего экземпляр <code><span class="class">Program</span></code>, она заменяет его значение результатом
+аппликации <code>(<i>g</i> <i>f</i>)</code>. Возвращаемым значением <code><span class="func">update-walk!</span></code>
 является обновлённый объект. Надеюсь, теперь вам стало понятно, зачем класс
-<code><span class="func">Arguments</span></code>, представляющий аргументы аппликаций, сделан наследником
-<code><span class="func">Program</span></code>: ведь аргументы тоже вычисляются и их надо исследовать в процессе
+<code><span class="class">Arguments</span></code>, представляющий аргументы аппликаций, сделан наследником
+<code><span class="class">Program</span></code>: ведь аргументы тоже вычисляются и их надо исследовать в процессе
 обхода.</p>
 
-
 <!--\indexC{update-walk"!}-->
-<pre>(define (update-walk! g o . args)
-  (for-each (lambda (field)
-              (let ((vf (field-value o field)))
-                (when (Program? vf)
-                  (let ((v (if (null? args) (g vf)
-                               (apply g vf args) )))
-                    (set-field-value! o v field) ) ) ) )
-            (Class-fields (object->class o)) )
-  o )</pre>
+<pre>(<span class="special">define</span> (<span class="func">update-walk!</span> <span class="var">g</span> <span class="var">o</span> . <span class="var">args</span>)
+  (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">field</span>)
+              (<span class="syntax">let</span> ((<span class="var">vf</span> (<span class="func">field-value</span> <span class="var">o</span> <span class="var">field</span>)))
+                (<span class="syntax">when</span> (<span class="func">Program?</span> <span class="var">vf</span>)
+                  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="special">if</span> (<span class="func">null?</span> <span class="var">args</span>) (<span class="func">g</span> <span class="var">vf</span>)
+                               (<span class="func">apply</span> <span class="var">g</span> <span class="var">vf</span> <span class="var">args</span>) )))
+                    (<span class="func">set-field-value!</span> <span class="var">o</span> <span class="var">v</span> <span class="var">field</span>) ) ) ) )
+            (<span class="func">Class-fields</span> (<span class="func">object-&gt;class</span> <span class="var">o</span>)) )
+  <span class="var">o</span> )</pre>
 
 <p>Может показаться, что такой подход чересчур уж всё упрощает, но это
 действительно весьма удобная функция для преобразования программ, как вы сами
@@ -164,14 +171,14 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 обработку. Однако, мы оградим себя от соблазна во имя чёткого разделения
 эффектов применяемых трансформаций.</p>
 
-<h2 id="cc/sect:boxes">Пакуем коробки</h2>
 
+<h2 id="cc/sect:boxes"><span class="seq">10.3.</span> Пакуем коробки</h2>
 
 <!--\indexR{преобразование!в коробочный стиль}-->
 <!--\indexR{коробки!преобразование}-->
 <p>Для начала давайте заменим все локальные присваивания операциями над коробками.
 Подобное преобразование уже разбиралось ранее
-\seePage[assignment/assignment/ssect:boxes], поэтому оно будет хорошим примером
+<span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#assignment/assignment/ssect:boxes">4.1.1</a>]</span>, поэтому оно будет хорошим примером
 использования <code><span class="func">update-walk!</span></code>.</p>
 
 <p>Итак, каждое присваивание локальной переменной должно быть изменено на помещение
@@ -183,89 +190,78 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 должна действовать и обобщённая функция. Её совместная работа с обходчиком —
 это залог успеха и основа могущества данного союза.</p>
 
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
-
-
 <!--\indexC{insert-box"!}-->
-<pre>(define-generic (insert-box! (o Program))
-  (update-walk! insert-box! o) )</pre>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Program</span>))
+  (<span class="func">update-walk!</span> <span class="var">insert-box!</span> <span class="var">o</span>) )</pre>
 
 <p>Мы введём три новых класса узлов синтаксического дерева для представления новых
 понятий, необходимых при работе с коробками. Подробно каждый из классов будет
 рассмотрен позже, вместе с соответствующими этапами преобразования.</p>
 
-
 <!--\indexC{Box-Read}-->
 <!--\indexC{Box-Write}-->
 <!--\indexC{Box-Creation}-->
-<pre>(define-class Box-Read     Program (reference))
-(define-class Box-Write    Program (reference form))
-(define-class Box-Creation Program (variable))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">Box-Read</span>     <span class="class">Program</span> (<span class="var">reference</span>))
+(<span class="syntax">define-class</span> <span class="class">Box-Write</span>    <span class="class">Program</span> (<span class="var">reference</span> <span class="var">form</span>))
+(<span class="syntax">define-class</span> <span class="class">Box-Creation</span> <span class="class">Program</span> (<span class="var">variable</span>))</pre>
 
 <p>Благодаря удачному решению помечать во время объектификации изменяемые локальные
-переменные флагом <code><span class="func">mutable?</span></code>, заменить обращения к подобным переменным
+переменные флагом <code><span class="var">mutable?</span></code>, заменить обращения к подобным переменным
 вызовами <code><span class="func">Box-Read</span></code> становится элементарно:</p>
 
-<pre>(define-method (insert-box! (o Local-Reference))
-  (if (Local-Variable-mutable? (Local-Reference-variable o))
-      (make-Box-Read o)
-      o ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Local-Reference</span>))
+  (<span class="special">if</span> (<span class="func">Local-Variable-mutable?</span> (<span class="func">Local-Reference-variable</span> <span class="var">o</span>))
+      (<span class="func">make-Box-Read</span> <span class="var">o</span>)
+      <span class="var">o</span> ) )</pre>
 
 <p>Преобразование присваиваний сравнимо по сложности. Присваивание локальной
 переменной однозначно переводится в <code><span class="func">Box-Write</span></code>. Нужно только не забыть
 о рекурсивной природе преобразования и вызвать обходчик для выражения,
 вычисляющего новое значение переменной.</p>
 
-<pre>(define-method (insert-box! (o Local-Assignment))
-  (make-Box-Write (Local-Assignment-reference o)
-                  (insert-box! (Local-Assignment-form o)) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Local-Assignment</span>))
+  (<span class="func">make-Box-Write</span> (<span class="func">Local-Assignment-reference</span> <span class="var">o</span>)
+                  (<span class="func">insert-box!</span> (<span class="func">Local-Assignment-form</span> <span class="var">o</span>)) ) )</pre>
 
 <p>В данный момент программа считает, что все изменяемые переменные уже разложены
 по коробкам; нам остаётся лишь оправдать её ожидания. Локальные изменяемые
-переменные создаются исключительно <code><span class="func">lambda</span></code>- и <code><span class="func">let</span></code>-формами, то есть
-узлами классов <code><span class="func">Function</span></code> и <code><span class="func">Fix-Let</span></code>.\footnote*{Даже если сейчас в дереве
-нет <code><span class="func">Fix-Let</span></code>-узлов, соответствующих приводимым формам, метод их обработки
-должен существовать.} Идея состоит в том, чтобы поместить создание коробок перед
-телом этих форм. \seePage[assignment/assignment/boxes/p:boxing] Просто и
+переменные создаются исключительно <code><span class="special">lambda</span></code>- и <code><span class="syntax">let</span></code>-формами, то есть
+узлами классов <code><span class="class">Function</span></code> и <code><span class="class">Fix-Let</span></code><a class="footref" href="zz_footnotes.xhtml#foot10.1"><sup>1</sup></a>.
+Идея состоит в том, чтобы поместить создание коробок перед
+телом этих форм. <span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#ch4-box-transform">4.1.1</a>]</span> Просто и
 понятно, так что приступаем к написанию соответствующих специализаций функции
 <code><span class="func">insert-box!</span></code>. Каждая из них заказывает у вспомогательной функции необходимое
-количество коробок, после чего вставляет полученные экземпляры <code><span class="func">Box-Creation</span></code>
+количество коробок, после чего вставляет полученные экземпляры <code><span class="class">Box-Creation</span></code>
 куда следует.</p>
 
-<p>\ForLayout{display}{\endgroup\begingroup\lstset{aboveskip=\smallskipamount}}</p>
-
-
 <!--\indexC{boxify-mutable-variables}-->
-<pre>(define-method (insert-box! (o Function))
-  (set-Function-body!
-   o (insert-box!
-      (boxify-mutable-variables (Function-body o)
-                                (Function-variables o) ) ) )
-  o )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Function</span>))
+  (<span class="func">set-Function-body!</span>
+   <span class="var">o</span> (<span class="func">insert-box!</span>
+      (<span class="func">boxify-mutable-variables</span> (<span class="func">Function-body</span> <span class="var">o</span>)
+                                (<span class="func">Function-variables</span> <span class="var">o</span>) ) ) )
+  <span class="var">o</span> )
 
-<p>(define-method (insert-box! (o Fix-Let))
-  (set-Fix-Let-arguments! o (insert-box! (Fix-Let-arguments o)))
-  (set-Fix-Let-body!
-   o (insert-box!
-      (boxify-mutable-variables (Fix-Let-body o)
-                                (Fix-Let-variables o) ) ) )
-  o )</p>
+(<span class="syntax">define-method</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Fix-Let</span>))
+  (<span class="func">set-Fix-Let-arguments!</span> <span class="var">o</span> (<span class="func">insert-box!</span> (<span class="func">Fix-Let-arguments</span> <span class="var">o</span>)))
+  (<span class="func">set-Fix-Let-body!</span>
+   <span class="var">o</span> (<span class="func">insert-box!</span>
+      (<span class="func">boxify-mutable-variables</span> (<span class="func">Fix-Let-body</span> <span class="var">o</span>)
+                                (<span class="func">Fix-Let-variables</span> <span class="var">o</span>) ) ) )
+  <span class="var">o</span> )
 
-<p>(define (boxify-mutable-variables form variables)
-  (if (pair? variables)
-      (if (Local-Variable-mutable? (car variables))
-          (make-Sequence
-           (make-Box-Creation (car variables))
-           (boxify-mutable-variables form (cdr variables)) )
-          (boxify-mutable-variables form (cdr variables)) )
-      form ) )</pre>
-
-<p>\ForLayout{display}{\endgroup}</p>
+(<span class="special">define</span> (<span class="func">boxify-mutable-variables</span> <span class="var">form</span> <span class="var">variables</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">variables</span>)
+      (<span class="special">if</span> (<span class="func">Local-Variable-mutable?</span> (<span class="func">car</span> <span class="var">variables</span>))
+          (<span class="func">make-Sequence</span>
+           (<span class="func">make-Box-Creation</span> (<span class="func">car</span> <span class="var">variables</span>))
+           (<span class="func">boxify-mutable-variables</span> <span class="var">form</span> (<span class="func">cdr</span> <span class="var">variables</span>)) )
+          (<span class="func">boxify-mutable-variables</span> <span class="var">form</span> (<span class="func">cdr</span> <span class="var">variables</span>)) )
+      <span class="var">form</span> ) )</pre>
 
 <p>Готово. Мы полностью определили коробочное преобразование с помощью всего лишь
 четырёх предельно понятных методов. Результат его выполнения можно увидеть на
-рисунке \ref{cc/boxes/pic:result} (показана только изменившаяся часть).</p>
+рисунке <a href="#cc/boxes/pic:result">9.2</a> (показана только изменившаяся часть).</p>
 
 <p>\begin{figure}\centering
 \input{figures/fig10.2}
@@ -273,8 +269,8 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 \label{cc/boxes/pic:result}
 \end{figure}</p>
 
-<h2 id="cc/sect:no-nest">Избавляемся от вложенных функций</h2>
 
+<h2 id="cc/sect:no-nest"><span class="seq">10.4.</span> Избавляемся от вложенных функций</h2>
 
 <!--\indexR{функции!вложенные}-->
 <!--\indexR{лямбда-поднятие@$\lambda$-поднятие}-->
@@ -283,20 +279,21 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 <!--\indexR{свободные переменные}-->
 <!--\indexR{переменные!свободные}-->
 <p>Язык Си не позволяет определять функции внутри других функций. Иными словами,
-вложенные <code><span class="func">lambda</span></code>-формы нельзя прямо перевести на Си. Следовательно, от них
+вложенные <code><span class="special">lambda</span></code>-формы нельзя прямо перевести на Си. Следовательно, от них
 необходимо избавиться, преобразовав программу в набор комбинаторов — функций
 без свободных переменных. К счастью, это довольно известное преобразование,
-называемое <em class="term">$\lambda$-поднятием</em> ($\lambda$-lifting) — в результате
-него <code><span class="func">lambda</span></code>-формы поднимаются вверх, до самой поверхности, не оставляя
+называемое <em class="term">λ-поднятием</em> (λ-lifting) — в результате
+него <code><span class="special">lambda</span></code>-формы поднимаются вверх, до самой поверхности, не оставляя
 ни одной свободной переменной в глубине программы. Существует множество
 вариантов реализации подобного преобразования, по-разному обращающихся
 с исходными функциями и сохраняющих те или иные их аспекты, например:
-\cite{ws94,kh89,ch94}.</p>
-
+<span class="cite">[<a href="z1_bibliography.xhtml#ws94">WS94</a>,
+<a href="z1_bibliography.xhtml#kh89">KH89</a>,
+<a href="z1_bibliography.xhtml#ch94">CH94</a>]</span>.</p>
 
 <!--\indexR{замыкания (closures)}-->
 <!--\indexC{invoke}-->
-<p>Результатом вычисления любой <code><span class="func">lambda</span></code>-формы является замыкание — сущность,
+<p>Результатом вычисления любой <code><span class="special">lambda</span></code>-формы является замыкание — сущность,
 сохраняющая в себе окружение, где она была создана. При вызове замыкания
 специальная функция (известная как <code><span class="func">invoke</span></code>) берёт на себя работу по
 организации вычисления тела данного замыкания в правильном окружении,
@@ -306,145 +303,133 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 легко изменить их структуру, не потревожив остальные части программы: ведь
 каждая аппликация в конечном итоге выполняется <code><span class="func">invoke</span></code>.</p>
 
-
 <!--\indexR{ОО-подъём}-->
 <!--\indexE{OO-lifting}-->
 <p>Рассмотрим упомянутое преобразование на примере <em class="term">ОО-подъёма</em>, описанного
-в <span class="cite">[<a href="z1_bibliography.xhtml#que94">que94</a>]</span>. Как обычно, морской свинкой будет факториал:</p>
-
+в <span class="cite">[<a href="z1_bibliography.xhtml#que94">Que94</a>]</span>. Как обычно, морской свинкой будет факториал:</p>
 
 <!--\indexC{fact}-->
-<pre>(define (fact n k)
-  (if (= n 0) (k 1)
-      (fact (- n 1) (lambda (r) (k (* n r))) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) (<span class="func">k</span> <span class="num">1</span>)
+      (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))) ) ) )</pre>
 
-<p>От <code><span class="func">lambda</span></code>-формы со свободными переменными <code><span class="func">k</span></code> и <code><span class="func">n</span></code> можно избавиться
+<p>От <code><span class="special">lambda</span></code>-формы со свободными переменными <code><span class="var">k</span></code> и <code><span class="var">n</span></code> можно избавиться
 следующим образом:</p>
 
-<pre>(define-class Fact-Closure Object (n k))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">Fact-Closure</span> <span class="class">Object</span> (<span class="var">n</span> <span class="var">k</span>))
 
-<p>(define-method (invoke (f Fact-Closure) r)
-  (invoke (Fact-Closure-k f) (* (Fact-Closure-n f) r)) )</p>
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">Fact-Closure</span>) <span class="var">r</span>)
+  (<span class="func">invoke</span> (<span class="func">Fact-Closure-k</span> <span class="var">f</span>) (<span class="func">*</span> (<span class="func">Fact-Closure-n</span> <span class="var">f</span>) <span class="var">r</span>)) )
 
-<p>(define (fact n k)
-  (if (= n 0) (invoke k 1)
-      (fact (- n 1) (make-Fact-Closure n k)) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) (<span class="func">invoke</span> <span class="var">k</span> <span class="num">1</span>)
+      (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) (<span class="func">make-Fact-Closure</span> <span class="var">n</span> <span class="var">k</span>)) ) )</pre>
 
 <!--\indexR{плоские окружения}-->
 <!--\indexR{окружение!плоское}-->
 <p>Суть преобразования состоит в замене неявной структуры создаваемого анонимного
-замыкания явным объектом класса <code><span class="func">Fact-Closure</span></code>, содержащим все необходимые
-свободные переменные (здесь это <code><span class="func">n</span></code> и <code><span class="func">k</span></code>). После этого остаётся только
+замыкания явным объектом класса <code><span class="class">Fact-Closure</span></code>, содержащим все необходимые
+свободные переменные (здесь это <code><span class="var">n</span></code> и <code><span class="var">k</span></code>). После этого остаётся только
 научить <code><span class="func">invoke</span></code> корректным образом обрабатывать подобные объекты.</p>
 
 
 <!--\indexR{преобразование!замыканий в комбинаторы}-->
 <p>Для выполнения такого преобразования вначале надо как-то получить и где-то
 сохранить список свободных переменных обрабатываемых функций. Для этого введём
-новый класс преобразованных функций — <code><span class="func">Flat-Function</span></code>, а их свободные
-переменные будем собирать в списки из <code><span class="func">Free-Environment</span></code>, заканчивающиеся на
-<code><span class="func">No-Free</span></code>. Как и их братья <code><span class="func">Arguments</span></code> и <code><span class="func">No-Argument</span></code>, эти два класса
-являются наследниками <code><span class="func">Program</span></code>, потому что представляют вычислимые понятия.
+новый класс преобразованных функций — <code><span class="class">Flat-Function</span></code>, а их свободные
+переменные будем собирать в списки из <code><span class="class">Free-Environment</span></code>, заканчивающиеся на
+<code><span class="class">No-Free</span></code>. Как и их братья <code><span class="class">Arguments</span></code> и <code><span class="class">No-Argument</span></code>, эти два класса
+являются наследниками <code><span class="class">Program</span></code>, потому что представляют вычислимые понятия.
 Обращения к свободным переменным тоже будут преобразованы в специальные объекты
-класса <code><span class="func">Free-Reference</span></code>.</p>
-
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
-
+класса <code><span class="class">Free-Reference</span></code>.</p>
 
 <!--\indexC{Flat-Function}-->
 <!--\indexC{Free-Environment}-->
 <!--\indexC{Free-Reference}-->
 <!--\indexC{No-Free}-->
-<pre>(define-class Flat-Function    Function  (free))
-(define-class Free-Environment Program   (first others))
-(define-class No-Free          Program   ())
-(define-class Free-Reference   Reference ())</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">Flat-Function</span>    <span class="class">Function</span>  (<span class="var">free</span>))
+(<span class="syntax">define-class</span> <span class="class">Free-Environment</span> <span class="class">Program</span>   (<span class="var">first</span> <span class="var">others</span>))
+(<span class="syntax">define-class</span> <span class="class">No-Free</span>          <span class="class">Program</span>   ())
+(<span class="syntax">define-class</span> <span class="class">Free-Reference</span>   <span class="class">Reference</span> ())</pre>
 
 <p>Реализуется это преобразование, естественно, с помощью обходчика кода. Функция
 <code><span class="func">lift!</span></code> будет служить удобным интерфейсом, а всю чёрную работу мы переложим
 на обобщённую функцию <code><span class="func">lift-procedures!</span></code>. Помимо обрабатываемой функции, она
-принимает два вспомогательных аргумента: абстракцию <code><span class="func">flatfun</span></code>, которая
-в конечном итоге будет содержать все свободные переменные, и список <code><span class="func">vars</span></code>,
+принимает два вспомогательных аргумента: абстракцию <code><span class="var">flatfun</span></code>, которая
+в конечном итоге будет содержать все свободные переменные, и список <code><span class="var">vars</span></code>,
 где лежат все переменные, который на данный момент связаны. По умолчанию
 <code><span class="func">lift-procedures!</span></code> просто рекурсивно вызывается для всех дочерних узлов
 обрабатываемой программы.</p>
 
-
 <!--\indexC{lift"!}-->
 <!--\indexC{lift-procedures"!}-->
-<pre>(define (lift! o)
-  (lift-procedures! o #f '()) )</p>
+<pre>(<span class="special">define</span> (<span class="func">lift!</span> <span class="var">o</span>)
+  (<span class="func">lift-procedures!</span> <span class="var">o</span> <span class="hash">#f</span> <span class="hash">'()</span>) )
 
-<p>(define-generic (lift-procedures! (o Program) flatfun vars)
-  (update-walk! lift-procedures! o flatfun vars) )</pre>
-
-<p>\ForLayout{display}{\endgroup}</p>
+(<span class="syntax">define-generic</span> (<span class="func">lift-procedures!</span> (<span class="var">o</span> <span class="class">Program</span>) <span class="var">flatfun</span> <span class="var">vars</span>)
+  (<span class="func">update-walk!</span> <span class="var">lift-procedures!</span> <span class="var">o</span> <span class="var">flatfun</span> <span class="var">vars</span>) )</pre>
 
 <p>Преобразование определяется всего тремя методами. Первый из них отвечает за
-обработку обращений к свободным переменным и поддержание списка <code><span class="func">flatfun</span></code>
+обработку обращений к свободным переменным и поддержание списка <code><span class="var">flatfun</span></code>
 в адекватном состоянии. Функция <code><span class="func">adjoin-free-variable!</span></code> помогает с занесением
 новых свободных переменных в этот список.</p>
 
-
 <!--\indexC{adjoin-free-variable"!}-->
-<pre>(define-method (lift-procedures! (o Local-Reference) flatfun vars)
-  (let ((v (Local-Reference-variable o)))
-    (if (memq v vars) o
-        (begin (adjoin-free-variable! flatfun o)
-               (make-Free-Reference v) ) ) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">lift-procedures!</span> (<span class="var">o</span> <span class="class">Local-Reference</span>) <span class="var">flatfun</span> <span class="var">vars</span>)
+  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">Local-Reference-variable</span> <span class="var">o</span>)))
+    (<span class="special">if</span> (<span class="func">memq</span> <span class="var">v</span> <span class="var">vars</span>) <span class="var">o</span>
+        (<span class="special">begin</span> (<span class="func">adjoin-free-variable!</span> <span class="var">flatfun</span> <span class="var">o</span>)
+               (<span class="func">make-Free-Reference</span> <span class="var">v</span>) ) ) ) )
 
-<p>(define (adjoin-free-variable! flatfun ref)
-  (when (Flat-Function? flatfun)
-    (let check ((free* (Flat-Function-free flatfun)))
-      (if (No-Free? free*)
-          (set-Flat-Function-free!
-           flatfun (make-Free-Environment
-                    ref (Flat-Function-free flatfun) ) )
-          (unless (eq? (Reference-variable ref)
-                       (Reference-variable
-                        (Free-Environment-first free*) ) )
-            (check (Free-Environment-others free*)) ) ) ) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">adjoin-free-variable!</span> <span class="var">flatfun</span> <span class="var">ref</span>)
+  (<span class="syntax">when</span> (<span class="func">Flat-Function?</span> <span class="var">flatfun</span>)
+    (<span class="syntax">let</span> <span class="func">check</span> ((<span class="var">free*</span> (<span class="func">Flat-Function-free</span> <span class="var">flatfun</span>)))
+      (<span class="special">if</span> (<span class="func">No-Free?</span> <span class="var">free*</span>)
+          (<span class="func">set-Flat-Function-free!</span>
+           <span class="var">flatfun</span> (<span class="func">make-Free-Environment</span>
+                    <span class="var">ref</span> (<span class="func">Flat-Function-free</span> <span class="var">flatfun</span>) ) )
+          (<span class="syntax">unless</span> (<span class="func">eq?</span> (<span class="func">Reference-variable</span> <span class="var">ref</span>)
+                       (<span class="func">Reference-variable</span>
+                        (<span class="func">Free-Environment-first</span> <span class="var">free*</span>) ) )
+            (<span class="func">check</span> (<span class="func">Free-Environment-others</span> <span class="var">free*</span>)) ) ) ) ) )</pre>
 
 <!--\indexR{приводимые!формы}-->
 <!--\indexR{форма!приводимая}-->
-<p>Как известно, форма <code><span class="func">let</span></code> создаёт локальные привязки, поэтому перед
-обработкой тела <code><span class="func">Fix-Let</span></code> необходимо поместить все свежесозданные связанные
-переменные в список <code><span class="func">vars</span></code>. Ещё одним неоспоримым фактом является то, что
-приводимые формы, к которым относится <code><span class="func">let</span></code>, лишь вводят новые переменные и
+<p>Как известно, форма <code><span class="syntax">let</span></code> создаёт локальные привязки, поэтому перед
+обработкой тела <code><span class="class">Fix-Let</span></code> необходимо поместить все свежесозданные связанные
+переменные в список <code><span class="var">vars</span></code>. Ещё одним неоспоримым фактом является то, что
+приводимые формы, к которым относится <code><span class="syntax">let</span></code>, лишь вводят новые переменные и
 не требуют создания замыканий. Это очень важная оптимизация, и мы отнюдь
 не хотим её лишиться.</p>
 
-<pre>(define-method (lift-procedures! (o Fix-Let) flatfun vars)
-  (set-Fix-Let-arguments!
-   o (lift-procedures! (Fix-Let-arguments o) flatfun vars) )
-  (let ((newvars (append (Fix-Let-variables o) vars)))
-    (set-Fix-Let-body!
-     o (lift-procedures! (Fix-Let-body o) flatfun newvars) )
-    o ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">lift-procedures!</span> (<span class="var">o</span> <span class="class">Fix-Let</span>) <span class="var">flatfun</span> <span class="var">vars</span>)
+  (<span class="func">set-Fix-Let-arguments!</span>
+   <span class="var">o</span> (<span class="func">lift-procedures!</span> (<span class="func">Fix-Let-arguments</span> <span class="var">o</span>) <span class="var">flatfun</span> <span class="var">vars</span>) )
+  (<span class="syntax">let</span> ((<span class="var">newvars</span> (<span class="func">append</span> (<span class="func">Fix-Let-variables</span> <span class="var">o</span>) <span class="var">vars</span>)))
+    (<span class="func">set-Fix-Let-body!</span>
+     <span class="var">o</span> (<span class="func">lift-procedures!</span> (<span class="func">Fix-Let-body</span> <span class="var">o</span>) <span class="var">flatfun</span> <span class="var">newvars</span>) )
+    <span class="var">o</span> ) )</pre>
 
 <p>Наконец, остался самый сложный случай — абстракции. Тело абстракции
 анализируется и все её свободные переменные собираются в объекте
-<code><span class="func">Flat-Function</span></code>. Так как свободные переменные вложенной абстракции сами могут
+<code><span class="class">Flat-Function</span></code>. Так как свободные переменные вложенной абстракции сами могут
 оказаться свободными в содержащей её абстракции, то для них обходчик вызывается
 ещё раз, чтобы протолкнуть их как можно выше. Сейчас самое время порадоваться
 принятому ранее решению сделать список свободных переменных наследником
-<code><span class="func">Program</span></code>.</p>
+<code><span class="class">Program</span></code>.</p>
 
-<pre>(define-method (lift-procedures! (o Function) flatfun vars)
-  (let* ((localvars (Function-variables o))
-         (body      (Function-body o))
-         (newfun (make-Flat-Function localvars body (make-No-Free))) )
-    (set-Flat-Function-body!
-     newfun (lift-procedures! body newfun localvars) )
-    (let ((free* (Flat-Function-free newfun)))
-      (set-Flat-Function-free!
-       newfun (lift-procedures! free* flatfun vars) ) )
-    newfun ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">lift-procedures!</span> (<span class="var">o</span> <span class="class">Function</span>) <span class="var">flatfun</span> <span class="var">vars</span>)
+  (<span class="syntax">let*</span> ((<span class="var">localvars</span> (<span class="func">Function-variables</span> <span class="var">o</span>))
+         (<span class="var">body</span>      (<span class="func">Function-body</span> <span class="var">o</span>))
+         (<span class="var">newfun</span> (<span class="func">make-Flat-Function</span> <span class="var">localvars</span> <span class="var">body</span> (<span class="func">make-No-Free</span>))) )
+    (<span class="func">set-Flat-Function-body!</span>
+     <span class="var">newfun</span> (<span class="func">lift-procedures!</span> <span class="var">body</span> <span class="var">newfun</span> <span class="var">localvars</span>) )
+    (<span class="syntax">let</span> ((<span class="var">free*</span> (<span class="func">Flat-Function-free</span> <span class="var">newfun</span>)))
+      (<span class="func">set-Flat-Function-free!</span>
+       <span class="var">newfun</span> (<span class="func">lift-procedures!</span> <span class="var">free*</span> <span class="var">flatfun</span> <span class="var">vars</span>) ) )
+    <span class="var">newfun</span> ) )</pre>
 
-<p>Как полагается, на рисунке \ref{cc/no-nest/pic:result} показан результат
+<p>Как полагается, на рисунке <a href="#cc/no-nest/pic:result">10.3</a> показан результат
 применения рассмотренного преобразования к нашему бессменному примеру.</p>
 
 <p>\begin{figure}\centering
@@ -453,38 +438,38 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 \label{cc/no-nest/pic:result}
 \end{figure}</p>
 
-<h2 id="cc/sect:collecting">Собираем цитаты и функции</h2>
 
+<h2 id="cc/sect:collecting"><span class="seq">10.5.</span> Собираем цитаты и функции</h2>
 
 <!--\indexR{миграция!цитат}-->
 <!--\indexR{миграция!вложенных функций}-->
 <p>Предыдущее преобразование не изменяло расположения функций: вложенные
-<code><span class="func">lambda</span></code>-формы так и остались вложенными, пусть и без свободных переменных.
+<code><span class="special">lambda</span></code>-формы так и остались вложенными,
+пусть и без свободных переменных.
 Нет, мы не забыли об этом! Просто немного задержались, чтобы выполнить перенос
 вместе со следующим преобразованием — извлечением цитат. Во время следующего
 обхода кода мы извлечём все используемые цитаты и определения функций, чтобы
 перенести их на глобальный уровень, как этого требует Си. Здесь понадобятся
 всего два метода.</p>
 
-<p>Функция <code><span class="func">extract-things!</span></code> преобразовывает объекты <code><span class="func">Program</span></code> в объекты
-<code><span class="func">Flattened-Program</span></code>. Новый класс является наследником <code><span class="func">Program</span></code> и имеет
-три дополнительных поля: <code><span class="func">form</span></code> для собственно программы, <code><span class="func">quotations</span></code> для
-списка цитат и <code><span class="func">definitions</span></code> для определений функций. До значений цитат можно
-добраться через глобальные переменные нового класса <code><span class="func">Quotation-Variable</span></code>.
-Функции мы просто пронумеруем, выдав каждой из них уникальный <code><span class="func">index</span></code>.
+<p>Функция <code><span class="func">extract-things!</span></code> преобразовывает объекты <code><span class="class">Program</span></code> в объекты
+<code><span class="class">Flattened-Program</span></code>. Новый класс является наследником <code><span class="class">Program</span></code> и имеет
+три дополнительных поля: <code><span class="var">form</span></code> для собственно программы, <code><span class="var">quotations</span></code> для
+списка цитат и <code><span class="var">definitions</span></code> для определений функций. До значений цитат можно
+добраться через глобальные переменные нового класса <code><span class="class">Quotation-Variable</span></code>.
+Функции мы просто пронумеруем, выдав каждой из них уникальный <code><span class="var">index</span></code>.
 Наконец, создание замыканий перекладывается на новый тип узлов синтаксического
-дерева — <code><span class="func">Closure-Creation</span></code>. (Не волнуйтесь, скоро вам станет ясно, почему
+дерева — <code><span class="class">Closure-Creation</span></code>. (Не волнуйтесь, скоро вам станет ясно, почему
 всё сделано именно так.)</p>
-
 
 <!--\indexC{Flattened-Program}-->
 <!--\indexC{Quotation-Variable}-->
 <!--\indexC{Function-Definition}-->
 <!--\indexC{Closure-Creation}-->
-<pre>(define-class Flattened-Program   Program (form quotations definitions))
-(define-class Quotation-Variable  Variable (value))
-(define-class Function-Definition Flat-Function (index))
-(define-class Closure-Creation    Program (index variables free))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">Flattened-Program</span>   <span class="class">Program</span> (<span class="var">form</span> <span class="var">quotations</span> <span class="var">definitions</span>))
+(<span class="syntax">define-class</span> <span class="class">Quotation-Variable</span>  <span class="class">Variable</span> (<span class="var">value</span>))
+(<span class="syntax">define-class</span> <span class="class">Function-Definition</span> <span class="class">Flat-Function</span> (<span class="var">index</span>))
+(<span class="syntax">define-class</span> <span class="class">Closure-Creation</span>    <span class="class">Program</span> (<span class="var">index</span> <span class="var">variables</span> <span class="var">free</span>))</pre>
 
 <p>Строго говоря, <code><span class="func">extract-things!</span></code> работает не одна, а вместе с обобщённой
 функцией <code><span class="func">extract!</span></code>. Взаимодействие подразумевает обмен информацией. Дабы
@@ -492,62 +477,60 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 компиляции), мы будем возвращать результат через специальный аргумент,
 передаваемый обобщённой функции.</p>
 
-
 <!--\indexC{extract-things}-->
 <!--\indexC{extract"!}-->
-<pre>(define (extract-things! o)
-  (let ((result (make-Flattened-Program o '() '())))
-    (set-Flattened-Program-form! result (extract! o result))
-    result ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">extract-things!</span> <span class="var">o</span>)
+  (<span class="syntax">let</span> ((<span class="var">result</span> (<span class="func">make-Flattened-Program</span> <span class="var">o</span> <span class="hash">'()</span> <span class="hash">'()</span>)))
+    (<span class="func">set-Flattened-Program-form!</span> <span class="var">result</span> (<span class="func">extract!</span> <span class="var">o</span> <span class="var">result</span>))
+    <span class="var">result</span> ) )
 
-<p>(define-generic (extract! (o Program) result)
-  (update-walk! extract! o result) )</pre>
+(<span class="syntax">define-generic</span> (<span class="func">extract!</span> (<span class="var">o</span> <span class="class">Program</span>) <span class="var">result</span>)
+  (<span class="func">update-walk!</span> <span class="var">extract!</span> <span class="var">o</span> <span class="var">result</span>) )</pre>
 
 <p>Цитаты просто собираются в отведённом для них поле, а все обращения к ним
 заменяются обращениями к соответствующим глобальным переменным,
 инициализированным значениями исходных цитат.</p>
 
-<pre>(define-method (extract! (o Constant) result)
-  (let* ((qv* (Flattened-Program-quotations result))
-         (qv  (make-Quotation-Variable (length qv*)
-                                       (Constant-value o) )) )
-    (set-Flattened-Program-quotations! result (cons qv qv*))
-    (make-Global-Reference qv) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">extract!</span> (<span class="var">o</span> <span class="class">Constant</span>) <span class="var">result</span>)
+  (<span class="syntax">let*</span> ((<span class="var">qv*</span> (<span class="func">Flattened-Program-quotations</span> <span class="var">result</span>))
+         (<span class="var">qv</span>  (<span class="func">make-Quotation-Variable</span> (<span class="func">length</span> <span class="var">qv*</span>)
+                                       (<span class="func">Constant-value</span> <span class="var">o</span>) )) )
+    (<span class="func">set-Flattened-Program-quotations!</span> <span class="var">result</span> (<span class="func">cons</span> <span class="var">qv</span> <span class="var">qv*</span>))
+    (<span class="func">make-Global-Reference</span> <span class="var">qv</span>) ) )</pre>
 
-<p>Абстракции находятся в узлах типа <code><span class="func">Flat-Function</span></code>, которые преобразуются
-в экземпляры <code><span class="func">Closure-Creation</span></code>. Процесс можно было бы оптимизировать,
+<p>Абстракции находятся в узлах типа <code><span class="class">Flat-Function</span></code>, которые преобразуются
+в экземпляры <code><span class="class">Closure-Creation</span></code>. Процесс можно было бы оптимизировать,
 избежав дублирования кода для одинаковых абстракций, научив
 <code><span class="func">adjoin-definition!</span></code> отыскивать повторения. Также может показаться странным,
 что столько внимания уделяется спискам свободных переменных изначальных
 абстракций. Это делается исключительно для облегчения определения арности
 функций во время генерации Си-кода.</p>
 
-
 <!--\indexC{adjoin-definition"!}-->
-<pre>(define-method (extract! (o Flat-Function) result)
-  (let* ((newbody   (extract! (Flat-Function-body o) result))
-         (variables (Flat-Function-variables o))
-         (freevars  (let extract ((free (Flat-Function-free o)))
-                      (if (Free-Environment? free)
-                          (cons (Reference-variable
-                                 (Free-Environment-first free) )
-                                (extract
-                                 (Free-Environment-others free) ) )
-                          '() ) ))
-         (index (adjoin-definition!
-                 result variables newbody freevars )) )
-    (make-Closure-Creation index variables (Flat-Function-free o)) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">extract!</span> (<span class="var">o</span> <span class="class">Flat-Function</span>) <span class="var">result</span>)
+  (<span class="syntax">let*</span> ((<span class="var">newbody</span>   (<span class="func">extract!</span> (<span class="func">Flat-Function-body</span> <span class="var">o</span>) <span class="var">result</span>))
+         (<span class="var">variables</span> (<span class="func">Flat-Function-variables</span> <span class="var">o</span>))
+         (<span class="var">freevars</span>  (<span class="syntax">let</span> <span class="func">extract</span> ((<span class="var">free</span> (<span class="func">Flat-Function-free</span> <span class="var">o</span>)))
+                      (<span class="special">if</span> (<span class="func">Free-Environment?</span> <span class="var">free</span>)
+                          (<span class="func">cons</span> (<span class="func">Reference-variable</span>
+                                 (<span class="func">Free-Environment-first</span> <span class="var">free</span>) )
+                                (<span class="func">extract</span>
+                                 (<span class="func">Free-Environment-others</span> <span class="var">free</span>) ) )
+                          <span class="hash">'()</span> ) ))
+         (<span class="var">index</span> (<span class="func">adjoin-definition!</span>
+                 <span class="var">result</span> <span class="var">variables</span> <span class="var">newbody</span> <span class="var">freevars</span> )) )
+    (<span class="func">make-Closure-Creation</span> <span class="var">index</span> <span class="var">variables</span> (<span class="func">Flat-Function-free</span> <span class="var">o</span>)) ) )
 
-<p>(define (adjoin-definition! result variables body free)
-  (let* ((definitions (Flattened-Program-definitions result))
-         (newindex (length definitions)) )
-    (set-Flattened-Program-definitions!
-     result (cons (make-Function-Definition
-                   variables body free newindex )
-                  definitions ) )
-    newindex ) )</pre>
+(<span class="special">define</span> (<span class="func">adjoin-definition!</span> <span class="var">result</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">free</span>)
+  (<span class="syntax">let*</span> ((<span class="var">definitions</span> (<span class="func">Flattened-Program-definitions</span> <span class="var">result</span>))
+         (<span class="var">newindex</span> (<span class="func">length</span> <span class="var">definitions</span>)) )
+    (<span class="func">set-Flattened-Program-definitions!</span>
+     <span class="var">result</span> (<span class="func">cons</span> (<span class="func">make-Function-Definition</span>
+                   <span class="var">variables</span> <span class="var">body</span> <span class="var">free</span> <span class="var">newindex</span> )
+                  <span class="var">definitions</span> ) )
+    <span class="var">newindex</span> ) )</pre>
 
-<p>И снова, на рисунке \ref{cc/collecting/pic:result} показан результат применения
+<p>И снова, на рисунке <a href="#cc/collecting/pic:result">10.4</a> показан результат применения
 преобразования к иной части примера.</p>
 
 <p>\begin{figure}\centering
@@ -556,25 +539,25 @@ ECoLisp <span class="cite">[<a href="z1_bibliography.xhtml#att95">att95</a>]</sp
 \label{cc/collecting/pic:result}
 \end{figure}</p>
 
-<p>\phantomlabel{cc/collecting/par:main}
-Наконец, вся программа превращается в вызов одной огромной функции. То есть
-$\pi$ становится <code>((lambda () $\pi$))</code>.</p>
-
+<p id="cc/collecting/par:main">Наконец, вся программа превращается в вызов одной
+огромной функции. То есть <span class="math"><span class="ord var">π</span></span>
+становится <code>((<span class="special">lambda</span> () <span class="math"><span class="ord var">π</span></span>))</code>.</p>
 
 <!--\indexC{closurize-main"!}-->
-<pre>(define (closurize-main! o)
-  (let ((index (length (Flattened-Program-definitions o))))
-    (set-Flattened-Program-definitions!
-     o (cons (make-Function-Definition
-              '() (Flattened-Program-form o) '() index )
-             (Flattened-Program-definitions o) ) )
-    (set-Flattened-Program-form!
-     o (make-Regular-Application
-        (make-Closure-Creation index '() (make-No-Free))
-        (make-No-Argument) ) )
-    o ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">closurize-main!</span> <span class="var">o</span>)
+  (<span class="syntax">let</span> ((<span class="var">index</span> (<span class="func">length</span> (<span class="func">Flattened-Program-definitions</span> <span class="var">o</span>))))
+    (<span class="func">set-Flattened-Program-definitions!</span>
+     <span class="var">o</span> (<span class="func">cons</span> (<span class="func">make-Function-Definition</span>
+              <span class="hash">'()</span> (<span class="func">Flattened-Program-form</span> <span class="var">o</span>) <span class="hash">'()</span> <span class="var">index</span> )
+             (<span class="func">Flattened-Program-definitions</span> <span class="var">o</span>) ) )
+    (<span class="func">set-Flattened-Program-form!</span>
+     <span class="var">o</span> (<span class="func">make-Regular-Application</span>
+        (<span class="func">make-Closure-Creation</span> <span class="var">index</span> <span class="hash">'()</span> (<span class="func">make-No-Free</span>))
+        (<span class="func">make-No-Argument</span>) ) )
+    <span class="var">o</span> ) )</pre>
 
-<h2 id="cc/sect:tmp">Собираем временные переменные</h2>
+
+<h2 id="cc/sect:tmp"><span class="seq">10.6.</span> Собираем временные переменные</h2>
 
 <p>У автора всегда есть решительное преимущество перед читателем в том, что он
 знает, что хочет получить, а вы пока ещё не знаете, что получится в результате.
@@ -583,23 +566,24 @@ $\pi$ становится <code>((lambda () $\pi$))</code>.</p>
 построен вокруг инструкций (statements), а не выражений (expressions), но такое
 представление позволяет сохранить структуру Scheme в получаемой на выходе
 программе. Правда, в этом случае возникает проблема с переводом узлов типа
-<code><span class="func">Fix-Let</span></code>, так как в языке Си нельзя создавать локальные переменные внутри
-выражений,\footnote*{Однако, например, <code><span class="func">gcc</span></code> расширяет язык формой
-\ic{(\{ ... \})}, позволяющей вводить переменные где угодно.} только с помощью
+<code><span class="class">Fix-Let</span></code>, так как в языке Си нельзя
+создавать локальные переменные внутри выражений<a class="footref" href="zz_footnotes.xhtml#foot10.2"><sup>2</sup></a>, только с помощью
 отдельных инструкций. Поэтому мы вынуждены будем пробежаться по всем
-<code><span class="func">Fix-Let</span></code> и провести учёт всех локальных переменных, вводимых ими, чтобы
+<code><span class="class">Fix-Let</span></code> и провести учёт всех локальных переменных, вводимых ими, чтобы
 впоследствии корректно их объявить.</p>
 
 <p>Естественно, для этого выполняется ещё один проход по коду. Задачей данного
-прохода будет сбор всех локальных переменных форм <code><span class="func">Fix-Let</span></code> в одном месте,
+прохода будет сбор всех локальных переменных форм
+<code><span class="class">Fix-Let</span></code> в одном месте,
 а также их переименование для предотвращения коллизий. Функции, имеющие
 временные локальные переменные, мы будем представлять подклассом
-<code><span class="func">Function-Definition</span></code>, называемым <code><span class="func">With-Temp-Function-Definition</span></code>.</p>
+<code><span class="class">Function-Definition</span></code>,
+называемым <code><span class="class">With-Temp-Function-Definition</span></code>.</p>
 
 
 <!--\indexC{With-Temp-Function-Definition}-->
-<pre>(define-class With-Temp-Function-Definition Function-Definition
-  ( temporaries ) )</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">With-Temp-Function-Definition</span> <span class="class">Function-Definition</span>
+  ( <span class="var">temporaries</span> ) )</pre>
 
 <p>Функция <code><span class="func">gather-temporaries!</span></code> реализует преобразование. Она полагается на
 обобщённую функцию <code><span class="func">collect-temporaries!</span></code>, работающую в паре с обходчиком.
@@ -607,307 +591,301 @@ $\pi$ становится <code>((lambda () $\pi$))</code>.</p>
 обнаруженные переменные, а третий хранит список соответствий старых имён новым,
 необходимый для выполнения переименований.</p>
 
-
 <!--\indexC{gather-temporaries"!}-->
 <!--\indexC{collect-temporaries"!}-->
-<pre>(define (gather-temporaries! o)
-  (set-Flattened-Program-definitions!
-   o (map (lambda (def)
-            (let ((flatfun (make-With-Temp-Function-Definition
-                            (Function-Definition-variables def)
-                            (Function-Definition-body def)
-                            (Function-Definition-free def)
-                            (Function-Definition-index def)
-                            '() )))
-              (collect-temporaries! flatfun flatfun '()) ) )
-          (Flattened-Program-definitions o) ) )
-  o )</p>
+<pre>(<span class="special">define</span> (<span class="func">gather-temporaries!</span> <span class="var">o</span>)
+  (<span class="func">set-Flattened-Program-definitions!</span>
+   <span class="var">o</span> (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">def</span>)
+            (<span class="syntax">let</span> ((<span class="var">flatfun</span> (<span class="func">make-With-Temp-Function-Definition</span>
+                            (<span class="func">Function-Definition-variables</span> <span class="var">def</span>)
+                            (<span class="func">Function-Definition-body</span> <span class="var">def</span>)
+                            (<span class="func">Function-Definition-free</span> <span class="var">def</span>)
+                            (<span class="func">Function-Definition-index</span> <span class="var">def</span>)
+                            <span class="hash">'()</span> )))
+              (<span class="func">collect-temporaries!</span> <span class="var">flatfun</span> <span class="var">flatfun</span> <span class="hash">'()</span>) ) )
+          (<span class="func">Flattened-Program-definitions</span> <span class="var">o</span>) ) )
+  <span class="var">o</span> )
 
-<p>(define-generic (collect-temporaries! (o Program) flatfun r)
-  (update-walk! collect-temporaries! o flatfun r) )</pre>
+(<span class="syntax">define-generic</span> (<span class="func">collect-temporaries!</span> (<span class="var">o</span> <span class="class">Program</span>) <span class="var">flatfun</span> <span class="var">r</span>)
+  (<span class="func">update-walk!</span> <span class="var">collect-temporaries!</span> <span class="var">o</span> <span class="var">flatfun</span> <span class="var">r</span>) )</pre>
 
 <p>Для завершения преобразования остаётся определить три новых метода. Локальные
 переменные при необходимости могут переименовываться, то же самое касается и
 переменных в коробках:</p>
 
-<pre>(define-method (collect-temporaries! (o Local-Reference) flatfun r)
-  (let* ((variable (Local-Reference-variable o))
-         (v (assq variable r)) )
-    (if (pair? v) (make-Local-Reference (cdr v))
-                  o ) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">collect-temporaries!</span> (<span class="var">o</span> <span class="class">Local-Reference</span>) <span class="var">flatfun</span> <span class="var">r</span>)
+  (<span class="syntax">let*</span> ((<span class="var">variable</span> (<span class="func">Local-Reference-variable</span> <span class="var">o</span>))
+         (<span class="var">v</span> (<span class="func">assq</span> <span class="var">variable</span> <span class="var">r</span>)) )
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">v</span>) (<span class="func">make-Local-Reference</span> (<span class="func">cdr</span> <span class="var">v</span>))
+                  <span class="var">o</span> ) ) )
 
-<p>(define-method (collect-temporaries! (o Box-Creation) flatfun r)
-  (let* ((variable (Box-Creation-variable o))
-         (v (assq variable r)) )
-    (if (pair? v) (make-Box-Creation (cdr v))
-                  o ) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">collect-temporaries!</span> (<span class="var">o</span> <span class="class">Box-Creation</span>) <span class="var">flatfun</span> <span class="var">r</span>)
+  (<span class="syntax">let*</span> ((<span class="var">variable</span> (<span class="func">Box-Creation-variable</span> <span class="var">o</span>))
+         (<span class="var">v</span> (<span class="func">assq</span> <span class="var">variable</span> <span class="var">r</span>)) )
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">v</span>) (<span class="func">make-Box-Creation</span> (<span class="func">cdr</span> <span class="var">v</span>))
+                  <span class="var">o</span> ) ) )</pre>
 
-<p>Самый сложный метод, конечно же, будет для <code><span class="func">Fix-Let</span></code>. Сначала он рекурсивно
+<p>Самый сложный метод, конечно же, будет для <code><span class="class">Fix-Let</span></code>. Сначала он рекурсивно
 вызывается для всех её аргументов, после чего переименовывает локальные
 переменные с помощью функции <code><span class="func">new-renamed-variable</span></code>. Затем эти новые
 переменные добавляются в определение обрабатываемой формы, а
 <code><span class="func">collect-temporaries!</span></code> ещё раз рекурсивно вызывается уже для её тела,
 помещённого в обновлённое окружение.</p>
 
-
 <!--\indexC{adjoin-temporary-variables"!}-->
-<pre>(define-method (collect-temporaries! (o Fix-Let) flatfun r)
-  (set-Fix-Let-arguments!
-   o (collect-temporaries! (Fix-Let-arguments o) flatfun r) )
-  (let* ((newvars (map new-renamed-variable (Fix-Let-variables o)))
-         (newr (append (map cons (Fix-Let-variables o) newvars) r)) )
-    (adjoin-temporary-variables! flatfun newvars)
-    (set-Fix-Let-variables! o newvars)
-    (set-Fix-Let-body!
-     o (collect-temporaries! (Fix-Let-body o) flatfun newr) )
-    o ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">collect-temporaries!</span> (<span class="var">o</span> <span class="class">Fix-Let</span>) <span class="var">flatfun</span> <span class="var">r</span>)
+  (<span class="func">set-Fix-Let-arguments!</span>
+   <span class="var">o</span> (<span class="func">collect-temporaries!</span> (<span class="func">Fix-Let-arguments</span> <span class="var">o</span>) <span class="var">flatfun</span> <span class="var">r</span>) )
+  (<span class="syntax">let*</span> ((<span class="var">newvars</span> (<span class="func">map</span> <span class="var">new-renamed-variable</span> (<span class="func">Fix-Let-variables</span> <span class="var">o</span>)))
+         (<span class="var">newr</span> (<span class="func">append</span> (<span class="func">map</span> <span class="var">cons</span> (<span class="func">Fix-Let-variables</span> <span class="var">o</span>) <span class="var">newvars</span>) <span class="var">r</span>)) )
+    (<span class="func">adjoin-temporary-variables!</span> <span class="var">flatfun</span> <span class="var">newvars</span>)
+    (<span class="func">set-Fix-Let-variables!</span> <span class="var">o</span> <span class="var">newvars</span>)
+    (<span class="func">set-Fix-Let-body!</span>
+     <span class="var">o</span> (<span class="func">collect-temporaries!</span> (<span class="func">Fix-Let-body</span> <span class="var">o</span>) <span class="var">flatfun</span> <span class="var">newr</span>) )
+    <span class="var">o</span> ) )
 
-<p>(define (adjoin-temporary-variables! flatfun newvars)
-  (let adjoin ((temps (With-Temp-Function-Definition-temporaries
-                       flatfun ))
-               (vars newvars) )
-    (if (pair? vars)
-        (if (memq (car vars) temps)
-            (adjoin temps (cdr vars))
-            (adjoin (cons (car vars) temps) (cdr vars)) )
-        (set-With-Temp-Function-Definition-temporaries!
-         flatfun temps ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">adjoin-temporary-variables!</span> <span class="var">flatfun</span> <span class="var">newvars</span>)
+  (<span class="syntax">let</span> <span class="func">adjoin</span> ((<span class="var">temps</span> (<span class="func">With-Temp-Function-Definition-temporaries</span>
+                       <span class="var">flatfun</span> ))
+               (<span class="var">vars</span> <span class="var">newvars</span>) )
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">vars</span>)
+        (<span class="special">if</span> (<span class="func">memq</span> (<span class="func">car</span> <span class="var">vars</span>) <span class="var">temps</span>)
+            (<span class="func">adjoin</span> <span class="var">temps</span> (<span class="func">cdr</span> <span class="var">vars</span>))
+            (<span class="func">adjoin</span> (<span class="func">cons</span> (<span class="func">car</span> <span class="var">vars</span>) <span class="var">temps</span>) (<span class="func">cdr</span> <span class="var">vars</span>)) )
+        (<span class="func">set-With-Temp-Function-Definition-temporaries!</span>
+         <span class="var">flatfun</span> <span class="var">temps</span> ) ) ) )</pre>
 
 <p>Переименованные переменные выделяются в собственный подкласс. Ещё нам
 потребуется счётчик для обеспечения уникальности их имён.</p>
 
-
 <!--\indexC{Renamed-Local-Variable}-->
 <!--\indexC{renaming-variable-counter}-->
 <!--\indexC{new-renamed-variable}-->
-<pre>(define-class Renamed-Local-Variable Variable (index))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">Renamed-Local-Variable</span> <span class="class">Variable</span> (<span class="var">index</span>))
 
-<p>(define renaming-variable-counter 0)</p>
+(<span class="special">define</span> <span class="var">renaming-variable-counter</span> <span class="num">0</span>)
 
-<p>(define-generic (new-renamed-variable (variable)))</p>
+(<span class="syntax">define-generic</span> (<span class="func">new-renamed-variable</span> (<span class="var">variable</span>)))
 
-<p>(define-method (new-renamed-variable (variable Local-Variable))
-  (set! renaming-variable-counter (+ 1 renaming-variable-counter))
-  (make-Renamed-Local-Variable
-   (Variable-name variable) renaming-variable-counter ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">new-renamed-variable</span> (<span class="var">variable</span> <span class="class">Local-Variable</span>))
+  (<span class="special">set!</span> <span class="var">renaming-variable-counter</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">renaming-variable-counter</span>))
+  (<span class="func">make-Renamed-Local-Variable</span>
+   (<span class="func">Variable-name</span> <span class="var">variable</span>) <span class="var">renaming-variable-counter</span> ) )</pre>
 
-<h2 id="cc/sect:pause">Передышка</h2>
+
+<h2 id="cc/sect:pause"><span class="seq">10.7.</span> Передышка</h2>
 
 <p>Следующая программа на Scheme является финальным результатом метаморфоз,
 произошедших с показанным в самом начале главы примером. Итого:</p>
 
-<p>\begin{enumerate}
-  \item Изменяемые переменные разложены по коробками.
-  \item Вложенные функции не используются.
-  \item Все цитаты и определения функций вынесены наверх.
-  \item Временные переменные создаются явно.
-\end{enumerate}</p>
+<ol>
+  <li>Изменяемые переменные разложены по коробками.</li>
+  <li>Вложенные функции не используются.</li>
+  <li>Все цитаты и определения функций вынесены наверх.</li>
+  <li>Временные переменные создаются явно.</li>
+</ol>
 
-<pre>(define quote_5 'foo)                    ; собранные цитаты
-(define-class Closure_0 Object ())       ; абстракция <code>(lambda (f) ...)</code>
-(define-method (invoke (self Closure_0) f)
-  (begin
-    (set! index (+ 1 index))
-    (invoke f index) ) )                 ; вызов функции
-(define-class Closure_1 Object (i))      ; абстракция <code>(lambda (x) ...)</code>
-(define-method (invoke (self Closure_1) . x)
-  (cons (Closure_1-i self)               ; свободная переменная <code><span class="func">i</span></code>
-        x ) )
-(define-class Closure_2 Object ())       ; абстракция <code>(lambda (i) ...)</code>
-(define-method (invoke (self Closure_2) i)
-  (make-Closure_1 i) )                   ; создание замыкания
-(define-class Closure_3 Object ())       ; абстракция <code>(lambda () $\pi$)</code>
-(define-method (invoke (self Closure_3))
-  ((lambda (cnter_1 tmp_2)               ; переименование в действии
-     (set! index 1)
-     (set! cnter_1 (make-Closure_0))     ; инициализация
-     (set! tmp_2 (cons quote_5 '()))     ; \quad временных переменных
-     (set! tmp_2 (make-box tmp_2))       ; укладываем в коробку
-     (box-write! tmp_2                   ; \quad изменяемую переменную
-                 (invoke cnter_1 (make-Closure_2)) )
-     (if cnter_1
-         (invoke cnter_1 (box-read tmp_2))
-         index ) ) ) )
-(invoke (make-Closure_3))                ; точка входа</pre>
+<pre>(<span class="special">define</span> <span class="var">quote_5</span> '<span class="var">foo</span>)                    <span class="comment">; собранные цитаты</span>
+(<span class="syntax">define-class</span> <span class="class">Closure_0</span> <span class="class">Object</span> ())       <span class="comment">; абстракция <code>(<span class="special">lambda</span> (<span class="var">f</span>) ...)</code></span>
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">self</span> <span class="class">Closure_0</span>) <span class="var">f</span>)
+  (<span class="special">begin</span>
+    (<span class="special">set!</span> <span class="var">index</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">index</span>))
+    (<span class="func">invoke</span> <span class="var">f</span> <span class="var">index</span>) ) )                 <span class="comment">; вызов функции</span>
+(<span class="syntax">define-class</span> <span class="class">Closure_1</span> <span class="class">Object</span> (<span class="var">i</span>))      <span class="comment">; абстракция <code>(<span class="special">lambda</span> (<span class="var">x</span>) ...)</code></span>
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">self</span> <span class="class">Closure_1</span>) . <span class="var">x</span>)
+  (<span class="func">cons</span> (<span class="func">Closure_1-i</span> <span class="var">self</span>)               <span class="comment">; свободная переменная <code><span class="var">i</span></code></span>
+        <span class="var">x</span> ) )
+(<span class="syntax">define-class</span> <span class="class">Closure_2</span> <span class="class">Object</span> ())       <span class="comment">; абстракция <code>(<span class="special">lambda</span> (<span class="var">i</span>) ...)</code></span>
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">self</span> <span class="class">Closure_2</span>) <span class="var">i</span>)
+  (<span class="func">make-Closure_1</span> <span class="var">i</span>) )                   <span class="comment">; создание замыкания</span>
+(<span class="syntax">define-class</span> <span class="class">Closure_3</span> <span class="class">Object</span> ())       <span class="comment">; абстракция <code>(<span class="special">lambda</span> () <span class="math"><span class="ord var">π</span></span>)</code></span>
+(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">self</span> <span class="class">Closure_3</span>))
+  ((<span class="special">lambda</span> (<span class="var">cnter_1</span> <span class="var">tmp_2</span>)               <span class="comment">; переименование в действии</span>
+     (<span class="special">set!</span> <span class="var">index</span> <span class="num">1</span>)
+     (<span class="special">set!</span> <span class="var">cnter_1</span> (<span class="func">make-Closure_0</span>))     <span class="comment">; инициализация</span>
+     (<span class="special">set!</span> <span class="var">tmp_2</span> (<span class="func">cons</span> <span class="var">quote_5</span> <span class="hash">'()</span>))     <span class="comment">; <span class="quad-stub" style="width: 1em"/>временных переменных</span>
+     (<span class="special">set!</span> <span class="var">tmp_2</span> (<span class="func">make-box</span> <span class="var">tmp_2</span>))       <span class="comment">; укладываем в коробку</span>
+     (<span class="func">box-write!</span> <span class="var">tmp_2</span>                   <span class="comment">; <span class="quad-stub" style="width: 1em"/>изменяемую переменную</span>
+                 (<span class="func">invoke</span> <span class="var">cnter_1</span> (<span class="func">make-Closure_2</span>)) )
+     (<span class="special">if</span> <span class="var">cnter_1</span>
+         (<span class="func">invoke</span> <span class="var">cnter_1</span> (<span class="func">box-read</span> <span class="var">tmp_2</span>))
+         <span class="var">index</span> ) ) ) )
+(<span class="func">invoke</span> (<span class="func">make-Closure_3</span>))                <span class="comment">; точка входа</span></pre>
 
-<h2 id="cc/sect:gen">Генерируем Си</h2>
+
+<h2 id="cc/sect:gen"><span class="seq">10.8.</span> Генерируем Си</h2>
 
 <p>Наконец, мы готовы выполнить мистический обряд кодогенерации. Осталось лишь
 дать несколько предварительных пояснений. Ваш покорный слуга не мнит себя
 мировым экспертом по языку Си и, в сущности, обязан своими знаниями тщательному
-изучению книг вроде \cite{iso90,hs91,cek+89}. Предполагается, что вы имеете
+изучению книг вроде <span class="cite">[<a href="z1_bibliography.xhtml#iso90">ISO90</a>,
+<a href="z1_bibliography.xhtml#hs91">HS91</a>,
+<a href="z1_bibliography.xhtml#cek+89">CEK<sup>+</sup>89</a>]</span>.
+Предполагается, что вы имеете
 некоторое представление об этом языке, но не обременены предрассудками
 о единственно верном способе его использования.</p>
 
 <p>Абстрактное синтаксическое дерево полностью готово и только и ждёт, чтобы его
 скомпилировали, а вернее сказать, <em>распечатали</em> на языке Си. Благодаря
 высокоуровневому представлению программ, генерация кода не представляет особых
-сложностей. Функция <code><span class="func">compile->C</span></code> принимает S-выражение, выполняет над ним
-рассмотренные ранее преобразования и в конце концов выводит в порт <code><span class="func">out</span></code>
+сложностей. Функция <code><span class="func">compile-&gt;C</span></code> принимает S-выражение, выполняет над ним
+рассмотренные ранее преобразования и в конце концов выводит в порт <code><span class="var">out</span></code>
 опрятный исходный код на Си.</p>
-
 
 <!--\indexC{compile->C}-->
 <!--\indexC{generate-C-program}-->
-<pre>(define (compile->C e out)
-  (set! g.current '())
-  (let ((prg (extract-things! (lift! (Sexp->object e)))))
-    (gather-temporaries! (closurize-main! prg))
-    (generate-C-program out e prg) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">compile-&gt;C</span> <span class="var">e</span> <span class="var">out</span>)
+  (<span class="special">set!</span> <span class="var">g.current</span> <span class="hash">'()</span>)
+  (<span class="syntax">let</span> ((<span class="var">prg</span> (<span class="func">extract-things!</span> (<span class="func">lift!</span> (<span class="func">Sexp-&gt;object</span> <span class="var">e</span>)))))
+    (<span class="func">gather-temporaries!</span> (<span class="func">closurize-main!</span> <span class="var">prg</span>))
+    (<span class="func">generate-C-program</span> <span class="var">out</span> <span class="var">e</span> <span class="var">prg</span>) ) )
 
-<p>(define (generate-C-program out e prg)
-  (generate-header             out e)
-  (generate-global-environment out g.current)
-  (generate-quotations         out (Flattened-Program-quotations prg))
-  (generate-functions          out (Flattened-Program-definitions prg))
-  (generate-main               out (Flattened-Program-form prg))
-  (generate-trailer            out)
-  prg )</pre>
+(<span class="special">define</span> (<span class="func">generate-C-program</span> <span class="var">out</span> <span class="var">e</span> <span class="var">prg</span>)
+  (<span class="func">generate-header</span>             <span class="var">out</span> <span class="var">e</span>)
+  (<span class="func">generate-global-environment</span> <span class="var">out</span> <span class="var">g.current</span>)
+  (<span class="func">generate-quotations</span>         <span class="var">out</span> (<span class="func">Flattened-Program-quotations</span> <span class="var">prg</span>))
+  (<span class="func">generate-functions</span>          <span class="var">out</span> (<span class="func">Flattened-Program-definitions</span> <span class="var">prg</span>))
+  (<span class="func">generate-main</span>               <span class="var">out</span> (<span class="func">Flattened-Program-form</span> <span class="var">prg</span>))
+  (<span class="func">generate-trailer</span>            <span class="var">out</span>)
+  <span class="var">prg</span> )</pre>
 
 <p>Как и любая программа на Си, а в более широком смысле, как и любое животное,
 получаемая программа состоит из головы, тела и хвоста. В голове находятся
 желания, умения и мысли, поэтому там размещается комментарий с исходным
 выражением на Scheme (выводимым нестандартной функцией <code><span class="func">pp</span></code>), а также
 директива препроцессора, подключающая к программе заголовочный файл
-<code><span class="func">scheme.h</span></code>, где будут находиться все необходимые ей определения. Для вывода
+<code>scheme.h</code>, где будут находиться все необходимые ей определения. Для вывода
 строк программы здесь и далее используется ещё одна нестандартная функция
 <code><span class="func">format</span></code>.</p>
 
-
 <!--\indexC{generate-header}-->
 <!--\indexC{generate-trailer}-->
-<pre>(define (generate-header out e)
-  (format out "/* Compiler to C $Revision: 4.1$ %")
-  (pp e out)
-  (format out -%*/ % %#include \"scheme.h\-%") )</p>
+<pre>(<span class="special">define</span> (<span class="func">generate-header</span> <span class="var">out</span> <span class="var">e</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"/* Compiler to C $Revision: 4.1$<span class="pp">~%</span>"</span>)
+  (<span class="func">pp</span> <span class="var">e</span> <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>*/<span class="pp">~%</span><span class="pp">~%</span>#include <span class="esc">\"</span>scheme.h<span class="esc">\"</span><span class="pp">~%</span>"</span>) )
 
-<p>(define (generate-trailer out)
-  (format out -%/* End of generated code */ %") )</pre>
+(<span class="special">define</span> (<span class="func">generate-trailer</span> <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>/* End of generated code */<span class="pp">~%</span>"</span>) )</pre>
 
 <p>В хвосте, как видите, нет ничего интересного; всё самое важное находится в теле
-программы. Результат компиляции нашего подопытного примера приведён на
-странице \pageref{cc/gen/init/src:result}. Возможно, вам захочется взглянуть на
+программы. Результат компиляции нашего подопытного примера приведён в разделе <a href="#cc/gen/init/src:result">10.8.8</a>. Возможно, вам захочется взглянуть на
 него, прежде чем переходить к изучению анатомии генератора.</p>
 
-<h3 id="cc/gen/ssect:global">Глобальное окружение</h3>
+
+<h3 id="cc/gen/ssect:global"><span class="seq">10.8.1.</span> Глобальное окружение</h3>
 
 <p>Глобальные переменные, используемые программой, можно разделить на две группы:
-предопределённые переменные, вроде <code><span class="func">car</span></code> или <code><span class="func">+</span></code>, и изменяемые глобальные
+предопределённые переменные, вроде <code><span class="func">car</span></code> или
+<code><span class="func">+</span></code>, и изменяемые глобальные
 переменные. Считается, что предопределённые переменные неизменяемы, а их
 значения физически располагаются в специальной библиотеке, которая будет
 подключена при компоновке. В отличие от них, окружение глобальных изменяемых
 переменных должно быть сформировано именно у нас в программе. Для этого мы
-используем информацию, которую собрали в <code><span class="func">g.current</span></code> во время предобработки.</p>
+используем информацию, которую собрали в
+<code><span class="var">g.current</span></code> во время предобработки.</p>
 
 <p>Используемый подход к генерации строится на предположении, что программа
 компилируется целиком, а не отдельными модулями. (Раздельная компиляция, как
 вы помните, вызывает множество специфичных затруднений.
-\seePage[compilation/sect:separate] Мы не будем их рассматривать повторно, дабы
-не раздувать эту главу в пару раз.)</p>
+<span class="see">[см. раздел <a href="ch07_compilation.xhtml#compilation/sect:separate">7.10</a>]</span>
+Мы не будем их рассматривать повторно, дабы не раздувать эту главу в пару раз.)</p>
 
 <p>Для облегчения понимания и повышения читабельности кода, генератор щедро
 использует макросы Си. Например, глобальные переменные объявляются макросом
-<code><span class="func">SCM\_DefineGlobalVariable</span></code>. Вторым аргументом этот макрос принимает строку
-с изначальным именем\footnote{Используемая в этой главе функция <code><span class="func">read</span></code>
-переводит все имена символов в верхний регистр.} переменной на Scheme. Это может
+<code class="c"><span class="pre">SCM_DefineGlobalVariable</span></code>.
+Вторым аргументом этот макрос принимает строку
+с изначальным именем<a class="footref" href="zz_footnotes.xhtml#foot10.3"><sup>3</sup></a> переменной на Scheme. Это может
 оказаться полезным при отладке.</p>
-
 
 <!--\indexC{generate-global-environment}-->
 <!--\indexC{generate-global-variable}-->
-<pre>(define (generate-global-environment out gv*)
-  (when (pair? gv*)
-    (format out -%/* Global environment: */ %")
-    (for-each (lambda (gv) (generate-global-variable out gv))
-              gv* ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">generate-global-environment</span> <span class="var">out</span> <span class="var">gv*</span>)
+  (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">gv*</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>/* Global environment: */<span class="pp">~%</span>"</span>)
+    (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">gv</span>) (<span class="func">generate-global-variable</span> <span class="var">out</span> <span class="var">gv</span>))
+              <span class="var">gv*</span> ) ) )
 
-<p>(define (generate-global-variable out gv)
-  (let ((name (Global-Variable-name gv)))
-    (format out "SCM_DefineGlobalVariable( A,\-A\"); %"
-            (IdScheme->IdC name) name ) ) )</pre>
-
+(<span class="special">define</span> (<span class="func">generate-global-variable</span> <span class="var">out</span> <span class="var">gv</span>)
+  (<span class="syntax">let</span> ((<span class="func">name</span> (<span class="func">Global-Variable-name</span> <span class="var">gv</span>)))
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DefineGlobalVariable(<span class="pp">~A</span>,<span class="esc">\"</span><span class="pp">~A</span><span class="esc">\"</span>);<span class="pp">~%</span>"</span>
+            (<span class="func">IdScheme-&gt;IdC</span> <span class="var">name</span>) <span class="var">name</span> ) ) )</pre>
 
 <!--\indexR{идентификаторы в Си}-->
 <p>Вот мы и встретились с первым затруднением: не все идентификаторы Scheme
-являются допустимыми в Си. Функция <code><span class="func">IdScheme->IdC</span></code> занимается преобразованием
+являются допустимыми в Си. Функция <code><span class="func">IdScheme-&gt;IdC</span></code> занимается преобразованием
 идентификаторов Scheme в корректные идентификаторы Си. Она должна избавиться от
 всех мешающих символов, оставив при этом имя более-менее понятным, чтобы можно
 было догадаться о его исходном написании. Естественно, вариантов такого
 преобразования огромное множество, но мы просто заменим все недопустимые символы
 допустимыми, после чего убедимся в уникальности полученного имени. Код, который
 это делает, не то, чтобы особо интересен, но в самом начале книги у нас был
-уговор: ничего не утаивать. Переменная <code><span class="func">Scheme->C-names-mapping</span></code> хранит
+уговор: ничего не утаивать. Переменная <code><span class="var">Scheme-&gt;C-names-mapping</span></code> хранит
 словарик имён, изначально содержащий несколько сложных случаев.</p>
 
-
 <!--\indexC{IdScheme->IdC}-->
-<pre>(define Scheme->C-names-mapping
-  '( (*        . "TIMES")
-     (<        . "LESSP")
-     (pair?    . "CONSP")
-     (set-cdr! . "RPLACD")
-     ; и другие
+<pre>(<span class="special">define</span> <span class="var">Scheme-&gt;C-names-mapping</span>
+  '( (<span class="var">*</span>        . <span class="string">"TIMES"</span>)
+     (<span class="var">&lt;</span>        . <span class="string">"LESSP"</span>)
+     (<span class="var">pair?</span>    . <span class="string">"CONSP"</span>)
+     (<span class="var">set-cdr!</span> . <span class="string">"RPLACD"</span>)
+     <span class="comment">; и другие</span>
      ) )
-(define (IdScheme->IdC name)
-  (let ((v (assq name Scheme->C-names-mapping)))
-    (if (pair? v) (cdr v)
-        (let ((str (symbol->string name)))
-          (let retry ((Cname (compute-Cname str)))
-            (if (Cname-clash? Cname Scheme->C-names-mapping)
-                (retry (compute-another-Cname str))
-                (begin (set! Scheme->C-names-mapping
-                             (cons (cons name Cname)
-                                   Scheme->C-names-mapping ) )
-                       Cname ) ) ) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">IdScheme-&gt;IdC</span> <span class="var">name</span>)
+  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">assq</span> <span class="var">name</span> <span class="var">Scheme-&gt;C-names-mapping</span>)))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">v</span>) (<span class="func">cdr</span> <span class="var">v</span>)
+        (<span class="syntax">let</span> ((<span class="var">str</span> (<span class="func">symbol-&gt;string</span> <span class="var">name</span>)))
+          (<span class="syntax">let</span> <span class="func">retry</span> ((<span class="var">Cname</span> (<span class="func">compute-Cname</span> <span class="var">str</span>)))
+            (<span class="special">if</span> (<span class="func">Cname-clash?</span> <span class="var">Cname</span> <span class="var">Scheme-&gt;C-names-mapping</span>)
+                (<span class="func">retry</span> (<span class="func">compute-another-Cname</span> <span class="var">str</span>))
+                (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">Scheme-&gt;C-names-mapping</span>
+                             (<span class="func">cons</span> (<span class="func">cons</span> <span class="var">name</span> <span class="var">Cname</span>)
+                                   <span class="var">Scheme-&gt;C-names-mapping</span> ) )
+                       <span class="var">Cname</span> ) ) ) ) ) ) )</pre>
 
 <p>Обнаруженные конфликты имён разрешаются просто: добавлением уникального номера.</p>
 
-<p>\ForLayout{display}{\begingroup\lstset{belowskip=\smallskipamount}}</p>
-
-
 <!--\indexC{Cname-clash?}-->
 <!--\indexC{compute-Cname}-->
-<pre>(define (Cname-clash? Cname mapping)
-  (let check ((mapping mapping))
-    (and (pair? mapping)
-         (or (string=? Cname (cdar mapping))
-             (check (cdr mapping)) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">Cname-clash?</span> <span class="var">Cname</span> <span class="var">mapping</span>)
+  (<span class="syntax">let</span> <span class="func">check</span> ((<span class="var">mapping</span> <span class="var">mapping</span>))
+    (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">mapping</span>)
+         (<span class="syntax">or</span> (<span class="func">string=?</span> <span class="var">Cname</span> (<span class="func">cdar</span> <span class="var">mapping</span>))
+             (<span class="func">check</span> (<span class="func">cdr</span> <span class="var">mapping</span>)) ) ) ) )
 
-<p>(define compute-another-Cname
-  (let ((counter 1))
-    (lambda (str)
-      (set! counter (+ 1 counter))
-      (compute-Cname (format #f -A_ A" str counter)) ) ) )</p>
+(<span class="special">define</span> <span class="var">compute-another-Cname</span>
+  (<span class="syntax">let</span> ((<span class="var">counter</span> <span class="num">1</span>))
+    (<span class="special">lambda</span> (<span class="var">str</span>)
+      (<span class="special">set!</span> <span class="var">counter</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">counter</span>))
+      (<span class="func">compute-Cname</span> (<span class="func">format</span> <span class="hash">#f</span> <span class="string">"<span class="pp">~A</span>_<span class="pp">~A</span>"</span> <span class="var">str</span> <span class="var">counter</span>)) ) ) )
 
-<p>(define (compute-Cname str)
-  (define (mapcan f l)
-    (if (not (pair? l)) '()
-        (append (f (car l)) (mapcan f (cdr l))) ) )
-  (define (convert-char char)
-    (case char
-      ((#\_)             '(#\_ #\_))
-      ((#\?)             '(#\p))
-      ((#\!)             '(#\i))
-      ((#\<)             '(#\l))
-      ((#\>)             '(#\g))
-      ((#\=)             '(#\e))
-      ((#\- #\/ #\* #\:) '())
-      (else              (list char)) ) )
-  (let ((cname (mapcan convert-char (string->list str))))
-    (if (pair? cname)
-        (list->string cname)
-        "weird" ) ) )</pre>
-
-<p>\ForLayout{display}{\endgroup}</p>
+(<span class="special">define</span> (<span class="func">compute-Cname</span> <span class="var">str</span>)
+  (<span class="special">define</span> (<span class="func">mapcan</span> <span class="var">f</span> <span class="var">l</span>)
+    (<span class="special">if</span> (<span class="func">not</span> (<span class="func">pair?</span> <span class="var">l</span>)) <span class="hash">'()</span>
+        (<span class="func">append</span> (<span class="func">f</span> (<span class="func">car</span> <span class="var">l</span>)) (<span class="func">mapcan</span> <span class="var">f</span> (<span class="func">cdr</span> <span class="var">l</span>))) ) )
+  (<span class="special">define</span> (<span class="func">convert-char</span> <span class="var">char</span>)
+    (<span class="syntax">case</span> <span class="var">char</span>
+      ((<span class="hash">#\_</span>)             '(<span class="hash">#\_</span> <span class="hash">#\_</span>))
+      ((<span class="hash">#\?</span>)             '(<span class="hash">#\p</span>))
+      ((<span class="hash">#\!</span>)             '(<span class="hash">#\i</span>))
+      ((<span class="hash">#\&lt;</span>)             '(<span class="hash">#\l</span>))
+      ((<span class="hash">#\></span>)             '(<span class="hash">#\g</span>))
+      ((<span class="hash">#\=</span>)             '(<span class="hash">#\e</span>))
+      ((<span class="hash">#\-</span> <span class="hash">#\/</span> <span class="hash">#\*</span> <span class="hash">#\:</span>) <span class="hash">'()</span>)
+      (<span class="syntax">else</span>              (<span class="func">list</span> <span class="var">char</span>)) ) )
+  (<span class="syntax">let</span> ((<span class="var">cname</span> (<span class="func">mapcan</span> <span class="var">convert-char</span> (<span class="func">string-&gt;list</span> <span class="var">str</span>))))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">cname</span>)
+        (<span class="func">list-&gt;string</span> <span class="var">cname</span>)
+        <span class="strign">"weird"</span> ) ) )</pre>
 
 <p>Единичные подчёркивания гарантированно не встречаются в генерируемых именах,
 поэтому их можно спокойно использовать для именования разнообразных внутренних
 переменных, не опасаясь коллизий с переменными исходной программы. Рассмотренное
-преобразование, конечно, не справится с чем-то вроде <code><span class="func">1+</span></code>, но кого волнуют
-имена, запрещённые стандартом Scheme?</p>
+преобразование, конечно, не справится с чем-то вроде <code><span class="var">1+</span></code>,
+но кого волнуют имена, запрещённые стандартом Scheme?</p>
 
-<h3 id="cc/gen/ssect:quote">Цитаты</h3>
 
+<h3 id="cc/gen/ssect:quote"><span class="seq">10.8.2.</span> Цитаты</h3>
 
 <!--\indexR{цитаты!склеивание}-->
 <!--\indexR{склеивание цитат}-->
@@ -921,58 +899,54 @@ $\pi$ становится <code>((lambda () $\pi$))</code>.</p>
 обещаний. Для простоты мы не будем реализовывать поддержку векторов, длинной
 арифметики и всех нецелых чисел.</p>
 
-
 <!--\indexC{generate-quotations}-->
-<pre>(define (generate-quotations out qv*)
-  (when (pair? qv*)
-    (format out -%/* Quotations: */ %")
-    (scan-quotations out qv* (length qv*) '()) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">generate-quotations</span> <span class="var">out</span> <span class="var">qv*</span>)
+  (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">qv*</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>/* Quotations: */<span class="pp">~%</span>"</span>)
+    (<span class="func">scan-quotations</span> <span class="var">out</span> <span class="var">qv*</span> (<span class="func">length</span> <span class="var">qv*</span>) <span class="hash">'()</span>) ) )</pre>
 
 <p>Настоящую работу выполняет <code><span class="func">scan-quotations</span></code>: просматривает собранные
-цитаты, представляемые объектами класса <code><span class="func">Quotation-Variable</span></code>, и генерирует
+цитаты, представляемые объектами класса <code><span class="class">Quotation-Variable</span></code>, и генерирует
 соответствующий код. Она также старается создавать как можно меньше
 промежуточных цитат, разделяя максимум информации между ними. Предикат
 <code><span class="func">already-seen-value?</span></code> подсказывает ей, когда такое возможно.</p>
 
-
 <!--\indexC{scan-quotations}-->
 <!--\indexC{already-seen-value"?}-->
-<pre>(define (scan-quotations out qv* i results)
-  (when (pair? qv*)
-    (let* ((qv       (car qv*))
-           (value    (Quotation-Variable-value qv))
-           (other-qv (already-seen-value? value results)) )
-      (cond
-        (other-qv
-          (generate-quotation-alias out qv other-qv)
-          (scan-quotations out (cdr qv*) i (cons qv results)) )
-        ((C-value? value)
-          (generate-C-value out qv)
-          (scan-quotations out (cdr qv*) i (cons qv results)) )
-        ((symbol? value) (scan-symbol out value qv* i results) )
-        ((pair? value)   (scan-pair out value qv* i results) )
-        (else (generate-error "Unsupported constant" qv)) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">scan-quotations</span> <span class="var">out</span> <span class="var">qv*</span> <span class="var">i</span> <span class="var">results</span>)
+  (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">qv*</span>)
+    (<span class="syntax">let*</span> ((<span class="var">qv</span>       (<span class="func">car</span> <span class="var">qv*</span>))
+           (<span class="var">value</span>    (<span class="func">Quotation-Variable-value</span> <span class="var">qv</span>))
+           (<span class="var">other-qv</span> (<span class="func">already-seen-value?</span> <span class="var">value</span> <span class="var">results</span>)) )
+      (<span class="syntax">cond</span>
+        (<span class="var">other-qv</span>
+          (<span class="func">generate-quotation-alias</span> <span class="var">out</span> <span class="var">qv</span> <span class="var">other-qv</span>)
+          (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cdr</span> <span class="var">qv*</span>) <span class="var">i</span> (<span class="func">cons</span> <span class="var">qv</span> <span class="var">results</span>)) )
+        ((<span class="func">C-value?</span> <span class="var">value</span>)
+          (<span class="func">generate-C-value</span> <span class="var">out</span> <span class="var">qv</span>)
+          (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cdr</span> <span class="var">qv*</span>) <span class="var">i</span> (<span class="func">cons</span> <span class="var">qv</span> <span class="var">results</span>)) )
+        ((<span class="func">symbol?</span> <span class="var">value</span>) (<span class="func">scan-symbol</span> <span class="var">out</span> <span class="var">value</span> <span class="var">qv*</span> <span class="var">i</span> <span class="var">results</span>) )
+        ((<span class="func">pair?</span> <span class="var">value</span>)   (<span class="func">scan-pair</span> <span class="var">out</span> <span class="var">value</span> <span class="var">qv*</span> <span class="var">i</span> <span class="var">results</span>) )
+        (<span class="syntax">else</span> (<span class="func">generate-error</span> <span class="string">"Unsupported constant"</span> <span class="var">qv</span>)) ) ) ) )
 
-<p>(define (already-seen-value? value qv*)
-  (and (pair? qv*)
-       (if (equal? value (Quotation-Variable-value (car qv*)))
-           (car qv*)
-           (already-seen-value? value (cdr qv*)) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">already-seen-value?</span> <span class="var">value</span> <span class="var">qv*</span>)
+  (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">qv*</span>)
+       (<span class="special">if</span> (<span class="func">equal?</span> <span class="var">value</span> (<span class="func">Quotation-Variable-value</span> (<span class="func">car</span> <span class="var">qv*</span>)))
+           (<span class="func">car</span> <span class="var">qv*</span>)
+           (<span class="func">already-seen-value?</span> <span class="var">value</span> (<span class="func">cdr</span> <span class="var">qv*</span>)) ) ) )</pre>
 
-<p>Имена всех цитат в генерируемом коде будут начинаться на <code><span class="func">thing</span></code>. Если
+<p>Имена всех цитат в генерируемом коде будут начинаться на <code>thing</code>. Если
 в программе нашлась пара эквивалентных цитат, то достаточно одну из них везде
 заменить другой. Функция <code><span class="func">generate-quotation-alias</span></code> перекладывает эту работу
 на препроцессор Си. Чтобы облегчить чтение сгенерированного кода, рядом
 помещается комментарий со значением цитаты.</p>
 
-
 <!--\indexC{generate-quotation-alias}-->
-<pre>(define (generate-quotation-alias out qv1 qv2)
-  (format out "#define thing A thing A /*  S */ %"
-          (Quotation-Variable-name qv1)
-          (Quotation-Variable-name qv2)
-          (Quotation-Variable-value qv2) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">generate-quotation-alias</span> <span class="var">out</span> <span class="var">qv1</span> <span class="var">qv2</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> thing<span class="pp">~A</span> /* <span class="pp">~S</span> */<span class="pp">~%</span>"</span>
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv1</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv2</span>)
+          (<span class="func">Quotation-Variable-value</span> <span class="var">qv2</span>) ) )</pre>
 
 <!--\indexR{значения!атомарные}-->
 <p>Предикат <code><span class="func">C-value?</span></code> проверяет, можно ли данную цитату прямо перевести на Си.
@@ -981,42 +955,40 @@ $\pi$ становится <code>((lambda () $\pi$))</code>.</p>
 значения, (короткие) целые числа и строки. Все эти значения Scheme можно сразу
 представить соответствующими значениями Си. Предположим на время, что у нас уже
 есть необходимые макросы, раскрывающиеся в правильные описания строк, чисел,
-истины, лжи и пустого списка. Все они начинаются на <code><span class="func">SCM\_</span></code>. Без сомнения,
+истины, лжи и пустого списка. Все они начинаются на <code>SCM_</code>. Без сомнения,
 гуру Си также заметят, что наши числа являются знаковыми 31-битными
 в дополнительном коде.</p>
 
-
 <!--\indexC{C-value?}-->
 <!--\indexC{generate-C-value}-->
-<pre>(define *maximal-fixnum* +1073741823)
-(define *minimal-fixnum* -1073741824)
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define (C-value? value)
-  (or (null? value)
-      (boolean? value)
-      (and (integer? value)
-           (<= *minimal-fixnum* value *maximal-fixnum*) )
-      (string? value) ) )
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define (generate-C-value out qv)
-  (let ((value (Quotation-Variable-value qv))
-        (index (Quotation-Variable-name qv)) )
-    (cond
-      ((null? value)
-        (format out "#define thing A SCM_nil /* () */ %"
-                index ) )
-      ((boolean? value)
-        (format out "#define thing A  A /*  S */ %"
-                index (if value "SCM_true" "SCM_false") value ) )
-      ((integer? value)
-        (format out "#define thing A SCM_Int2Fixnum( A) %"
-                index value ) )
-      ((string? value)
-        (format out "SCM_DefineString(thing A_object, \-A\"); %"
-                index value )
-        (format out "#define thing A SCM_Wrap(&thing A_object) %"
-                index index ) ) ) ) )</pre>
+<pre>(<span class="special">define</span> <span class="var">*maximal-fixnum*</span> <span class="num">+1073741823</span>)
+(<span class="special">define</span> <span class="var">*minimal-fixnum*</span> <span class="num">-1073741824</span>)
 
+(<span class="special">define</span> (<span class="func">C-value?</span> <span class="var">value</span>)
+  (<span class="syntax">or</span> (<span class="func">null?</span> <span class="var">value</span>)
+      (<span class="func">boolean?</span> <span class="var">value</span>)
+      (<span class="syntax">and</span> (<span class="func">integer?</span> <span class="var">value</span>)
+           (<span class="func">&lt;=</span> <span class="var">*minimal-fixnum*</span> <span class="var">value</span> <span class="var">*maximal-fixnum*</span>) )
+      (<span class="func">string?</span> <span class="var">value</span>) ) )
+
+(<span class="special">define</span> (<span class="func">generate-C-value</span> <span class="var">out</span> <span class="var">qv</span>)
+  (<span class="syntax">let</span> ((<span class="var">value</span> (<span class="func">Quotation-Variable-value</span> <span class="var">qv</span>))
+        (<span class="var">index</span> (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>)) )
+    (<span class="syntax">cond</span>
+      ((<span class="func">null?</span> <span class="var">value</span>)
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> SCM_nil /* () */<span class="pp">~%</span>"</span>
+                <span class="var">index</span> ) )
+      ((<span class="func">boolean?</span> <span class="var">value</span>)
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> <span class="pp">~A</span> /* <span class="pp">~S</span> */<span class="pp">~%</span>"</span>
+                <span class="var">index</span> (<span class="special">if</span> <span class="var">value</span> <span class="string">"SCM_true"</span> <span class="string">"SCM_false"</span>) <span class="var">value</span> ) )
+      ((<span class="func">integer?</span> <span class="var">value</span>)
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> SCM_Int2Fixnum(<span class="pp">~A</span>)<span class="pp">~%</span>"</span>
+                <span class="var">index</span> <span class="var">value</span> ) )
+      ((<span class="func">string?</span> <span class="var">value</span>)
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DefineString(thing<span class="pp">~A</span>_object, <span class="esc">\"</span><span class="pp">~A</span><span class="esc">\"</span>);<span class="pp">~%</span>"</span>
+                <span class="var">index</span> <span class="var">value</span> )
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> SCM_Wrap(&amp;thing<span class="pp">~A</span>_object)<span class="pp">~%</span>"</span>
+                <span class="var">index</span> <span class="var">index</span> ) ) ) ) )</pre>
 
 <!--\indexR{значения!составные}-->
 <p>Если цитируются составные значения (точечные пары или символы), то вначале они
@@ -1024,115 +996,108 @@ $\pi$ становится <code>((lambda () $\pi$))</code>.</p>
 определения. Символы состоят из знаков, образующих строку с их именем. Строки
 создаются перед символами.</p>
 
-
 <!--\indexC{scan-symbol}-->
 <!--\indexC{generate-symbol}-->
-<pre>(define (scan-symbol out value qv* i results)
-  (let* ((qv (car qv*))
-         (str (symbol->string value))
-         (strqv (already-seen-value? str results)) )
-    (cond (strqv
-            (generate-symbol out qv strqv)
-            (scan-quotations out (cdr qv*) i (cons qv results)) )
-          (else
-            (let ((newqv (make-Quotation-Variable i str)))
-              (scan-quotations out (cons newqv qv*)
-                               (+ i 1) results ) ) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">scan-symbol</span> <span class="var">out</span> <span class="var">value</span> <span class="var">qv*</span> <span class="var">i</span> <span class="var">results</span>)
+  (<span class="syntax">let*</span> ((<span class="var">qv</span> (<span class="func">car</span> <span class="var">qv*</span>))
+         (<span class="var">str</span> (<span class="func">symbol->string</span> <span class="var">value</span>))
+         (<span class="var">strqv</span> (<span class="func">already-seen-value?</span> <span class="var">str</span> <span class="var">results</span>)) )
+    (<span class="syntax">cond</span> (<span class="var">strqv</span>
+            (<span class="func">generate-symbol</span> <span class="var">out</span> <span class="var">qv</span> <span class="var">strqv</span>)
+            (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cdr</span> <span class="var">qv*</span>) <span class="var">i</span> (<span class="func">cons</span> <span class="var">qv</span> <span class="var">results</span>)) )
+          (<span class="syntax">else</span>
+            (<span class="syntax">let</span> ((<span class="var">newqv</span> (<span class="func">make-Quotation-Variable</span> <span class="var">i</span> <span class="var">str</span>)))
+              (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cons</span> <span class="var">newqv</span> <span class="var">qv*</span>)
+                               (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">results</span> ) ) ) ) ) )
 
-<p>(define (generate-symbol out qv strqv)
-  (format out "SCM_DefineSymbol(thing A_object, thing A); /*  S */ %"
-          (Quotation-Variable-name qv)
-          (Quotation-Variable-name strqv)
-          (Quotation-Variable-value qv) )
-  (format out "#define thing A SCM_Wrap(&thing A_object) %"
-          (Quotation-Variable-name qv)
-          (Quotation-Variable-name qv) ) )</pre>
+(<span class="special">define</span> (<span class="func">generate-symbol</span> <span class="var">out</span> <span class="var">qv</span> <span class="var">strqv</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DefineSymbol(thing<span class="pp">~A</span>_object, thing<span class="pp">~A</span>); /* <span class="pp">~S</span> */<span class="pp">~%</span>"</span>
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">strqv</span>)
+          (<span class="func">Quotation-Variable-value</span> <span class="var">qv</span>) )
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"#define thing<span class="pp">~A</span> SCM_Wrap(&amp;thing<span class="pp">~A</span>_object)<span class="pp">~%</span>"</span>
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>) ) )</pre>
 
-<p>Точечные пары состоят из двух частей — <code><span class="func">car</span></code> и <code><span class="func">cdr</span></code>, —
+<p>Точечные пары состоят из двух частей — <code><span class="var">car</span></code> и <code><span class="var">cdr</span></code>, —
 обрабатываемых последовательно. При этом учитывается, что их значения могут
 оказаться эквивалентными как ранее определённым цитатам, так и друг другу. Их
 вывод реализован в стиле передачи продолжений.</p>
 
-
 <!--\indexC{scan-pair}-->
 <!--\indexC{generate-pair}-->
-<pre>(define (scan-pair out value qv* i results)
-  (let* ((qv  (car qv*))
-         (d   (cdr value))
-         (dqv (already-seen-value? d results)) )
-    (if dqv
-        (let* ((a   (car value))
-               (aqv (already-seen-value? a results)) )
-          (if aqv
-              (begin
-                (generate-pair out qv aqv dqv)
-                (scan-quotations out (cdr qv*)
-                                 i (cons qv results) ) )
-              (let ((newaqv (make-Quotation-Variable i a)))
-                (scan-quotations out (cons newaqv qv*)
-                                 (+ i 1) results ) ) ) )
-        (let ((newdqv (make-Quotation-Variable i d)))
-          (scan-quotations
-           out (cons newdqv qv*) (+ i 1) results ) ) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">scan-pair</span> <span class="var">out</span> <span class="var">value</span> <span class="var">qv*</span> <span class="var">i</span> <span class="var">results</span>)
+  (<span class="syntax">let*</span> ((<span class="var">qv</span>  (<span class="func">car</span> <span class="var">qv*</span>))
+         (<span class="var">d</span>   (<span class="func">cdr</span> <span class="var">value</span>))
+         (<span class="var">dqv</span> (<span class="func">already-seen-value?</span> <span class="var">d</span> <span class="var">results</span>)) )
+    (<span class="special">if</span> <span class="var">dqv</span>
+        (<span class="syntax">let*</span> ((<span class="var">a</span>   (<span class="func">car</span> <span class="var">value</span>))
+               (<span class="var">aqv</span> (<span class="func">already-seen-value?</span> <span class="var">a</span> <span class="var">results</span>)) )
+          (<span class="special">if</span> <span class="var">aqv</span>
+              (<span class="special">begin</span>
+                (<span class="func">generate-pair</span> <span class="var">out</span> <span class="var">qv</span> <span class="var">aqv</span> <span class="var">dqv</span>)
+                (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cdr</span> <span class="var">qv*</span>)
+                                 <span class="var">i</span> (<span class="func">cons</span> <span class="var">qv</span> <span class="var">results</span>) ) )
+              (<span class="syntax">let</span> ((<span class="var">newaqv</span> (<span class="func">make-Quotation-Variable</span> <span class="var">i</span> <span class="var">a</span>)))
+                (<span class="func">scan-quotations</span> <span class="var">out</span> (<span class="func">cons</span> <span class="var">newaqv</span> <span class="var">qv*</span>)
+                                 (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">results</span> ) ) ) )
+        (<span class="syntax">let</span> ((<span class="var">newdqv</span> (<span class="func">make-Quotation-Variable</span> <span class="var">i</span> <span class="var">d</span>)))
+          (<span class="func">scan-quotations</span>
+           <span class="var">out</span> (<span class="func">cons</span> <span class="var">newdqv</span> <span class="var">qv*</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">results</span> ) ) ) ) )
 
-<p>(define (generate-pair out qv aqv dqv)
-  (format out
-          "SCM_DefinePair(thing A_object, thing A, thing A); /*  S */ %"
-          (Quotation-Variable-name qv)
-          (Quotation-Variable-name aqv)
-          (Quotation-Variable-name dqv)
-          (Quotation-Variable-value qv) )
-  (format out
-          "#define thing A SCM_Wrap(&thing A_object) %"
-          (Quotation-Variable-name qv)
-          (Quotation-Variable-name qv) ) )</pre>
+(<span class="special">define</span> (<span class="func">generate-pair</span> <span class="var">out</span> <span class="var">qv</span> <span class="var">aqv</span> <span class="var">dqv</span>)
+  (<span class="func">format</span> <span class="var">out</span>
+          <span class="string">"SCM_DefinePair(thing<span class="pp">~A</span>_object, thing<span class="pp">~A</span>, thing<span class="pp">~A</span>); /* <span class="pp">~S</span> */<span class="pp">~%</span>"</span>
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">aqv</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">dqv</span>)
+          (<span class="func">Quotation-Variable-value</span> <span class="var">qv</span>) )
+  (<span class="func">format</span> <span class="var">out</span>
+          <span class="string">"#define thing<span class="pp">~A</span> SCM_Wrap(&amp;thing<span class="pp">~A</span>_object)<span class="pp">~%</span>"</span>
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>)
+          (<span class="func">Quotation-Variable-name</span> <span class="var">qv</span>) ) )</pre>
 
 <p>Теперь давайте рассмотрим пример, а затем поговорим обо всех этих загадочных
 макросах.</p>
 
-<h3 id="cc/gen/ssect:decl">Объявление данных</h3>
 
-<p>Возьмём простую программу, состоящую из единственной цитаты: <code>(quote ((\#F
-\#T) (FOO . "FOO") 33 FOO . "FOO"))</code>. Её компиляция выдаёт следующий результат,
+<h3 id="cc/gen/ssect:decl"><span class="seq">10.8.3.</span> Объявление данных</h3>
+
+<p>Возьмём простую программу, состоящую из единственной цитаты: <code>(<span class="special">quote</span> ((<span class="hash">#F</span>
+<span class="hash">#T</span>) (<span class="var">FOO</span> . <span class="string">"FOO"</span>) <span class="num">33</span> <span class="var">FOO</span> . <span class="string">"FOO"</span>))</code>. Её компиляция выдаёт следующий результат,
 слегка приправленный комментариями. Наслаждайтесь!</p>
 
-<p>% Такое разнообразие хешиков (\#, #) -- следствие абсолютно невразумительной
-% обработки комментариев пакетом lstlistings. Где-то внутри комментариев
-% горизонтальный режим, где-то -- verbatim-режим, в котором команды не работают.
-% Я нифига не понял этих свистоплясок с наличием/отсутствием скобочек и пробелов
-% и тупо всё захардкодил, чтобы выглядело нормально.
-\begin{code:c-frame}
-/* Compiler to C $Revision: 4.1$
-'((#F #T) (FOO . "FOO") 33 FOO . "FOO") */</p>
+<div class="snippet">
+<pre class="c">/* Compiler to C $Revision: 4.1$
+'((#F #T) (FOO . "FOO") 33 FOO . "FOO") */
 
-<p>#include "scheme.h"</p>
+#include "scheme.h"
 
-<p>/* Quotations: */
+/* Quotations: */
 SCM_DefineString(thing4_object, "FOO");
-#define thing4 SCM_Wrap(&thing4_object)
+#define thing4 SCM_Wrap(&amp;thing4_object)
 SCM_DefineSymbol(thing5_object, thing4);        /* FOO */
-#define thing5 SCM_Wrap(&thing5_object)
+#define thing5 SCM_Wrap(&amp;thing5_object)
 SCM_DefinePair(thing3_object, thing5, thing4);  /* (FOO . "FOO") */
-#define thing3 SCM_Wrap(&thing3_object)
+#define thing3 SCM_Wrap(&amp;thing3_object)
 #define thing6 SCM_Int2Fixnum(33)
 SCM_DefinePair(thing2_object, thing6, thing3);  /* (33 FOO . "FOO") */
-#define thing2 SCM_Wrap(&thing2_object)
+#define thing2 SCM_Wrap(&amp;thing2_object)
 SCM_DefinePair(thing1_object, thing3, thing2);
                                   /* ((FOO . "FOO") 33 FOO . "FOO") */
-#define thing1 SCM_Wrap(&thing1_object)
+#define thing1 SCM_Wrap(&amp;thing1_object)
 #define thing9 SCM_nil                           /* ()  */
 #define thing10 SCM_true                         /* \#T  */
 SCM_DefinePair(thing8_object, thing10, thing9);  /* (#T) */
-#define thing8 SCM_Wrap(&thing8_object)
+#define thing8 SCM_Wrap(&amp;thing8_object)
 #define thing11 SCM_false                        /* \#F */
 SCM_DefinePair(thing7_object, thing11, thing8);  /* (#F #T) */
-#define thing7 SCM_Wrap(&thing7_object)
+#define thing7 SCM_Wrap(&amp;thing7_object)
 SCM_DefinePair(thing0_object, thing7, thing1);
                           /* ((#F #T) (FOO . "FOO") 33 FOO . "FOO") */
-#define thing0 SCM_Wrap(&thing0_object)</p>
+#define thing0 SCM_Wrap(&amp;thing0_object)
 
-<p>/* ... */
-\end{code:c-frame}</p>
+/* ... */</pre></div>
 
 <p>Первым делом создаётся строка <code><span class="func">"FOO"</span></code>. Для этого используется макрос
 <code><span class="func">SCM\_DefineString</span></code>. Первым аргументом он принимает имя нового объекта на Си.
@@ -3587,5 +3552,5 @@ $f(f, x, y)$. Доработайте компилятор соответству
 Если вы уже успели влюбиться по уши в подобный подход, то будьте осторожны
 с исходным кодом Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">ser94</a>]</span> — можно ведь и не вынырнуть!</p>
 
-<p></body>
+</body>
 </html>

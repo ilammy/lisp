@@ -100,6 +100,12 @@ pre span.num { color: #AAAA10; font-size: 100%; }
 code span.string,
 pre span.string { color: #70C070; font-size: 100%; }
 
+code span.string span.pp,
+pre span.string span.pp { color: #1070C0; font-size: 100%; }
+
+code span.string span.esc,
+pre span.string span.esc { color: #C07010; font-size: 100%; }
+
 code span.comment,
 pre span.comment { color: #555555; font-size: 100%; }
 

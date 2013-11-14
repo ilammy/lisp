@@ -459,7 +459,7 @@
 (<span class="special">define</span> (<span class="func">compile-on-the-fly</span> <span class="var">v</span> <span class="var">r</span>)
   (<span class="special">set!</span> <span class="var">g.current</span> <span class="hash">'()</span>)
   (<span class="func">for-each</span> <span class="var">g.current-extend!</span> <span class="var">sg.current.names</span>)
-  (<span class="special">set!</span> <span class="var">*quotations*</span> (<span class="func">vector->list</span> <span class="var">*constants*</span>))
+  (<span class="special">set!</span> <span class="var">*quotations*</span> (<span class="func">vector-&gt;list</span> <span class="var">*constants*</span>))
   (<span class="special">set!</span> <span class="var">*dynamic-variables*</span> <span class="var">*dynamic-variables*</span>)
   (<span class="syntax">let</span> ((<span class="var">code</span> (<span class="func">apply</span> <span class="var">vector</span> (<span class="func">append</span> (<span class="func">meaning</span> <span class="var">v</span> <span class="var">r</span> <span class="hash">#f</span>) (<span class="func">RETURN</span>)))))
     (<span class="special">set!</span> <span class="var">sg.current.names</span> (<span class="func">map</span> <span class="var">car</span> (<span class="func">reverse</span> <span class="var">g.current</span>)))
@@ -842,11 +842,11 @@
 <!--\indexR{хеш-таблицы}-->
 <p>Символы — это составные структуры данных, имеющие как минимум одно поле:
 строку с собственным именем. В Scheme символы можно создавать явно с помощью
-функции <code><span class="func">string->symbol</span></code>. Имена символов уникальны. Обычно это гарантируется
-хеш-таблицей, связывающей строки с символами. Функция <code><span class="func">string->symbol</span></code>
+функции <code><span class="func">string-&gt;symbol</span></code>. Имена символов уникальны. Обычно это гарантируется
+хеш-таблицей, связывающей строки с символами. Функция <code><span class="func">string-&gt;symbol</span></code>
 сначала пытается отыскать строку в данной хеш-таблице; если такая строка там
 есть, то она возвращает соответствующий символ, а в противном случае
-<code><span class="func">string->symbol</span></code> создаёт новый символ и заносит его в таблицу на будущее.
+<code><span class="func">string-&gt;symbol</span></code> создаёт новый символ и заносит его в таблицу на будущее.
 Иногда ради ускорения поиска используются различные вспомогательные скрытые
 поля, связывающие группы символов между собой.</p>
 
@@ -876,7 +876,7 @@ P-списков, но нередко в этой роли можно встре
 и <code>(<span class="special">setf</span> <span class="var">symbol-function</span>)</code>.</p>
 
 <p>Такое решение привлекательно своей стопроцентной гарантией правильной работы.
-Каждый символ, используемый в программе, уже был создан <code><span class="func">string->symbol</span></code>,
+Каждый символ, используемый в программе, уже был создан <code><span class="func">string-&gt;symbol</span></code>,
 которую вызвала <code><span class="func">read</span></code> в процессе чтения программы. Конечно, не всякий символ
 используется для хранения значения глобальной переменной, но важно, что всякая
 глобальная переменная гарантированно имеет соответствующий символ.</p>
@@ -1327,25 +1327,25 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexR{замыкания (closures)!структура}-->
 <p>Некоторые интерпретаторы предоставляют примитивы, позволяющие извлечь из
 замыкания хранимое в нём окружение. Кроме функции
-<code><span class="func">procedure->environment</span></code>
+<code><span class="func">procedure-&gt;environment</span></code>
 также часто имеется и
-<code><span class="func">procedure->definition</span></code>, которая возвращает код
+<code><span class="func">procedure-&gt;definition</span></code>, которая возвращает код
 замыкания. Эту пару функций довольно легко реализовать для интерпретатора,
 но в случае компилятора задача уже не такая тривиальная и требует несколько
 большего объёма памяти. Им необходимо сохранить определения функций (которые
 занимают место в памяти), а также явно представить (в памяти) структуру
 замкнутых окружений. Более того, функция
-<code><span class="func">procedure->environment</span></code> пагубно
+<code><span class="func">procedure-&gt;environment</span></code> пагубно
 влияет на оптимизацию, так как теперь становится возможным добраться даже до
 святая святых — замкнутых свободных переменных, прежде недоступных вообще никому,
-кроме собственно замыканий. Функция <code><span class="func">procedure->environment</span></code>
+кроме собственно замыканий. Функция <code><span class="func">procedure-&gt;environment</span></code>
 в этом плане ещё хуже, чем <code><span class="special">export</span></code>: последняя хотя бы
 ограничивает негативные последствия явно
 указанными переменными.</p>
 
 <!--\indexR{интроспекция}-->
 <!--\indexR{трассировка}-->
-<p>Функция <code><span class="func">procedure->definition</span></code> полезна
+<p>Функция <code><span class="func">procedure-&gt;definition</span></code> полезна
 своими интроспективными возможностями. С её помощью можно создать отладчик, обладающий
 полным контролем над отлаживаемыми программами. Например, рассмотрим функцию
 <code><span class="func">trace-procedure1</span></code>, которая принимает унарную функцию,
@@ -1353,8 +1353,8 @@ P-списков, но нередко в этой роли можно встре
 но выводящую на экран свой аргумент и результат выполнения.</p>
 
 <pre>(<span class="special">define</span> (<span class="func">trace-procedure1</span> <span class="var">f</span>)
-  (<span class="syntax">let*</span> ((<span class="var">env</span> (<span class="func">procedure->environment</span> <span class="var">f</span>))
-         (<span class="var">definition</span> (<span class="func">procedure->definition</span> <span class="var">f</span>))
+  (<span class="syntax">let*</span> ((<span class="var">env</span> (<span class="func">procedure-&gt;environment</span> <span class="var">f</span>))
+         (<span class="var">definition</span> (<span class="func">procedure-&gt;definition</span> <span class="var">f</span>))
          (<span class="var">variable</span> (<span class="func">car</span> (<span class="func">car</span> <span class="var">definition</span>)))
          (<span class="var">body</span> (<span class="func">cddr</span> <span class="var">definition</span>)) )
     (<span class="special">lambda</span> (<span class="var">variable</span>)
@@ -1373,7 +1373,7 @@ P-списков, но нередко в этой роли можно встре
 полноценных окружений и динамических вычислений.</p>
 
 <p>Давайте рассмотрим пример реализации данных функций, чтобы вы лучше представляли
-себе их стоимость. Функция <code><span class="func">procedure->definition</span></code> более проста: ей надо
+себе их стоимость. Функция <code><span class="func">procedure-&gt;definition</span></code> более проста: ей надо
 всего лишь связать замыкание с его определением, то есть с цитатой
 соответствующей абстракции. Проблема состоит в том, куда поместить эту цитату,
 так как несколько замыканий могут иметь одинаковое определение. Вспомним, что
@@ -1390,8 +1390,8 @@ P-списков, но нередко в этой роли можно встре
 \label{reflection/reify-env/closed/pic:subj}%
 \end{figure}</p>
 
-<p>Реализация данной идеи тривиальна<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a>. Для нужд <code><span class="func">procedure->environment</span></code> и
-<code><span class="func">procedure->definition</span></code> в кодогенераторы абстракций
+<p>Реализация данной идеи тривиальна<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a>. Для нужд <code><span class="func">procedure-&gt;environment</span></code> и
+<code><span class="func">procedure-&gt;definition</span></code> в кодогенераторы абстракций
 необходимо передавать определения соответствующих функций и их окружения.
 <i>n</i>-арный вариант данной функции легко написать по аналогии:</p>
 
@@ -1413,11 +1413,11 @@ P-списков, но нередко в этой роли можно встре
     (<span class="func">append</span> (<span class="func">CREATE-CLOSURE</span> (<span class="func">+</span> (<span class="func">length</span> <span class="var">the-goto</span>) (<span class="func">length</span> <span class="var">the-env</span>)))
             <span class="var">the-goto</span> <span class="var">the-env</span> <span class="var">the-function</span> ) ) )</pre>
 
-<p>Функция <code><span class="func">procedure->definition</span></code> извлекает определение
+<p>Функция <code><span class="func">procedure-&gt;definition</span></code> извлекает определение
 замыкания, расположенное на две инструкции позади его кода.</p>
 
 <!--\indexC{procedure->definition}-->
-<pre>(<span class="syntax">definitial</span> <span class="var">procedure->definition</span>
+<pre>(<span class="syntax">definitial</span> <span class="var">procedure-&gt;definition</span>
   (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
          (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
     (<span class="func">make-primitive</span>
@@ -1431,14 +1431,14 @@ P-списков, но нередко в этой роли можно встре
                    (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
                  (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a procedure"</span> <span class="var">proc</span>)) ) )
            (<span class="func">signal-exception</span> <span class="hash">#t</span>
-            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure->definition</span>) ) ) ) ) ) )</pre>
+            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure-&gt;definition</span>) ) ) ) ) ) )</pre>
 
-<p>Функция <code><span class="func">procedure->environment</span></code> извлекает замкнутое окружение и реифицирует
+<p>Функция <code><span class="func">procedure-&gt;environment</span></code> извлекает замкнутое окружение и реифицирует
 его, устанавливая в нём соответствия между именами переменных и их адресами.
 Таблица символов хранится на одну инструкцию позади тела замыкания.</p>
 
 <!--\indexC{procedure->environment}-->
-<pre>(<span class="syntax">definitial</span> <span class="var">procedure->environment</span>
+<pre>(<span class="syntax">definitial</span> <span class="var">procedure-&gt;environment</span>
   (<span class="syntax">let*</span> ((<span class="var">arity</span> <span class="num">1</span>)
          (<span class="var">arity+1</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
     (<span class="func">make-primitive</span>
@@ -1455,9 +1455,9 @@ P-списков, но нередко в этой роли можно встре
                    (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)) )
                  (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"Not a procedure"</span> <span class="var">proc</span>)) ) )
            (<span class="func">signal-exception</span> <span class="hash">#t</span>
-            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure->environment</span>) ) ) ) ) ) )</pre>
+            (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">procedure-&gt;environment</span>) ) ) ) ) ) )</pre>
 
-<p>Вкратце, <code><span class="func">procedure->definition</span></code> и <code><span class="func">procedure->environment</span></code> позволяют
+<p>Вкратце, <code><span class="func">procedure-&gt;definition</span></code> и <code><span class="func">procedure-&gt;environment</span></code> позволяют
 программам осознавать свой собственный код. Также их возможности полезны для
 написания интроспективных отладочных инструментов. Однако, нельзя забывать
 о довольно высокой стоимости использования данных функций ввиду существенного
@@ -1488,7 +1488,7 @@ P-списков, но нередко в этой роли можно встре
 то, что должно быть личным.</p>
 
 <p>Наконец, остаётся ещё один щекотливый вопрос, поднимаемый чрезмерно любопытной
-функцией <code><span class="func">procedure->environment</span></code>. Какое именно окружение замыкает в себе
+функцией <code><span class="func">procedure-&gt;environment</span></code>. Какое именно окружение замыкает в себе
 следующая абстракция?</p>
 
 <pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">1</span>) (<span class="var">y</span> <span class="num">2</span>))
@@ -1497,10 +1497,10 @@ P-списков, но нередко в этой роли можно встре
 <p>Это окружение однозначно содержит <code><span class="var">x</span></code>, так как она является свободной в теле
 абстракции. Но захватывается ли <code><span class="var">y</span></code>, которая тоже присутствует в лексическом
 окружении? Для рассмотренной реализации это так, потому что функция
-<code><span class="func">procedure->environment</span></code> вынуждена соблюдать контракт, который подразумевает,
+<code><span class="func">procedure-&gt;environment</span></code> вынуждена соблюдать контракт, который подразумевает,
 что с помощью полученного окружения возможно вычислить любое выражение (в том
 числе использующее переменную <code><span class="var">y</span></code>), как будто бы оно вычислялось внутри
-соответствующего замыкания. Поэтому <code><span class="func">procedure->environment</span></code> и возвращает
+соответствующего замыкания. Поэтому <code><span class="func">procedure-&gt;environment</span></code> и возвращает
 целиком и полностью окружение, используемое при создании замыкания.</p>
 
 
@@ -1542,7 +1542,7 @@ P-списков, но нередко в этой роли можно встре
 
 <!--\indexC{add-method"!}-->
 <pre>(<span class="special">define</span> (<span class="func">add-method!</span> <span class="var">generic</span> <span class="var">class</span> <span class="var">method</span>)
-  (<span class="special">import</span> (<span class="var">methods</span>) (<span class="func">procedure->environment</span> <span class="var">generic</span>)
+  (<span class="special">import</span> (<span class="var">methods</span>) (<span class="func">procedure-&gt;environment</span> <span class="var">generic</span>)
     (<span class="func">vector-set!</span> <span class="var">methods</span> (<span class="func">Class-number</span> <span class="var">class</span>) <span class="var">method</span>) ) )</pre>
 
 <!--\indexR{квазистатические привязки}-->
@@ -1778,7 +1778,7 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexR{альфа@$\alpha$-конверсия}-->
 <p>Квазистатические привязки являются альтернативными именами уже существующих
 привязок. Подобная множественность имён несовместима с α-конверсией<a class="footref" href="zz_footnotes.xhtml#foot8.tr-1"><sup>*</sup></a>. Почему? Потому что даже ограниченные способы<a class="footref" href="zz_footnotes.xhtml#foot8.13"><sup>13</sup></a> реификации окружений,
-не такие всеобъемлющие, как <code><span class="func">procedure->environment</span></code>,
+не такие всеобъемлющие, как <code><span class="func">procedure-&gt;environment</span></code>,
 дают возможность пользоваться привязками в совершенно произвольных местах, без учёта их
 нормальной области видимости и изначального имени.</p>
 
