@@ -2121,27 +2121,31 @@ S-выражение, в котором могут быть и другие ма
 <p>В этом разделе мы рассмотрим реализацию макросистемы, которая предоставляет
 следующие возможности:</p>
 
-<p>\begin{itemize}
-  \item <code><span class="func">define-abbreviation</span></code> для определения глобальных макросов;</p>
+<ul>
+  <li><code><span class="syntax">define-abbreviation</span></code>
+    для определения глобальных макросов;</li>
 
-<p>  \item <code><span class="func">let-abbreviation</span></code> для определения локальных макросов;</p>
+  <li><code><span class="syntax">let-abbreviation</span></code>
+    для определения локальных макросов;</li>
 
-<p>  \item <code><span class="func">eval-in-abbreviation-world</span></code> для вычислений в макромире;</p>
+  <li><code><span class="syntax">eval-in-abbreviation-world</span></code>
+    для вычислений в макромире;</li>
 
-<p>  \item <code><span class="func">with-aliases</span></code> для захвата смысла символов.
-\end{itemize}</p>
+  <li><code><span class="syntax">with-aliases</span></code>
+    для захвата смысла символов.</li>
+</ul>
 
 <p>Чтобы ещё раз подчеркнуть различие между подготовкой и исполнением программ,
 результат раскрытия макросов будет на лету преобразовываться в дерево объектов.
 Получаемое промежуточное объектное представление программ можно использовать
 по-разному: можно отдать его на непосредственное исполнение быстрому
-интерпретатору, как в шестой главе \seePage[chapter:fast], а можно взять
-компилятор из десятой главы \seePage[chapter:cc] и преобразовать дерево объектов
-в код на Си. В любом случае макросы раскрываются лишь один раз, после чего
-структура программы застывает в виде объектов.</p>
+интерпретатору, как в <a href="ch06_fast_interpretation.xhtml">шестой главе</a>,
+а можно, подобно компилятору из <a href="ch10_compiling_into_c.xhtml">десятой главы</a>,
+преобразовать дерево объектов в код на Си. В любом случае макросы раскрываются
+лишь один раз, после чего структура программы застывает в виде объектов.</p>
 
-<h3 id="macros/macrosystem/ssect:object">Объектификация</h3>
 
+<h3 id="macros/macrosystem/ssect:object"><span class="seq">9.11.1.</span> Объектификация</h3>
 
 <!--\indexR{объектификация}-->
 <!--\indexR{реификация}-->
@@ -2160,7 +2164,6 @@ S-выражение, в котором могут быть и другие ма
 гораздо проще манипулировать, используя обобщённые функции.</p>
 
 <p>Итак, иерархия используемых классов:</p>
-
 
 <!--\indexC{Program}-->
 <!--\indexC{Reference}-->
@@ -2183,34 +2186,34 @@ S-выражение, в котором могут быть и другие ма
 <!--\indexC{Global-Variable}%-->
 <!--\indexC{Predefined-Variable}-->
 <!--\indexC{Local-Variable}-->
-<pre>(define-class Program                Object ())
-(define-class Reference              Program (variable))
-(define-class Local-Reference        Reference ())
-(define-class Global-Reference       Reference ())
-(define-class Predefined-Reference   Reference ())
-(define-class Global-Assignment      Program (variable form))
-(define-class Local-Assignment       Program (reference form))
-(define-class Function               Program (variables body))
-(define-class Alternative Program (condition consequent alternant))
-(define-class Sequence               Program (first last))
-(define-class Constant               Program (value))
-(define-class Application            Program ())
-(define-class Regular-Application    Application (function arguments))
-(define-class Predefined-Application Application (variable arguments))
-(define-class Fix-Let                Program (variables arguments body))
-(define-class Arguments              Program (first others))
-(define-class No-Argument            Program ())
-(define-class Variable               Object (name))
-(define-class Global-Variable        Variable ())
-(define-class Predefined-Variable    Variable (description))
-(define-class Local-Variable         Variable (mutable? dotted?))</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">Program</span>                <span class="class">Object</span> ())
+(<span class="syntax">define-class</span> <span class="class">Reference</span>              <span class="class">Program</span> (<span class="var">variable</span>))
+(<span class="syntax">define-class</span> <span class="class">Local-Reference</span>        <span class="class">Reference</span> ())
+(<span class="syntax">define-class</span> <span class="class">Global-Reference</span>       <span class="class">Reference</span> ())
+(<span class="syntax">define-class</span> <span class="class">Predefined-Reference</span>   <span class="class">Reference</span> ())
+(<span class="syntax">define-class</span> <span class="class">Global-Assignment</span>      <span class="class">Program</span> (<span class="var">variable</span> <span class="var">form</span>))
+(<span class="syntax">define-class</span> <span class="class">Local-Assignment</span>       <span class="class">Program</span> (<span class="var">reference</span> <span class="var">form</span>))
+(<span class="syntax">define-class</span> <span class="class">Function</span>               <span class="class">Program</span> (<span class="var">variables</span> <span class="var">body</span>))
+(<span class="syntax">define-class</span> <span class="class">Alternative</span> <span class="class">Program</span> (<span class="var">condition</span> <span class="var">consequent</span> <span class="var">alternant</span>))
+(<span class="syntax">define-class</span> <span class="class">Sequence</span>               <span class="class">Program</span> (<span class="var">first</span> <span class="var">last</span>))
+(<span class="syntax">define-class</span> <span class="class">Constant</span>               <span class="class">Program</span> (<span class="var">value</span>))
+(<span class="syntax">define-class</span> <span class="class">Application</span>            <span class="class">Program</span> ())
+(<span class="syntax">define-class</span> <span class="class">Regular-Application</span>    <span class="class">Application</span> (<span class="var">function</span> <span class="var">arguments</span>))
+(<span class="syntax">define-class</span> <span class="class">Predefined-Application</span> <span class="class">Application</span> (<span class="var">variable</span> <span class="var">arguments</span>))
+(<span class="syntax">define-class</span> <span class="class">Fix-Let</span>                <span class="class">Program</span> (<span class="var">variables</span> <span class="var">arguments</span> <span class="var">body</span>))
+(<span class="syntax">define-class</span> <span class="class">Arguments</span>              <span class="class">Program</span> (<span class="var">first</span> <span class="var">others</span>))
+(<span class="syntax">define-class</span> <span class="class">No-Argument</span>            <span class="class">Program</span> ())
+(<span class="syntax">define-class</span> <span class="class">Variable</span>               <span class="class">Object</span> (<span class="var">name</span>))
+(<span class="syntax">define-class</span> <span class="class">Global-Variable</span>        <span class="class">Variable</span> ())
+(<span class="syntax">define-class</span> <span class="class">Predefined-Variable</span>    <span class="class">Variable</span> (<span class="var">description</span>))
+(<span class="syntax">define-class</span> <span class="class">Local-Variable</span>         <span class="class">Variable</span> (<span class="var">mutable?</span> <span class="var">dotted?</span>))</pre>
 
 <p>В этом перечне легко заметить влияние предыдущих глав на наши представления
 о внутреннем устройстве языка. Например, вызовы примитивов, приводимых форм
-\seePage[fast/fast/ssect:reducible] и обычных функций выделены в отдельные
-категории. Класс <code><span class="func">Program</span></code> представляет исключительно вычислимые понятия:
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:reducible">6.1.7</a>]</span> и обычных функций выделены в отдельные
+категории. Класс <code><span class="class">Program</span></code> представляет исключительно вычислимые понятия:
 обращения к переменным, присваивания, вызовы функций. Сами переменные —
-привязки значений к именам — являются объектами класса <code><span class="func">Variable</span></code>, это
+привязки значений к именам — являются объектами класса <code><span class="class">Variable</span></code>, это
 не программы. Также стоит обратить внимание на деталь, отличающую эту реализацию
 от рассмотренных ранее. Большинство определённых классов содержат столько полей,
 сколько синтаксических элементов имеют соответствующие формы языка. Однако класс
@@ -2218,7 +2221,6 @@ S-выражение, в котором могут быть и другие ма
 показывает, обнаружены ли в программе присваивания этой переменной, а второе
 истинно, если данная переменная — это точечный аргумент. Как вы помните,
 точечные переменные требуют особого внимания при обработке вызовов функций.</p>
-
 
 <!--\indexC{read}-->
 <p>Часто предобработчик считывает исходные выражения просто с помощью <code><span class="func">read</span></code>
@@ -2229,35 +2231,33 @@ S-выражение, в котором могут быть и другие ма
 об ошибках. Более того, в символы можно добавить дополнительное поле со ссылкой
 на экспандер одноимённого макроса, что ускорит поиск макросов. На этапе
 предобработки допустимо расширять поля объектов как угодно, если это поможет
-улучшить её скорость \hbox{и/или} качество.</p>
+улучшить её скорость и/или качество.</p>
 
 
 <!--\indexR{ключевые слова}-->
 <p>Итак, считанные S-выражения анализируются и преобразуются в объект класса
-<code><span class="func">Program</span></code>, при этом в нём раскрываются все встреченные макросы. Главная
+<code><span class="class">Program</span></code>, при этом в нём раскрываются все встреченные макросы. Главная
 функция <code><span class="func">objectify</span></code> принимает два аргумента: S-выражение и его лексическое
 окружение. Если выражение является формой, то <code><span class="func">objectify</span></code> смотрит на её
 функциональный терм и выполняет соответствующую ему обработку. Обработчики
-макросов не разбросаны где попало по коду, а располагаются в поле <code><span class="func">handler</span></code>
-объектов класса <code><span class="func">Magic-Keyword</span></code> (терминология <span class="cite">[<a href="z1_bibliography.xhtml#ss75">ss75</a>]</span>), туда же для
+макросов не разбросаны где попало по коду, а располагаются в поле <code><span class="var">handler</span></code>
+объектов класса <code><span class="class">Magic-Keyword</span></code> (терминология <span class="cite">[<a href="z1_bibliography.xhtml#ss75">SS75</a>]</span>), туда же для
 удобства отправлены и специальные формы.</p>
-
 
 <!--\indexC{Magic-Keyword}-->
 <!--\indexC{objectify}-->
-<p>\begin{code:lisp}[label=macros/macrosystem/object/src:objectify]
-(define-class Magic-Keyword Object (name handler))</p>
+<pre id="macros/macrosystem/object/src:objectify">(<span class="syntax">define-class</span> <span class="class">Magic-Keyword</span> <span class="class">Object</span> (<span class="var">name</span> <span class="var">handler</span>))
 
-<p>(define (objectify e r)
-  (if (atom? e)
-      (cond ((Magic-Keyword? e) e)
-            ((Program? e)       e)
-            ((symbol? e)        (objectify-symbol e r))
-            (else               (objectify-quotation e r)) )
-      (let ((m (objectify (car e) r)))
-        (if (Magic-Keyword? m)
-            ((Magic-Keyword-handler m) e r)
-            (objectify-application m (cdr e) r) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">objectify</span> <span class="var">e</span> <span class="var">r</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="syntax">cond</span> ((<span class="func">Magic-Keyword?</span> <span class="var">e</span>) <span class="var">e</span>)
+            ((<span class="func">Program?</span> <span class="var">e</span>)       <span class="var">e</span>)
+            ((<span class="func">symbol?</span> <span class="var">e</span>)        (<span class="func">objectify-symbol</span> <span class="var">e</span> <span class="var">r</span>))
+            (<span class="syntax">else</span>               (<span class="func">objectify-quotation</span> <span class="var">e</span> <span class="var">r</span>)) )
+      (<span class="syntax">let</span> ((<span class="var">m</span> (<span class="func">objectify</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">r</span>)))
+        (<span class="special">if</span> (<span class="func">Magic-Keyword?</span> <span class="var">m</span>)
+            ((<span class="func">Magic-Keyword-handler</span> <span class="var">m</span>) <span class="var">e</span> <span class="var">r</span>)
+            (<span class="func">objectify-application</span> <span class="var">m</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) ) )</pre>
 
 <p>Теперь остаётся лишь разобрать всевозможные специализированные подфункции,
 выполняющие преобразования. Большинство из них просто заполняют поля объектов
@@ -2268,173 +2268,167 @@ S-выражение, в котором могут быть и другие ма
 в набор одинаковых по структуре бинарных последовательностей, подобных
 <code><span class="func">cons</span></code>-парам.</p>
 
-
 <!--\indexC{objectify-quotation}-->
 <!--\indexC{objectify-alternative}-->
 <!--\indexC{objectify-sequence}-->
-<pre>(define (objectify-quotation value r)
-  (make-Constant value) )</p>
+<pre>(<span class="special">define</span> (<span class="func">objectify-quotation</span> <span class="var">value</span> <span class="var">r</span>)
+  (<span class="func">make-Constant</span> <span class="var">value</span>) )
 
-<p>(define (objectify-alternative ec et ef r)
-  (make-Alternative (objectify ec r)
-                    (objectify et r)
-                    (objectify ef r) ) )</p>
+(<span class="special">define</span> (<span class="func">objectify-alternative</span> <span class="var">ec</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span>)
+  (<span class="func">make-Alternative</span> (<span class="func">objectify</span> <span class="var">ec</span> <span class="var">r</span>)
+                    (<span class="func">objectify</span> <span class="var">et</span> <span class="var">r</span>)
+                    (<span class="func">objectify</span> <span class="var">ef</span> <span class="var">r</span>) ) )
 
-<p>(define (objectify-sequence e* r)
-  (if (pair? e*)
-      (if (pair? (cdr e*))
-          (let ((a (objectify (car e*) r)))
-            (make-Sequence a (objectify-sequence (cdr e*) r)) )
-          (objectify (car e*) r) )
-      (make-Constant 42) ) )</pre>
+(<span class="special">define</span> (<span class="func">objectify-sequence</span> <span class="var">e*</span> <span class="var">r</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e*</span>))
+          (<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">objectify</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span>)))
+            (<span class="func">make-Sequence</span> <span class="var">a</span> (<span class="func">objectify-sequence</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span>)) )
+          (<span class="func">objectify</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span>) )
+      (<span class="func">make-Constant</span> <span class="num">42</span>) ) )</pre>
 
 <p>Обработка вызовов функций немного сложнее, так как необходимо проанализировать
 выражение и категоризовать его как приводимую форму, вызов примитива или вызов
 обычной функции. Анализ выполняется на основе первого терма формы. Единственная
 возможная тут неясность была упомянута ранее
-\seePage[fast/fast/ssect:integrating]: доступна ли нам информация об арности
-предопределённых функций и как её использовать для более эффективной компиляции.
-Класс <code><span class="func">Functional-Description</span></code> подробно рассматривается чуть позже
-(в разделе \ref{cc/gen/ssect:predef-env}) вместе с механизмом наполнения
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:integrating">6.1.8</a>]</span>:
+доступна ли нам информация об арности предопределённых функций и как её использовать
+для более эффективной компиляции.
+Класс <code><span class="class">Functional-Description</span></code> подробно
+рассматривается чуть позже (в разделе <a href="ch10_compiling_into_c.xhtml#cc/gen/ssect:predef-env">10.8.6</a>) вместе с механизмом наполнения
 начального окружения.</p>
-
 
 <!--\indexC{objectify-application}-->
 <!--\indexC{process-closed-application}-->
-<pre>(define (objectify-application ff e* r)
-  (let ((ee* (convert2arguments (map (lambda (e)
-                                       (objectify e r) ) e*))))
-    (cond ((Function? ff)
-           (process-closed-application ff ee*) )
-          ((Predefined-Reference? ff)
-           (let* ((fvf  (Predefined-Reference-variable ff))
-                  (desc (Predefined-Variable-description fvf)) )
-             (if (Functional-Description? desc)
-                 (if ((Functional-Description-comparator desc)
-                      (length e*) (Functional-Description-arity desc) )
-                     (make-Predefined-Application fvf ee*)
-                     (objectify-error
-                      "Incorrect predefined arity" ff e* ) )
-                 (make-Regular-Application ff ee*) ) ) )
-          (else (make-Regular-Application ff ee*)) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">objectify-application</span> <span class="var">ff</span> <span class="var">e*</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">ee*</span> (<span class="func">convert2arguments</span> (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">e</span>)
+                                       (<span class="func">objectify</span> <span class="var">e</span> <span class="var">r</span>) ) <span class="var">e*</span>))))
+    (<span class="syntax">cond</span> ((<span class="func">Function?</span> <span class="var">ff</span>)
+           (<span class="func">process-closed-application</span> <span class="var">ff</span> <span class="var">ee*</span>) )
+          ((<span class="func">Predefined-Reference?</span> <span class="var">ff</span>)
+           (<span class="syntax">let*</span> ((<span class="var">fvf</span>  (<span class="func">Predefined-Reference-variable</span> <span class="var">ff</span>))
+                  (<span class="var">desc</span> (<span class="func">Predefined-Variable-description</span> <span class="var">fvf</span>)) )
+             (<span class="special">if</span> (<span class="func">Functional-Description?</span> <span class="var">desc</span>)
+                 (<span class="special">if</span> ((<span class="func">Functional-Description-comparator</span> <span class="var">desc</span>)
+                      (<span class="func">length</span> <span class="var">e*</span>) (<span class="func">Functional-Description-arity</span> <span class="var">desc</span>) )
+                     (<span class="func">make-Predefined-Application</span> <span class="var">fvf</span> <span class="var">ee*</span>)
+                     (<span class="func">objectify-error</span>
+                      <span class="string">"Incorrect predefined arity"</span> <span class="var">ff</span> <span class="var">e*</span> ) )
+                 (<span class="func">make-Regular-Application</span> <span class="var">ff</span> <span class="var">ee*</span>) ) ) )
+          (<span class="syntax">else</span> (<span class="func">make-Regular-Application</span> <span class="var">ff</span> <span class="var">ee*</span>)) ) ) )
 
-<p>(define (process-closed-application f e*)
-  (let ((v* (Function-variables f))
-        (b  (Function-body f)) )
-    (if (and (pair? v*) (Local-Variable-dotted? (car (last-pair v*))))
-        (process-nary-closed-application f e*)
-        (if (= (number-of e*) (length v*))
-            (make-Fix-Let v* e* b)
-            (objectify-error "Incorrect regular arity" f e*) ) ) ) )</pre>
+(<span class="special">define</span> (<span class="func">process-closed-application</span> <span class="var">f</span> <span class="var">e*</span>)
+  (<span class="syntax">let</span> ((<span class="var">v*</span> (<span class="func">Function-variables</span> <span class="var">f</span>))
+        (<span class="var">b</span>  (<span class="func">Function-body</span> <span class="var">f</span>)) )
+    (<span class="special">if</span> (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">v*</span>) (<span class="func">Local-Variable-dotted?</span> (<span class="func">car</span> (<span class="func">last-pair</span> <span class="var">v*</span>))))
+        (<span class="func">process-nary-closed-application</span> <span class="var">f</span> <span class="var">e*</span>)
+        (<span class="special">if</span> (<span class="func">=</span> (<span class="func">number-of</span> <span class="var">e*</span>) (<span class="func">length</span> <span class="var">v*</span>))
+            (<span class="func">make-Fix-Let</span> <span class="var">v*</span> <span class="var">e*</span> <span class="var">b</span>)
+            (<span class="func">objectify-error</span> <span class="string">"Incorrect regular arity"</span> <span class="var">f</span> <span class="var">e*</span>) ) ) ) )</pre>
 
 <p>Список аргументов вызова функции тоже преобразуется в объект (экземпляр класса
-<code><span class="func">Arguments</span></code>); заканчивается этот список на специальный объект класса
-<code><span class="func">No-Argument</span></code>. Количество аргументов можно определить с помощью обобщённой
+<code><span class="class">Arguments</span></code>); заканчивается этот список на специальный объект класса
+<code><span class="class">No-Argument</span></code>. Количество аргументов можно определить с помощью обобщённой
 функции <code><span class="func">number-of</span></code>.</p>
-
 
 <!--\indexC{convert2arguments}-->
 <!--\indexC{number-of}-->
-<pre>(define (convert2arguments e*)
-  (if (pair? e*)
-      (make-Arguments (car e*) (convert2arguments (cdr e*)))
-      (make-No-Argument) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">convert2arguments</span> <span class="var">e*</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+      (<span class="func">make-Arguments</span> (<span class="func">car</span> <span class="var">e*</span>) (<span class="func">convert2arguments</span> (<span class="func">cdr</span> <span class="var">e*</span>)))
+      (<span class="func">make-No-Argument</span>) ) )
 
-<p>(define-generic (number-of (o)))</p>
+(<span class="syntax">define-generic</span> (<span class="func">number-of</span> (<span class="var">o</span>)))
 
-<p>(define-method (number-of (o Arguments))
-  (+ 1 (number-of (Arguments-others o))) )</p>
+(<span class="syntax">define-method</span> (<span class="func">number-of</span> (<span class="var">o</span> <span class="class">Arguments</span>))
+  (<span class="func">+</span> <span class="num">1</span> (<span class="func">number-of</span> (<span class="func">Arguments-others</span> <span class="var">o</span>))) )
 
-<p>(define-method (number-of (o No-Argument)) 0)</pre>
+(<span class="syntax">define-method</span> (<span class="func">number-of</span> (<span class="var">o</span> <span class="class">No-Argument</span>)) <span class="num">0</span>)</pre>
 
-<p>Как обычно, редкий и громоздкий случай $n$-арных приводимых форм обрабатывается
-отдельно. Дополнительные аргументы собираются в список, а соответствующая
-точечная переменная заменяется обычной.
-\seePage[fast/fast/ssect:reducible]</p>
-
+<p>Как обычно, редкий и громоздкий случай <i>n</i>-арных приводимых форм обрабатывается
+отдельно. Дополнительные аргументы собираются в список, а соответствующая точечная переменная
+заменяется обычной.
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:reducible">6.1.7</a>]</span></p>
 
 <!--\indexC{process-nary-closed-application}-->
-<pre>(define (process-nary-closed-application f e*)
-  (let* ((v* (Function-variables f))
-         (b  (Function-body f))
-         (o (make-Fix-Let
-             v*
-             (let gather ((e* e*) (v* v*))
-               (if (Local-Variable-dotted? (car v*))
-                   (make-Arguments
-                    (let pack ((e* e*))
-                      (if (Arguments? e*)
-                          (make-Predefined-Application
-                           (find-variable? 'cons g.predef)
-                           (make-Arguments
-                            (Arguments-first e*)
-                            (make-Arguments
-                             (pack (Arguments-others e*))
-                             (make-No-Argument) ) ) )
-                          (make-Constant '()) ) )
-                    (make-No-Argument) )
-                   (if (Arguments? e*)
-                       (make-Arguments (Arguments-first e*)
-                                       (gather (Arguments-others e*)
-                                               (cdr v*) ) )
-                       (objectify-error
-                        "Incorrect dotted arity" f e* ) ) ) )
-             b )) )
-    (set-Local-Variable-dotted?! (car (last-pair v*)) #f)
-    o ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">process-nary-closed-application</span> <span class="var">f</span> <span class="var">e*</span>)
+  (<span class="syntax">let*</span> ((<span class="var">v*</span> (<span class="func">Function-variables</span> <span class="var">f</span>))
+         (<span class="var">b</span>  (<span class="func">Function-body</span> <span class="var">f</span>))
+         (<span class="var">o</span> (<span class="func">make-Fix-Let</span>
+             <span class="var">v*</span>
+             (<span class="syntax">let</span> <span class="func">gather</span> ((<span class="var">e*</span> <span class="var">e*</span>) (<span class="var">v*</span> <span class="var">v*</span>))
+               (<span class="special">if</span> (<span class="func">Local-Variable-dotted?</span> (<span class="func">car</span> <span class="var">v*</span>))
+                   (<span class="func">make-Arguments</span>
+                    (<span class="syntax">let</span> <span class="func">pack</span> ((<span class="var">e*</span> <span class="var">e*</span>))
+                      (<span class="special">if</span> (<span class="func">Arguments?</span> <span class="var">e*</span>)
+                          (<span class="func">make-Predefined-Application</span>
+                           (<span class="func">find-variable?</span> '<span class="var">cons</span> <span class="var">g.predef</span>)
+                           (<span class="func">make-Arguments</span>
+                            (<span class="func">Arguments-first</span> <span class="var">e*</span>)
+                            (<span class="func">make-Arguments</span>
+                             (<span class="func">pack</span> (<span class="func">Arguments-others</span> <span class="var">e*</span>))
+                             (<span class="func">make-No-Argument</span>) ) ) )
+                          (<span class="func">make-Constant</span> <span class="hash">'()</span>) ) )
+                    (<span class="func">make-No-Argument</span>) )
+                   (<span class="special">if</span> (<span class="func">Arguments?</span> <span class="var">e*</span>)
+                       (<span class="func">make-Arguments</span> (<span class="func">Arguments-first</span> <span class="var">e*</span>)
+                                       (<span class="func">gather</span> (<span class="func">Arguments-others</span> <span class="var">e*</span>)
+                                               (<span class="func">cdr</span> <span class="var">v*</span>) ) )
+                       (<span class="func">objectify-error</span>
+                        <span class="string">"Incorrect dotted arity"</span> <span class="var">f</span> <span class="var">e*</span> ) ) ) )
+             <span class="var">b</span> )) )
+    (<span class="func">set-Local-Variable-dotted?!</span> (<span class="func">car</span> (<span class="func">last-pair</span> <span class="var">v*</span>)) <span class="hash">#f</span>)
+    <span class="var">o</span> ) )</pre>
 
 <p>Абстракции анализируются и объектифицируются функцией <code><span class="func">objectify-function</span></code>.
 Она использует <code><span class="func">objectify-variables-list</span></code> для обработки списка аргументов,
 которыми расширяется окружение создаваемого замыкания.</p>
 
-
 <!--\indexC{objectify-function}-->
 <!--\indexC{objectify-variables-list}-->
-<pre>(define (objectify-function names body r)
-  (let* ((vars (objectify-variables-list names))
-         (b    (objectify-sequence body (r-extend* r vars))) )
-    (make-Function vars b) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">objectify-function</span> <span class="var">names</span> <span class="var">body</span> <span class="var">r</span>)
+  (<span class="syntax">let*</span> ((<span class="var">vars</span> (<span class="func">objectify-variables-list</span> <span class="var">names</span>))
+         (<span class="var">b</span>    (<span class="func">objectify-sequence</span> <span class="var">body</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">vars</span>))) )
+    (<span class="func">make-Function</span> <span class="var">vars</span> <span class="var">b</span>) ) )
 
-<p>(define (objectify-variables-list names)
-  (if (pair? names)
-      (cons (make-Local-Variable (car names) #f #f)
-            (objectify-variables-list (cdr names)) )
-      (if (symbol? names)
-          (list (make-Local-Variable names #f #t))
-          '() ) ) )</pre>
+(<span class="special">define</span> (<span class="func">objectify-variables-list</span> <span class="var">names</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">names</span>)
+      (<span class="func">cons</span> (<span class="func">make-Local-Variable</span> (<span class="func">car</span> <span class="var">names</span>) <span class="hash">#f</span> <span class="hash">#f</span>)
+            (<span class="func">objectify-variables-list</span> (<span class="func">cdr</span> <span class="var">names</span>)) )
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">names</span>)
+          (<span class="func">list</span> (<span class="func">make-Local-Variable</span> <span class="var">names</span> <span class="hash">#f</span> <span class="hash">#t</span>))
+          <span class="hash">'()</span> ) ) )</pre>
 
 <p>Наконец, <code><span class="func">objectify-symbol</span></code> отвечает за обработку переменных. Сначала она
 пытается найти их в текущем едином статическом лексическом окружении —
-<code><span class="func">r</span></code>. Если переменная там не обнаружена, то она добавляется в глобальное
+<code><span class="var">r</span></code>. Если переменная там не обнаружена, то она добавляется в глобальное
 окружение функцией <code><span class="func">objectify-free-global-reference</span></code>. Верно, здесь мы решили
 создавать новые переменные автоматически при их первом упоминании.</p>
 
-
 <!--\indexC{objectify-symbol}-->
 <!--\indexC{objectify-free-global-reference}-->
-<pre>(define (objectify-symbol variable r)
-  (let ((v (find-variable? variable r)))
-    (cond ((Magic-Keyword? v)       v)
-          ((Local-Variable? v)      (make-Local-Reference v))
-          ((Global-Variable? v)     (make-Global-Reference v))
-          ((Predefined-Variable? v) (make-Predefined-Reference v))
-          (else (objectify-free-global-reference variable r)) ) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">objectify-symbol</span> <span class="var">variable</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">find-variable?</span> <span class="var">variable</span> <span class="var">r</span>)))
+    (<span class="syntax">cond</span> ((<span class="func">Magic-Keyword?</span> <span class="var">v</span>)       <span class="var">v</span>)
+          ((<span class="func">Local-Variable?</span> <span class="var">v</span>)      (<span class="func">make-Local-Reference</span> <span class="var">v</span>))
+          ((<span class="func">Global-Variable?</span> <span class="var">v</span>)     (<span class="func">make-Global-Reference</span> <span class="var">v</span>))
+          ((<span class="func">Predefined-Variable?</span> <span class="var">v</span>) (<span class="func">make-Predefined-Reference</span> <span class="var">v</span>))
+          (<span class="syntax">else</span> (<span class="func">objectify-free-global-reference</span> <span class="var">variable</span> <span class="var">r</span>)) ) ) )
 
-<p>(define (objectify-free-global-reference name r)
-  (let ((v (make-Global-Variable name)))
-    (insert-global! v r)
-    (make-Global-Reference v) ) )</pre>
+(<span class="special">define</span> (<span class="func">objectify-free-global-reference</span> <span class="var">name</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">make-Global-Variable</span> <span class="var">name</span>)))
+    (<span class="func">insert-global!</span> <span class="var">v</span> <span class="var">r</span>)
+    (<span class="func">make-Global-Reference</span> <span class="var">v</span>) ) )</pre>
 
-<p>Окружение <code><span class="func">r</span></code> является, в принципе, списком локальных переменных, за которым
+<p>Окружение <code><span class="var">r</span></code> является, в принципе, списком локальных переменных, за которым
 следует список всех глобальных переменных, а в конце располагается список
 предопределённых переменных. Так как это статическое окружение, то в нём
 отсутствуют значения переменных — они определяются динамически, во время
 исполнения программы. Различные окружения представляются списками объектов
-класса <code><span class="func">Environment</span></code>. Их можно расширять как локальными, так и глобальными
+класса <code><span class="class">Environment</span></code>. Их можно расширять как локальными, так и глобальными
 переменными. Новые глобальные переменные физически добавляются в общую
 глобальную часть, до которой можно добраться с помощью функции
 <code><span class="func">find-global-environment</span></code>.</p>
-
 
 <!--\indexC{Environment}-->
 <!--\indexC{Full-Environment}-->
@@ -2443,176 +2437,170 @@ S-выражение, в котором могут быть и другие ма
 <!--\indexC{insert-global"!}-->
 <!--\indexC{mark-global-preparation-environment}-->
 <!--\indexC{find-global-environment}-->
-<pre>(define-class Environment      Object (next))
-(define-class Full-Environment Environment (variable))</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">Environment</span>      <span class="class">Object</span> (<span class="var">next</span>))
+(<span class="syntax">define-class</span> <span class="class">Full-Environment</span> <span class="class">Environment</span> (<span class="var">variable</span>))
 
-<p>(define (r-extend* r vars)
-  (if (pair? vars) (r-extend (r-extend* r (cdr vars)) (car vars))
-                   r ) )</p>
+(<span class="special">define</span> (<span class="func">r-extend*</span> <span class="var">r</span> <span class="var">vars</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">vars</span>) (<span class="func">r-extend</span> (<span class="func">r-extend*</span> <span class="var">r</span> (<span class="func">cdr</span> <span class="var">vars</span>)) (<span class="func">car</span> <span class="var">vars</span>))
+                   <span class="var">r</span> ) )
 
-<p>(define (r-extend r var)
-  (make-Full-Environment r var) )</p>
+(<span class="special">define</span> (<span class="func">r-extend</span> <span class="var">r</span> <span class="var">var</span>)
+  (<span class="func">make-Full-Environment</span> <span class="var">r</span> <span class="var">var</span>) )
 
-<p>(define (find-variable? name r)
-  (if (Full-Environment? r)
-      (let ((var (Full-Environment-variable r)))
-        (if (eq? name (cond ((Variable? var)
-                             (Variable-name var))
-                            ((Magic-Keyword? var)
-                             (Magic-Keyword-name var) ) ) )
-            var
-            (find-variable? name (Full-Environment-next r)) ) )
-      (if (Environment? r)
-          (find-variable? name (Environment-next r))
-          #f ) ) )</p>
+(<span class="special">define</span> (<span class="func">find-variable?</span> <span class="var">name</span> <span class="var">r</span>)
+  (<span class="special">if</span> (<span class="func">Full-Environment?</span> <span class="var">r</span>)
+      (<span class="syntax">let</span> ((<span class="var">var</span> (<span class="func">Full-Environment-variable</span> <span class="var">r</span>)))
+        (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">name</span> (<span class="syntax">cond</span> ((<span class="func">Variable?</span> <span class="var">var</span>)
+                             (<span class="func">Variable-name</span> <span class="var">var</span>))
+                            ((<span class="func">Magic-Keyword?</span> <span class="var">var</span>)
+                             (<span class="func">Magic-Keyword-name</span> <span class="var">var</span>) ) ) )
+            <span class="var">var</span>
+            (<span class="func">find-variable?</span> <span class="var">name</span> (<span class="func">Full-Environment-next</span> <span class="var">r</span>)) ) )
+      (<span class="special">if</span> (<span class="func">Environment?</span> <span class="var">r</span>)
+          (<span class="func">find-variable?</span> <span class="var">name</span> (<span class="func">Environment-next</span> <span class="var">r</span>))
+          <span class="hash">#f</span> ) ) )
 
-<p>(define (insert-global! variable r)
-  (let ((r (find-global-environment r)))
-    (set-Environment-next!
-     r (make-Full-Environment (Environment-next r) variable) ) ) )</p>
+(<span class="special">define</span> (<span class="func">insert-global!</span> <span class="var">variable</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">r</span> (<span class="func">find-global-environment</span> <span class="var">r</span>)))
+    (<span class="func">set-Environment-next!</span>
+     <span class="var">r</span> (<span class="func">make-Full-Environment</span> (<span class="func">Environment-next</span> <span class="var">r</span>) <span class="var">variable</span>) ) ) )
 
-<p>(define (mark-global-preparation-environment g)
-  (make-Environment g) )</p>
+(<span class="special">define</span> (<span class="func">mark-global-preparation-environment</span> <span class="var">g</span>)
+  (<span class="func">make-Environment</span> <span class="var">g</span>) )
 
-<p>(define (find-global-environment r)
-  (if (Full-Environment? r)
-      (find-global-environment (Full-Environment-next r))
-      r ) )</pre>
-
+(<span class="special">define</span> (<span class="func">find-global-environment</span> <span class="var">r</span>)
+  (<span class="special">if</span> (<span class="func">Full-Environment?</span> <span class="var">r</span>)
+      (<span class="func">find-global-environment</span> (<span class="func">Full-Environment-next</span> <span class="var">r</span>))
+      <span class="var">r</span> ) )</pre>
 
 <!--\indexC{mutable"?}-->
 <p>Обработка присваиваний позволяет собрать информацию об изменяемости локальных
-переменных: именно здесь у них устанавливается флаг <code><span class="func">mutable?</span></code>. Эта
-информация впоследствии будет использована для проведения оптимизаций в десятой
-главе. \seePage[chapter:cc]</p>
-
+переменных: именно здесь у них устанавливается флаг <code><span class="var">mutable?</span></code>.
+Эта информация впоследствии будет использована для проведения оптимизаций в <a href="ch10_compiling_into_c.xhtml">десятой главе</a>.</p>
 
 <!--\indexC{objectify-assignment}-->
-<pre>(define (objectify-assignment variable e r)
-  (let ((ov (objectify variable r))
-        (of (objectify e r)) )
-    (cond ((Local-Reference? ov)
-           (set-Local-Variable-mutable?!
-            (Local-Reference-variable ov) #t )
-           (make-Local-Assignment ov of) )
-          ((Global-Reference? ov)
-           (make-Global-Assignment (Global-Reference-variable ov) of) )
-          (else
-           (objectify-error "Illegal assignment" variable) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">objectify-assignment</span> <span class="var">variable</span> <span class="var">e</span> <span class="var">r</span>)
+  (<span class="syntax">let</span> ((<span class="var">ov</span> (<span class="func">objectify</span> <span class="var">variable</span> <span class="var">r</span>))
+        (<span class="var">of</span> (<span class="func">objectify</span> <span class="var">e</span> <span class="var">r</span>)) )
+    (<span class="syntax">cond</span> ((<span class="func">Local-Reference?</span> <span class="var">ov</span>)
+           (<span class="func">set-Local-Variable-mutable?!</span>
+            (<span class="func">Local-Reference-variable</span> <span class="var">ov</span>) <span class="hash">#t</span> )
+           (<span class="func">make-Local-Assignment</span> <span class="var">ov</span> <span class="var">of</span>) )
+          ((<span class="func">Global-Reference?</span> <span class="var">ov</span>)
+           (<span class="func">make-Global-Assignment</span> (<span class="func">Global-Reference-variable</span> <span class="var">ov</span>) <span class="var">of</span>) )
+          (<span class="syntax">else</span>
+           (<span class="func">objectify-error</span> <span class="string">"Illegal assignment"</span> <span class="var">variable</span>) ) ) ) )</pre>
 
 <p>Для программ, представленных деревьями подобных объектов, очень легко написать
 интерпретатор, проверяющий правильность выполнения преобразования. Результат
 будет сильно напоминать объектный интерпретатор из третьей главы и быстрый
 интерпретатором из шестой.</p>
 
-
 <!--\indexC{g.predef}-->
 <!--\indexC{sg.predef}-->
 <p>Рассмотрим общую структуру этого интерпретатора, чтобы вы не терялись
 в последующих фрагментах кода. Вычисления выполняет функция <code><span class="func">evaluate</span></code>. Она
-принимает два аргумента: экземпляр <code><span class="func">Program</span></code> и экземпляр <code><span class="func">Environment</span></code>
+принимает два аргумента: экземпляр <code><span class="class">Program</span></code> и экземпляр <code><span class="class">Environment</span></code>
 (теперь уже A-список пар из имён переменных и значений). Вначале окружение
 содержит только предопределённые переменные. Его статическая часть представлена
-переменной <code><span class="func">g.predef</span></code>, а динамическая — <code><span class="func">sg.predef</span></code>. Динамическая часть
-связывает экземпляры <code><span class="func">RunTime-Primitive</span></code> с предопределёнными функциями.
+переменной <code><span class="var">g.predef</span></code>, а динамическая — <code><span class="var">sg.predef</span></code>. Динамическая часть
+связывает экземпляры <code><span class="class">RunTime-Primitive</span></code> с предопределёнными функциями.
 Расширяется динамическое окружение с помощью функции <code><span class="func">sr-extend</span></code>.</p>
 
-<h3 id="macros/macrosystem/ssect:special">Специальные формы</h3>
 
+<h3 id="macros/macrosystem/ssect:special"><span class="seq">9.11.2.</span> Специальные формы</h3>
 
 <!--\indexR{специальные формы}-->
 <!--\indexR{форма!специальная}-->
 <!--\indexR{ключевые слова}-->
 <p>В данный момент объектификатор не распознаёт специальные формы, так что для
 каждой из них надо определить персональную процедуру преобразования
-в соответствующий объект класса <code><span class="func">Program</span></code>. Они определяются как ключевые
+в соответствующий объект класса <code><span class="class">Program</span></code>. Они определяются как ключевые
 слова со специальными обработчиками. Эти обработчики будут просто вызывать
 функции, рассмотренные в предыдущем разделе.</p>
-
 
 <!--\indexC{special-if}-->
 <!--\indexC{special-begin}-->
 <!--\indexC{special-quote}-->
 <!--\indexC{special-set"!}-->
 <!--\indexC{special-lambda}-->
-<pre>(define special-if
-  (make-Magic-Keyword 'if
-    (lambda (e r)
-      (objectify-alternative (cadr e) (caddr e) (cadddr e) r) ) ) )</p>
+<pre>(<span class="special">define</span> <span class="var">special-if</span>
+  (<span class="func">make-Magic-Keyword</span> '<span class="var">if</span>
+    (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+      (<span class="func">objectify-alternative</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) )
 
-<p>(define special-begin
-  (make-Magic-Keyword 'begin
-    (lambda (e r)
-      (objectify-sequence (cdr e) r) ) ) )</p>
+(<span class="special">define</span> <span class="var">special-begin</span>
+  (<span class="func">make-Magic-Keyword</span> '<span class="var">begin</span>
+    (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+      (<span class="func">objectify-sequence</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) )
 
-<p>(define special-quote
-  (make-Magic-Keyword 'quote
-    (lambda (e r)
-      (objectify-quotation (cadr e) r) ) ) )</p>
+(<span class="special">define</span> <span class="var">special-quote</span>
+  (<span class="func">make-Magic-Keyword</span> '<span class="var">quote</span>
+    (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+      (<span class="func">objectify-quotation</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) )
 
-<p>(define special-set!
-  (make-Magic-Keyword 'set!
-    (lambda (e r)
-      (objectify-assignment (cadr e) (caddr e) r) ) ) )</p>
+(<span class="special">define</span> <span class="var">special-set!</span>
+  (<span class="func">make-Magic-Keyword</span> '<span class="var">set!</span>
+    (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+      (<span class="func">objectify-assignment</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) )
 
-<p>(define special-lambda
-  (make-Magic-Keyword 'lambda
-    (lambda (e r)
-      (objectify-function (cadr e) (cddr e) r) ) ) )</pre>
-
+(<span class="special">define</span> <span class="var">special-lambda</span>
+  (<span class="func">make-Magic-Keyword</span> '<span class="var">lambda</span>
+    (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+      (<span class="func">objectify-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span>) ) ) )</pre>
 
 <!--\indexC*{special-form-keywords}{*special-form-keywords*}-->
 <p>Естественно, точно таким же образом можно определить столько дополнительных
 специальных форм, сколько необходимо. Чтобы ничего потом не напутать, запишем
-их все в список <code><span class="func">*special-form-keywords*</span></code>:</p>
+их все в список <code><span class="var">*special-form-keywords*</span></code>:</p>
 
-<pre>(define *special-form-keywords*
-  (list special-quote
-        special-if
-        special-begin
-        special-set!
-        special-lambda
-        ;; <code><span class="func">cond</span></code>, <code><span class="func">letrec</span></code> и т. д.
-        special-let
+<pre>(<span class="special">define</span> <span class="var">*special-form-keywords*</span>
+  (<span class="func">list</span> <span class="var">special-quote</span>
+        <span class="var">special-if</span>
+        <span class="var">special-begin</span>
+        <span class="var">special-set!</span>
+        <span class="var">special-lambda</span>
+        <span class="comment">;; <code><span class="syntax">cond</span></code>, <code><span class="syntax">letrec</span></code> и т. д.</span>
+        <span class="var">special-let</span>
         ) )</pre>
 
-<h3 id="macros/macrosystem/ssect:eval-level">Уровни интерпретации</h3>
 
+<h3 id="macros/macrosystem/ssect:eval-level"><span class="seq">9.11.3.</span> Уровни интерпретации</h3>
 
 <!--\indexR{уровни интерпретации}-->
 <!--\indexR{интерпретация!уровневая}-->
 <p>Как вы знаете, эндогенное раскрытие макросов подразумевает наличие внутри
 специального вычислителя. Но не забывайте, что эндогенный подход не требует
 единства мира: результат объектификации не обязательно исполняется в том же
-окружении, где он создавался. Компилятор в Си из десятой главы
-\seePage[chapter:cc] служит этому хорошим примером. Нам бы не хотелось
+окружении, где он создавался. Компилятор в Си из <a href="ch10_compiling_into_c.xhtml">десятой
+главы</a> служит этому хорошим примером. Нам бы не хотелось
 запутаться во всех этих вычислителях, так что давайте введём понятие
 <em class="term">уровня интерпретации</em> (или вычислений) и примем наиболее строгий постулат:
 язык, макроязык, макроязык макроязыка и так далее — все они отделены друг от
 друга, соответствующие вычисления производятся в различных глобальных
-окружениях. Данные вычислители представляются объектами класса <code><span class="func">Evaluator</span></code>,
+окружениях. Данные вычислители представляются объектами класса <code><span class="class">Evaluator</span></code>,
 описывающего их важнейшие свойства:</p>
 
-
 <!--\indexC{Evaluator}-->
-<pre>(define-class Evaluator Object
-  ( mother
-    Preparation-Environment
-    RunTime-Environment
-    eval
-    expand
+<pre>(<span class="syntax">define-class</span> <span class="class">Evaluator</span> <span class="class">Object</span>
+  ( <span class="var">mother</span>
+    <span class="var">Preparation-Environment</span>
+    <span class="var">RunTime-Environment</span>
+    <span class="var">eval</span>
+    <span class="var">expand</span>
     ) )</pre>
 
 <p>Взаимодействие вычислителей весьма запутанно.
-Рисунок \ref{macros/macrosystem/eval-level/pic:tower} иллюстрирует цепочку
+Рисунок <a href="#macros/macrosystem/eval-level/pic:tower">9.9</a> иллюстрирует цепочку
 вызовов, возникающую в процессе раскрытия макросов. Экспандер одного уровня
 использует вычислитель следующего, который в свою очередь тоже предварительно
 раскрывает макросы в получаемом выражении, используя вычислитель следующего
 уровня, и так далее. Цепочка прерывается, как только получаемое выражение
 оказывается лишённым макросов; в таком случае следующий уровень не нужен. Обычно
 бывает достаточно всего двух-трёх уровней. Каждый уровень интерпретации имеет
-своё окружение времени подготовки (для <code><span class="func">expand</span></code>) и окружение времени
-исполнения (для <code><span class="func">eval</span></code>), кроме разве что самого нижнего уровня, где в цепочке
+своё окружение времени подготовки (для <code><span class="func">expand</span></code>)
+и окружение времени исполнения (для <code><span class="func">eval</span></code>),
+кроме разве что самого нижнего уровня, где в цепочке
 может участвовать один лишь экспандер.</p>
 
 <p>\begin{figure}\centering
@@ -2632,121 +2620,119 @@ S-выражение, в котором могут быть и другие ма
 <code><span class="func">eval</span></code> раскрывает в полученном выражении макросы, затем выполняет собственно
 вычисления с помощью функции <code><span class="func">evaluate</span></code>. Этому чистому вычислителю кроме
 выражения необходимо лишь окружение времени исполнения, хранимое в поле
-<code><span class="func">RunTime-Environment</span></code> текущего экземпляра <code><span class="func">Evaluator</span></code>. При необходимости
+<code><span class="var">RunTime-Environment</span></code> текущего экземпляра <code><span class="class">Evaluator</span></code>. При необходимости
 вычислитель может физически изменять данное окружение. Функция <code><span class="func">expand</span></code>
 объектифицирует получаемое выражение с помощью <code><span class="func">objectify</span></code>
 в окружении времени подготовки, хранимом в соответствующем поле
-<code><span class="func">Preparation-Environment</span></code>. Для простоты все глобальные переменные,
+<code><span class="var">Preparation-Environment</span></code>. Для простоты все глобальные переменные,
 создаваемые во время вложенных вычислений, помещаются в персональное
 глобальное окружение текущего вычислителя с помощью функции
-<code><span class="func">enrich-with-new-global-variables!</span></code>. Функция <code><span class="func">eval</span></code> рефлексивным
+<code><span class="func">enrich-with-new-global-variables!</span></code>.
+Функция <code><span class="func">eval</span></code> рефлексивным
 образом устанавливается в своё собственное окружение времени исполнения как
 предопределённый примитив. Таким образом, различные уровни пользуются
 различными функциями <code><span class="func">eval</span></code>. Далее, перед началом работы окружение
 времени подготовки расширяется специальными формами, хранимыми в переменной
-<code><span class="func">*special-form-keywords*</span></code>. Эта переменная должна быть видима на всех уровнях.
+<code><span class="var">*special-form-keywords*</span></code>. Эта переменная должна быть видима на всех уровнях.
 Кроме того, окружение времени подготовки расширяется предопределёнными
-макросами, возвращаемыми вызовом <code>(make-macro-environment level)</code>, который
+макросами, возвращаемыми вызовом <code>(<span class="func">make-macro-environment</span> <span class="var">level</span>)</code>, который
 мы рассмотрим чуть позже.</p>
 
-<p>\ForLayout{display}{\vskip-\smallskipamount}</p>
-
-
 <!--\indexC{create-evaluator}-->
-<pre>(define (create-evaluator old-level)
-  (let ((level 'wait)
-        (g     g.predef)
-        (sg    sg.predef))
-    (define (expand e)
-      (let ((prg (objectify
-                  e (Evaluator-Preparation-Environment level) )))
-        (enrich-with-new-global-variables! level)
-        prg ) )
-    (define (eval e)
-      (let ((prg (expand e)))
-        (evaluate prg (Evaluator-RunTime-Environment level)) ) )</p>
+<pre>(<span class="special">define</span> (<span class="func">create-evaluator</span> <span class="var">old-level</span>)
+  (<span class="syntax">let</span> ((<span class="var">level</span> '<span class="var">wait</span>)
+        (<span class="var">g</span>     <span class="var">g.predef</span>)
+        (<span class="var">sg</span>    <span class="var">sg.predef</span>))
+    (<span class="special">define</span> (<span class="func">expand</span> <span class="var">e</span>)
+      (<span class="syntax">let</span> ((<span class="var">prg</span> (<span class="func">objectify</span>
+                  <span class="var">e</span> (<span class="func">Evaluator-Preparation-Environment</span> <span class="var">level</span>) )))
+        (<span class="func">enrich-with-new-global-variables!</span> <span class="var">level</span>)
+        <span class="var">prg</span> ) )
+    (<span class="special">define</span> (<span class="func">eval</span> <span class="var">e</span>)
+      (<span class="syntax">let</span> ((<span class="var">prg</span> (<span class="func">expand</span> <span class="var">e</span>)))
+        (<span class="func">evaluate</span> <span class="var">prg</span> (<span class="func">Evaluator-RunTime-Environment</span> <span class="var">level</span>)) ) )
 
-<p>  ;; Создаём вычислитель
-    (set! level (make-Evaluator old-level 'wait 'wait eval expand))</p>
+  <span class="comment">;; Создаём вычислитель</span>
+    (<span class="special">set!</span> <span class="var">level</span> (<span class="func">make-Evaluator</span> <span class="var">old-level</span> '<span class="var">wait</span> '<span class="var">wait</span> <span class="var">eval</span> <span class="var">expand</span>))
 
-<p>  ;; Наполняем глобальное окружение
-    (set! g (r-extend* g *special-form-keywords*))
-    (set! g (r-extend* g (make-macro-environment level)))
-    (let ((eval-var (make-Predefined-Variable
-                     'eval (make-Functional-Description = 1 "") ))
-          (eval-fn (make-RunTime-Primitive eval = 1)) )
-      (set! g (r-extend g eval-var))
-      (set! sg (sr-extend sg eval-var eval-fn)) )</p>
+  <span class="comment">;; Наполняем глобальное окружение</span>
+    (<span class="special">set!</span> <span class="var">g</span> (<span class="func">r-extend*</span> <span class="var">g</span> <span class="var">*special-form-keywords*</span>))
+    (<span class="special">set!</span> <span class="var">g</span> (<span class="func">r-extend*</span> <span class="var">g</span> (<span class="func">make-macro-environment</span> <span class="var">level</span>)))
+    (<span class="syntax">let</span> ((<span class="var">eval-var</span> (<span class="func">make-Predefined-Variable</span>
+                     '<span class="var">eval</span> (<span class="func">make-Functional-Description</span> <span class="var">=</span> <span class="num">1</span> <span class="string">""</span>) ))
+          (<span class="var">eval-fn</span> (<span class="func">make-RunTime-Primitive</span> <span class="var">eval</span> <span class="var">=</span> <span class="num">1</span>)) )
+      (<span class="special">set!</span> <span class="var">g</span> (<span class="func">r-extend</span> <span class="var">g</span> <span class="var">eval-var</span>))
+      (<span class="special">set!</span> <span class="var">sg</span> (<span class="func">sr-extend</span> <span class="var">sg</span> <span class="var">eval-var</span> <span class="var">eval-fn</span>)) )
 
-<p>  ;; Устанавливаем окружения в вычислитель
-    (set-Evaluator-Preparation-Environment!
-     level (mark-global-preparation-environment g) )
-    (set-Evaluator-RunTime-Environment!
-     level (mark-global-runtime-environment sg) )
+  <span class="comment">;; Устанавливаем окружения в вычислитель</span>
+    (<span class="func">set-Evaluator-Preparation-Environment!</span>
+     <span class="var">level</span> (<span class="func">mark-global-preparation-environment</span> <span class="var">g</span>) )
+    (<span class="func">set-Evaluator-RunTime-Environment!</span>
+     <span class="var">level</span> (<span class="func">mark-global-runtime-environment</span> <span class="var">sg</span>) )
 
-    level ) )</pre>
+    <span class="var">level</span> ) )</pre>
 
 <p>Если программе потребуется явный экспандер или вычислитель, то достаточно
 создать новый уровень интерпретации с помощью <code><span class="func">create-evaluator</span></code> и достать
-оттуда необходимую функцию <code><span class="func">expand</span></code> или <code><span class="func">eval</span></code>. Ос\-то\-рожно: вопреки
-ожиданиям, <code><span class="func">expand</span></code> возвращает экземпляры <code><span class="func">Program</span></code>, а не выражения
+оттуда необходимую функцию <code><span class="func">expand</span></code> или <code><span class="func">eval</span></code>. Осторожно: вопреки
+ожиданиям, <code><span class="func">expand</span></code> возвращает экземпляры <code><span class="class">Program</span></code>, а не выражения
 Scheme. Если нужны именно такие выражения, то несложно написать соответствующую
-функцию-преобразователь. \seeEx[macros/ex:decompile]</p>
+функцию-преобразователь.
+<span class="see">[см. упр. <a href="#macros/ex:decompile">9.4</a>]</span></p>
 
-<h3 id="macros/macrosystem/ssect:macros">Макросы</h3>
 
+<h3 id="macros/macrosystem/ssect:macros"><span class="seq">9.11.4.</span> Макросы</h3>
 
 <!--\indexR{бесконечная регрессия}-->
 <!--\indexR{ленивые вычисления}-->
 <!--\indexR{обещания}-->
 <p>По нашей задумке, в начальном окружении времени подготовки должны изначально
 присутствовать предопределённые макросы, создаваемые функцией
-<code><span class="func">make-macro-environment</span></code>. Вот эта четвёрка: <code><span class="func">eval-in-abbreviation-world</span></code>,
-<code><span class="func">define-abbreviation</span></code>, <code><span class="func">let-abbreviation</span></code> и <code><span class="func">with-aliases</span></code>. Все они
+<code><span class="func">make-macro-environment</span></code>. Вот эта четвёрка:
+<code><span class="syntax">eval-in-abbreviation-world</span></code>,
+<code><span class="syntax">define-abbreviation</span></code>,
+<code><span class="syntax">let-abbreviation</span></code> и
+<code><span class="syntax">with-aliases</span></code>. Все они
 предполагают существование следующего уровня интерпретации, который должен быть
 построен той же функцией <code><span class="func">make-macro-environment</span></code>. Однако, если попытаться
 создать этот уровень сразу же, то мы погрязнем в бесконечном цикле, так как на
 новом уровне тоже должна быть своя четвёрка предопределённых макросов. Эта
 проблема известна в философии как <em>бесконечная регрессия</em>. Новый уровень
 интерпретации необходим только в том случае, если какой-то из данных макросов
-действительно используется на текущем уровне. \seeEx[macros/ex:unique] Поэтому
-мы просто пообещаем создать этот уровень, когда он кому-то понадобится. Если
+действительно используется на текущем уровне.
+<span class="see">[см. упр. <a href="#macros/ex:unique">9.3</a>]</span>
+Поэтому мы просто пообещаем создать этот уровень, когда он кому-то понадобится. Если
 это так, то новый уровень останется и продолжит накапливать в себе определения,
 иначе же он просто никогда не будет создан.</p>
 
-<p>\ForLayout{display}{\clearpage}</p>
-
-
 <!--\indexC{make-macro-environment}-->
-<pre>(define (make-macro-environment current-level)
-  (let ((metalevel (delay (create-evaluator current-level))))
-    (list (make-Magic-Keyword 'eval-in-abbreviation-world
-           (special-eval-in-abbreviation-world metalevel) )
-          (make-Magic-Keyword 'define-abbreviation
-           (special-define-abbreviation metalevel) )
-          (make-Magic-Keyword 'let-abbreviation
-           (special-let-abbreviation metalevel) )
-          (make-Magic-Keyword 'with-aliases
-           (special-with-aliases metalevel) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">make-macro-environment</span> <span class="var">current-level</span>)
+  (<span class="syntax">let</span> ((<span class="var">metalevel</span> (<span class="syntax">delay</span> (<span class="func">create-evaluator</span> <span class="var">current-level</span>))))
+    (<span class="func">list</span> (<span class="func">make-Magic-Keyword</span> '<span class="var">eval-in-abbreviation-world</span>
+           (<span class="func">special-eval-in-abbreviation-world</span> <span class="var">metalevel</span>) )
+          (<span class="func">make-Magic-Keyword</span> '<span class="var">define-abbreviation</span>
+           (<span class="func">special-define-abbreviation</span> <span class="var">metalevel</span>) )
+          (<span class="func">make-Magic-Keyword</span> '<span class="var">let-abbreviation</span>
+           (<span class="func">special-let-abbreviation</span> <span class="var">metalevel</span>) )
+          (<span class="func">make-Magic-Keyword</span> '<span class="var">with-aliases</span>
+           (<span class="func">special-with-aliases</span> <span class="var">metalevel</span>) ) ) ) )</pre>
 
-<p>Макрос <code><span class="func">eval-in-abbreviation-world</span></code> является наиболее простым, так как его
+<p>Макрос <code><span class="syntax">eval-in-abbreviation-world</span></code> является наиболее простым, так как его
 работа сводится лишь к вычислению выражения с помощью вычислителя следующего
 уровня. Вот здесь как раз и придётся потребовать создать для нас данный уровень.
-Возвращаемым значением <code><span class="func">eval-in-abbreviation-world</span></code> должен быть объект,
+Возвращаемым значением <code><span class="syntax">eval-in-abbreviation-world</span></code> должен быть объект,
 получаемый вызовом объектификатора в текущем окружении. Это правило общее для
 всех обитателей мира макросов.</p>
 
-
 <!--\indexC{special-eval-in-abbreviation-world}-->
-<pre>(define (special-eval-in-abbreviation-world level)
-  (lambda (e r)
-    (let ((body (cdr e)))
-      (objectify ((Evaluator-eval (force level))
-                  `(,special-begin . ,body) ) r) ) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">special-eval-in-abbreviation-world</span> <span class="var">level</span>)
+  (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+    (<span class="syntax">let</span> ((<span class="var">body</span> (<span class="func">cdr</span> <span class="var">e</span>)))
+      (<span class="func">objectify</span> ((<span class="func">Evaluator-eval</span> (<span class="func">force</span> <span class="var">level</span>))
+                  `(,<span class="var">special-begin</span> . ,<span class="var">body</span>) ) <span class="var">r</span>) ) ) )</pre>
 
 <!--\indexR{замыкания (closures)}-->
-<p>Макрос <code><span class="func">define-abbreviation</span></code> создаёт и переопределяет глобальные макросы. Он
+<p>Макрос <code><span class="syntax">define-abbreviation</span></code> создаёт и переопределяет глобальные макросы. Он
 конструирует соответствующий экспандер и вычисляет полученную абстракцию на
 следующем уровне, затем на текущем уровне в глобальном окружении предобработки
 создаётся новое ключевое слово, чьим обработчиком назначается полученный ранее
@@ -2754,102 +2740,100 @@ Scheme. Если нужны именно такие выражения, то н�
 нежели <code><span class="func">evaluate</span></code>. Когда создаваемый макрос вызовет экспандер с помощью
 <code><span class="func">invoke</span></code>, он будет проводить вычисления в том окружении времени исполнения,
 где был создан, то есть в окружении следующего уровня, которое замкнуто
-в экспандере. Возвращает же макрос <code><span class="func">define-abbreviation</span></code> просто <code><span class="func">\#t</span></code>.
+в экспандере. Возвращает же макрос <code><span class="syntax">define-abbreviation</span></code> просто <code><span class="hash">#t</span></code>.
 Можно было бы возвращать символ с именем созданного макроса, но мы сэкономим
 немного памяти на этом.</p>
 
-
 <!--\indexC{special-define-abbreviation}-->
-<pre>(define (special-define-abbreviation level)
-  (lambda (e r)
-    (let* ((call      (cadr e))
-           (body      (cddr e))
-           (name      (car call))
-           (variables (cdr call)) )
-      (let ((expander ((Evaluator-eval (force level))
-                       `(,special-lambda ,variables . ,body) )))
-        (define (handler e r)
-          (objectify (invoke expander (cdr e)) r) )
-        (insert-global! (make-Magic-Keyword name handler) r)
-        (objectify #t r) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">special-define-abbreviation</span> <span class="var">level</span>)
+  (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+    (<span class="syntax">let*</span> ((<span class="var">call</span>      (<span class="func">cadr</span> <span class="var">e</span>))
+           (<span class="var">body</span>      (<span class="func">cddr</span> <span class="var">e</span>))
+           (<span class="var">name</span>      (<span class="func">car</span> <span class="var">call</span>))
+           (<span class="var">variables</span> (<span class="func">cdr</span> <span class="var">call</span>)) )
+      (<span class="syntax">let</span> ((<span class="var">expander</span> ((<span class="func">Evaluator-eval</span> (<span class="func">force</span> <span class="var">level</span>))
+                       `(,<span class="var">special-lambda</span> ,<span class="var">variables</span> . ,<span class="var">body</span>) )))
+        (<span class="special">define</span> (<span class="func">handler</span> <span class="var">e</span> <span class="var">r</span>)
+          (<span class="func">objectify</span> (<span class="func">invoke</span> <span class="var">expander</span> (<span class="func">cdr</span> <span class="var">e</span>)) <span class="var">r</span>) )
+        (<span class="func">insert-global!</span> (<span class="func">make-Magic-Keyword</span> <span class="var">name</span> <span class="var">handler</span>) <span class="var">r</span>)
+        (<span class="func">objectify</span> <span class="hash">#t</span> <span class="var">r</span>) ) ) ) )</pre>
 
 <p>Локальные макросы создаются похожим образом. Разница только в том, что
 новые ключевые слова помещаются в начало текущего окружения — туда, где
 расположены локальные определения.</p>
 
-
 <!--\indexC{special-let-abbreviation}-->
-<pre>(define (special-let-abbreviation level)
-  (lambda (e r)
-    (let ((level  (force level))
-          (macros (cadr e))
-          (body   (cddr e)) )
-      (define (make-macro def)
-        (let* ((call      (car def))
-               (body      (cdr def))
-               (name      (car call))
-               (variables (cdr call)) )
-          (let ((expander ((Evaluator-eval level)
-                           `(,special-lambda ,variables . ,body) )))
-            (define (handler e r)
-              (objectify (invoke expander (cdr e)) r) )
-            (make-Magic-Keyword name handler) ) ) )
-      (objectify `(,special-begin . ,body)
-                 (r-extend* r (map make-macro macros)) ) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">special-let-abbreviation</span> <span class="var">level</span>)
+  (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">r</span>)
+    (<span class="syntax">let</span> ((<span class="var">level</span>  (<span class="func">force</span> <span class="var">level</span>))
+          (<span class="var">macros</span> (<span class="func">cadr</span> <span class="var">e</span>))
+          (<span class="var">body</span>   (<span class="func">cddr</span> <span class="var">e</span>)) )
+      (<span class="special">define</span> (<span class="func">make-macro</span> <span class="var">def</span>)
+        (<span class="syntax">let*</span> ((<span class="var">call</span>      (<span class="func">car</span> <span class="var">def</span>))
+               (<span class="var">body</span>      (<span class="func">cdr</span> <span class="var">def</span>))
+               (<span class="var">name</span>      (<span class="func">car</span> <span class="var">call</span>))
+               (<span class="var">variables</span> (<span class="func">cdr</span> <span class="var">call</span>)) )
+          (<span class="syntax">let</span> ((<span class="var">expander</span> ((<span class="func">Evaluator-eval</span> <span class="var">level</span>)
+                           `(,<span class="var">special-lambda</span> ,<span class="var">variables</span> . ,<span class="var">body</span>) )))
+            (<span class="special">define</span> (<span class="func">handler</span> <span class="var">e</span> <span class="var">r</span>)
+              (<span class="func">objectify</span> (<span class="func">invoke</span> <span class="var">expander</span> (<span class="func">cdr</span> <span class="var">e</span>)) <span class="var">r</span>) )
+            (<span class="func">make-Magic-Keyword</span> <span class="var">name</span> <span class="var">handler</span>) ) ) )
+      (<span class="func">objectify</span> `(,<span class="var">special-begin</span> . ,<span class="var">body</span>)
+                 (<span class="func">r-extend*</span> <span class="var">r</span> (<span class="func">map</span> <span class="var">make-macro</span> <span class="var">macros</span>)) ) ) ) )</pre>
 
-<p>Самым сложным из всей четвёрки является макрос <code><span class="func">with-aliases</span></code>, так как его
+<p>Самым сложным из всей четвёрки является макрос
+<code><span class="syntax">with-aliases</span></code>, так как его
 работа затрагивает сразу несколько уровней. Он должен захватить смысл символов
 на текущем уровне, передать его на следующий, там связать эти значения с новыми
 переменными, причём сделать всё это исключительно на время выполнения раскрытия
 своего тела. Именно хореография областей видимости, уровней интерпретации
 и времени жизни делает этот макрос столь сложным.</p>
 
-
 <!--\indexC{special-with-aliases}-->
-<pre>(define (special-with-aliases level)
-  (lambda (e current-r)
-    (let* ((level   (force level))
-           (old-r   (Evaluator-Preparation-Environment level))
-           (old-sr  (Evaluator-RunTime-Environment level))
-           (aliases (cadr e))
-           (body    (cddr e)) )
-      (let bind ((aliases aliases)
-                 (r  old-r)
-                 (sr old-sr) )
-        (if (pair? aliases)
-            (let* ((variable (car (car aliases)))
-                   (keyword  (cadr (car aliases)))
-                   (var      (make-Local-Variable variable #f #f)) )
-              (bind (cdr aliases)
-                    (r-extend r var)
-                    (sr-extend sr var
-                               (objectify keyword current-r) ) ) )
-            (let ((result 'wait))
-              (set-Evaluator-Preparation-Environment! level r)
-              (set-Evaluator-RunTime-Environment! level sr)
-              (set! result (objectify `(,special-begin . ,body)
-                                      current-r ))
-              (set-Evaluator-Preparation-Environment! level old-r)
-              (set-Evaluator-RunTime-Environment! level old-sr)
-              result ) ) ) ) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">special-with-aliases</span> <span class="var">level</span>)
+  (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">current-r</span>)
+    (<span class="syntax">let*</span> ((<span class="var">level</span>   (<span class="func">force</span> <span class="var">level</span>))
+           (<span class="var">old-r</span>   (<span class="func">Evaluator-Preparation-Environment</span> <span class="var">level</span>))
+           (<span class="var">old-sr</span>  (<span class="func">Evaluator-RunTime-Environment</span> <span class="var">level</span>))
+           (<span class="var">aliases</span> (<span class="func">cadr</span> <span class="var">e</span>))
+           (<span class="var">body</span>    (<span class="func">cddr</span> <span class="var">e</span>)) )
+      (<span class="syntax">let</span> <span class="func">bind</span> ((<span class="var">aliases</span> <span class="var">aliases</span>)
+                 (<span class="var">r</span>  <span class="var">old-r</span>)
+                 (<span class="var">sr</span> <span class="var">old-sr</span>) )
+        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">aliases</span>)
+            (<span class="syntax">let*</span> ((<span class="var">variable</span> (<span class="func">car</span> (<span class="func">car</span> <span class="var">aliases</span>)))
+                   (<span class="var">keyword</span>  (<span class="func">cadr</span> (<span class="func">car</span> <span class="var">aliases</span>)))
+                   (<span class="var">var</span>      (<span class="func">make-Local-Variable</span> <span class="var">variable</span> <span class="hash">#f</span> <span class="hash">#f</span>)) )
+              (<span class="func">bind</span> (<span class="func">cdr</span> <span class="var">aliases</span>)
+                    (<span class="func">r-extend</span> <span class="var">r</span> <span class="var">var</span>)
+                    (<span class="func">sr-extend</span> <span class="var">sr</span> <span class="var">var</span>
+                               (<span class="func">objectify</span> <span class="var">keyword</span> <span class="var">current-r</span>) ) ) )
+            (<span class="syntax">let</span> ((<span class="var">result</span> '<span class="var">wait</span>))
+              (<span class="func">set-Evaluator-Preparation-Environment!</span> <span class="var">level</span> <span class="var">r</span>)
+              (<span class="func">set-Evaluator-RunTime-Environment!</span> <span class="var">level</span> <span class="var">sr</span>)
+              (<span class="special">set!</span> <span class="var">result</span> (<span class="func">objectify</span> `(,<span class="var">special-begin</span> . ,<span class="var">body</span>)
+                                      <span class="var">current-r</span> ))
+              (<span class="func">set-Evaluator-Preparation-Environment!</span> <span class="var">level</span> <span class="var">old-r</span>)
+              (<span class="func">set-Evaluator-RunTime-Environment!</span> <span class="var">level</span> <span class="var">old-sr</span>)
+              <span class="var">result</span> ) ) ) ) ) )</pre>
 
 <!--\indexR{динамическое связывание}-->
 <!--\indexR{связывание!динамическое}-->
 <p>Для временной модификации окружения следующего уровня интерпретации прекрасно
 подошёл бы механизм динамического связывания, гарантирующий восстановление
-старого окружения после завершения раскрытия формы <code><span class="func">with-aliases</span></code>.</p>
+старого окружения после завершения раскрытия формы <code><span class="syntax">with-aliases</span></code>.</p>
 
-<p>Переменные, создаваемые <code><span class="func">with-aliases</span></code>, связываются со значениями, которые
-ранее вернула функция <code><span class="func">objectify</span></code>, то есть с объектами класса <code><span class="func">Program</span></code>
-или <code><span class="func">Magic-Keyword</span></code>. Так как подобные объекты вполне могут быть возвращены
-обратно из <code><span class="func">with-aliases</span></code> в результате раскрытия макросов, то <code><span class="func">objectify</span></code>
+<p>Переменные, создаваемые <code><span class="syntax">with-aliases</span></code>, связываются со значениями, которые
+ранее вернула функция <code><span class="func">objectify</span></code>, то есть с объектами класса <code><span class="class">Program</span></code>
+или <code><span class="class">Magic-Keyword</span></code>. Так как подобные объекты вполне могут быть возвращены
+обратно из <code><span class="syntax">with-aliases</span></code> в результате раскрытия макросов, то <code><span class="func">objectify</span></code>
 должна уметь с ними обращаться. Именно поэтому она вначале проверяет,
 не является ли полученное выражение уже объектифицированной программой или
-ключевым словом. \seePage[macros/macrosystem/object/src:objectify]</p>
+ключевым словом.
+<span class="see">[см. раздел <a href="#macros/macrosystem/object/src:objectify">9.11.1</a>]</span></p>
 
-<h3 id="macros/macrosystem/ssect:limits">Ограничения</h3>
 
+<h3 id="macros/macrosystem/ssect:limits"><span class="seq">9.11.5.</span> Ограничения</h3>
 
 <!--\indexR{гигиеничные макросы}-->
 <!--\indexR{макрогигиена}-->
@@ -2860,58 +2844,54 @@ Scheme. Если нужны именно такие выражения, то н�
 нельзя добраться иным способом; и даже там, где она вовсе не существует.
 Например:</p>
 
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
-
-<pre>(let ((count 0))
-  (with-aliases ((c count))
-    (define-abbreviation (tick) c) )
-  (tick) )
-(let ((count 1) (c 2))
-  (tick) )</pre>
-
+<pre>(<span class="syntax">let</span> ((<span class="var">count</span> <span class="num">0</span>))
+  (<span class="syntax">with-aliases</span> ((<span class="var">c</span> <span class="var">count</span>))
+    (<span class="syntax">define-abbreviation</span> (<span class="syntax">tick</span>) <span class="var">c</span>) )
+  (<span class="syntax">tick</span>) )
+(<span class="syntax">let</span> ((<span class="var">count</span> <span class="num">1</span>) (<span class="var">c</span> <span class="num">2</span>))
+  (<span class="syntax">tick</span>) )</pre>
 
 <!--\indexR{захват смысла символов}-->
-<p>Глобальный макрос <code><span class="func">tick</span></code> ссылается на локальную переменную <code><span class="func">count</span></code>,
-которая не видна из второй формы <code><span class="func">let</span></code>. Действительно, необдуманный захват
+<p>Глобальный макрос <code><span class="syntax">tick</span></code> ссылается на локальную переменную <code><span class="var">count</span></code>,
+которая не видна из второй формы <code><span class="syntax">let</span></code>. Действительно, необдуманный захват
 смысла символов может вызывать ошибки нового типа: обращения к несуществующим
 переменным. Несмотря на то, что в локальном окружении есть переменная с именем
-<code><span class="func">count</span></code>, это <em>не та</em> <code><span class="func">count</span></code>, которую ищет <code><span class="func">tick</span></code>! Причина ошибки
+<code><span class="var">count</span></code>, это <em>не та</em> <code><span class="var">count</span></code>, которую ищет <code><span class="syntax">tick</span></code>! Причина ошибки
 видна яснее в следующем «деобъектифицированном» представлении исходного
 фрагмента:</p>
 
-<pre>((LAMBDA (COUNT501)
-   (BEGIN #T ;; <code>(tick)</code> $\leadsto$ <code><span class="func">COUNT501</span></code>
-          COUNT501 ) ) 0)
-((LAMBDA (COUNT502 C503) COUNT501) 1 2)</pre>
+<pre>((<span class="special">LAMBDA</span> (<span class="var">COUNT501</span>)
+   (<span class="special">BEGIN</span> <span class="hash">#T</span> <span class="comment">;; <code>(<span class="syntax">tick</span>)</code> <span class="math"><span class="rel">⇝</span></span> <code><span class="var">COUNT501</span></code></span>
+          <span class="var">COUNT501</span> ) ) <span class="num">0</span>)
+((<span class="special">LAMBDA</span> (<span class="var">COUNT502</span> <span class="var">C503</span>) <span class="var">COUNT501</span>) <span class="num">1</span> <span class="num">2</span>)</pre>
 
-<p>\ForLayout{display}{\endgroup}</p>
+<p>Расположение формы <code><span class="syntax">with-aliases</span></code> необходимо тщательно выбирать, так как это
+нечто вроде <code><span class="syntax">let</span></code>, только для следующего уровня интерпретации. Если написать</p>
 
-<p>Расположение формы <code><span class="func">with-aliases</span></code> необходимо тщательно выбирать, так как это
-нечто вроде <code><span class="func">let</span></code>, только для следующего уровня интерпретации. Если написать</p>
+<pre>(<span class="syntax">define-abbreviation</span> (<span class="syntax">loop</span> . <span class="var">body</span>)
+  (<span class="syntax">with-aliases</span> ((<span class="var">cc</span> <span class="func">call/cc</span>) (<span class="var">lam</span> <span class="special">lambda</span>) (<span class="var">ll</span> <span class="syntax">let</span>))
+    (<span class="syntax">let</span> ((<span class="var">loop</span> (<span class="func">gensym</span>)))
+      `(,<span class="var">cc</span> (,<span class="var">lam</span> (<span class="var">exit</span>) (,<span class="var">ll</span> ,<span class="var">loop</span> () ,@<span class="var">body</span> (,<span class="var">loop</span>)))) ) ) )</pre>
 
-<pre>(define-abbreviation (loop . body)
-  (with-aliases ((cc call/cc) (lam lambda) (ll let))
-    (let ((loop (gensym)))
-      `(,cc (,lam (exit) (,ll ,loop () ,@body (,loop)))) ) ) )</pre>
-
-<p>\noindent
-то форма <code><span class="func">with-aliases</span></code> захватит смысл символов на уровне макроопределений,
-так что использовать их можно только на этом или более высоком уровне. Здесь
-<code><span class="func">with-aliases</span></code> содержится внутри <code><span class="func">define-abbreviation</span></code>, поэтому в момент
-раскрытия макроса <code><span class="func">loop</span></code> смысл <code><span class="func">call/cc</span></code> захватывается в мире макросов,
-привязывается к переменной <code><span class="func">cc</span></code> и\textdots\ мы получаем ошибку <code><span class="func">"cc:
-unknown value"</span></code>, так <code><span class="func">call/cc</span></code> из мира макросов недоступна раскрытому коду,
-находящемуся в мире программ.</p>
-
+<p>то форма <code><span class="syntax">with-aliases</span></code> захватит смысл
+символов на уровне макроопределений, так что использовать их можно только на этом
+или более высоком уровне. Здесь <code><span class="syntax">with-aliases</span></code>
+содержится внутри <code><span class="syntax">define-abbreviation</span></code>, поэтому в момент
+раскрытия макроса <code><span class="syntax">loop</span></code> смысл
+<code><span class="func">call/cc</span></code> захватывается в мире макросов,
+привязывается к переменной <code><span class="var">cc</span></code> и… мы получаем ошибку
+<code>"cc: unknown value"</code>, так <code><span class="func">call/cc</span></code>
+из мира макросов недоступна раскрытому коду, находящемуся в мире программ.</p>
 
 <!--\indexR{полноценные объекты!окружения}-->
 <!--\indexC{import}-->
 <!--\indexC{export}-->
-<p>Если не брать в расчёт специальные формы и другие ключевые слова вроде <code><span class="func">else</span></code>
-и <code><span class="func">=></span></code>, то смысл локальных и глобальных переменных вполне успешно
-захватывался с помощью полноценных окружений и форм <code><span class="func">import</span></code>\slash<code><span class="func">export</span></code>.
-\seePage[reflection/reify-env/ssect:import] Однако механизм, показанный в данной
+<p>Если не брать в расчёт специальные формы и другие ключевые слова вроде
+<code><span class="syntax">else</span></code> и <code><span class="syntax">=></span></code>,
+то смысл локальных и глобальных переменных вполне успешно
+захватывался с помощью полноценных окружений и форм
+<code><span class="special">import</span></code>/<code><span class="special">export</span></code>.
+<span class="see">[см. раздел <a href="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:import">8.6.5</a>]</span> Однако механизм, показанный в данной
 главе, несомненно является более мощным, так как, во-первых, он позволяет
 захватывать специальные формы в том числе, а во-вторых, он выполняет это
 статически, а не динамически.</p>
@@ -2924,11 +2904,11 @@ unknown value"</span></code>, так <code><span class="func">call/cc</span></co
 <p>Несмотря на это, она имеет и недостатки. Если пользователь захочет посмотреть,
 во что именно раскрываются макросы, то он столкнётся как минимум с двумя
 затруднениями. Во-первых, ему недоступна функция <code><span class="func">expand</span></code>. Очевидно, это
-можно исправить, сделав так, чтобы переменная <code><span class="func">expand</span></code> текущего уровня
+можно исправить, сделав так, чтобы переменная <code><span class="var">expand</span></code> текущего уровня
 интерпретации ссылалась на функцию <code><span class="func">expand</span></code> следующего. Вторая проблема
 заключается в том, что результатом раскрытия является объект класса
-<code><span class="func">Program</span></code>, чья структура неизвестна пользователю. Но и это тоже поправимо:
-\seeEx[macros/ex:decompile].</p>
+<code><span class="class">Program</span></code>, чья структура неизвестна пользователю. Но и это тоже поправимо:
+<span class="see">[см. упр. <a href="#macros/ex:decompile">9.4</a>]</span>.</p>
 
 <p>Одной из задач данной макросистемы было продемонстрировать тесную связь между
 макросами и компиляцией — оба понятия имеют поразительно много общего. Если
@@ -2941,22 +2921,24 @@ unknown value"</span></code>, так <code><span class="func">call/cc</span></co
 <p>Серьёзная макросистема, конечно же, должна включать в себя гораздо больше
 полезных вещей:</p>
 
-<p>\begin{enumerate}
-  \item встроенные синтаксические возможности вроде <code><span class="func">or</span></code>, <code><span class="func">letrec</span></code>,
-        вложенных <code><span class="func">define</span></code> и т. д.;</p>
+<ol>
+  <li>встроенные синтаксические возможности вроде <code><span class="syntax">or</span></code>,
+    <code><span class="syntax">letrec</span></code>, вложенных
+    <code><span class="special">define</span></code> и т. д.;</li>
 
-<p>  \item квазицитирование, органично объединённое с объектификацией
-        и раскрытием макросов;</p>
+  <li>квазицитирование, органично объединённое с объектификацией
+    и раскрытием макросов;</li>
 
-<p>  \item пользовательские макросимволы, позволяющие удобное написание
-        программ в стиле <code><span class="func">define-handy-method</span></code>.
-        \seePage[macros/usage/ssect:code-walk]
-\end{enumerate}</p>
+  <li>пользовательские макросимволы, позволяющие удобное написание
+    программ в стиле <code><span class="syntax">define-handy-method</span></code>.
+    <span class="see">[см. раздел <a href="#macros/usage/ssect:code-walk">9.9.2</a>]</span></li>
+</ol>
 
 <p>Тем не менее, одной из изначальных целей — ознакомиться с идеей захвата
 смысла символов — мы всё же достигли.</p>
 
-<h2 id="macros/sect:conclusions">Заключение</h2>
+
+<h2 id="macros/sect:conclusions"><span class="seq">9.12.</span> Заключение</h2>
 
 <p>Все проблемы, связанные с макросами, можно обобщить двумя словами: необходимость
 и несовместимость. Макросы регулярно используются на практике в том или ином
@@ -2969,43 +2951,54 @@ unknown value"</span></code>, так <code><span class="func">call/cc</span></co
 поведения макросистем.</p>
 
 
-<h2 id="macros/sect:exercises">Упражнения</h2>
+<h2 id="macros/sect:exercises"><span class="seq">9.13.</span> Упражнения</h2>
 
-<h5 class="exercise" id="macros/ex:repeat">Упражнение <span class="seq">0.0</span></h5>
-<p>Определите макрос <code><span class="func">repeat</span></code>, который был описан в начале этой главы. Сделайте
+<h5 class="exercise" id="macros/ex:repeat">Упражнение <span class="seq">9.1</span></h5>
+<p>Определите макрос <code><span class="syntax">repeat</span></code>, который был описан в начале этой главы. Сделайте
 его гигиеничным.</p>
 
 
-<h5 class="exercise" id="macros/ex:arg-sequence">Упражнение <span class="seq">0.0</span></h5>
-<p>С помощью <code><span class="func">define-syntax</span></code> определите макрос, принимающий последовательность
-выражений и печатающий их по порядку рядом с их номерами. Например, макровызов
-<code>(enumerate $\pi_0$ $\pi_1$ ... $\pi_n$)</code> должен раскрыться в нечто, что при
-выполнении напечатает <code><span class="func">0</span></code>, затем значение $\pi_0$, потом <code><span class="func">1</span></code>, а за ней
-значение $\pi_1$, и так далее.</p>
+<h5 class="exercise" id="macros/ex:arg-sequence">Упражнение <span class="seq">9.2</span></h5>
+<p>С помощью <code><span class="syntax">define-syntax</span></code> определите макрос,
+принимающий последовательность выражений и печатающий их по порядку рядом с их номерами.
+Например, макровызов <code>(<span class="syntax">enumerate</span>
+<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code>
+должен раскрыться в нечто, что при выполнении напечатает
+<code><span class="num">0</span></code>, затем значение <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span>,
+потом <code><span class="num">1</span></code>, а за ней значение <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span>,
+и так далее.</p>
 
 
-<h5 class="exercise" id="macros/ex:unique">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="macros/ex:unique">Упражнение <span class="seq">9.3</span></h5>
 <p>Перенесите макросистему из данной главы в истинно единый мир.</p>
 
 
-<h5 class="exercise" id="macros/ex:decompile">Упражнение <span class="seq">0.0</span></h5>
-<p>Напишите функцию, преобразующую объекты <code><span class="func">Program</span></code> обратно в эквивалентные
+<h5 class="exercise" id="macros/ex:decompile">Упражнение <span class="seq">9.4</span></h5>
+<p>Напишите функцию, преобразующую объекты <code><span class="class">Program</span></code> обратно в эквивалентные
 S-выражения.</p>
 
 
-<h5 class="exercise" id="macros/ex:study">Упражнение <span class="seq">0.0</span></h5>
-<p>Изучите реализацию {\Meroonet} \seePage[chapter:objects] и определите, что
-оттуда относится к библиотеке времени раскрытия, что к библиотеке времени
+<h5 class="exercise" id="macros/ex:study">Упражнение <span class="seq">9.5</span></h5>
+<p>Изучите реализацию <span class="logo">Meroonet</span>
+<span class="see">[см. <a href="ch11_essence_of_an_object_system.xhtml">11 главу</a>]</span>
+и определите, что оттуда относится к библиотеке времени раскрытия, что к библиотеке времени
 исполнения, а что к обеим.</p>
 
-<p>
-\section*{Рекомендуемая литература}\label{macros/sect:recommended-reading}</p>
 
-<p>Весьма интересные мысли в защиту макросов приведены в книге <span class="cite">[<a href="z1_bibliography.xhtml#gra93">gra93</a>]</span>. Есть
-также и работы больше теоретического характера, вроде <span class="cite">[<a href="z1_bibliography.xhtml#qp90">qp90</a>]</span>. О проблемах
-гигиеничного макрораскрытия можно почитать в \cite{kffd86,dfh88,cr91a,qp91b}.
+<h2>Рекомендуемая литература</h2>
+
+<p>Весьма интересные мысли в защиту макросов приведены в книге
+<span class="cite">[<a href="z1_bibliography.xhtml#gra93">Gra93</a>]</span>. Есть
+также и работы больше теоретического характера, вроде
+<span class="cite">[<a href="z1_bibliography.xhtml#qp90">QP90</a>]</span>. О проблемах
+гигиеничного макрораскрытия можно почитать в
+<span class="cite">[<a href="z1_bibliography.xhtml#kffd86">KFFD86</a>,
+<a href="z1_bibliography.xhtml#dfh88">DFH88</a>,
+<a href="z1_bibliography.xhtml#cr91a">CR91a</a>,
+<a href="z1_bibliography.xhtml#qp91b">QP91b</a>]</span>.
 Наконец, стоит обратить внимание на многообещающую модель раскрытия,
-рассмотренную в работе <span class="cite">[<a href="z1_bibliography.xhtml#dm95">dm95</a>]</span>.</p>
+рассмотренную в работе
+<span class="cite">[<a href="z1_bibliography.xhtml#dm95">DM95</a>]</span>.</p>
 
 </body>
 </html>
