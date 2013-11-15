@@ -760,7 +760,7 @@ $\pi$ становится \ic{((lambda~()~$\pi$))}.
 некоторое представление об~этом языке, но не~обременены предрассудками
 о~единственно верном способе его использования.
 
-Абстрактное синтаксическое дерево полностью готово и только и~ждёт, чтобы его 
+Абстрактное синтаксическое дерево полностью готово и только и~ждёт, чтобы его
 скомпилировали, а~вернее сказать, \emph{распечатали} на языке~Си. Благодаря
 высокоуровневому представлению программ, генерация кода не~представляет особых
 сложностей. Функция \ic{compile->C} принимает S"=выражение, выполняет над ним
@@ -1874,8 +1874,8 @@ int main(void)
 /* End of generated code */
 \end{code:c-frame}
 
-Также стоит взглянуть функции \ic{function\_1} и \ic{function\_2} в~раскрытом
-виде, без макросов (кроме \ic{va\_list}). Остальные выражения раскрываются
+Также стоит взглянуть на функции \ic{function\_1} и \ic{function\_2} в~раскрытом
+виде, без макросов (кроме \ic{va\_arg}). Остальные выражения раскрываются
 аналогично.
 
 \begin{code:c}
@@ -1903,7 +1903,7 @@ SCM function_2(struct function_2 *self_,
                va_list arguments_)
 {
     SCM I = va_arg(arguments_, SCM);
-    return SCM_close(((SCM(*)(void)) function_1), -1, 1, 1);
+    return SCM_close(((SCM(*)(void)) function_1), -1, 1, I);
 }
 \end{code:c}
 
@@ -2022,11 +2022,11 @@ union SCM_object {
         SCM cdr;
         SCM car;
     } pair;
-    
+
     struct SCM_string {
         char Cstring[8];
     } string;
-    
+
     struct SCM_symbol {
         SCM pname;
     } symbol;
@@ -2093,12 +2093,12 @@ union SCM_unwrapped_object {
         SCM cdr;
         SCM car;
     } pair;
-    
+
     struct SCM_unwrapped_string {
         union SCM_header header;
         char Cstring[8];
     } string;
-    
+
     struct SCM_unwrapped_symbol {
         union SCM_header header;
         SCM pname;
@@ -2248,12 +2248,13 @@ SCM_DefineImmediateObject(SCM_nil_object,   SCM_PAIR_TAG)
 подходящий тип. Следующие макросы для арифметических действий, например, этого
 заранее знать не~могут, поэтому в~них проверки типов выполняются явно. Конечно,
 таким образом мы лишаемся возможной оптимизации в~случае, если типы всё~же
-будут известны,\footnote*{Некоторые компиляторы~Си достаточно сообразительны,
-чтобы избавиться от части ненужных проверок, но, как известно, хочешь сделать
-хорошо "--- сделай это сам.} но этот вопрос уже обсуждался: с~точки зрения
-педагогики важнее показать всю массу вариантов, нежели рассмотреть в~деталях
-пару-тройку лучших. Если~бы мы хотели добиться максимальной эффективности,
-компилятор был~бы устроен совсем не~так и выдавал~бы совершенно иной код.
+будут известны,\footnote*{Некоторые компиляторы~Си \emph{достаточно
+сообразительны}, чтобы избавиться от части ненужных проверок, но, как известно,
+хочешь сделать хорошо "--- сделай это сам.} но этот вопрос уже обсуждался:
+с~точки зрения педагогики важнее показать всю массу вариантов, нежели
+рассмотреть в~деталях пару-тройку лучших. Если~бы мы хотели добиться
+максимальной эффективности, компилятор был~бы устроен совсем не~так и
+выдавал~бы совершенно иной код.
 
 \indexC*{SCM_Plus}{SCM\_Plus}
 \indexC*{SCM_GtP}{SCM\_GtP}
@@ -2406,7 +2407,7 @@ SCM_DefinePredefinedFunctionVariable(EQ,   "EQ?",  2, SCM_eqp);
 \indexC*{SCM_DeclareLocalDottedVariable}{SCM\_DeclareLocalDottedVariable}
 \indexC*{SCM_Free}{SCM\_Free}
 \begin{code:c}
-#define SCM_DeclareFunction(Cname) \ 
+#define SCM_DeclareFunction(Cname) \
   SCM Cname(struct Cname *self_,   \
             unsigned long size_, va_list arguments_)
 
@@ -2463,7 +2464,7 @@ SCM SCM_cons(SCM a, SCM d)
     {
         SCM_error(SCM_ERR_CANT_ALLOC);
     }
-    
+
     cell->pair.header.tag = SCM_PAIR_TAG;
     cell->pair.car = a;
     cell->pair.cdr = d;
@@ -2499,7 +2500,7 @@ SCM SCM_close(SCM (*Cfunction)(void), long arity,
         result->closure.environment[i] = va_arg(args, SCM);
     }
     va_end(args);
-    
+
     return SCM_Wrap(result);
 }
 \end{code:c}
@@ -2940,7 +2941,7 @@ SCM SCM_callep(SCM f)
 \indexR{преобразование!в CPS}
 \indexR{стиль передачи продолжений (CPS)!CPS-преобразование}
 Предлагаемое преобразование эквивалентно показанному ранее, только выполняется
-оно с~помощью нового обходчика кода \seePage[denotational/lambdify/ssect:cps]
+оно с~помощью нового обходчика кода. \seePage[denotational/lambdify/ssect:cps]
 Работа ведётся над~уже объектифицированным исходным кодом.
 
 У~CPS-преобразования, выполняемого в~лоб, есть недостаток: оно очень щедро

@@ -121,6 +121,25 @@ pre span { font-size: 100%; }
 pre span.dialect { font-size: 100%; float: right; }
 pre span.dialect span.logo { font-size: 100%; }
 
+code.c span.pre,
+pre.c span.pre { color: #327710; }
+
+code.c span.macro,
+pre.c span.macro { color: #3322CC; }
+
+code.c span.keyword,
+pre.c span.keyword { color: #CC2233; }
+
+code.c span.type,
+pre.c span.type { color: #A79577; }
+
+pre.shell span.prompt { color: #10BB10; }
+
+pre.shell span.cmd { color: #B88B10; }
+
+pre.shell span.opt { color: #1010BB; }
+
+pre.shell span.arg { color: #307070; }
 
 .math .frac {
   display: inline-block;

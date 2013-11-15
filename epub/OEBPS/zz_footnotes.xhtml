@@ -945,5 +945,77 @@
     переводит все имена символов в верхний регистр.</p>
 </div>
 
+<div class="footnote" id="foot10.4">
+  <p><span class="num"><sup>4</sup></span>
+    Конечно, при этом можно применять и более агрессивные оптимизации. Например, в приведённом
+    примере переменные <code><span class="var">x1</span></code> и <code><span class="var">x2</span></code> невозможно использовать одновременно, так что они могут физически
+    совпадать в памяти.</p>
+</div>
+
+<div class="footnote" id="foot10.5">
+  <p><span class="num"><sup>5</sup></span>
+    Имена функций вида <code class="c"><span class="func">function_<i>i</i></span></code>,
+    очевидно, никак не связаны с именами соответствующих им
+    глобальных переменных. Если не пренебрегать таблицей символов, как это сделано
+    здесь, то вполне можно выводить более понятные имена.</p>
+</div>
+
+<div class="footnote" id="foot10.6">
+  <p><span class="num"><sup>6</sup></span>
+    Большая часть потраченного времени уходит на
+    загрузку; собственно исполнение занимает пренебрежимо малую его часть. Если
+    данные вычисления повторить 10000 раз, то время выполнения программы
+    увеличится всего до одной секунды.</p>
+</div>
+
+<div class="footnote" id="foot10.7">
+  <p><span class="num"><sup>7</sup></span>
+    Замеры производились на Sony News 3200 с процессором MIPS R3000 на борту.</p>
+</div>
+
+<div class="footnote" id="foot10.8">
+  <p><span class="num"><sup>8</sup></span>
+    Пустой указатель в Си (<code class="c"><span class="macro">NULL</span></code>) чаще всего
+    численно равен нулю. Естественно, он не является допустимым значением Scheme, так как
+    нелегко будет отыскать в памяти адрес <span class="math"><span class="ord">−</span><span class="ord num">1</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot10.9">
+  <p><span class="num"><sup>9</sup></span>
+    Как вы помните, <code><span class="var">cdr</span></code> лучше располагать перед
+    <code><span class="var">car</span></code>, потому что пары — это всё же
+    основной элемент связных списков, а <code><span class="var">cdr</span></code> при обходе
+    списка просматривается чаще, как утверждается
+    <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot10.10">
+  <p><span class="num"><sup>10</sup></span>
+    Некоторые компиляторы Си <em>достаточно сообразительны</em>,
+    чтобы избавиться от части ненужных проверок, но, как известно, хочешь сделать
+    хорошо — сделай это сам.</p>
+</div>
+
+<div class="footnote" id="foot10.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Или к более современной книге:
+    <i>Richard Jones, Antony Hosking, Eliot Moss.</i> The Garbage Collection
+    Handbook: The Art of Automatic Memory Management. — Chapman &amp; Hall/CRC,
+    2012. — 511 p.</p>
+</div>
+
+<div class="footnote" id="foot10.tr-2">
+  <p><span class="num"><sup>**</sup></span>
+    В C99 появился макрос <code class="c"><span class="macro">va_copy</span></code>,
+    позволяющий сделать это безопасно.</p>
+</div>
+
+<div class="footnote" id="foot10.11">
+  <p><span class="num"><sup>11</sup></span>
+    Если вам здесь видится нечеловеческое ущемление прав, то сперва узнайте предел
+    вашей любимой реализации Scheme.</p>
+</div>
+
+
 </body>
 </html>

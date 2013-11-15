@@ -1068,65 +1068,66 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
 слегка приправленный комментариями. Наслаждайтесь!</p>
 
 <div class="snippet">
-<pre class="c">/* Compiler to C $Revision: 4.1$
-'((#F #T) (FOO . "FOO") 33 FOO . "FOO") */
+<pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
+'((#F #T) (FOO . "FOO") 33 FOO . "FOO") */</span>
 
-#include "scheme.h"
+<span class="pre">#include</span> <span class="string">"scheme.h"</span>
 
-/* Quotations: */
-SCM_DefineString(thing4_object, "FOO");
-#define thing4 SCM_Wrap(&amp;thing4_object)
-SCM_DefineSymbol(thing5_object, thing4);        /* FOO */
-#define thing5 SCM_Wrap(&amp;thing5_object)
-SCM_DefinePair(thing3_object, thing5, thing4);  /* (FOO . "FOO") */
-#define thing3 SCM_Wrap(&amp;thing3_object)
-#define thing6 SCM_Int2Fixnum(33)
-SCM_DefinePair(thing2_object, thing6, thing3);  /* (33 FOO . "FOO") */
-#define thing2 SCM_Wrap(&amp;thing2_object)
-SCM_DefinePair(thing1_object, thing3, thing2);
-                                  /* ((FOO . "FOO") 33 FOO . "FOO") */
-#define thing1 SCM_Wrap(&amp;thing1_object)
-#define thing9 SCM_nil                           /* ()  */
-#define thing10 SCM_true                         /* \#T  */
-SCM_DefinePair(thing8_object, thing10, thing9);  /* (#T) */
-#define thing8 SCM_Wrap(&amp;thing8_object)
-#define thing11 SCM_false                        /* \#F */
-SCM_DefinePair(thing7_object, thing11, thing8);  /* (#F #T) */
-#define thing7 SCM_Wrap(&amp;thing7_object)
-SCM_DefinePair(thing0_object, thing7, thing1);
-                          /* ((#F #T) (FOO . "FOO") 33 FOO . "FOO") */
-#define thing0 SCM_Wrap(&amp;thing0_object)
+<span class="comment">/* Quotations: */</span>
+<span class="macro">SCM_DefineString</span>(<span class="var">thing4_object</span>, <span class="string">"FOO"</span>);
+<span class="pre">#define</span> <span class="macro">thing4</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing4_object</span>)
+<span class="macro">SCM_DefineSymbol</span>(<span class="var">thing5_object</span>, <span class="var">thing4</span>);        <span class="comment">/* FOO */</span>
+<span class="pre">#define</span> <span class="macro">thing5</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing5_object</span>)
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing3_object</span>, <span class="macro">thing5</span>, <span class="macro">thing4</span>);  <span class="comment">/* (FOO . "FOO") */</span>
+<span class="pre">#define</span> <span class="macro">thing3</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing3_object</span>)
+<span class="pre">#define</span> <span class="macro">thing6</span> <span class="macro">SCM_Int2Fixnum</span>(33)
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing2_object</span>, <span class="macro">thing6</span>, <span class="macro">thing3</span>);  <span class="comment">/* (33 FOO . "FOO") */</span>
+<span class="pre">#define</span> <span class="macro">thing2</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing2_object</span>)
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing1_object</span>, <span class="macro">thing3</span>, <span class="macro">thing2</span>);
+                                  <span class="comment">/* ((FOO . "FOO") 33 FOO . "FOO") */</span>
+<span class="pre">#define</span> <span class="macro">thing1</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing1_object</span>)
+<span class="pre">#define</span> <span class="macro">thing9</span> <span class="macro">SCM_nil</span>                           <span class="comment">/* ()  */</span>
+<span class="pre">#define</span> <span class="macro">thing10</span> <span class="macro">SCM_true</span>                         <span class="comment">/* #T  */</span>
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing8_object</span>, <span class="macro">thing10</span>, <span class="macro">thing9</span>);  <span class="comment">/* (#T) */</span>
+<span class="pre">#define</span> <span class="macro">thing8</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing8_object</span>)
+<span class="pre">#define</span> <span class="macro">thing11</span> <span class="macro">SCM_false</span>                        <span class="comment">/* #F */</span>
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing7_object</span>, <span class="macro">thing11</span>, <span class="macro">thing8</span>);  <span class="comment">/* (#F #T) */</span>
+<span class="pre">#define</span> <span class="macro">thing7</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing7_object</span>)
+<span class="macro">SCM_DefinePair</span>(<span class="var">thing0_object</span>, <span class="macro">thing7</span>, <span class="macro">thing1</span>);
+                          <span class="comment">/* ((#F #T) (FOO . "FOO") 33 FOO . "FOO") */</span>
+<span class="pre">#define</span> <span class="macro">thing0</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing0_object</span>)
 
-/* ... */</pre></div>
+<span class="comment">/* ... */</span></pre></div>
 
-<p>Первым делом создаётся строка <code><span class="func">"FOO"</span></code>. Для этого используется макрос
-<code><span class="func">SCM\_DefineString</span></code>. Первым аргументом он принимает имя нового объекта на Си.
+<p>Первым делом создаётся строка <code class="c"><span class="string">"FOO"</span></code>. Для этого используется макрос
+<code class="c"><span class="macro">SCM_DefineString</span></code>. Первым аргументом он принимает имя нового объекта на Си.
 Вторым — собственно строку. Похожим образом с помощью макроса
-<code><span class="func">SCM\_DefineSymbol</span></code> создаётся символ. Первым аргументом идёт имя на Cи, за
+<code class="c"><span class="macro">SCM_DefineSymbol</span></code> создаётся символ. Первым аргументом идёт имя на Cи, за
 ним — строка с именем на Scheme. Точечные пары создаются аналогично с помощью
-макроса <code><span class="func">SCM\_DefinePair</span></code>: первым аргументом — имя на Си, вторым и третьим
-— содержимое <code><span class="func">car</span></code> и <code><span class="func">cdr</span></code> соответственно.</p>
+макроса <code class="c"><span class="macro">SCM_DefinePair</span></code>: первым аргументом — имя на Си, вторым и третьим
+— содержимое <code><span class="var">car</span></code> и <code><span class="var">cdr</span></code> соответственно.</p>
 
 <p>Предопределённые объекты вроде булевых значений и пустого списка, конечно же,
 не создаются каждый раз заново. Вместо этого используются напрямую их имена:
-<code><span class="func">SCM\_true</span></code>, <code><span class="func">SCM\_false</span></code> и <code><span class="func">SCM\_nil</span></code>.</p>
+<code class="c"><span class="macro">SCM_true</span></code>, <code class="c"><span class="macro">SCM_false</span></code> и <code class="c"><span class="macro">SCM_nil</span></code>.</p>
 
-<p>Позже \seePage[cc/sect:data] мы подробнее разберём представление в памяти
+<p>Позже <span class="see">[см. раздел <a href="#cc/sect:data">10.9</a>]</span> мы подробнее разберём представление в памяти
 значений Scheme. Процесс компиляции слабо связан с используемой конкретной
 реализацией структур данных. На данный момент достаточно знать лишь её
-интерфейс: объекты инициализируются директивами вида <code><span class="func">SCM\_Define...</span></code>, а
-ссылку на инициализированный объект можно получить с помощью <code><span class="func">SCM\_Wrap</span></code>.
-Целые числа преобразуются в объекты Scheme макросом <code><span class="func">SCM\_Int2Fixnum</span></code>.
+интерфейс: объекты инициализируются директивами вида <code class="c"><span class="macro">SCM_Define...</span></code>, а
+ссылку на инициализированный объект можно получить с помощью <code class="c"><span class="macro">SCM_Wrap</span></code>.
+Целые числа преобразуются в объекты Scheme макросом <code class="c"><span class="macro">SCM_Int2Fixnum</span></code>.
 К любому объекту можно обратиться, использовав его имя, начинающееся на
-<code><span class="func">thing</span></code>. Например, <code><span class="func">thing4</span></code> означает строку <code><span class="func">"FOO"</span></code>, а <code><span class="func">thing6</span></code> —
-это число 33. Точнее, <code><span class="func">thing4</span></code> — это указатель на объект
-<code><span class="func">thing4\_object</span></code>, который уже хранит настоящую строку.</p>
+<code class="c"><span class="var">thing</span></code>. Например, <code class="c"><span class="var">thing4</span></code> означает строку <code class="c"><span class="string">"FOO"</span></code>, а <code class="c"><span class="var">thing6</span></code> —
+это число 33. Точнее, <code class="c"><span class="var">thing4</span></code> — это указатель на объект
+<code class="c"><span class="var">thing4_object</span></code>, который уже хранит настоящую строку.</p>
 
-<p>Строка <code><span class="func">"FOO"</span></code> общая для всех объектов: в выражении <code>(FOO . "FOO")</code>
-объекты <code><span class="func">thing4</span></code> и <code><span class="func">thing3</span></code> ссылаются на один и тот же
-<code><span class="func">thing4\_object</span></code>.</p>
+<p>Строка <code class="c"><span class="string">"FOO"</span></code> общая для всех объектов: в выражении <code>(<span class="var">FOO</span> . <span class="string">"FOO"</span>)</code>
+объекты <code class="c"><span class="var">thing4</span></code> и <code class="c"><span class="var">thing3</span></code> ссылаются на один и тот же
+<code class="c"><span class="var">thing4_object</span></code>.</p>
 
-<h3 id="cc/gen/ssect:exprs">Компиляция выражений</h3>
+
+<h3 id="cc/gen/ssect:exprs"><span class="seq">10.8.4.</span> Компиляция выражений</h3>
 
 <p>Главной задачей компилятора, конечно же, является перевод выражений Scheme
 в выражения Си. Как было сказано ранее, мы намеренно преобразуем выражения
@@ -1137,22 +1138,23 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 с философией языка Си. В Си отдельные инструкции предпочтительнее выражений.
 Не то, чтобы это было особой проблемой для компилятора — ему-то без разницы;
 это будет проблемой для человека, который сядет отлаживать подобную программу.
-Беда в том, что интерактивные отладчики вроде <code><span class="func">gdb</span></code> обычно понимают пошаговый
+Беда в том, что интерактивные отладчики вроде <code>gdb</code> обычно понимают пошаговый
 режим исполнения как исполнение программы по инструкциям — а инструкции
 в нашем случае будут отнюдь не маленькие. Если бы мы решили компилировать Scheme
 в инструкции Си вместо выражений, то в итоге у нас получилось бы нечто похожее
-на рассмотренный ранее компилятор в байт-код. \seePage[chapter:compilation]</p>
+на рассмотренный ранее компилятор в байт-код.
+<span class="see">[см. <a href="ch07_compilation.xhtml">7 главу</a>]</span></p>
 
-<p>Компиляция выражений выполняется обобщённой функцией <code><span class="func">->C</span></code>. Она принимает
+<p>Компиляция выражений выполняется обобщённой функцией
+<code><span class="func">-&gt;C</span></code>. Она принимает
 два аргумента: исходное выражение и порт, куда следует записать результат. Так
 как результат компиляции сразу же переносится в файл, то код необходимо
 генерировать строго последовательно, без возвратов и исправлений задним числом,
 за один проход.
-\seePage[compilation/lang-and-target/par:backtracking]</p>
-
+<span class="see">[см. раздел <a href="ch07_compilation.xhtml#compilation/lang-and-target/par:backtracking">7.2</a>]</span></p>
 
 <!--\indexC*{c}{->C}-->
-<pre>(define-generic (->C (e Program) out))</pre>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Program</span>) <span class="var">out</span>))</pre>
 
 <p>В отличие от предыдущих трансформаций, в этот раз мы не будем использовать
 обобщённый обходчик (так как у нас нет действия по умолчанию), а просто
@@ -1168,73 +1170,73 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 так что в программе должны быть скобочки. Много скобочек. Поэтому мы определим
 специальный макрос, чтобы удобно их ставить:</p>
 
-
 <!--\indexC{between-parentheses}-->
-<pre>(define-syntax between-parentheses
-  (syntax-rules ()
-    ((between-parentheses out . body)
-     (let ((out out))
-       (format out "(")
-       (begin . body)
-       (format out ")") ) ) ) )</pre>
+<pre>(<span class="special">define-syntax</span> <span class="var">between-parentheses</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">between-parentheses</span> <span class="var">out</span> . <span class="var">body</span>)
+     (<span class="syntax">let</span> ((<span class="var">out</span> <span class="var">out</span>))
+       (<span class="func">format</span> <span class="var">out</span> <span class="string">"("</span>)
+       (<span class="special">begin</span> . <span class="var">body</span>)
+       (<span class="func">format</span> <span class="var">out</span> <span class="string">")"</span>) ) ) ) )</pre>
+
 
 <h4 id="cc/gen/exprs/sssect:refs">Обращения к переменным</h4>
 
 <p>В программе могут использоваться переменные разного вида, но в общем случае
 одна переменная Scheme соответствует одной переменной Си. Метод обработки
 обращений к переменным сразу же перепоручает всю работу обобщённой функции
-<code><span class="func">reference->C</span></code>, а она, в свою очередь, по умолчанию просит всё сделать
-следующую функцию — <code><span class="func">variable->C</span></code>. Такая слабая связанность методов
+<code><span class="func">reference-&gt;C</span></code>, а она, в свою очередь, по умолчанию просит всё сделать
+следующую функцию — <code><span class="func">variable-&gt;C</span></code>. Такая слабая связанность методов
 облегчит их дальнейшую специализацию.</p>
-
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Reference</span></code>}-->
 <!--\indexC{reference->C}-->
 <!--\indexC{variable->C}-->
-<pre>(define-method (->C (e Reference) out)
-  (reference->C (Reference-variable e) out) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Reference</span>) <span class="var">out</span>)
+  (<span class="func">reference-&gt;C</span> (<span class="func">Reference-variable</span> <span class="var">e</span>) <span class="var">out</span>) )
 
-<p>(define-generic (reference->C (v Variable) out)
-  (variable->C v out) )</p>
+(<span class="syntax">define-generic</span> (<span class="func">reference-&gt;C</span> (<span class="var">v</span> <span class="class">Variable</span>) <span class="var">out</span>)
+  (<span class="func">variable-&gt;C</span> <span class="var">v</span> <span class="var">out</span>) )
 
-<p>(define-generic (variable->C (variable) out))</pre>
+(<span class="syntax">define-generic</span> (<span class="func">variable-&gt;C</span> (<span class="var">variable</span>) <span class="var">out</span>))</pre>
 
 <p>Обычно переменная получает новое имя на Си, похожее на её исходное, за
 исключением случаев, когда она была переименована или же ссылается на цитату.</p>
 
-<pre>(define-method (variable->C (variable Variable) out)
-  (format out (IdScheme->IdC (Variable-name variable))) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">variable-&gt;C</span> (<span class="var">variable</span> <span class="class">Variable</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> (<span class="func">IdScheme-&gt;IdC</span> (<span class="func">Variable-name</span> <span class="var">variable</span>))) )
 
-<p>(define-method (variable->C (variable Renamed-Local-Variable) out)
-  (format out -A_ A"
-          (IdScheme->IdC (Variable-name variable))
-          (Renamed-Local-Variable-index variable) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">variable-&gt;C</span> (<span class="var">variable</span> <span class="class">Renamed-Local-Variable</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~A</span>_<span class="pp">~A</span>"</span>
+          (<span class="func">IdScheme-&gt;IdC</span> (<span class="func">Variable-name</span> <span class="var">variable</span>))
+          (<span class="func">Renamed-Local-Variable-index</span> <span class="var">variable</span>) ) )
 
-<p>(define-method (variable->C (variable Quotation-Variable) out)
-  (format out "thing A" (Quotation-Variable-name variable)) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">variable-&gt;C</span> (<span class="var">variable</span> <span class="class">Quotation-Variable</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"thing<span class="pp">~A</span>"</span> (<span class="func">Quotation-Variable-name</span> <span class="var">variable</span>)) )</pre>
 
 <p>Отдельно обрабатываются обращения к глобальным переменным, не являющимся
 предопределёнными. Фактически, это свободные переменные всей программы. Как вы
 помните, в данной реализации подобные переменные создаются автоматически, при их
 первом упоминании. К сожалению, компилятор никак не анализирует значения этих
 переменных, поэтому проверки на инициализированность должны проводиться во время
-исполнения программы. За этим проследит макрос <code><span class="func">SCM\_CheckedGlobal</span></code>.
-\seeEx[cc/ex:global-check]</p>
+исполнения программы. За этим проследит макрос
+<code class="c"><span class="macro">SCM_CheckedGlobal</span></code>.
+<span class="see">[см. упр. <a href="#cc/ex:global-check">10.2</a>]</span></p>
 
-<pre>(define-method (reference->C (v Global-Variable) out)
-  (format out "SCM_CheckedGlobal")
-  (between-parentheses out
-    (variable->C v out) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">reference-&gt;C</span> (<span class="var">v</span> <span class="class">Global-Variable</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_CheckedGlobal"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">variable-&gt;C</span> <span class="var">v</span> <span class="var">out</span>) ) )</pre>
 
 <p>Кроме того, ещё остаются обычные свободные переменные. Для них тоже припасён
 специальный макрос.</p>
 
-
 <!--\indexCS*{c}{->C}{<code><span class="func">Free-Reference</span></code>}-->
-<pre>(define-method (->C (e Free-Reference) out)
-  (format out "SCM_Free")
-  (between-parentheses out
-    (variable->C (Free-Reference-variable e) out) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Free-Reference</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_Free"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">variable-&gt;C</span> (<span class="func">Free-Reference-variable</span> <span class="var">e</span>) <span class="var">out</span>) ) )</pre>
+
 
 <h4 id="cc/gen/exprs/sssect:assignments">Присваивания</h4>
 
@@ -1243,66 +1245,64 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 переменных прямо переводится в присваивание соответствующей глобальной
 переменной языка Си.</p>
 
-
 <!--\indexCS*{c}{->C}{<code><span class="func">Global-Assignment</span></code>}-->
-<pre>(define-method (->C (e Global-Assignment) out)
-  (between-parentheses out
-    (variable->C (Global-Assignment-variable e) out)
-    (format out " = ")
-    (->C (Global-Assignment-form e) out) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Global-Assignment</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">variable-&gt;C</span> (<span class="func">Global-Assignment-variable</span> <span class="var">e</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">" = "</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Global-Assignment-form</span> <span class="var">e</span>) <span class="var">out</span>) ) )</pre>
+
 
 <h4 id="cc/gen/exprs/sssect:boxes">Коробки</h4>
 
 <p>Что касается коробок, то над ними возможны всего три операции. Макрос
-<code><span class="func">SCM\_Content</span></code> позволяет смотреть или изменять содержимое коробок, а
-библиотечная функция <code><span class="func">SCM\_allocate\_box</span></code> берёт на себя их создание.</p>
-
+<code class="c"><span class="macro">SCM_Content</span></code> позволяет смотреть или изменять содержимое коробок, а
+библиотечная функция <code class="c"><span class="func">SCM_allocate_box</span></code> берёт на себя их создание.</p>
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Read</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Write</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Box-Creation</span></code>}-->
-<pre>(define-method (->C (e Box-Read) out)
-  (format out "SCM_Content")
-  (between-parentheses out
-    (->C (Box-Read-reference e) out) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Box-Read</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_Content"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">-&gt;C</span> (<span class="func">Box-Read-reference</span> <span class="var">e</span>) <span class="var">out</span>) ) )
 
-<p>(define-method (->C (e Box-Write) out)
-  (between-parentheses out
-    (format out "SCM_Content")
-    (between-parentheses out
-      (->C (Box-Write-reference e) out) )
-    (format out " = ")
-    (->C (Box-Write-form e) out) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Box-Write</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_Content"</span>)
+    (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+      (<span class="func">-&gt;C</span> (<span class="func">Box-Write-reference</span> <span class="var">e</span>) <span class="var">out</span>) )
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">" = "</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Box-Write-form</span> <span class="var">e</span>) <span class="var">out</span>) ) )
 
-<p>(define-method (->C (e Box-Creation) out)
-  (variable->C (Box-Creation-variable e) out)
-  (format out " = SCM_allocate_box")
-  (between-parentheses out
-    (variable->C (Box-Creation-variable ) out) ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Box-Creation</span>) <span class="var">out</span>)
+  (<span class="func">variable-&gt;C</span> (<span class="func">Box-Creation-variable</span> <span class="var">e</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">" = SCM_allocate_box"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">variable-&gt;C</span> (<span class="func">Box-Creation-variable</span> ) <span class="var">out</span>) ) )</pre>
+
 
 <h4 id="cc/gen/exprs/sssect:alternatives">Ветвления</h4>
 
 <p>К счастью, в Си есть тернарный оператор, позволяющий записывать ветвления
-выражениями вида <code>($\pi_0$ ? $\pi_1$ : $\pi_2$)</code>. Так как в Scheme любое
-значение, не тождественное <code><span class="func">\#f</span></code>, считается истиной, мы должны это явно
+выражениями вида <code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> ? <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> : <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span>)</code>. Так как в Scheme любое
+значение, не тождественное <code><span class="hash">#f</span></code>, считается истиной, мы должны это явно
 проверять. И, конечно, не забываем о скобках!</p>
-
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Alternative</span></code>}-->
 <!--\indexC{boolean->C}-->
-<pre>(define-method (->C (e Alternative) out)
-  (between-parentheses out
-    (boolean->C (Alternative-condition e) out)
-    (format out -%? ")
-    (->C (Alternative-consequent e) out)
-    (format out -%: ")
-    (->C (Alternative-alternant e) out) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Alternative</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">boolean-&gt;C</span> (<span class="func">Alternative-condition</span> <span class="var">e</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>? "</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Alternative-consequent</span> <span class="var">e</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>: "</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Alternative-alternant</span> <span class="var">e</span>) <span class="var">out</span>) ) )
 
-<p>(define-generic (boolean->C (e) out)
-  (between-parentheses out
-    (->C e out)
-    (format out " != SCM_false") ) )</pre>
-
+(<span class="syntax">define-generic</span> (<span class="func">boolean-&gt;C</span> (<span class="var">e</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">-&gt;C</span> <span class="var">e</span> <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">" != SCM_false"</span>) ) )</pre>
 
 <!--\indexR{вывод типов}-->
 <!--\indexR{инлайнинг}-->
@@ -1311,69 +1311,68 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 <!--\indexR{логические значения!в Си}-->
 <p>Внимательный читатель уже заметил, что проверка условия не всегда выполняется
 с максимальной эффективностью. В программах очень часто встречаются выражения
-вида <code>(if (pair? x) ...)</code>. Вызов предиката <code><span class="func">pair?</span></code> здесь честно возвращает
+вида <code>(<span class="special">if</span> (<span class="func">pair?</span> <span class="var">x</span>) ...)</code>. Вызов предиката <code><span class="func">pair?</span></code> здесь честно возвращает
 логические значения Scheme, но в данном случае он мог бы сразу выдать значение,
 удобное для Си. Мелочь, конечно, но копейка рубль бережёт. Одним вариантом
-оптимизации является специализация функции <code><span class="func">boolean->C</span></code> для вызовов
+оптимизации является специализация функции <code><span class="func">boolean-&gt;C</span></code> для вызовов
 предопределённых предикатов. Также можно отождествить логические значения Scheme
-и Си, условившись считать ложью значение <code><span class="func">NULL</span></code>. Наконец, частичный вывод
+и Си, условившись считать ложью значение <code class="c"><span class="macro">NULL</span></code>. Наконец, частичный вывод
 типов выражений позволяет избавиться от этой и прочих излишних проверок и
-преобразований, см. \cite{shi91,ser93,wc94}.</p>
+преобразований, см. <span class="cite">[<a href="z1_bibliography.xhtml#shi91">Shi91</a>,
+<a href="z1_bibliography.xhtml#ser93">Ser93</a>,
+<a href="z1_bibliography.xhtml#wc94">WC94</a>]</span>.</p>
+
 
 <h4 id="cc/gen/exprs/sssect:sequences">Последовательные вычисления</h4>
 
 <p>Для последовательного вычисления подвыражений в Си тоже есть специальная
-конструкция: <code>($\pi_1$, ..., $\pi_n$)</code>.</p>
+конструкция: <code>(<span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span>, ..., <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code>.</p>
 
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Sequence</span></code>}-->
-<pre>(define-method (->C (e Sequence) out)
-  (between-parentheses out
-    (->C (Sequence-first e) out)
-    (format out ", %")
-    (->C (Sequence-last e) out) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Sequence</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">-&gt;C</span> (<span class="func">Sequence-first</span> <span class="var">e</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">",<span class="pp">~%</span>"</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Sequence-last</span> <span class="var">e</span>) <span class="var">out</span>) ) )</pre>
 
-<h3 id="cc/gen/ssect:apply">Компиляция аппликаций</h3>
+
+<h3 id="cc/gen/ssect:apply"><span class="seq">10.8.5.</span> Компиляция аппликаций</h3>
 
 <p>Мы разделили аппликации функций на несколько категорий: нормальные вызовы
 функций, приводимые формы (аппликации, где на месте функции находится
 абстракция) и обращения к предопределённым примитивам. Этим трём категориям
-аппликаций соответствуют узлы синтаксического дерева <code><span class="func">Regular-Application</span></code>,
-<code><span class="func">Fix-Let</span></code> и <code><span class="func">Predefined-Application</span></code>.</p>
+аппликаций соответствуют узлы синтаксического дерева <code><span class="class">Regular-Application</span></code>,
+<code><span class="class">Fix-Let</span></code> и <code><span class="class">Predefined-Application</span></code>.</p>
 
-<p>Нормальные вызовы функций вида <code>($f$ $x_1$ ... $x_n$)</code> преобразуются
-в выражения Си <code>SCM\_invoke($f$, $n$, $x_1$, ...\,, $x_n$)</code>, где $n$ — это
-количество аргументов, переданных функции, а <code><span class="func">SCM\_invoke</span></code> — специальная
+<p>Нормальные вызовы функций вида <code>(<span class="math"><span class="ord var">f</span></span> <span class="math"><span class="ord var">x<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">x<sub><span class="ord var">n</span></sub></span></span>)</code> преобразуются
+в выражения Си <code class="c"><span class="func">SCM_invoke</span>(<span class="math"><span class="ord var">f</span></span>, <span class="math"><span class="ord var">n</span></span>, <span class="math"><span class="ord var">x<sub><span class="ord num">1</span></sub></span></span>, ..., <span class="math"><span class="ord var">x<sub><span class="ord var">n</span></sub></span></span>)</code>, где <span class="math"><span class="ord var">n</span></span> — это
+количество аргументов, переданных функции, а <code class="c"><span class="func">SCM_invoke</span></code> — специальная
 вспомогательная функция. Мы определим несколько макросов, чтобы сделать вызовы
 функций с малым числом аргументов более читабельными:</p>
 
-
 <!--\indexC*{SCM_invoke0}{SCM\_invoke\protect<i>n</i>}-->
-<p>\begin{code:c}
-#define SCM_invoke0(f)          SCM_invoke(f, 0)
-#define SCM_invoke1(f, x)       SCM_invoke(f, 1, x)
-#define SCM_invoke2(f, x, y)    SCM_invoke(f, 2, x, y)
-#define SCM_invoke3(f, x, y, z) SCM_invoke(f, 3, x, y, z)
-\end{code:c}</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_invoke0</span>(<span class="var">f</span>)          <span class="func">SCM_invoke</span>(<span class="var">f</span>, <span class="num">0</span>)
+<span class="pre">#define</span> <span class="macro">SCM_invoke1</span>(<span class="var">f</span>, <span class="var">x</span>)       <span class="func">SCM_invoke</span>(<span class="var">f</span>, <span class="num">1</span>, <span class="var">x</span>)
+<span class="pre">#define</span> <span class="macro">SCM_invoke2</span>(<span class="var">f</span>, <span class="var">x</span>, <span class="var">y</span>)    <span class="func">SCM_invoke</span>(<span class="var">f</span>, <span class="num">2</span>, <span class="var">x</span>, <span class="var">y</span>)
+<span class="pre">#define</span> <span class="macro">SCM_invoke3</span>(<span class="var">f</span>, <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>) <span class="func">SCM_invoke</span>(<span class="var">f</span>, <span class="num">3</span>, <span class="var">x</span>, <span class="var">y</span>, <span class="var">z</span>)</pre>
 
-<p>Вызовы большей арности компилируются напрямую в <code><span class="func">SCM\_invoke</span></code>:</p>
-
+<p>Вызовы большей арности компилируются напрямую в <code class="c"><span class="func">SCM_invoke</span></code>:</p>
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Regular-Application</span></code>}-->
-<pre>(define-method (->C (e Regular-Application) out)
-  (let ((n (number-of (Regular-Application-arguments e))))
-    (cond ((< n 4)
-           (format out "SCM_invoke A" n)
-           (between-parentheses out
-             (->C (Regular-Application-function e) out)
-             (->C (Regular-Application-arguments e) out) ) )
-          (else
-           (format out "SCM_invoke")
-           (between-parentheses out
-             (->C (Regular-Application-function e) out)
-             (format out ",  A" n)
-             (->C (Regular-Application-arguments e) out) ) ) ) ) )</pre>
-
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Regular-Application</span>) <span class="var">out</span>)
+  (<span class="syntax">let</span> ((<span class="var">n</span> (<span class="func">number-of</span> (<span class="func">Regular-Application-arguments</span> <span class="var">e</span>))))
+    (<span class="syntax">cond</span> ((<span class="func">&lt;</span> <span class="var">n</span> <span class="num">4</span>)
+           (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_invoke<span class="pp">~A</span>"</span> <span class="var">n</span>)
+           (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+             (<span class="func">-&gt;C</span> (<span class="func">Regular-Application-function</span> <span class="var">e</span>) <span class="var">out</span>)
+             (<span class="func">-&gt;C</span> (<span class="func">Regular-Application-arguments</span> <span class="var">e</span>) <span class="var">out</span>) ) )
+          (<span class="syntax">else</span>
+           (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_invoke"</span>)
+           (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+             (<span class="func">-&gt;C</span> (<span class="func">Regular-Application-function</span> <span class="var">e</span>) <span class="var">out</span>)
+             (<span class="func">format</span> <span class="var">out</span> <span class="string">", <span class="pp">~A</span>"</span> <span class="var">n</span>)
+             (<span class="func">-&gt;C</span> (<span class="func">Regular-Application-arguments</span> <span class="var">e</span>) <span class="var">out</span>) ) ) ) ) )</pre>
 
 <!--\indexR{стековые фреймы!объединение}-->
 <!--\indexR{фреймы стека!объединение}-->
@@ -1381,216 +1380,205 @@ SCM_DefinePair(thing0_object, thing7, thing1);
 соответствующих их телу. Наконец-то усилия по предварительному анализу кода
 и идентификации временных переменных начинают приносить плоды. Благодаря им
 становится возможным выполнить так называемое <em class="term">объединение фреймов</em> (frame
-coalescing); это известная оптимизация \cite{as94,pj87}, касающаяся временных
+coalescing); это известная оптимизация <span class="cite">[<a href="z1_bibliography.xhtml#as94">AS94</a>, <a href="z1_bibliography.xhtml#pj87">PJ87</a>]</span>, касающаяся временных
 переменных: вместо множества маленьких выделений-освобождений памяти сразу
 взять один большой кусок для целого набора переменных. А если под все временные
 переменные уже выделена память, то связывание их со значениями сводится лишь
 к присваиваниям. В терминах Лиспа данное преобразование приводит к объединению
-локальных <code><span class="func">let</span></code>-форм, переносу их на уровень выше и возможному переименованию
-соответствующих переменных.\footnote*{Конечно, при этом можно применять и более
-агрессивные оптимизации. Например, в приведённом примере переменные <code><span class="func">x1</span></code>
-и <code><span class="func">x2</span></code> невозможно использовать одновременно, так что они могут физически
-совпадать в памяти.}</p>
+локальных <code><span class="syntax">let</span></code>-форм, переносу их на уровень выше и возможному переименованию
+соответствующих переменных.<a class="footref" href="zz_footnotes.xhtml#foot10.4"><sup>4</sup></a></p>
 
-<p>{\def\E{\hbox to 0pt{\kern0.1em$\leadsto$}}
-\begin{code:lisp}
-(begin                   (let (x1 x2)
-  |$e_1$|                       |$e_1$|
-  (let ((x |$\pi_1$|))            (set! x1 |$\pi_1$|)
-    |$\pi_2$| )            |\E|       |$\pi_2[<code><span class="func">x</span></code> \to <code><span class="func">x1</span></code>]$|
-  |$e_2$|                       |$e_2$|
-  (let ((x |$\pi_3$|))            (set! x2 |$\pi_3$|)
-    |$\pi_4$| ) )                 |$\pi_4[<code><span class="func">x</span></code> \to <code><span class="func">x2</span></code>]$| )
-\end{code:lisp}}</p>
-
+<pre>(<span class="special">begin</span>                   (<span class="syntax">let</span> (<span class="var">x1</span> <span class="var">x2</span>)
+  <span class="math"><span class="ord var">e<sub><span class="ord num">1</span></sub></span></span>                       <span class="math"><span class="ord var">e<sub><span class="ord num">1</span></sub></span></span>
+  (<span class="syntax">let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span>))            (<span class="special">set!</span> <span class="var">x1</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span>)
+    <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span> )           <span class="math" style="display: inline-block; width: 0;"><span class="rel">⇝</span> </span>        <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span><span class="open">[</span><span class="normal ord"><code><span class="var">x</span></code></span><span class="rel">→</span><span class="normal ord"><code><span class="var">x1</span></code></span><span class="close">]</span></span>
+  <span class="math"><span class="ord var">e<sub><span class="ord num">2</span></sub></span></span>                       <span class="math"><span class="ord var">e<sub><span class="ord num">2</span></sub></span></span>
+  (<span class="syntax">let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">π<sub><span class="ord num">3</span></sub></span></span>))            (<span class="special">set!</span> <span class="var">x2</span> <span class="math"><span class="ord var">π<sub><span class="ord num">3</span></sub></span></span>)
+    <span class="math"><span class="ord var">π<sub><span class="ord num">4</span></sub></span></span> ) )                 <span class="math"><span class="ord var">π<sub><span class="ord num">4</span></sub></span><span class="open">[</span><span class="normal ord"><code><span class="var">x</span></code></span><span class="rel">→</span><span class="normal ord"><code><span class="var">x2</span></code></span><span class="close">]</span></span> )</pre>
 
 <!--\indexR{продолжения (continuations)}-->
 <!--\indexR{коробки}-->
 <p>В общем случае это преобразование ошибочно: например, если благодаря
-продолжениям $e_1$ вернёт значение во второй раз, а $\pi_2$ захватывает
-значение <code><span class="func">x</span></code>, то новая переменная <code><span class="func">x</span></code>, переименованная в <code><span class="func">x1</span></code>, сохранит
-привязку <code><span class="func">x</span></code> из параллельной ветви стека.
-\seePage[fast/fast/begin/application/par:call/cc] Тем не менее, в данном случае
-всё хорошо, так как клоны <code><span class="func">x1</span></code> всё же будут отличаться: значение <code><span class="func">x1</span></code>
-будет завёрнуто в коробку, а вместо <code><span class="func">set!</span></code> будет <code><span class="func">Box-Write</span></code>; так что хоть
+продолжениям <span class="math"><span class="ord var">e<sub><span class="ord num">1</span></sub></span></span> вернёт значение во второй раз, а <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span> захватывает
+значение <code><span class="var">x</span></code>, то новая переменная <code><span class="var">x</span></code>, переименованная в <code><span class="var">x1</span></code>, сохранит
+привязку <code><span class="var">x</span></code> из параллельной ветви стека.
+<span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/begin/application/par:call/cc">6.1.3</a>]</span> Тем не менее, в данном случае
+всё хорошо, так как клоны <code><span class="var">x1</span></code> всё же будут отличаться: значение <code><span class="var">x1</span></code>
+будет завёрнуто в коробку, а вместо <code><span class="special">set!</span></code> будет <code><span class="func">Box-Write</span></code>; так что хоть
 коробка и останется той же, но привязка для её содержимого будет создана заново.</p>
 
 <p>Остаётся только правильно инициализировать каждую локальную переменную. Так как
 ранее был проведён их анализ и переименование, то конфликтов областей видимости
-не будет. Простая обобщённая функция <code><span class="func">bindings->C</span></code> без проблем справится
+не будет. Простая обобщённая функция <code><span class="func">bindings-&gt;C</span></code> без проблем справится
 с инициализацией.</p>
-
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Fix-Let</span></code>}-->
 <!--\indexC{bindings->C}-->
-<pre>(define-method (->C (e Fix-Let) out)
-  (between-parentheses out
-    (bindings->C (Fix-Let-variables e) (Fix-Let-arguments e) out)
-    (->C (Fix-Let-body e) out) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Fix-Let</span>) <span class="var">out</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">bindings-&gt;C</span> (<span class="func">Fix-Let-variables</span> <span class="var">e</span>) (<span class="func">Fix-Let-arguments</span> <span class="var">e</span>) <span class="var">out</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Fix-Let-body</span> <span class="var">e</span>) <span class="var">out</span>) ) )
 
-<p>(define-generic (bindings->C variables (arguments) out))</p>
+(<span class="syntax">define-generic</span> (<span class="func">bindings-&gt;C</span> <span class="var">variables</span> (<span class="var">arguments</span>) <span class="var">out</span>))
 
-<p>(define-method (bindings->C variables (e Arguments) out)
-  (variable->C (car variables) out)
-  (format out " = ")
-  (->C (Arguments-first e) out)
-  (format out ", %")
-  (bindings->C (cdr variables) (Arguments-others e) out) )</p>
+(<span class="syntax">define-method</span> (<span class="func">bindings-&gt;C</span> <span class="var">variables</span> (<span class="var">e</span> <span class="class">Arguments</span>) <span class="var">out</span>)
+  (<span class="func">variable-&gt;C</span> (<span class="func">car</span> <span class="var">variables</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">" = "</span>)
+  (<span class="func">-&gt;C</span> (<span class="func">Arguments-first</span> <span class="var">e</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">",<span class="pp">~%</span>"</span>)
+  (<span class="func">bindings-&gt;C</span> (<span class="func">cdr</span> <span class="var">variables</span>) (<span class="func">Arguments-others</span> <span class="var">e</span>) <span class="var">out</span>) )
 
-<p>(define-method (bindings->C variables (e No-Argument) out)
-  (format out "") )</pre>
-
+(<span class="syntax">define-method</span> (<span class="func">bindings-&gt;C</span> <span class="var">variables</span> (<span class="var">e</span> <span class="class">No-Argument</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">""</span>) )</pre>
 
 <!--\indexR{встраивание}-->
 <!--\indexR{инлайнинг}-->
 <p>Наконец, остаётся случай аппликации, когда функцией является значение
 предопределённой переменной, — такие вызовы <em>встраиваются</em> напрямую
-в код. Примитивам нет нужды пользоваться <code><span class="func">SCM\_invoke</span></code>. Они будут написаны
+в код. Примитивам нет нужды пользоваться <code class="c"><span class="func">SCM_invoke</span></code>. Они будут написаны
 на Си и включены в состав библиотеки времени исполнения, которая подключается
 к любой скомпилированной программе. Примитивы знают о внутренних структурах
 данных, так что могут обойтись без относительно дорогого (и бесполезного
-в данном случае) вызова <code><span class="func">SCM\_invoke</span></code>.</p>
-
+в данном случае) вызова <code class="c"><span class="func">SCM_invoke</span></code>.</p>
 
 <!--\indexR{функции!примитивы!генератор вызовов}-->
 <!--\indexR{примитивы!генератор вызовов}-->
 <p>Так как точная форма прямого вызова примитива зависит от его реализации, мы
 поступим следующим образом: расширим класс дескрипторов, описывающих
-функции-примитивы, дополнительным полем <code><span class="func">generator</span></code>, служащим для хранения
+функции-примитивы, дополнительным полем <code><span class="var">generator</span></code>, служащим для хранения
 специальных функций-генераторов. Их задачей будет принять интересующую нас
 аппликацию и выдать в порт соответствующий код на Си. Каким образом они его
 получат — это личное дело генераторов, но чтобы облегчить им немного жизнь,
-мы определим обобщённую функцию <code><span class="func">arguments->C</span></code>, рекурсивно применяющую
-<code><span class="func">->C</span></code> к аргументам вызова.</p>
-
+мы определим обобщённую функцию <code><span class="func">arguments-&gt;C</span></code>,
+рекурсивно применяющую <code><span class="func">-&gt;C</span></code> к аргументам вызова.</p>
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Predefined-Application</span></code>}-->
 <!--\indexC{arguments->C}-->
-<pre>(define-generic (arguments->C (e) out))</p>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">arguments-&gt;C</span> (<span class="func">e</span>) <span class="var">out</span>))
 
-<p>(define-method (arguments->C (e No-Argument) out) #t)</p>
+(<span class="syntax">define-method</span> (<span class="func">arguments-&gt;C</span> (<span class="var">e</span> <span class="class">No-Argument</span>) <span class="var">out</span>) <span class="hash">#t</span>)
 
-<p>(define-method (arguments->C (e Arguments) out)
-  (->C (Arguments-first e) out)
-  (->C (Arguments-others e) out) )</p>
+(<span class="syntax">define-method</span> (<span class="func">arguments-&gt;C</span> (<span class="var">e</span> <span class="class">Arguments</span>) <span class="var">out</span>)
+  (<span class="func">-&gt;C</span> (<span class="func">Arguments-first</span> <span class="var">e</span>) <span class="var">out</span>)
+  (<span class="func">-&gt;C</span> (<span class="func">Arguments-others</span> <span class="var">e</span>) <span class="var">out</span>) )
 
-<p>(define-method (->C (e Predefined-Application) out)
-  ((Functional-Description-generator
-    (Predefined-Variable-description
-     (Predefined-Application-variable e) ) ) e out ) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Predefined-Application</span>) <span class="var">out</span>)
+  ((<span class="func">Functional-Description-generator</span>
+    (<span class="func">Predefined-Variable-description</span>
+     (<span class="func">Predefined-Application-variable</span> <span class="var">e</span>) ) ) <span class="var">e</span> <span class="var">out</span> ) )</pre>
 
-<h3 id="cc/gen/ssect:predef-env">Предопределённое окружение</h3>
+
+<h3 id="cc/gen/ssect:predef-env"><span class="seq">10.8.6.</span> Предопределённое окружение</h3>
 
 <p>Если мы собрались пользоваться предопределёнными функциями, то о них вначале
 необходимо рассказать компилятору. Для этого определяется специальный макрос
-<code><span class="func">defprimitive</span></code>:</p>
-
+<code><span class="syntax">defprimitive</span></code>:</p>
 
 <!--\indexC{Functional-Description}-->
 <!--\indexC{defprimitive}-->
-<pre>(define-class Functional-Description Object
-  ( comparator arity generator ) )</p>
+<pre>(<span class="syntax">define-class</span> <span class="class">Functional-Description</span> <span class="class">Object</span>
+  ( <span class="var">comparator</span> <span class="var">arity</span> <span class="var">generator</span> ) )
 
-<p>(define-syntax defprimitive
-  (syntax-rules ()
-    ((defprimitive name Cname arity)
-     (let ((v (make-Predefined-Variable 'name
-               (make-Functional-Description
-                = arity
-                (make-predefined-application-generator 'Cname) ) )))
-       (set! g.init (cons v g.init))
-       'name ) ) ) )</pre>
+(<span class="special">define-syntax</span> <span class="var">defprimitive</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">defprimitive</span> <span class="var">name</span> <span class="var">Cname</span> <span class="var">arity</span>)
+     (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">make-Predefined-Variable</span> '<span class="var">name</span>
+               (<span class="func">make-Functional-Description</span>
+                <span class="var">=</span> <span class="var">arity</span>
+                (<span class="func">make-predefined-application-generator</span> '<span class="var">Cname</span>) ) )))
+       (<span class="special">set!</span> <span class="var">g.init</span> (<span class="func">cons</span> <span class="var">v</span> <span class="var">g.init</span>))
+       '<span class="var">name</span> ) ) ) )</pre>
 
 <p>Итак, компилятору известно имя примитива на Scheme и Си, а также его арность.
 На выходе ожидается вызов функции Си: то есть имя функции, за которым в скобках
 следуют аргументы, разделённые запятыми. Функция
 <code><span class="func">make-predefined-application-generator</span></code> создаёт генераторы подобных вызовов.</p>
 
-
 <!--\indexC{make-predefined-application-generator}-->
-<pre>(define (make-predefined-application-generator Cname)
-  (lambda (e out)
-    (format out -A" Cname)
-    (between-parentheses out
-      (arguments->C (Predefined-Application-arguments e) out) ) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">make-predefined-application-generator</span> <span class="var">Cname</span>)
+  (<span class="special">lambda</span> (<span class="var">e</span> <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~A</span>"</span> <span class="var">Cname</span>)
+    (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+      (<span class="func">arguments-&gt;C</span> (<span class="func">Predefined-Application-arguments</span> <span class="var">e</span>) <span class="var">out</span>) ) ) )</pre>
 
 <p>Приведём несколько примеров для всем знакомых функций:</p>
 
-<pre>(defprimitive cons "SCM_cons" 2)
-(defprimitive car "SCM_car" 1)
-(defprimitive + "SCM_Plus" 2)
-(defprimitive = "SCM_EqnP" 2)</pre>
-
+<pre>(<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="string">"SCM_cons"</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="string">"SCM_car"</span> <span class="num">1</span>)
+(<span class="syntax">defprimitive</span> <span class="var">+</span> <span class="string">"SCM_Plus"</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">=</span> <span class="string">"SCM_EqnP"</span> <span class="num">2</span>)</pre>
 
 <!--\indexR{соглашения именования!макросов и примитивов}-->
 <p>Отсюда видно, что вызов <code><span class="func">cons</span></code> будет компилироваться в вызов функции
-<code><span class="func">SCM\_cons</span></code>, а примитив <code><span class="func">+</span></code> — в макрос <code><span class="func">SCM\_Plus</span></code>.
-\seePage[cc/data/values/par:macros] Макрос можно отличить от функции по
-прописной первой букве имени. Некоторые примитивы из соображений компактности
+<code class="c"><span class="func">SCM_cons</span></code>, а примитив <code><span class="func">+</span></code> — в макрос <code class="c"><span class="macro">SCM_Plus</span></code>.
+<span class="see">[см. раздел <a href="#cc/data/values/par:macros">10.9.1</a>]</span>
+Макрос можно отличить от функции по прописной первой букве имени.
+Некоторые примитивы из соображений компактности
 кода эффективнее реализовывать именно как макросы.</p>
 
-<h3 id="cc/gen/ssect:func">Компиляция функций</h3>
 
+<h3 id="cc/gen/ssect:func"><span class="seq">10.8.7.</span> Компиляция функций</h3>
 
 <!--\indexR{арность}-->
 <!--\indexR{представление!арности}-->
 <p>Выполненные ранее трансформации преобразовали все абстракции в явно создаваемые
-замыкания, которым соответствуют объекты класса <code><span class="func">Closure-Creation</span></code>. В Си за
-создание замыканий будет отвечать библиотечная функция <code><span class="func">SCM\_close</span></code>. Первым
+замыкания, которым соответствуют объекты класса <code><span class="class">Closure-Creation</span></code>. В Си за
+создание замыканий будет отвечать библиотечная функция <code class="c"><span class="func">SCM_close</span></code>. Первым
 аргументом она принимает адрес Си-функции (завёрнутый в макрос
-<code><span class="func">SCM\_CfunctionAddress</span></code>), соответствующий телу абстракции; за адресом следует
+<code class="c"><span class="macro">SCM_CfunctionAddress</span></code>), соответствующий телу абстракции; за адресом следует
 арность создаваемого замыкания, а в конце списка расположены количество
 замыкаемых значений и, собственно, сами значения. Данные значения извлекаются
-из поля <code><span class="func">free</span></code> обрабатываемой абстракции. Количество аргументов функций
+из поля <code><span class="var">free</span></code> обрабатываемой абстракции. Количество аргументов функций
 с фиксированной арностью записывается просто соответствующим числом.
 Но если это функция с переменной арностью, то ей может быть передано любое
-количество аргументов, не меньшее некоторого $i$; этот случай будет
-представляться числом $-i - 1$. К примеру, арность функции <code><span class="func">list</span></code> равна $-1$.</p>
-
+количество аргументов, не меньшее некоторого
+<span class="math"><span class="ord var">i</span></span>; этот случай будет
+представляться числом <span class="math"><span class="ord">−</span><span class="ord var">i</span><span class="binop">−</span><span class="ord num">1</span></span>.
+К примеру, арность функции <code><span class="func">list</span></code> равна
+<span class="math"><span class="ord">−</span><span class="ord num">1</span></span>.</p>
 
 <!--\indexCS*{c}{->C}{<code><span class="func">Closure-Creation</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">No-Free</span></code>}-->
 <!--\indexCS*{c}{->C}{<code><span class="func">Free-Environment</span></code>}-->
 <!--\indexC{generate-arity}-->
-<pre>(define-method (->C (e Closure-Creation) out)
-  (format out "SCM_close")
-  (between-parentheses out
-    (format out "SCM_CfunctionAddress(function_ A),  A,  A"
-            (Closure-Creation-index e)
-            (generate-arity (Closure-Creation-variables e))
-            (number-of (Closure-Creation-free e)) )
-    (->C (Closure-Creation-free e) out) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Closure-Creation</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_close"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_CfunctionAddress(function_<span class="pp">~A</span>), <span class="pp">~A</span>, <span class="pp">~A</span>"</span>
+            (<span class="func">Closure-Creation-index</span> <span class="var">e</span>)
+            (<span class="func">generate-arity</span> (<span class="func">Closure-Creation-variables</span> <span class="var">e</span>))
+            (<span class="func">number-of</span> (<span class="func">Closure-Creation-free</span> <span class="var">e</span>)) )
+    (<span class="func">-&gt;C</span> (<span class="func">Closure-Creation-free</span> <span class="var">e</span>) <span class="var">out</span>) ) )
 
-<p>(define (generate-arity variables)
-  (let count ((variables variables) (arity 0))
-    (if (pair? variables)
-        (if (Local-Variable-dotted? (car variables))
-            (- (+ arity 1))
-            (count (cdr variables) (+ 1 arity)) )
-        arity ) ) )</p>
+(<span class="special">define</span> (<span class="func">generate-arity</span> <span class="var">variables</span>)
+  (<span class="syntax">let</span> <span class="func">count</span> ((<span class="var">variables</span> <span class="var">variables</span>) (<span class="var">arity</span> <span class="num">0</span>))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">variables</span>)
+        (<span class="special">if</span> (<span class="func">Local-Variable-dotted?</span> (<span class="func">car</span> <span class="var">variables</span>))
+            (<span class="func">-</span> (<span class="func">+</span> <span class="var">arity</span> <span class="num">1</span>))
+            (<span class="func">count</span> (<span class="func">cdr</span> <span class="var">variables</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">arity</span>)) )
+        <span class="var">arity</span> ) ) )
 
-<p>(define-method (->C (e No-Free) out)
-  #t )</p>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">No-Free</span>) <span class="var">out</span>)
+  <span class="hash">#t</span> )
 
-<p>(define-method (->C (e Free-Environment) out)
-  (format out ", ")
-  (->C (Free-Environment-first e) out)
-  (->C (Free-Environment-others e) out) )</pre>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;C</span> (<span class="var">e</span> <span class="class">Free-Environment</span>) <span class="var">out</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">", "</span>)
+  (<span class="func">-&gt;C</span> (<span class="func">Free-Environment-first</span> <span class="var">e</span>) <span class="var">out</span>)
+  (<span class="func">-&gt;C</span> (<span class="func">Free-Environment-others</span> <span class="var">e</span>) <span class="var">out</span>) )</pre>
 
 <p>Все абстракции компилируемой программы собираются в соответствующем
-поле объекта <code><span class="func">Flattened-Program</span></code> в виде списка объектов класса
-<code><span class="func">With-Temp-Function-Definition</span></code>. Каждому из них сопоставляется
+поле объекта <code><span class="class">Flattened-Program</span></code> в виде списка объектов класса
+<code><span class="class">With-Temp-Function-Definition</span></code>. Каждому из них сопоставляется
 эквивалентная функция на Си.</p>
 
 
 <!--\indexC{generate-functions}-->
-<pre>(define (generate-functions out definitions)
-  (format out -%/* Functions: */ %")
-  (for-each (lambda (def)
-              (generate-closure-structure out def)
-              (generate-possibly-dotted-definition out def) )
-            (reverse definitions) ) )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">generate-functions</span> <span class="var">out</span> <span class="var">definitions</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>/* Functions: */<span class="pp">~%</span>"</span>)
+  (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">def</span>)
+              (<span class="func">generate-closure-structure</span> <span class="var">out</span> <span class="var">def</span>)
+              (<span class="func">generate-possibly-dotted-definition</span> <span class="var">out</span> <span class="var">def</span>) )
+            (<span class="func">reverse</span> <span class="var">definitions</span>) ) )</pre>
 
 <!--\indexC*{function}{function\_}-->
 <!--\indexR{таблица символов}-->
@@ -1598,109 +1586,104 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
 чтобы скрыть детали реализации. Для каждого замыкания генерируется функция,
 содержащая его тело, а также структура данных, которая будет хранить
 замкнутые переменные. Имена создаваемых сущностей строятся по простому
-принципу: корень <code><span class="func">function\_</span></code> $+$ номерной суффикс, взятый из поля
-<code><span class="func">index</span></code> объекта <code><span class="func">Function-Definition</span></code>.\footnote*{Имена функций вида
-<code><span class="func">function\_$i$</span></code>, очевидно, никак не связаны с именами соответствующих им
-глобальных переменных. Если не пренебрегать таблицей символов, как это сделано
-здесь, то вполне можно выводить более понятные имена.}</p>
+принципу: корень <code class="c"><span class="func">function_</span></code> + номерной суффикс, взятый из поля
+<code><span class="var">index</span></code> объекта <code><span class="class">Function-Definition</span></code><a class="footref" href="zz_footnotes.xhtml#foot10.5"><sup>5</sup></a>.</p>
 
-<p>Внутренняя структура замыканий формируется макросом <code><span class="func">SCM\_DefineClo\-sure</span></code>.
+<p>Внутренняя структура замыканий формируется макросом
+<code class="c"><span class="macro">SCM_DefineClosure</span></code>.
 Первым аргументом он получает номер соответствующей функции, а вторым — имена
 захватываемых замыканием переменных, разделённые точками с запятой.</p>
 
-
 <!--\indexC{generate-closure-structure}-->
-<pre>(define (generate-closure-structure out definition)
-  (format out "SCM_DefineClosure(function_ A, "
-          (Function-Definition-index definition) )
-  (generate-local-temporaries (Function-Definition-free definition)
-                              out )
-  (format out "); %") )</pre>
+<pre>(<span class="special">define</span> (<span class="func">generate-closure-structure</span> <span class="var">out</span> <span class="var">definition</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DefineClosure(function_<span class="pp">~A</span>, "</span>
+          (<span class="func">Function-Definition-index</span> <span class="var">definition</span>) )
+  (<span class="func">generate-local-temporaries</span> (<span class="func">Function-Definition-free</span> <span class="var">definition</span>)
+                              <span class="var">out</span> )
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">");<span class="pp">~%</span>"</span>) )</pre>
 
 <p>Функция <code><span class="func">generate-possibly-dotted-definition</span></code> генерирует определение тела
 замыкания в виде функции Си, учитывая его арность. Прототип этой функции
-формирует макрос <code><span class="func">SCM\_DeclareFunction</span></code>, принимающий её имя как аргумент.
+формирует макрос <code class="c"><span class="macro">SCM_DeclareFunction</span></code>, принимающий её имя как аргумент.
 Локальные переменные функции определяются с помощью макросов
-<code><span class="func">SCM\_DeclareLocalVariable</span></code> и <code><span class="func">SCM\_DeclareLocalDottedVariable</span></code>. Они
+<code class="c"><span class="macro">SCM_DeclareLocalVariable</span></code> и <code class="c"><span class="macro">SCM_DeclareLocalDottedVariable</span></code>. Они
 принимают имя создаваемой переменной, а также её порядковый номер в списке
 переменных функции. Правда, этот номер нужен только для сборки списка,
 связываемого с точечной переменной. С телом функции вообще нет проблем: просто
-применяем к нему <code><span class="func">->C</span></code> и не забываем вернуть вычисленное значение с помощью
-оператора <code><span class="func">return</span></code>.</p>
-
+применяем к нему <code><span class="func">-&gt;C</span></code> и не забываем вернуть вычисленное значение с помощью
+оператора <code class="c"><span class="keyword">return</span></code>.</p>
 
 <!--\indexC{generate-possibly-dotted-definition}-->
-<pre>(define (generate-possibly-dotted-definition out definition)
-  (format out -%SCM_DeclareFunction(function_ A) %{ %"
-          (Function-Definition-index definition) )
-  (let ((vars (Function-Definition-variables definition))
-        (index -1) )
-    (for-each (lambda (v)
-                (set! index (+ 1 index))
-                (cond ((Local-Variable-dotted? v)
-                       (format out "SCM_DeclareLocalDottedVariable(") )
-                      ((Variable? v)
-                       (format out "SCM_DeclareLocalVariable(") ) )
-                (variable->C v out)
-                (format out ",  A); %" index) )
-              vars )
-    (let ((temps (With-Temp-Function-Definition-temporaries
-                  definition )))
-      (when (pair? temps)
-        (generate-local-temporaries temps out)
-        (format out -%") ) )
-    (format out "return ")
-    (->C (Function-Definition-body definition) out)
-    (format out "; %} % %") ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">generate-possibly-dotted-definition</span> <span class="var">out</span> <span class="var">definition</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>SCM_DeclareFunction(function_<span class="pp">~A</span>)<span class="pp">~%</span>{<span class="pp">~%</span>"</span>
+          (<span class="func">Function-Definition-index</span> <span class="var">definition</span>) )
+  (<span class="syntax">let</span> ((<span class="var">vars</span> (<span class="func">Function-Definition-variables</span> <span class="var">definition</span>))
+        (<span class="var">index</span> <span class="var">-1</span>) )
+    (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">v</span>)
+                (<span class="special">set!</span> <span class="var">index</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">index</span>))
+                (<span class="syntax">cond</span> ((<span class="func">Local-Variable-dotted?</span> <span class="var">v</span>)
+                       (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DeclareLocalDottedVariable("</span>) )
+                      ((<span class="func">Variable?</span> <span class="var">v</span>)
+                       (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM_DeclareLocalVariable("</span>) ) )
+                (<span class="func">variable-&gt;C</span> <span class="var">v</span> <span class="var">out</span>)
+                (<span class="func">format</span> <span class="var">out</span> <span class="string">", <span class="pp">~A</span>);<span class="pp">~%</span>"</span> <span class="var">index</span>) )
+              <span class="var">vars</span> )
+    (<span class="syntax">let</span> ((<span class="var">temps</span> (<span class="func">With-Temp-Function-Definition-temporaries</span>
+                  <span class="var">definition</span> )))
+      (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">temps</span>)
+        (<span class="func">generate-local-temporaries</span> <span class="var">temps</span> <span class="var">out</span>)
+        (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>"</span>) ) )
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"return "</span>)
+    (<span class="func">-&gt;C</span> (<span class="func">Function-Definition-body</span> <span class="var">definition</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">";<span class="pp">~%</span>}<span class="pp">~%</span><span class="pp">~%</span>"</span>) ) )</pre>
 
 <p>Список локальных переменных формируется функцией
 <code><span class="func">generate-local-temporaries</span></code>:</p>
 
-
 <!--\indexC{generate-local-temporaries}-->
-<pre>(define (generate-local-temporaries temps out)
-  (when (pair? temps)
-    (format out "SCM ")
-    (variable->C (car temps) out)
-    (format out "; ")
-    (generate-local-temporaries (cdr temps) out) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">generate-local-temporaries</span> <span class="var">temps</span> <span class="var">out</span>)
+  (<span class="syntax">when</span> (<span class="func">pair?</span> <span class="var">temps</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"SCM "</span>)
+    (<span class="func">variable-&gt;C</span> (<span class="func">car</span> <span class="var">temps</span>) <span class="var">out</span>)
+    (<span class="func">format</span> <span class="var">out</span> <span class="string">"; "</span>)
+    (<span class="func">generate-local-temporaries</span> (<span class="func">cdr</span> <span class="var">temps</span>) <span class="var">out</span>) ) )</pre>
 
-<h3 id="cc/gen/ssect:init">Последний штрих</h3>
 
+<h3 id="cc/gen/ssect:init"><span class="seq">10.8.8.</span> Последний штрих</h3>
 
 <!--\indexC{main}-->
 <p>Сейчас наш компилятор способен переварить любую программу на Scheme, но для
-получения полноценной программы на Си ей не хватает функции <code><span class="func">main</span></code>. Именно
+получения полноценной программы на Си ей не хватает функции
+<code class="c"><span class="func">main</span></code>. Именно
 этой функции соответствует то замыкание, в которое была обернута вся программа,
-когда мы избавлялись от вложенных <code><span class="func">lambda</span></code>-форм.
-\seePage[cc/collecting/par:main] Единственным спорным вопросом здесь является включение в главную функцию вызова
-<code><span class="func">SCM\_print</span></code>, выводящего на экран результат работы программы. В общем случае
-это не нужно — есть множество полезных и при этом молчаливых программ
-(например, <code><span class="func">gcc</span></code>). Но для нас более удобным будет сразу же видеть достижения
-наших небольших программок.</p>
-
+когда мы избавлялись от вложенных <code><span class="special">lambda</span></code>-форм.
+<span class="see">[см. раздел <a href="#cc/collecting/par:main">10.5</a>]</span>
+Единственным спорным вопросом здесь является включение в главную функцию вызова
+<code class="c"><span class="func">SCM_print</span></code>, выводящего на экран результат
+работы программы. В общем случае это не нужно — есть множество полезных и при этом
+молчаливых программ (например, <code>gcc</code>). Но для нас более удобным будет
+сразу же видеть достижения наших небольших программок.</p>
 
 <!--\indexC{generate-main}-->
-<pre>(define (generate-main out form)
-  (format out -%/* Expression: */ %")
-  (format out "int main(void) %{ %")
-  (format out "    SCM_print")
-  (between-parentheses out
-    (->C form out) )
-  (format out "; %    return 0; %} %") )</pre>
-
+<pre>(<span class="special">define</span> (<span class="func">generate-main</span> <span class="var">out</span> <span class="var">form</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"<span class="pp">~%</span>/* Expression: */<span class="pp">~%</span>"</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"int main(void)<span class="pp">~%</span>{<span class="pp">~%</span>"</span>)
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">"    SCM_print"</span>)
+  (<span class="syntax">between-parentheses</span> <span class="var">out</span>
+    (<span class="func">-&gt;C</span> <span class="var">form</span> <span class="var">out</span>) )
+  (<span class="func">format</span> <span class="var">out</span> <span class="string">";<span class="pp">~%</span>    return 0;<span class="pp">~%</span>}<span class="pp">~%</span>"</span>) )</pre>
 
 <!--\indexR{компиляция!в Си}-->
 <p>Конечно, о представлении данных ещё не было сказано ничего конкретного, равно
 как и о реализации библиотеки времени исполнения, но у нас уже есть полностью
 рабочий компилятор вместе с огромным желанием испытать его в деле. Натравим его
 на подопытный пример, приведённый в начале главы.
-\seePage[cc/sect:objectification] И-и-и\textdots\ вот что получается на
-выходе (отступы расставлены вручную для читабельности):</p>
+<span class="see">[см. раздел <a href="#cc/sect:objectification">10.1</a>]</span>
+И-и-и… вот что получается на выходе (отступы расставлены вручную для читабельности):</p>
 
-<p>\begin{code:c-frame}[numbers=left, title={\snippet{o/chap10ex.c}},
-    label=cc/gen/init/src:result]
-/* Compiler to C $Revision: 4.1$
+<div class="snippet" id="cc/gen/init/src:result]">
+  <span class="title">o/chap10ex.c</span>
+<pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
 (BEGIN
   (SET! INDEX 1)
   ((LAMBDA
@@ -1709,151 +1692,138 @@ coalescing); это известная оптимизация \cite{as94,pj87}, 
      (IF CNTER (CNTER TMP) INDEX))
     (LAMBDA (F) (SET! INDEX (+ 1 INDEX)) (F INDEX))
     'FOO))
-*/</p>
+*/</span>
 
-<p>#include "scheme.h"</p>
+<span class="pre">#include</span> <span class="string">"scheme.h"</span>
 
-<p>/* Global environment: */
-SCM_DefineGlobalVariable(INDEX, "INDEX");</p>
+<span class="comment">/* Global environment: */</span>
+<span class="macro">SCM_DefineGlobalVariable</span>(<span class="var">INDEX</span>, <span class="string">"INDEX"</span>);
 
-<p>/* Quotations: */
-#define thing3 SCM_nil                      /* () */
-SCM_DefineString(thing4_object, "FOO");
-#define thing4 SCM_Wrap(&thing4_object)
-SCM_DefineSymbol(thing2_object, thing4);    /* FOO */
-#define thing2 SCM_Wrap(&thing2_object)
-#define thing1 SCM_Int2Fixnum(1)
-#define thing0 thing1                       /* 1 */</p>
+<span class="comment">/* Quotations: */</span>
+<span class="pre">#define</span> <span class="macro">thing3</span> <span class="macro">SCM_nil</span>                      <span class="comment">/* () */</span>
+<span class="macro">SCM_DefineString</span>(<span class="var">thing4_object</span>, <span class="string">"FOO"</span>);
+<span class="pre">#define</span> <span class="macro">thing4</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing4_object</span>)
+<span class="macro">SCM_DefineSymbol</span>(<span class="var">thing2_object</span>, <span class="var">thing4</span>);    <span class="comment">/* FOO */</span>
+<span class="pre">#define</span> <span class="macro">thing2</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing2_object</span>)
+<span class="pre">#define</span> <span class="macro">thing1</span> <span class="macro">SCM_Int2Fixnum</span>(<span class="num">1</span>)
+<span class="pre">#define</span> <span class="macro">thing0</span> <span class="macro">thing1</span>                       <span class="comment">/* 1 */</span>
 
-<p>/* Functions: */
-SCM_DefineClosure(function_0, );</p>
+<span class="comment">/* Functions: */</span>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_0</span>, );
 
-<p>SCM_DeclareFunction(function_0)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_0</span>)
 {
-    SCM_DeclareLocalVariable(F, 0);
-    return ((INDEX = SCM_Plus(thing1,
-                              SCM_CheckedGlobal(INDEX))),
-            SCM_invoke1(F,
-                        SCM_CheckedGlobal(INDEX)));
-}</p>
-
-<p>SCM_DefineClosure(function_1, SCM I; );</p>
-
-<p>SCM_DeclareFunction(function_1)
-{
-    SCM_DeclareLocalDottedVariable(X, 0);
-    return SCM_cons(SCM_Free(I),
-                    X);
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">F</span>, <span class="num">0</span>);
+    <span class="keyword">return</span> ((<span class="var">INDEX</span> = <span class="macro">SCM_Plus</span>(<span class="macro">thing1</span>,
+                              <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>))),
+            <span class="macro">SCM_invoke1</span>(<span class="var">F</span>,
+                        <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>)));
 }
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-SCM_DefineClosure(function_2, );
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-SCM_DeclareFunction(function_2)
-{
-    SCM_DeclareLocalVariable(I, 0);
-    return SCM_close(SCM_CfunctionAddress(function_1), -1, 1, I);
-}
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-SCM_DefineClosure(function_3, );
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-SCM_DeclareFunction(function_3)
-{
-    SCM TMP_2; SCM CNTER_1;
-    return ((INDEX = thing0),
-            (CNTER_1 = SCM_close(SCM_CfunctionAddress(function_0), 1, 0),
-             TMP_2 = SCM_cons(thing2,
-                              thing3),
-             (TMP_2 = SCM_allocate_box(TMP_2),
-              ((SCM_Content(TMP_2) =
-               SCM_invoke1(CNTER_1, SCM_close(SCM_CfunctionAddress
-                                              (function_2), 1, 0))),
-               ((CNTER_1 != SCM_false)
-                ? SCM_invoke1(CNTER_1,
-                              SCM_Content(TMP_2))
-                : SCM_CheckedGlobal(INDEX))))));
-}
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-/* Expression: */
-int main(void)
-{
-    SCM_print(SCM_invoke0(SCM_close(SCM_CfunctionAddress(function_3),
-                                    0, 0)));
-    return 0;
-}
-`\ForLayout{display}{\vskip-0.166\baselineskip}`
-/* End of generated code */
-\end{code:c-frame}</p>
 
-<p>Также стоит взглянуть функции <code><span class="func">function\_1</span></code> и <code><span class="func">function\_2</span></code> в раскрытом
-виде, без макросов (кроме <code><span class="func">va\_list</span></code>). Остальные выражения раскрываются
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_1</span>, <span class="type">SCM</span> <span class="var">I</span>; );
+
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_1</span>)
+{
+    <span class="macro">SCM_DeclareLocalDottedVariable</span>(<span class="var">X</span>, <span class="num">0</span>);
+    <span class="keyword">return</span> <span class="func">SCM_cons</span>(<span class="macro">SCM_Free</span>(<span class="var">I</span>),
+                    <span class="var">X</span>);
+}
+
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_2</span>, );
+
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_2</span>)
+{
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">I</span>, <span class="num">0</span>);
+    <span class="keyword">return</span> <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_1</span>), <span class="num">-1</span>, <span class="num">1</span>, <span class="var">I</span>);
+}
+
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_3</span>, );
+
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_3</span>)
+{
+    <span class="type">SCM</span> <span class="var">TMP_2</span>; <span class="type">SCM</span> <span class="var">CNTER_1</span>;
+    <span class="keyword">return</span> ((<span class="var">INDEX</span> = <span class="macro">thing0</span>),
+            (<span class="var">CNTER_1</span> = <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_0</span>), <span class="num">1</span>, <span class="num">0</span>),
+             <span class="var">TMP_2</span> = <span class="func">SCM_cons</span>(<span class="macro">thing2</span>,
+                              <span class="macro">thing3</span>),
+             (<span class="var">TMP_2</span> = <span class="func">SCM_allocate_box</span>(<span class="var">TMP_2</span>),
+              ((<span class="macro">SCM_Content</span>(<span class="var">TMP_2</span>) =
+               <span class="macro">SCM_invoke1</span>(<span class="var">CNTER_1</span>, <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>
+                                              (<span class="func">function_2</span>), <span class="num">1</span>, <span class="num">0</span>))),
+               ((<span class="var">CNTER_1</span> != <span class="macro">SCM_false</span>)
+                ? <span class="macro">SCM_invoke1</span>(<span class="var">CNTER_1</span>,
+                              <span class="macro">SCM_Content</span>(<span class="var">TMP_2</span>))
+                : <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>))))));
+}
+
+<span class="comment">/* Expression: */</span>
+<span class="type">int</span> <span class="func">main</span>(<span class="type">void</span>)
+{
+    <span class="func">SCM_print</span>(<span class="macro">SCM_invoke0</span>(<span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_3</span>),
+                                    <span class="num">0</span>, <span class="num">0</span>)));
+    <span class="keyword">return</span> <span class="num">0</span>;
+}
+
+<span class="comment">/* End of generated code */</span></pre></div>
+
+<p>Также стоит взглянуть на функции <code class="c"><span class="func">function_1</span></code> и <code class="c"><span class="func">function_2</span></code> в раскрытом
+виде, без макросов (кроме <code class="c"><span class="macro">va_arg</span></code>). Остальные выражения раскрываются
 аналогично.</p>
 
-<p>\begin{code:c}
-struct function_1 {
-    SCM     (*behavior)(void);
-    long    arity;
-    SCM     I;
-};</p>
+<pre class="c"><span class="keyword">struct</span> <span class="type">function_1</span> {
+    <span class="type">SCM</span>     (*<span class="var">behavior</span>)(<span class="type">void</span>);
+    <span class="type">long</span>    <span class="var">arity</span>;
+    <span class="type">SCM</span>     <span class="var">I</span>;
+};
 
-<p>SCM function_1(struct function_1 *self_,
-               unsigned long size_,
-               va_list arguments_)
+<span class="type">SCM</span> <span class="func">function_1</span>(<span class="keyword">struct</span> <span class="type">function_1</span> *<span class="var">self_</span>,
+               <span class="type">unsigned</span> <span class="type">long</span> <span class="var">size_</span>,
+               <span class="type">va_list</span> <span class="var">arguments_</span>)
 {
-    SCM X = SCM_list(size_ - 0, arguments_);
-    return SCM_cons(((self_)->I), X);
-}</p>
-
-<p>struct function_2 {
-    SCM     (*behavior)(void);
-    long    arity;
-};</p>
-
-<p>SCM function_2(struct function_2 *self_,
-               unsigned long size_,
-               va_list arguments_)
-{
-    SCM I = va_arg(arguments_, SCM);
-    return SCM_close(((SCM(*)(void)) function_1), -1, 1, 1);
+    <span class="type">SCM</span> <span class="var">X</span> = <span class="func">SCM_list</span>(<span class="var">size_</span> - <span class="num">0</span>, <span class="var">arguments_</span>);
+    <span class="keyword">return</span> <span class="func">SCM_cons</span>(((<span class="var">self_</span>)-><span class="var">I</span>), <span class="var">X</span>);
 }
-\end{code:c}</p>
+
+<span class="keyword">struct</span> <span class="type">function_2</span> {
+    <span class="type">SCM</span>     (*<span class="var">behavior</span>)(<span class="type">void</span>);
+    <span class="type">long</span>    <span class="var">arity</span>;
+};
+
+<span class="type">SCM</span> <span class="func">function_2</span>(<span class="keyword">struct</span> <span class="type">function_2</span> *<span class="var">self_</span>,
+               <span class="type">unsigned</span> <span class="type">long</span> <span class="var">size_</span>,
+               <span class="type">va_list</span> <span class="var">arguments_</span>)
+{
+    <span class="type">SCM</span> <span class="var">I</span> = <span class="macro">va_arg</span>(<span class="var">arguments_</span>, <span class="type">SCM</span>);
+    <span class="keyword">return</span> <span class="func">SCM_close</span>(((<span class="type">SCM</span>(*)(<span class="type">void</span>)) <span class="func">function_1</span>), <span class="num">-1</span>, <span class="num">1</span>, <span class="var">I</span>);
+}</pre>
 
 <p>Если откомпилировать получившуюся программу любым компилятором, поддерживающим
-стандарт C90 (например, <code><span class="func">gcc</span></code>), подключив к ней необходимые библиотеки,
+стандарт C90 (например, <code>gcc</code>), подключив к ней необходимые библиотеки,
 о которых мы упоминали, то получится (весьма небольшой) исполнимый файл,
-который (весьма быстро\footnote{Большая часть потраченного времени уходит на
-загрузку; собственно исполнение занимает пренебрежимо малую его часть. Если
-данные вычисления повторить 10\,000 раз, то время выполнения программы
-увеличится всего до одной секунды.}) выдаёт ожидаемый результат.%
-\footnote*{Замеры производились на Sony News 3200 с процессором MIPS R3000
-на борту.}</p>
+который (весьма быстро<a class="footref" href="zz_footnotes.xhtml#foot10.6"><sup>6</sup></a>) выдаёт ожидаемый результат.<a class="footref" href="zz_footnotes.xhtml#foot10.7"><sup>7</sup></a></p>
 
-<p>\begin{shell}
-% gcc -ansi -pedantic chap10ex.c scheme.o schemelib.o
-% time a.out
+<pre class="shell"><span class="prompt">%</span> <span class="cmd">gcc</span> <span class="opt">-ansi</span> <span class="opt">-pedantic</span> <span class="arg">chap10ex.c</span> <span class="arg">scheme.o</span> <span class="arg">schemelib.o</span>
+<span class="prompt">%</span> <span class="cmd">time</span> <span class="arg">a.out</span>
 (2 3)
 0.010u 0.000s 0:00.00 0.0% 3+5k 0+0io 0pf+0w
-% size a.out
+<span class="prompt">%</span> <span class="cmd">size</span> <span class="arg">a.out</span>
 text    data    bss     dec     hex
-28762   4096    32      32800   8020
-\end{shell}</p>
+28762   4096    32      32800   8020</pre>
 
-<p>\ForLayout{display}{\smallskip}</p>
 
-<h2 id="cc/sect:data">Представление данных</h2>
-
+<h2 id="cc/sect:data"><span class="seq">10.9.</span> Представление данных</h2>
 
 <!--\indexC*{scheme.h}{"scheme.h"}-->
 <!--\indexC{malloc}-->
 <!--\indexR{сборка мусора}-->
 <p>В этом разделе мы займёмся разбором макросов, описываемых в файле
-<code><span class="func">"scheme.h"</span></code>. Нет нужды повторять, что целью данного <em>упражнения</em>
+<code>"scheme.h"</code>. Нет нужды повторять, что целью данного <em>упражнения</em>
 является ознакомление, объяснение и демонстрация разнообразных приёмов, а
 не создание самого быстрого и эффективного в мире компилятора. Поэтому мы
 не будем обременять себя проблемами управления памятью; все выделения памяти
-выполняются простыми вызовами <code><span class="func">malloc</span></code>, так что при желании будет весьма
+выполняются простыми вызовами <code class="c"><span class="func">malloc</span></code>, так что при желании будет весьма
 просто подключить к программам сторонний консервативный сборщик мусора,
-например, известный Boehm GC <span class="cite">[<a href="z1_bibliography.xhtml#bw88">bw88</a>]</span>.</p>
-
+например, известный Boehm GC <span class="cite">[<a href="z1_bibliography.xhtml#bw88">BW88</a>]</span>.</p>
 
 <!--\indexR{динамическая типизация}-->
 <!--\indexR{выравнивание}-->
@@ -1878,27 +1848,20 @@ text    data    bss     dec     hex
 не записать его вместо адреса? Мы так и поступим с целыми числами, сделав работу
 с ними более эффективной, но отдав за это один значащий бит, что несколько
 уменьшит диапазон непосредственно представимых значений. Конечно, есть и другие
-варианты, неплохую их подборку можно найти в <span class="cite">[<a href="z1_bibliography.xhtml#gud93">gud93</a>]</span>.</p>
-
+варианты, неплохую их подборку можно найти в <span class="cite">[<a href="z1_bibliography.xhtml#gud93">Gud93</a>]</span>.</p>
 
 <!--\indexR{представление!объектов Scheme на Си}-->
-<p>Возвращаемся к насущному; взгляните на рисунок \ref{cc/data/pic:tagptr}.
+<p>Возвращаемся к насущному; взгляните на рисунок <a href="#cc/data/pic:tagptr">10.5</a>.
 Значения Scheme представляются такими значениями Си, что если их младший бит
 равен единице, то остальные биты считаются представлением некоторого целого
 числа. Например, на 32-битных машинах получаются 31-битные числа. Если же
 младший бит нулевой, то это адрес первого поля соответствующего значения Scheme.
-Тип этого значения расположен <em>перед</em>\footnote{Пустой указатель в Си
-(<code><span class="func">NULL</span></code>) чаще всего численно равен нулю. Естественно, он не является
-допустимым значением Scheme, так как нелегко будет отыскать в памяти
-адрес $-1$.} его полями, как у <span class="cite">[<a href="z1_bibliography.xhtml#dps94a">dps94a</a>]</span>. Сами значения представляются
+Тип этого значения расположен <em>перед</em><a class="footref" href="zz_footnotes.xhtml#foot10.8"><sup>8</sup></a> его полями, как у <span class="cite">[<a href="z1_bibliography.xhtml#dps94a">DPS94a</a>]</span>. Сами значения представляются
 обычными структурами данных Си. Их тип — как вы уже, наверное, догадались
-— называется <code><span class="func">SCM</span></code>.</p>
-
+— называется <code class="c"><span class="type">SCM</span></code>.</p>
 
 <!--\indexC{SCM}-->
-<p>\begin{code:c}
-typedef union SCM_object *SCM;
-\end{code:c}</p>
+<pre class="c"><span class="keyword">typedef</span> <span class="keyword">union</span> <span class="type">SCM_object</span> *<span class="type">SCM</span>;</pre>
 
 <p>\begin{figure}\centering
 \input{figures/fig10.5}
@@ -1906,186 +1869,165 @@ typedef union SCM_object *SCM;
 \label{cc/data/pic:tagptr}
 \end{figure}</p>
 
-
 <!--\indexC*{SCM_FixnumP}{SCM\_FixnumP}-->
 <!--\indexC*{SCM_Fixnum2Int}{SCM\_Fixnum2Int}-->
 <!--\indexC*{SCM_Int2Fixnum}{SCM\_Int2Fixnum}-->
-<p>Макрос <code><span class="func">SCM\_FixnumP</span></code> позволяет отличить целые числа от указателей.
-Приведением типов занимаются макросы <code><span class="func">SCM\_Fixnum2Int</span></code> и
-<code><span class="func">SCM\_Int2Fixnum</span></code>. Например, числу 37 в Scheme соответствует число 75 в Си.</p>
+<p>Макрос <code class="c"><span class="macro">SCM_FixnumP</span></code> позволяет отличить целые числа от указателей.
+Приведением типов занимаются макросы <code class="c"><span class="macro">SCM_Fixnum2Int</span></code> и
+<code class="c"><span class="macro">SCM_Int2Fixnum</span></code>. Например, числу 37 в Scheme соответствует число 75 в Си.</p>
 
-<p>\begin{code:c}
-#define SCM_FixnumP(x)    ((unsigned long)(x) & 1UL)
-#define SCM_Fixnum2Int(x) ((long)(x) » 1)
-#define SCM_Int2Fixnum(i) ((SCM)(((i) « 1) | 1UL))
-\end{code:c}</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_FixnumP</span>(<span class="var">x</span>)    ((<span class="type">unsigned</span> <span class="type">long</span>)(<span class="var">x</span>) &amp; <span class="num">1UL</span>)
+<span class="pre">#define</span> <span class="macro">SCM_Fixnum2Int</span>(<span class="var">x</span>) ((<span class="type">long</span>)(<span class="var">x</span>) &gt;&gt; <span class="num">1</span>)
+<span class="pre">#define</span> <span class="macro">SCM_Int2Fixnum</span>(<span class="var">i</span>) ((<span class="type">SCM</span>)(((<span class="var">i</span>) &lt;&lt; <span class="num">1</span>) | <span class="num">1UL</span>))</pre>
 
-<p>Если значение <code><span class="func">SCM</span></code> не является числом, то это указатель на объект типа
-<code><span class="func">SCM\_object</span></code>. Данное объединение все типы данных, поддерживаемые языком.
+<p>Если значение <code class="c"><span class="type">SCM</span></code> не является числом, то это указатель на объект типа
+<code class="c"><span class="type">SCM_object</span></code>. Данное объединение все типы данных, поддерживаемые языком.
 Некоторых типов там нет, в частности: чисел с плавающей запятой, векторов,
-портов. Но самое важное в Scheme — точечные пары,\footnote*{Как вы помните,
-<code><span class="func">cdr</span></code> лучше располагать перед <code><span class="func">car</span></code>, потому что пары — это всё же
-основной элемент связных списков, а <code><span class="func">cdr</span></code> при обходе списка просматривается
-чаще, как утверждается в <span class="cite">[<a href="z1_bibliography.xhtml#cla79">cla79</a>]</span>.} замыкания и продолжения — мы
+портов. Но самое важное в Scheme — точечные пары<a class="footref" href="zz_footnotes.xhtml#foot10.9"><sup>9</sup></a>, замыкания и продолжения — мы
 обязательно реализуем.</p>
 
-
 <!--\indexC*{SCM_object}{SCM\_object}-->
-<p>\begin{code:c}
-union SCM_object {
-    struct SCM_pair {
-        SCM cdr;
-        SCM car;
-    } pair;
+<pre class="c"><span class="keyword">union</span> <span class="type">SCM_object</span> {
+    <span class="keyword">struct</span> <span class="type">SCM_pair</span> {
+        <span class="type">SCM</span> <span class="var">cdr</span>;
+        <span class="type">SCM</span> <span class="var">car</span>;
+    } <span class="var">pair</span>;
 
-    struct SCM_string {
-        char Cstring[8];
-    } string;
+    <span class="keyword">struct</span> <span class="type">SCM_string</span> {
+        <span class="type">char</span> <span class="var">Cstring</span>[<span class="num">8</span>];
+    } <span class="var">string</span>;
 
-    struct SCM_symbol {
-        SCM pname;
-    } symbol;</p>
+    <span class="keyword">struct</span> <span class="type">SCM_symbol</span> {
+        <span class="type">SCM</span> <span class="var">pname</span>;
+    } <span class="var">symbol</span>;
 
-<p>    struct SCM_box {
-        SCM content;
-    } box;</p>
+    <span class="keyword">struct</span> <span class="type">SCM_box</span> {
+        <span class="type">SCM</span> <span class="var">content</span>;
+    } <span class="var">box</span>;
 
-<p>    struct SCM_subr {
-        SCM (*behavior)(void);
-        long arity;
-    } subr;</p>
+    <span class="keyword">struct</span> <span class="type">SCM_subr</span> {
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>);
+        <span class="type">long</span> <span class="var">arity</span>;
+    } <span class="var">subr</span>;
 
-<p>    struct SCM_closure {
-        SCM (*behavior)(void);
-        long arity;
-        SCM environment[1];
-    } closure;</p>
+    <span class="keyword">struct</span> <span class="type">SCM_closure</span> {
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>);
+        <span class="type">long</span> <span class="var">arity</span>;
+        <span class="type">SCM</span> <span class="var">environment</span>[<span class="num">1</span>];
+    } <span class="var">closure</span>;
 
-<p>    struct SCM_escape {
-        struct SCM_jmp_buf *stack_address;
-    } escape;
-};
-\end{code:c}</p>
+    <span class="keyword">struct</span> <span class="type">SCM_escape</span> {
+        <span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> *<span class="var">stack_address</span>;
+    } <span class="var">escape</span>;
+};</pre>
 
-<p>Полноценные значения Scheme, представляемые <code><span class="func">SCM\_object</span></code>, должны содержать
+<p>Полноценные значения Scheme, представляемые <code class="c"><span class="type">SCM_object</span></code>, должны содержать
 внутри себя собственный тип. Мы будем его хранить весьма специфичным образом.
-Собственно метка типа представляется перечислением <code><span class="func">SCM\_tag</span></code>. Числовые
+Собственно метка типа представляется перечислением <code class="c"><span class="type">SCM_tag</span></code>. Числовые
 константы выбраны так, чтобы гарантировать некоторое количество незначащих
 битов, например, для нужд сборщика мусора. В памяти метка должна располагаться
-не абы как, а быть строго выровненной по размеру <code><span class="func">SCM</span></code> — именно для этого
-в объединение <code><span class="func">SCM\_header</span></code> добавлена заглушка <code><span class="func">ignored</span></code>. Наконец, объекты
+не абы как, а быть строго выровненной по размеру <code class="c"><span class="type">SCM</span></code> — именно для этого
+в объединение <code class="c"><span class="type">SCM_header</span></code> добавлена заглушка <code class="c"><span class="var">ignored</span></code>. Наконец, объекты
 вместе с информацией об их типе будут представляться объединениями
-<code><span class="func">SCM\_unwrapped\_object</span></code>.</p>
-
+<code class="c"><span class="type">SCM_unwrapped_object</span></code>.</p>
 
 <!--\indexC*{SCM_tag}{SCM\_tag}-->
 <!--\indexC*{SCM_header}{SCM\_header}-->
 <!--\indexC*{SCM_unwrapped_object}{SCM\_unwrapped\_object}-->
-<p>\begin{code:c}
-enum SCM_tag {
-    SCM_NULL_TAG      = 0xAAA0,
-    SCM_PAIR_TAG      = 0xAAA1,
-    SCM_BOOLEAN_TAG   = 0xAAA2,
-    SCM_UNDEFINED_TAG = 0xAAA3,
-    SCM_SYMBOL_TAG    = 0xAAA4,
-    SCM_STRING_TAG    = 0xAAA5,
-    SCM_SUBR_TAG      = 0xAAA6,
-    SCM_CLOSURE_TAG   = 0xAAA7,
-    SCM_ESCAPE_TAG    = 0xAAA8,
-};</p>
-
-<p>union SCM_header {
-    enum SCM_tag tag;
-    SCM ignored;
-};</p>
-
-<p>union SCM_unwrapped_object {
-    struct SCM_unwrapped_immediate_object {
-        union SCM_header header;
-    };</p>
-
-<p>    struct SCM_unwrapped_pair {
-        union SCM_header header;
-        SCM cdr;
-        SCM car;
-    } pair;
-
-    struct SCM_unwrapped_string {
-        union SCM_header header;
-        char Cstring[8];
-    } string;
-
-    struct SCM_unwrapped_symbol {
-        union SCM_header header;
-        SCM pname;
-    } symbol;</p>
-
-<p>    struct SCM_unwrapped_subr {
-        union SCM_header header;
-        SCM (*behavior)(void);
-        long arity;
-    } subr;</p>
-
-<p>    struct SCM_unwrapped_closure {
-        union SCM_header header;
-        SCM (*behavior)(void);
-        long arity;
-        SCM environment[1];
-    } closure;</p>
-
-<p>    struct SCM_unwrapped_escape {
-        union SCM_header header;
-        struct SCM_jmp_buf *stack_address;
-    } escape;
+<pre class="c"><span class="keyword">enum</span> <span class="type">SCM_tag</span> {
+    <span class="var">SCM_NULL_TAG</span>      = <span class="num">0xAAA0</span>,
+    <span class="var">SCM_PAIR_TAG</span>      = <span class="num">0xAAA1</span>,
+    <span class="var">SCM_BOOLEAN_TAG</span>   = <span class="num">0xAAA2</span>,
+    <span class="var">SCM_UNDEFINED_TAG</span> = <span class="num">0xAAA3</span>,
+    <span class="var">SCM_SYMBOL_TAG</span>    = <span class="num">0xAAA4</span>,
+    <span class="var">SCM_STRING_TAG</span>    = <span class="num">0xAAA5</span>,
+    <span class="var">SCM_SUBR_TAG</span>      = <span class="num">0xAAA6</span>,
+    <span class="var">SCM_CLOSURE_TAG</span>   = <span class="num">0xAAA7</span>,
+    <span class="var">SCM_ESCAPE_TAG</span>    = <span class="num">0xAAA8</span>,
 };
-\end{code:c}</p>
+
+<span class="keyword">union</span> <span class="type">SCM_header</span> {
+    <span class="keyword">enum</span> <span class="type">SCM_tag</span> <span class="var">tag</span>;
+    <span class="type">SCM</span> <span class="var">ignored</span>;
+};
+
+<span class="keyword">union</span> <span class="type">SCM_unwrapped_object</span> {
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_immediate_object</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+    };
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_pair</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="type">SCM</span> <span class="var">cdr</span>;
+        <span class="type">SCM</span> <span class="var">car</span>;
+    } <span class="var">pair</span>;
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_string</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="type">char</span> <span class="var">Cstring</span>[<span class="num">8</span>];
+    } <span class="var">string</span>;
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_symbol</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="type">SCM</span> <span class="var">pname</span>;
+    } <span class="var">symbol</span>;
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_subr</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>);
+        <span class="type">long</span> <span class="var">arity</span>;
+    } <span class="var">subr</span>;
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_closure</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>);
+        <span class="type">long</span> <span class="var">arity</span>;
+        <span class="type">SCM</span> <span class="var">environment</span>[<span class="num">1</span>];
+    } <span class="var">closure</span>;
+
+    <span class="keyword">struct</span> <span class="type">SCM_unwrapped_escape</span> {
+        <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;
+        <span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> *<span class="var">stack_address</span>;
+    } <span class="var">escape</span>;
+};</pre>
 
 <p>Следующие макросы помогают с приведением и определением типов объектов. Они
 будут полезными по большей части лишь библиотечным функциями, потому как только
-им необходимо различать <code><span class="func">SCM</span></code> и <code><span class="func">SCMref</span></code>.</p>
-
+им необходимо различать <code class="c"><span class="type">SCM</span></code> и <code class="c"><span class="type">SCMref</span></code>.</p>
 
 <!--\indexC{SCMref}-->
 <!--\indexC*{SCM_Wrap}{SCM\_Wrap}-->
 <!--\indexC*{SCM_Unwrap}{SCM\_Unwrap}-->
 <!--\indexC*{SCM_2tag}{SCM\_2tag}-->
-<p>\begin{code:c}
-typedef union SCM_unwrapped_object *SCMref;</p>
+<pre class="c"><span class="keyword">typedef</span> <span class="keyword">union</span> <span class="type">SCM_unwrapped_object</span> *<span class="type">SCMref</span>;
 
-<p>#define SCM_Wrap(x)   ((SCM)    (((union SCM_header*) x) + 1))
-#define SCM_Unwrap(x) ((SCMref) (((union SCM_header*) x) - 1))
-#define SCM_2tag(x)   ((SCM_Unwrap((SCM) x))->object.header.tag)
-\end{code:c}</p>
+<span class="pre">#define</span> <span class="macro">SCM_Wrap</span>(<span class="var">x</span>)   ((<span class="type">SCM</span>)    (((<span class="keyword">union</span> <span class="type">SCM_header</span>*) <span class="var">x</span>) + <span class="num">1</span>))
+<span class="pre">#define</span> <span class="macro">SCM_Unwrap</span>(<span class="var">x</span>) ((<span class="type">SCMref</span>) (((<span class="keyword">union</span> <span class="type">SCM_header</span>*) <span class="var">x</span>) - <span class="num">1</span>))
+<span class="pre">#define</span> <span class="macro">SCM_2tag</span>(<span class="var">x</span>)   ((<span class="macro">SCM_Unwrap</span>((<span class="type">SCM</span>) <span class="var">x</span>))-><span class="var">object</span>.<span class="var">header</span>.<span class="var">tag</span>)</pre>
 
 <p>Наконец, адреса функций, написанных на Си, будут храниться (но
 не использоваться) как указатели на функции без аргументов, возвращающие
-<code><span class="func">SCM</span></code>. Макрос <code><span class="func">SCM\_CfunctionAddress</span></code> приводит их к этому типу.</p>
-
+<code class="c"><span class="type">SCM</span></code>. Макрос <code class="c"><span class="macro">SCM_CfunctionAddress</span></code> приводит их к этому типу.</p>
 
 <!--\indexC*{SCM_CfunctionAddress}{SCM\_CfunctionAddress}-->
-<p>\begin{code:c}
-#define SCM_CfunctionAddress(Cfunction) ((SCM (*)(void)) Cfunction)
-\end{code:c}</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_CfunctionAddress</span>(<span class="var">Cfunction</span>) ((<span class="type">SCM</span> (*)(<span class="type">void</span>)) <span class="var">Cfunction</span>)</pre>
 
-<h3 id="cc/data/ssect:values">Объявления значений</h3>
 
-<p>Кроме всего прочего, <code><span class="func">scheme.h</span></code> определяет специальные макросы для
-статического создания значений Scheme. Их имена начинаются на <code><span class="func">SCM\_Define</span></code>.
+<h3 id="cc/data/ssect:values"><span class="seq">10.9.1.</span> Объявления значений</h3>
+
+<p>Кроме всего прочего, <code>scheme.h</code> определяет специальные макросы для
+статического создания значений Scheme. Их имена начинаются на <code class="c"><span class="macro">SCM_Define</span></code>.
 Чтобы получить точечную пару, достаточно объявить новую переменную типа
-<code><span class="func">SCM\_unwrapped\_pair</span></code>. Символы и прочие значения объявляются аналогично.
+<code class="c"><span class="type">SCM_unwrapped_pair</span></code>. Символы и прочие значения объявляются аналогично.
 Всякий раз сначала создаётся объект, а затем берётся его адрес и превращается
-в корректное значение Scheme с помощью <code><span class="func">SCM\_Wrap</span></code>.</p>
-
+в корректное значение Scheme с помощью <code class="c"><span class="macro">SCM_Wrap</span></code>.</p>
 
 <!--\indexC*{SCM_DefinePair}{SCM\_DefinePair}-->
 <!--\indexC*{SCM_DefineSymbol}{SCM\_DefineSymbol}-->
-<p>\begin{code:c}
-#define SCM_DefinePair(pair, car, cdr)  \
-  static struct SCM_unwrapped_pair pair = {{SCM_PAIR_TAG}, cdr, car}
-#define SCM_DefineSymbol(symbol, name)  \
-  static struct SCM_unwrapped_symbol symbol = {{SCM_SYMBOL_TAG}, name}
-\end{code:c}</p>
-
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefinePair</span>(<span class="var">pair</span>, <span class="var">car</span>, <span class="var">cdr</span>)  \
+  <span class="keyword">static</span> <span class="keyword">struct</span> <span class="type">SCM_unwrapped_pair</span> <span class="var">pair</span> = {{<span class="var">SCM_PAIR_TAG</span>}, <span class="var">cdr</span>, <span class="var">car</span>}
+<span class="pre">#define</span> <span class="macro">SCM_DefineSymbol</span>(<span class="var">symbol</span>, <span class="var">name</span>)  \
+  <span class="keyword">static</span> <span class="keyword">struct</span> <span class="type">SCM_unwrapped_symbol</span> <span class="var">symbol</span> = {{<span class="var">SCM_SYMBOL_TAG</span>}, <span class="var">name</span>}</pre>
 
 <!--\indexR{представление!строк}-->
 <p>Со строками всё немного сложнее, так как в Си нельзя статически инициализировать
@@ -2094,184 +2036,160 @@ typedef union SCM_unwrapped_object *SCMref;</p>
 Мы решим данные затруднения, объявляя для каждой статической строки личную
 структуру. Собственно содержимое строк будет представляться родными строками Си.</p>
 
-
 <!--\indexC*{SCM_DefineString}{SCM\_DefineString}-->
-<p>\begin{code:c}
-#define SCM_DefineString(Cname, string) \
-  struct Cname##_struct {               \
-      union SCM_header header;          \
-      char Cstring[1 + sizeof(string)]; \
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefineString</span>(<span class="var">Cname</span>, <span class="var">string</span>) \
+  <span class="keyword">struct</span> <span class="var">Cname</span><span class="pre">##</span><span class="type">_struct</span> {               \
+      <span class="keyword">union</span> <span class="type">SCM_header</span> <span class="var">header</span>;          \
+      <span class="type">char</span> <span class="var">Cstring</span>[<span class="num">1</span> + <span class="keyword">sizeof</span>(<span class="var">string</span>)]; \
   };                                    \
-  static struct Cname##_struct Cname =  \
-      {{SCM_STRING_TAG}, string}
-\end{code:c}</p>
+  <span class="keyword">static</span> <span class="keyword">struct</span> <span class="var">Cname</span><span class="pre">##</span><span class="type">_struct</span> <span class="var">Cname</span> =  \
+      {{<span class="var">SCM_STRING_TAG</span>}, <span class="var">string</span>}</pre>
 
 <p>Также нам будут необходимы несколько предопределённых значений. Для программ
 важны только их имена и типы, поэтому они объявляются как непосредственные
-значения. Мы воспользуемся <code><span class="func">SCM\_Wrap</span></code> для приведения их к типу <code><span class="func">SCM</span></code>.</p>
-
+значения. Мы воспользуемся <code class="c"><span class="macro">SCM_Wrap</span></code> для приведения их к типу <code class="c"><span class="type">SCM</span></code>.</p>
 
 <!--\indexC*{SCM_DefineImmediateObject}{SCM\_DefineImmediateObject}-->
 <!--\indexC*{SCM_true}{SCM\_true}-->
 <!--\indexC*{SCM_false}{SCM\_false}-->
 <!--\indexC*{SCM_nil}{SCM\_nil}-->
-<p>\begin{code:c}
-#define SCM_DefineImmediateObject(name, tag) \
-  struct SCM_unwrapped_immediate_object name = {{tag}}
-`\ForLayout{display}{\vskip-0.333\baselineskip}`
-SCM_DefineImmediateObject(SCM_true_object,  SCM_BOOLEAN_TAG)
-SCM_DefineImmediateObject(SCM_false_object, SCM_BOOLEAN_TAG)
-SCM_DefineImmediateObject(SCM_nil_object,   SCM_PAIR_TAG)
-`\ForLayout{display}{\vskip-0.333\baselineskip}`
-#define SCM_true  SCM_Wrap(&SCM_true_object)
-#define SCM_false SCM_Wrap(&SCM_false_object)
-#define SCM_nil   SCM_Wrap(&SCM_nil_object)
-\end{code:c}</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefineImmediateObject</span>(<span class="var">name</span>, <span class="var">tag</span>) \
+  <span class="keyword">struct</span> <span class="type">SCM_unwrapped_immediate_object</span> <span class="var">name</span> = {{<span class="var">tag</span>}}
+
+<span class="macro">SCM_DefineImmediateObject</span>(<span class="var">SCM_true_object</span>,  <span class="var">SCM_BOOLEAN_TAG</span>)
+<span class="macro">SCM_DefineImmediateObject</span>(<span class="var">SCM_false_object</span>, <span class="var">SCM_BOOLEAN_TAG</span>)
+<span class="macro">SCM_DefineImmediateObject</span>(<span class="var">SCM_nil_object</span>,   <span class="var">SCM_PAIR_TAG</span>)
+
+<span class="pre">#define</span> <span class="macro">SCM_true</span>  <span class="macro">SCM_Wrap</span>(&amp;<span class="var">SCM_true_object</span>)
+<span class="pre">#define</span> <span class="macro">SCM_false</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">SCM_false_object</span>)
+<span class="pre">#define</span> <span class="macro">SCM_nil</span>   <span class="macro">SCM_Wrap</span>(&amp;<span class="var">SCM_nil_object</span>)</pre>
 
 <p>Логические значения Scheme не тождественны логическим значениям Си, поэтому
 соответствующее преобразование не будет лишним. Определим для этого макрос
-<code><span class="func">SCM\_2bool</span></code>:</p>
-
+<code class="c"><span class="macro">SCM_2bool</span></code>:</p>
 
 <!--\indexC*{SCM_2bool}{SCM\_2bool}-->
-<p>\begin{code:c}
-#define SCM_2bool(i) ((i) ? SCM_true : SCM_false)
-\end{code:c}</p>
-
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_2bool</span>(<span class="var">i</span>) ((<span class="var">i</span>) ? <span class="macro">SCM_true</span> : <span class="macro">SCM_false</span>)</pre>
 
 <!--\indexR{проверки типов}-->
 <!--\indexR{соглашения именования!предикатов в Си}-->
 <p>Также мы определим несколько вспомогательных макросов для проверки типов и
-простейших операций со значениями. Предикаты имеют суффикс <code><span class="func">P</span></code>, который
+простейших операций со значениями. Предикаты имеют суффикс <code class="c"><span class="macro">P</span></code>, который
 означает, что они возвращают логические значения Си.</p>
-
 
 <!--\indexC*{SCM_Car}{SCM\_Car}-->
 <!--\indexC*{SCM_Cdr}{SCM\_Cdr}-->
 <!--\indexC*{SCM_NullP}{SCM\_NullP}-->
 <!--\indexC*{SCM_PairP}{SCM\_PairP}-->
-<p>\begin{code:c}
-#define SCM_Car(x)     (SCM_Unwrap(x)->pair.car)
-#define SCM_Cdr(x)     (SCM_Unwrap(x)->pair.cdr)
-#define SCM_NullP(x)   ((x) == SCM_nil)
-#define SCM_EqP(x, y)  ((x) == (y))</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_Car</span>(<span class="var">x</span>)     (<span class="macro">SCM_Unwrap</span>(<span class="var">x</span>)-><span class="var">pair</span>.<span class="var">car</span>)
+<span class="pre">#define</span> <span class="macro">SCM_Cdr</span>(<span class="var">x</span>)     (<span class="macro">SCM_Unwrap</span>(<span class="var">x</span>)-><span class="var">pair</span>.<span class="var">cdr</span>)
+<span class="pre">#define</span> <span class="macro">SCM_NullP</span>(<span class="var">x</span>)   ((<span class="var">x</span>) == <span class="macro">SCM_nil</span>)
+<span class="pre">#define</span> <span class="macro">SCM_EqP</span>(<span class="var">x</span>, <span class="var">y</span>)  ((<span class="var">x</span>) == (<span class="var">y</span>))
 
-<p>#define SCM_PairP(x)   \
-  ((!SCM_FixnumP(x)) && (SCM_2tag(x) == SCM_PAIR_TAG))</p>
+<span class="pre">#define</span> <span class="macro">SCM_PairP</span>(<span class="var">x</span>)   \
+  ((!<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>)) &amp;&amp; (<span class="macro">SCM_2tag</span>(<span class="var">x</span>) == <span class="var">SCM_PAIR_TAG</span>))
 
-<p>#define SCM_SymbolP(x) \
-  ((!SCM_FixnumP(x)) && (SCM_2tag(x) == SCM_SYMBOL_TAG))</p>
+<span class="pre">#define</span> <span class="macro">SCM_SymbolP</span>(<span class="var">x</span>) \
+  ((!<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>)) &amp;&amp; (<span class="macro">SCM_2tag</span>(<span class="var">x</span>) == <span class="var">SCM_SYMBOL_TAG</span>))
 
-<p>#define SCM_StringP(x) \
-  ((!SCM_FixnumP(x)) && (SCM_2tag(x) == SCM_STRING_TAG))
-\end{code:c}</p>
+<span class="pre">#define</span> <span class="macro">SCM_StringP</span>(<span class="var">x</span>) \
+  ((!<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>)) &amp;&amp; (<span class="macro">SCM_2tag</span>(<span class="var">x</span>) == <span class="var">SCM_STRING_TAG</span>))</pre>
 
-<p>\phantomlabel{cc/data/values/par:macros}
-Естественно, макросы вроде <code><span class="func">SCM\_Car</span></code> и <code><span class="func">SCM\_Cdr</span></code> будут использоваться
+<p id="cc/data/values/par:macros">Естественно, макросы вроде
+<code class="c"><span class="macro">SCM_Car</span></code> и
+<code class="c"><span class="macro">SCM_Cdr</span></code> будут использоваться
 исключительно в тех случаях, когда компилятор <em>знает</em>, что значение имеет
 подходящий тип. Следующие макросы для арифметических действий, например, этого
 заранее знать не могут, поэтому в них проверки типов выполняются явно. Конечно,
 таким образом мы лишаемся возможной оптимизации в случае, если типы всё же
-будут известны,\footnote*{Некоторые компиляторы Си достаточно сообразительны,
-чтобы избавиться от части ненужных проверок, но, как известно, хочешь сделать
-хорошо — сделай это сам.} но этот вопрос уже обсуждался: с точки зрения
+будут известны<a class="footref" href="zz_footnotes.xhtml#foot10.10"><sup>10</sup></a>,
+но этот вопрос уже обсуждался: с точки зрения
 педагогики важнее показать всю массу вариантов, нежели рассмотреть в деталях
 пару-тройку лучших. Если бы мы хотели добиться максимальной эффективности,
 компилятор был бы устроен совсем не так и выдавал бы совершенно иной код.</p>
 
-
 <!--\indexC*{SCM_Plus}{SCM\_Plus}-->
 <!--\indexC*{SCM_GtP}{SCM\_GtP}-->
-<p>\begin{code:c}
-#define SCM_Plus(x, y)                                     \
-  ((SCM_FixnumP(x) && SCM_FixnumP(y))                      \
-   ? SCM_Int2Fixnum(SCM_Fixnum2Int(x) + SCM_Fixnum2Int(y)) \
-   : SCM_error(SCM_ERR_PLUS))</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_Plus</span>(<span class="var">x</span>, <span class="var">y</span>)                                     \
+  ((<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>) &amp;&amp; <span class="macro">SCM_FixnumP</span>(<span class="var">y</span>))                      \
+   ? <span class="macro">SCM_Int2Fixnum</span>(<span class="macro">SCM_Fixnum2Int</span>(<span class="var">x</span>) + <span class="macro">SCM_Fixnum2Int</span>(<span class="var">y</span>)) \
+   : <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_PLUS</span>))
 
-<p>#define SCM_GtP(x, y)                                      \
-  ((SCM_FixnumP(x) && SCM_FixnumP(y))                      \
-   ? SCM_2bool(SCM_Fixnum2Int(x) > SCM_Fixnum2Int(y))      \
-   : SCM_error(SCM_ERR_GTP))
-\end{code:c}</p>
+<span class="pre">#define</span> <span class="macro">SCM_GtP</span>(<span class="var">x</span>, <span class="var">y</span>)                                      \
+  ((<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>) &amp;&amp; <span class="macro">SCM_FixnumP</span>(<span class="var">y</span>))                      \
+   ? <span class="macro">SCM_2bool</span>(<span class="macro">SCM_Fixnum2Int</span>(<span class="var">x</span>) > <span class="macro">SCM_Fixnum2Int</span>(<span class="var">y</span>))      \
+   : <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_GTP</span>))</pre>
 
-<h3 id="cc/data/ssect:global">Глобальные переменные</h3>
 
+<h3 id="cc/data/ssect:global"><span class="seq">10.9.2.</span> Глобальные переменные</h3>
 
 <!--\indexR{неинициализированные переменные}-->
 <!--\indexR{переменные!неинициализированные}-->
 <p>Для получения значения глобальной переменной используется макрос
-\ic{SCM\discretionary{\_}{}{\_}CheckedGlobal}, который проверяет, была ли она
-инициализирована или нет. Следовательно, необходимо выделить какое-то
+<code class="c"><span class="macro">SCM_CheckedGlobal</span></code>, который
+проверяет, была ли она инициализирована или нет. Следовательно, необходимо выделить какое-то
 определённое значение Си для обозначения неинициализированных переменных Scheme
-— назовём его \ic{SCM\discretionary{\_}{}{\_}undefined}. Изменяемые
+— назовём его <code class="c"><span class="macro">SCM_undefined</span></code>. Изменяемые
 глобальные переменные при создании просто инициализируются (в Си) этим
 значением, показывающим, что (в Scheme) они ещё не были инициализированы.</p>
-
 
 <!--\indexC*{SCM_undefined}{SCM\_undefined}-->
 <!--\indexC*{SCM_CheckedGlobal}{SCM\_CheckedGlobal}-->
 <!--\indexC*{SCM_DefineInitializedGlobalVariable}{SCM\_DefineInitializedGlobalVariable}-->
 <!--\indexC*{SCM_DefineGlobalVariable}{SCM\_DefineGlobalVariable}-->
-<p>\begin{code:c}
-SCM_DefineImmediateObject(SCM_undefined_object, SCM_UNDEFINED_TAG);
-#define SCM_undefined SCM_Wrap(&SCM_undefined_object)</p>
+<pre class="c"><span class="macro">SCM_DefineImmediateObject</span>(<span class="var">SCM_undefined_object</span>, <span class="var">SCM_UNDEFINED_TAG</span>);
+<span class="pre">#define</span> <span class="macro">SCM_undefined</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">SCM_undefined_object</span>)
 
-<p>#define SCM_CheckedGlobal(Cname) \
-  ((Cname != SCM_undefined) ? Cname
-                            : SCM_error(SCM_ERR_UNINITIALIZED))</p>
+<span class="pre">#define</span> <span class="macro">SCM_CheckedGlobal</span>(<span class="var">Cname</span>) \
+  ((<span class="var">Cname</span> != <span class="macro">SCM_undefined</span>) ? <span class="var">Cname</span>
+                            : <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_UNINITIALIZED</span>))
 
-<p>#define SCM_DefineInitializedGlobalVariable(Cname, string, value) \
-  SCM Cname = SCM_Wrap(value)</p>
+<span class="pre">#define</span> <span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">Cname</span>, <span class="var">string</span>, <span class="var">value</span>) \
+  <span class="type">SCM</span> <span class="var">Cname</span> = <span class="macro">SCM_Wrap</span>(<span class="var">value</span>)
 
-<p>#define SCM_DefineGlobalVariable(Cname, string)      \
-  SCM_DefineInitializedGlobalVariable(Cname, string, \
-                                             &SCM_undefined_object)
-\end{code:c}</p>
+<span class="pre">#define</span> <span class="macro">SCM_DefineGlobalVariable</span>(<span class="var">Cname</span>, <span class="var">string</span>)      \
+  <span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">Cname</span>, <span class="var">string</span>, \
+                                             &amp;<span class="var">SCM_undefined_object</span>)</pre>
 
 <p>Ещё одной важным делом является связывание предопределённых значений
 с предопределёнными переменными. Например, если мы хотим пользоваться
-в программах <code><span class="func">NIL</span></code> для обозначения пустого списка <code>()</code>, то следует
-определить в Си глобальную переменную <code><span class="func">NIL</span></code> со значением
-<code><span class="func">SCM\_nil\_object</span></code>. Это определение (вместе с множеством других) находится
-в файле <code><span class="func">schemelib.c</span></code>:</p>
+в программах <code><span class="var">NIL</span></code> для обозначения пустого списка
+<code><span class="hash">()</span></code>, то следует
+определить в Си глобальную переменную <code class="c"><span class="var">NIL</span></code>
+со значением <code class="c"><span class="var">SCM_nil_object</span></code>.
+Это определение (вместе с множеством других) находится
+в файле <code>schemelib.c</code>:</p>
 
-<p>\begin{code:c}
-SCM_DefineInitializedGlobalVariable(NIL, "NIL", &SCM_nil_object);
-SCM_DefineInitializedGlobalVariable(F,   "F",   &SCM_false_object);
-SCM_DefineInitializedGlobalVariable(T,   "T",   &SCM_true_object);
-\end{code:c}</p>
+<pre class="c"><span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">NIL</span>, <span class="string">"NIL"</span>, &amp;<span class="var">SCM_nil_object</span>);
+<span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">F</span>,   <span class="string">"F"</span>,   &amp;<span class="var">SCM_false_object</span>);
+<span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">T</span>,   <span class="string">"T"</span>,   &amp;<span class="var">SCM_true_object</span>);</pre>
 
 <p>Многое можно выразить с помощью этих трёх значений, но нам бы хотелось иметь
 в распоряжении также и знакомые функции: <code><span class="func">CONS</span></code>, <code><span class="func">CAR</span></code> и т. д. Они
-определяются макросом <code><span class="func">SCM\_DefinePredefinedFunctionVariable</span></code>. Вот его
+определяются макросом <code class="c"><span class="macro">SCM_DefinePredefinedFunctionVariable</span></code>. Вот его
 определение вместе с несколькими примерами:</p>
 
-
 <!--\indexC*{SCM_DefinePredefinedFunctionVariable}{SCM\_DefinePredefinedFunctionVariable}-->
-<p>\begin{code:c}
-#define SCM_DefinePredefinedFunctionVariable(subr, string,           \
-                                             arity, Cfunction)       \
-  static struct SCM_unwrapped_subr subr##_object =                   \
-      {{SCM_SUBR_TAG}, Cfunction, arity};                            \
-  SCM_DefineInitializedGlobalVariable(subr, string, &(subr##_object))</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">subr</span>, <span class="var">string</span>,           \
+                                             <span class="var">arity</span>, <span class="var">Cfunction</span>)       \
+  <span class="keyword">static</span> <span class="keyword">struct</span> <span class="type">SCM_unwrapped_subr</span> <span class="var">subr</span><span class="pre">##</span><span class="var">_object</span> =                   \
+      {{<span class="var">SCM_SUBR_TAG</span>}, <span class="var">Cfunction</span>, <span class="var">arity</span>};                            \
+  <span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">subr</span>, <span class="var">string</span>, &amp;(<span class="var">subr</span><span class="pre">##</span><span class="var">_object</span>))
 
-<p>SCM_DefinePredefinedFunctionVariable(CAR,  "CAR",  1, SCM_car);
-SCM_DefinePredefinedFunctionVariable(CONS, "CONS", 2, SCM_cons);
-SCM_DefinePredefinedFunctionVariable(EQN,  -",    2, SCM_eqnp);
-SCM_DefinePredefinedFunctionVariable(EQ,   "EQ?",  2, SCM_eqp);
-\end{code:c}</p>
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CAR</span>,  <span class="string">"CAR"</span>,  <span class="num">1</span>, <span class="var">SCM_car</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CONS</span>, <span class="string">"CONS"</span>, <span class="num">2</span>, <span class="var">SCM_cons</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQN</span>,  <span class="string">"="</span>,    <span class="num">2</span>, <span class="var">SCM_eqnp</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQ</span>,   <span class="string">"EQ?"</span>,  <span class="num">2</span>, <span class="var">SCM_eqp</span>);</pre>
 
 <p>Значения изменяемых глобальных переменных размещаются в коробках. Просмотр или
 изменение подобных значений выполняются с помощью макроса <code><span class="func">SCM\_Content</span></code>,
 определяемого следующим образом:</p>
 
-
 <!--\indexC*{SCM_Content}{SCM\_Content}-->
-<p>\begin{code:c}
-#define SCM_Content(e) ((e)->box.content)
-\end{code:c}</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_Content</span>(<span class="var">e</span>) ((<span class="var">e</span>)-><span class="var">box</span>.<span class="var">content</span>)</pre>
 
-<h3 id="cc/data/ssect:func">Определения функций</h3>
+
+<h3 id="cc/data/ssect:func"><span class="seq">10.9.3.</span> Определения функций</h3>
 
 <p>Осталось лишь рассмотреть представление в памяти функций. Важно тщательно
 проработать этот аспект, так как от него существенно зависят возможности
@@ -2279,8 +2197,7 @@ SCM_DefinePredefinedFunctionVariable(EQ,   "EQ?",  2, SCM_eqp);
 
 <p>Примитивы с фиксированной арностью представляются функциями Си той же арности.
 Следовательно, функцию <code><span class="func">cons</span></code> можно будет вызвать простым и легко
-запоминающимся способом: \ic{SCM\_cons(<i>a</i>, <i>d</i>)}.</p>
-
+запоминающимся способом: <code class="c"><span class="func">SCM_cons</span>(<i>a</i>, <i>d</i>)</code>.</p>
 
 <!--\indexR{представление!замыканий}-->
 <p>Остальные функции, являющиеся полноценными объектами Scheme, требуют б\'{о}льших
@@ -2290,73 +2207,67 @@ SCM_DefinePredefinedFunctionVariable(EQ,   "EQ?",  2, SCM_eqp);
 задача. И снова, желая показать всё множество вариаций, мы позволим себе
 применить для обычных функций слегка необычный, но весьма последовательный
 во всех смыслах подход (понимая, однако, что его быстродействие оставляет желать
-лучшего). \seeEx[cc/ex:boost-calls]</p>
+лучшего).
+<span class="see">[см. упр. <a href="#cc/ex:boost-calls">10.1</a>]</span></p>
 
 <p>Замыкания будут представляться специальными структурами. Первые два поля
 содержат указатель на соответствующую функцию и её арность. Остальные хранят
-значения замкнутых свободных переменных. Макрос <code><span class="func">SCM\_Define\-Closure</span></code>
+значения замкнутых свободных переменных. Макрос <code class="c"><span class="macro">SCM_DefineClosure</span></code>
 определяет соответствующие типы структур Си для всех используемых замыканий.</p>
 
-
 <!--\indexC*{SCM_DefineClosure}{SCM\_DefineClosure}-->
-<p>\begin{code:c}
-#define SCM_DefineClosure(struct_name, fields) \
-  struct struct_name {                         \
-      SCM (*behavior)(void);                   \
-      long arity;                              \
-      fields                                   \
-  }
-\end{code:c}</p>
-
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefineClosure</span>(<span class="var">struct_name</span>, <span class="var">fields</span>) \
+  <span class="keyword">struct</span> <span class="var">struct_name</span> {                         \
+      <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>);                   \
+      <span class="type">long</span> <span class="var">arity</span>;                              \
+      <span class="var">fields</span>                                   \
+  }</pre>
 
 <!--\indexR{переменная арность!в Си}-->
-<p>Первым аргументом замыканий, вызываемых <code><span class="func">SCM\_invoke</span></code>, являются они сами;
+<p>Первым аргументом замыканий, вызываемых <code class="c"><span class="func">SCM_invoke</span></code>, являются они сами;
 так реализуется возможность доступа к замкнутому окружению. Если функция
 вызывается с неправильным количеством аргументов — это ошибка, о которой
-необходимо сообщить. Проверка арности перекладывается на <code><span class="func">SCM\_invoke</span></code>, так
+необходимо сообщить. Проверка арности перекладывается на <code class="c"><span class="func">SCM_invoke</span></code>, так
 что функции могут быть уверены в количестве аргументов. Единственным непонятным
 моментом остаются функции с переменной арностью: здесь, видимо, придётся явно
 передавать им количество аргументов, так как в Си нет возможности его узнать.
 Поэтому будем считать, что все функции вторым аргументом принимают количество
 фактических аргументов вызова, а сами аргументы всегда передаются с помощью
-специального механизма Си, определённого в заголовочном файле <code><span class="func"><stdarg.h></span></code>
-(ранее <code><span class="func"><varargs.h></span></code>). Как мы и говорили, это не самое элегантное из
+специального механизма Си, определённого в заголовочном файле <code>&lt;stdarg.h&gt;</code>
+(ранее <code>&lt;varargs.h&gt;</code>). Как мы и говорили, это не самое элегантное из
 возможных решений; подход, используемый для примитивов, гораздо эффективнее.</p>
 
 
 <!--\indexC*{self}{self\_}-->
 <!--\indexC*{size}{size\_}-->
 <!--\indexC*{arguments}{arguments\_}-->
-<p>Аргументы объявляемых функций Си (<code><span class="func">self\_</span></code>, <code><span class="func">size\_</span></code> и <code><span class="func">arguments\_</span></code>)
+<p>Аргументы объявляемых функций Си (<code class="c"><span class="var">self_</span></code>, <code class="c"><span class="var">size_</span></code> и <code class="c"><span class="var">arguments_</span></code>)
 названы так, чтобы их нельзя было спутать с переменными Scheme (вспомните
 о подчёркиваниях). Единственным интересным моментом остаётся инициализация
 точечной переменной, собирающая в список все оставшиеся аргументы. Список так
-список, зачем же ещё существует функция <code><span class="func">SCM\_list</span></code>.</p>
-
+список, зачем же ещё существует функция <code class="c"><span class="func">SCM_list</span></code>.</p>
 
 <!--\indexC*{SCM_DeclareFunction}{SCM\_DeclareFunction}-->
 <!--\indexC*{SCM_DeclareLocalVariable}{SCM\_DeclareLocalVariable}-->
 <!--\indexC*{SCM_DeclareLocalDottedVariable}{SCM\_DeclareLocalDottedVariable}-->
 <!--\indexC*{SCM_Free}{SCM\_Free}-->
-<p>\begin{code:c}
-#define SCM_DeclareFunction(Cname) \
-  SCM Cname(struct Cname *self_,   \
-            unsigned long size_, va_list arguments_)</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DeclareFunction</span>(<span class="var">Cname</span>) \
+  <span class="type">SCM</span> <span class="var">Cname</span>(<span class="keyword">struct</span> <span class="var">Cname</span> *<span class="var">self_</span>,   \
+            <span class="type">unsigned</span> <span class="type">long</span> <span class="var">size_</span>, <span class="type">va_list</span> <span class="var">arguments_</span>)
 
-<p>#define SCM_DeclareLocalVariable(Cname, index) \
-  SCM Cname = va_arg(arguments_, SCM)</p>
+<span class="pre">#define</span> <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">Cname</span>, <span class="var">index</span>) \
+  <span class="type">SCM</span> <span class="var">Cname</span> = <span class="macro">va_arg</span>(<span class="var">arguments_</span>, <span class="type">SCM</span>)
 
-<p>#define SCM_DeclareLocalDottedVariable(Cname, index) \
-  SCM Cname = SCM_list(size_ - index, arguments_)</p>
+<span class="pre">#define</span> <span class="macro">SCM_DeclareLocalDottedVariable</span>(<span class="var">Cname</span>, <span class="var">index</span>) \
+  <span class="type">SCM</span> <span class="var">Cname</span> = <span class="func">SCM_list</span>(<span class="var">size_</span> - <span class="var">index</span>, <span class="var">arguments_</span>)
 
-<p>#define SCM_Free(Cname) ((self_)->Cname)
-\end{code:c}</p>
+<span class="pre">#define</span> <span class="macro">SCM_Free</span>(<span class="var">Cname</span>) ((<span class="var">self_</span>)-><span class="var">Cname</span>)</pre>
 
 <p>И всё же в данном подходе есть что-то хорошее: вы только посмотрите, как
 просто, понятно и красиво выражаются обращения к свободным переменным!</p>
 
-<h2 id="cc/sect:runtime">Библиотека времени исполнения</h2>
 
+<h2 id="cc/sect:runtime"><span class="seq">10.10.</span> Библиотека времени исполнения</h2>
 
 <!--\indexC*{SCM_print}{SCM\_print}-->
 <!--\indexR{библиотека!времени исполнения}-->
@@ -2368,165 +2279,153 @@ SCM_DefinePredefinedFunctionVariable(EQ,   "EQ?",  2, SCM_eqp);
 черты и не будем реализовывать большую часть утилитарных функций вроде
 <code><span class="func">string-ref</span></code> или <code><span class="func">close-output-port</span></code>. Будут рассмотрены только самые
 важные, типичные библиотечные функции (в частности, здесь нет функции
-<code><span class="func">SCM\_print</span></code>, которая используется в генерируемой нами <code><span class="func">main</span></code>).</p>
+<code class="c"><span class="func">SCM_print</span></code>, которая используется в генерируемой нами <code class="c"><span class="func">main</span></code>).</p>
 
-<h3 id="cc/runtime/ssect:alloc">Выделение памяти</h3>
+
+<h3 id="cc/runtime/ssect:alloc"><span class="seq">10.10.1.</span> Выделение памяти</h3>
 
 <p>В Си за управление памятью отвечает лично программист, так что сборщика мусора
 у нас не будет, потому как его написание с нуля заняло бы слишком много времени.
-За информацией об этом можете обратиться, например, к \cite{spi90,wil92}.%
-{\fnstyle{\RaggedRight}\trnote*{Или к более современной книге:
-\textit{Richard Jones, Antony Hosking, Eliot Moss.} The Garbage Collection
-Handbook: The Art of Automatic Memory Management. — Chapman {\&} Hall/CRC,
-2012. — 511 p.}} Интеграцию с Бёмовским сборщиком мусора <span class="cite">[<a href="z1_bibliography.xhtml#bw88">bw88</a>]</span> оставляем
+За информацией об этом можете обратиться, например, к <span class="cite">[<a href="z1_bibliography.xhtml#spi90">Spi90</a>,
+<a href="z1_bibliography.xhtml#wil92">Wil92</a>]</span><a class="footref" href="zz_footnotes.xhtml#foot10.tr-1"><sup>*</sup></a>. Интеграцию с Бёмовским сборщиком мусора <span class="cite">[<a href="z1_bibliography.xhtml#bw88">BW88</a>]</span> оставляем
 вам в качестве упражнения.</p>
 
 <p>Наиболее очевидная функция, требующая выделения памяти, — это <code><span class="func">cons</span></code>. Она
 должна создать новую точечную пару, заполнить её поля (включая поле типа) и
-вернуть адрес созданной пары в виде объекта типа <code><span class="func">SCM</span></code>.</p>
-
+вернуть адрес созданной пары в виде объекта типа <code class="c"><span class="type">SCM</span></code>.</p>
 
 <!--\indexC*{SCM_cons}{SCM\_cons}-->
 <!--\indexC{cons}-->
-<p>\begin{code:c}
-SCM SCM_cons(SCM a, SCM d)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_cons</span>(<span class="type">SCM</span> <span class="var">a</span>, <span class="type">SCM</span> <span class="var">d</span>)
 {
-    SCMref cell = malloc(sizeof(struct SCM_unwrapped_pair));
-    if (!cell)
+    <span class="type">SCMref</span> <span class="var">cell</span> = <span class="func">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <span class="type">SCM_unwrapped_pair</span>));
+    <span class="keyword">if</span> (!<span class="var">cell</span>)
     {
-        SCM_error(SCM_ERR_CANT_ALLOC);
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CANT_ALLOC</span>);
     }
 
-    cell->pair.header.tag = SCM_PAIR_TAG;
-    cell->pair.car = a;
-    cell->pair.cdr = d;
-    return SCM_Wrap(cell);
-}
-\end{code:c}</p>
+    <span class="var">cell</span>-><span class="var">pair</span>.<span class="var">header</span>.<span class="var">tag</span> = <span class="var">SCM_PAIR_TAG</span>;
+    <span class="var">cell</span>-><span class="var">pair</span>.<span class="var">car</span> = <span class="var">a</span>;
+    <span class="var">cell</span>-><span class="var">pair</span>.<span class="var">cdr</span> = <span class="var">d</span>;
+    <span class="keyword">return</span> <span class="macro">SCM_Wrap</span>(<span class="var">cell</span>);
+}</pre>
 
-<p>Замыкания создаются функцией <code><span class="func">SCM\_close</span></code>. Их арность может быть любой, что
+<p>Замыкания создаются функцией <code class="c"><span class="func">SCM_close</span></code>. Их арность может быть любой, что
 обосновывает использование функций переменной арности языка Си. Итак, нам надо
-создать объект с типом <code><span class="func">SCM\_CLOSURE\_TAG</span></code> и заполнить его поля полученными
+создать объект с типом <code class="c"><span class="var">SCM_CLOSURE_TAG</span></code> и заполнить его поля полученными
 значениями. Порядок перечисления значений должен в точности совпадать
 с порядком полей.</p>
 
-
 <!--\indexC*{SCM_close}{SCM\_close}-->
-<p>\begin{code:c}
-SCM SCM_close(SCM (*Cfunction)(void), long arity,
-              unsigned long size, ...)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_close</span>(<span class="type">SCM</span> (*<span class="var">Cfunction</span>)(<span class="type">void</span>), <span class="type">long</span> <span class="var">arity</span>,
+              <span class="type">unsigned</span> <span class="type">long</span> <span class="var">size</span>, ...)
 {
-    unsigned long i;
-    va_list args;
-    SCMref result = malloc(sizeof(struct SCM_unwrapped_closure)
-                           + (size - 1) * sizeof(SCM));
-    if (!result)
+    <span class="type">unsigned</span> <span class="type">long</span> <span class="var">i</span>;
+    <span class="type">va_list</span> <span class="var">args</span>;
+    <span class="type">SCMref</span> <span class="var">result</span> = <span class="func">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <span class="type">SCM_unwrapped_closure</span>)
+                           + (<span class="var">size</span> - <span class="num">1</span>) * <span class="keyword">sizeof</span>(<span class="type">SCM</span>));
+    <span class="keyword">if</span> (!<span class="var">result</span>)
     {
-        SCM_error(SCM_ERR_CANT_ALLOC);
-    }</p>
-
-<p>    result->closure.header.tag = SCM_CLOSURE_TAG;
-    result->closure.behavior   = Cfunction;
-    result->closure.arity      = arity;
-    va_start(args, size);
-    for (i = 0; i < size; i++) {
-        result->closure.environment[i] = va_arg(args, SCM);
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CANT_ALLOC</span>);
     }
-    va_end(args);
 
-    return SCM_Wrap(result);
-}
-\end{code:c}</p>
+    <span class="var">result</span>-><span class="var">closure</span>.<span class="var">header</span>.<span class="var">tag</span> = <span class="var">SCM_CLOSURE_TAG</span>;
+    <span class="var">result</span>-><span class="var">closure</span>.<span class="var">behavior</span>   = <span class="var">Cfunction</span>;
+    <span class="var">result</span>-><span class="var">closure</span>.<span class="var">arity</span>      = <span class="var">arity</span>;
+    <span class="macro">va_start</span>(<span class="var">args</span>, <span class="var">size</span>);
+    <span class="keyword">for</span> (<span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">size</span>; <span class="var">i</span>++) {
+        <span class="var">result</span>-><span class="var">closure</span>.<span class="var">environment</span>[<span class="var">i</span>] = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+    }
+    <span class="macro">va_end</span>(<span class="var">args</span>);
 
-<h3 id="cc/runtime/ssect:pairs">Функции над парами</h3>
+    <span class="keyword">return</span> <span class="macro">SCM_Wrap</span>(<span class="var">result</span>);
+}</pre>
 
+
+<h3 id="cc/runtime/ssect:pairs"><span class="seq">10.10.2.</span> Функции над парами</h3>
 
 <!--\indexR{проверки типов}-->
 <!--\indexR{динамическая типизация}-->
-<p>Функции <code><span class="func">car</span></code> и <code><span class="func">set-car!</span></code> очень просты, но не следует их путать
+<p>Функции <code><span class="func">car</span></code> и
+<code><span class="func">set-car!</span></code> очень просты, но не следует их путать
 с одноимёнными макросами. Данные функции типобезопасны в том смысле, что они
 проверяют типы аргументов перед тем, как лезть непонятно куда в память. В общем
 случае у каждой безопасной функции есть небезопасный аналог, который можно
 использовать только тогда, когда компилятор полностью уверен в типе аргументов.
 Несмотря на то, что Лисп динамически типизирован, программы на нём обычно
 таковы, что как минимум две трети проверок типов, по мнению
-\cite{hen92a,wc94,ser94}, можно смело убирать. Дело в том, что программисты
+<span class="cite">[<a href="z1_bibliography.xhtml#hen92a">Hen92a</a>,
+<a href="z1_bibliography.xhtml#wc94">WC94</a>,
+<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>,
+можно смело убирать. Дело в том, что программисты
 помнят о типах, выполняют часть проверок у себя в голове и не передают функциям
 что попало. Хорошие компиляторы осведомлены о существовании «белкового
 препроцессора» и оптимизируют код с учётом этого обстоятельства.</p>
-
 
 <!--\indexC*{SCM_car}{SCM\_car}-->
 <!--\indexC*{SCM_set_cdr}{SCM\_set\_cdr}-->
 <!--\indexC{car}-->
 <!--\indexC{set-cdr"!}-->
-<p>\begin{code:c}
-SCM SCM_car(SCM x)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_car</span>(<span class="type">SCM</span> <span class="var">x</span>)
 {
-    if (SCM_PairP(x)) {
-        return SCM_Car(x);
+    <span class="keyword">if</span> (<span class="macro">SCM_PairP</span>(<span class="var">x</span>)) {
+        <span class="keyword">return</span> <span class="macro">SCM_Car</span>(<span class="var">x</span>);
     }
-    else return SCM_error(SCM_ERR_CAR);
-}</p>
-
-<p>SCM SCM_set_cdr(SCM x, SCM d)
-{
-    if (SCM_PairP(x)) {
-        SCM_Unwrap(x)->pair.cdr = d;
-        return x;
-    }
-    else return SCM_error(SCM_ERR_SET_CDR);
+    <span class="keyword">else</span> <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CAR</span>);
 }
-\end{code:c}</p>
 
-<p>Неплохо будет также рассмотреть функцию <code><span class="func">list</span></code>. Она может принимать
-произвольное число аргументов, поэтому первым её аргументом идёт это самое
+<span class="type">SCM</span> <span class="func">SCM_set_cdr</span>(<span class="type">SCM</span> <span class="var">x</span>, <span class="type">SCM</span> <span class="var">d</span>)
+{
+    <span class="keyword">if</span> (<span class="macro">SCM_PairP</span>(<span class="var">x</span>)) {
+        <span class="macro">SCM_Unwrap</span>(<span class="var">x</span>)-><span class="var">pair</span>.<span class="var">cdr</span> = <span class="var">d</span>;
+        <span class="keyword">return</span> <span class="var">x</span>;
+    }
+    <span class="keyword">else</span> <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_SET_CDR</span>);
+}</pre>
+
+<p>Неплохо будет также рассмотреть функцию <code><span class="func">list</span></code>.
+Она может принимать произвольное число аргументов, поэтому первым её аргументом идёт это самое
 число. (Понятно, что в Си не стоит записывать итерацию с помощью рекурсии, но
 соблазн был слишком велик.)</p>
 
-
 <!--\indexC*{SCM_list}{SCM\_list}-->
-<p>\begin{code:c}
-SCM SCM_list(unsigned long count, va_list arguments)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_list</span>(<span class="type">unsigned</span> <span class="type">long</span> <span class="var">count</span>, <span class="type">va_list</span> <span class="var">arguments</span>)
 {
-    if (count == 0) {
-        return SCM_nil;
+    <span class="keyword">if</span> (<span class="var">count</span> == <span class="num">0</span>) {
+        <span class="keyword">return</span> <span class="macro">SCM_nil</span>;
     }
-    else {
-        SCM car = va_arg(arguments, SCM);
-        return SCM_cons(car, SCM_list(count - 1, arguments));
+    <span class="keyword">else</span> {
+        <span class="type">SCM</span> <span class="var">car</span> = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
+        <span class="keyword">return</span> <span class="func">SCM_cons</span>(<span class="var">car</span>, <span class="func">SCM_list</span>(<span class="var">count</span> - <span class="num">1</span>, <span class="var">arguments</span>));
     }
-}
-\end{code:c}</p>
+}</pre>
 
 <p>Возникающие в процессе работы ошибки никак не перехватываются и
 не обрабатываются. Если возникают какие-либо проблемы, то просто вызывается
-макрос <code><span class="func">SCM\_error</span></code>. Он сообщает наверх о том, что и где произошло, выводя
+макрос <code class="c"><span class="macro">SCM_error</span></code>.
+Он сообщает наверх о том, что и где произошло, выводя
 код ошибки, имя провинившегося файла и номер строки в нём.</p>
-
 
 <!--\indexC*{SCM_error}{SCM\_error}-->
 <!--\indexC*{SCM_signal_error}{SCM\_signal\_error}-->
-<p>\begin{code:c}
-#define SCM_error(code) SCM_signal_error(code, __LINE__, __FILE__)</p>
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_error</span>(<span class="var">code</span>) <span class="func">SCM_signal_error</span>(<span class="var">code</span>, <span class="macro">__LINE__</span>, <span class="macro">__FILE__</span>)
 
-<p>SCM SCM_signal_error(unsigned long code,
-                     unsigned long line,
-                     const char *file)
+<span class="type">SCM</span> <span class="func">SCM_signal_error</span>(<span class="type">unsigned</span> <span class="type">long</span> <span class="var">code</span>,
+                     <span class="type">unsigned</span> <span class="type">long</span> <span class="var">line</span>,
+                     <span class="type">const</span> <span class="type">char</span> *<span class="var">file</span>)
 {
-    fflush(stdout);
-    fprintf(stderr, "Error %ul, line %ul, file %s.\n", code, line, file);
-    exit(code);
-}
-\end{code:c}</p>
+    <span class="func">fflush</span>(<span class="var">stdout</span>);
+    <span class="func">fprintf</span>(<span class="var">stderr</span>, <span class="string">"Error <span class="pp">%ul</span>, line <span class="pp">%ul</span>, file <span class="pp">%s</span>.<span class="esc">\n</span>"</span>, <span class="var">code</span>, <span class="var">line</span>, <span class="var">file</span>);
+    <span class="func">exit</span>(<span class="var">code</span>);
+}</pre>
 
-<h3 id="cc/runtime/ssect:invoke">Вызовы функций</h3>
 
+<h3 id="cc/runtime/ssect:invoke"><span class="seq">10.10.3.</span> Вызовы функций</h3>
 
 <!--\indexC{invoke}-->
 <!--\indexC{apply}-->
 <p>Самыми важными (и хитроумными) из функций, вызывающих другие функции, являются
-<code><span class="func">SCM\_invoke</span></code> и <code><span class="func">apply</span></code>. Присутствие здесь примитива <code><span class="func">apply</span></code> не особо
+<code class="c"><span class="func">SCM_invoke</span></code> и <code><span class="func">apply</span></code>. Присутствие здесь примитива <code><span class="func">apply</span></code> не особо
 удивительно — он же должен знать протокол вызова функций, чтобы ему
 следовать.</p>
 
@@ -2535,10 +2434,12 @@ SCM SCM_list(unsigned long count, va_list arguments)
 <!--\indexR{протокол вызова функций}-->
 <p>За исключением вызовов, интегрированных непосредственно в код (то есть
 реализованных через прямые обращения к макросам или функциям на Си), все
-остальные вызовы выполняются внутренней функцией <code><span class="func">SCM\_invoke</span></code>. Первым
+остальные вызовы выполняются внутренней функцией
+<code class="c"><span class="func">SCM_invoke</span></code>. Первым
 аргументом она принимает вызываемую функцию, за которой следуют количество и
 значения аргументов для неё. Как и в предыдущих интерпретаторах,
-<code><span class="func">SCM\_invoke</span></code> отвечает за все возможные вызовы. Она анализирует тип первого
+<code class="c"><span class="func">SCM_invoke</span></code> отвечает за все возможные вызовы.
+Она анализирует тип первого
 аргумента, чтобы выбрать правильный метод обработки (или выругаться об ошибке
 типизации). Затем она извлекает вызываемый объект, выясняет поддерживаемую им
 арность и сравнивает её с фактической. Наконец, она выполняет собственно вызов,
@@ -2546,328 +2447,317 @@ SCM SCM_list(unsigned long count, va_list arguments)
 различных протокола вызова. Это далеко не исчерпывающий список возможных
 вариантов; например, вместо указания количества аргументов можно просто
 дописывать в конец какое-то специальное значение (именно так поступает Bigloo,
-используя для этой цели <code><span class="func">NULL</span></code>).</p>
+используя для этой цели <code class="c"><span class="macro">NULL</span></code>).</p>
 
-<p>\begin{itemize}
-  \item Примитивы с фиксированной арностью (вроде <code><span class="func">SCM\_cons</span></code>)
-        вызываются просто и без всяких ухищрений. Эти вызовы можно
-        отнести к виду $f(x, y, z)$.</p>
+<ul>
+  <li>Примитивы с фиксированной арностью (вроде
+    <code class="c"><span class="func">SCM_cons</span></code>)
+    вызываются просто и без всяких ухищрений. Эти вызовы можно
+    отнести к виду <span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">x</span><span class="punct">,</span><span class="ord var">y</span><span class="punct">,</span><span class="ord var">z</span><span class="close">)</span></span>.</li>
 
-<p>  \item Примитивы с переменной арностью (вроде <code><span class="func">SCM\_list</span></code>) должны
-        знать количество полученных аргументов. Оно передаётся
-        дополнительным аргументом, поэтому вызов имеет вид
-        $f(n, x_1, x_2, \dots, x_n)$.</p>
+  <li>Примитивы с переменной арностью (вроде
+    <code class="c"><span class="func">SCM_list</span></code>) должны
+    знать количество полученных аргументов. Оно передаётся
+    дополнительным аргументом, поэтому вызов имеет вид
+    <span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">n</span><span class="punct">,</span><span class="ord var">x<sub><span class="ord num">1</span></sub></span><span class="punct">,</span><span class="ord var">x<sub><span class="ord num">2</span></sub></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">x<sub><span class="ord var">n</span></sub></span><span class="close">)</span></span>.</li>
 
-<p>  \item Замыканиям необходимо получить не только все аргументы вызова,
-        но также и значения свободных переменных, которые фактически
-        хранятся внутри самих замыканий. Поэтому для них надо выполнять
-        вызовы вида $f(f, n, x_1, x_2, \dots, x_n)$.
-\end{itemize}</p>
+  <li>Замыканиям необходимо получить не только все аргументы вызова,
+    но также и значения свободных переменных, которые фактически
+    хранятся внутри самих замыканий. Поэтому для них надо выполнять
+    вызовы вида <span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">f</span><span class="punct">,</span><span class="ord var">n</span><span class="punct">,</span><span class="ord var">x<sub><span class="ord num">1</span></sub></span><span class="punct">,</span><span class="ord var">x<sub><span class="ord num">2</span></sub></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">x<sub><span class="ord var">n</span></sub></span><span class="close">)</span></span>.</li>
+</ul>
 
 <p>Естественно, мы могли бы улучшить эти протоколы, привести их к единому виду,
 возможно, даже избавиться от некоторых. Но это потом, сейчас у нас есть вполне
-конкретные требования к <code><span class="func">SCM\_invoke</span></code>. Несмотря на внушительные размеры,
-она довольно регулярна по своей структуре. (Обработка продолжений будет
-рассмотрена в следующем разделе.)</p>
-
+конкретные требования к <code class="c"><span class="func">SCM_invoke</span></code>.
+Несмотря на внушительные размеры, она довольно регулярна по своей структуре. (Обработка
+продолжений будет рассмотрена в следующем разделе.)</p>
 
 <!--\indexC{invoke}-->
 <!--\indexC*{SCM_invoke}{SCM\_invoke}-->
-<p>\begin{code:c}
-SCM SCM_invoke(SCM function, unsigned long number, ...)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_invoke</span>(<span class="type">SCM</span> <span class="var">function</span>, <span class="type">unsigned</span> <span class="type">long</span> <span class="var">number</span>, ...)
 {
-    /* `Вряд ли у нас получится вызвать число` */
-    if (SCM_FixnumP(function)) {
-        return SCM_error(SCM_ERR_CANNOT_APPLY);
-    }</p>
-
-<p>    switch (SCM_2tag(function)) {
-      case SCM_SUBR_TAG: {
-        SCM (*behavior)(void) = (SCM_Unwrap(function)->subr).behavior;
-        long arity = (SCM_Unwrap(function)->subr).arity;</p>
-
-<p>        /* `Фиксированная арность` */
-        if (arity >= 0) {
-            if (arity != number) {
-                return SCM_error(SCM_ERR_WRONG_ARITY);
-            }
-            if (arity == 0) {
-                return behavior();
-            }
-            else {
-                SCM result;
-                va_list args;
-                va_start(args, number);
-                switch (number) {
-                  case 1: {
-                    SCM a0 = va_arg(args, SCM);
-                    result = ((SCM (*)(SCM)) behavior)(a0);
-                    break;
-                  }
-                  case 2: {
-                    SCM a0 = va_arg(args, SCM);
-                    SCM a1 = va_arg(args, SCM);
-                    result = ((SCM (*)(SCM, SCM)) behavior)(a0, a1);
-                    break;
-                  }
-                  case 3: {
-                    SCM a0 = va_arg(args, SCM);
-                    SCM a1 = va_arg(args, SCM);
-                    SCM a2 = va_arg(args, SCM);
-                    result = ((SCM (*)(SCM,SCM,SCM)) behavior)
-                             (a0, a1, a2);
-                    break;
-                  }
-                  default:
-                    /* `Не существует примитивов большей арности` */
-                    return SCM_error(SCM_ERR_INTERNAL);
-                }
-                va_end(args);
-                return result;
-            }
-        }
-        /* `Переменная арность` */
-        else {
-            if (number < SCM_MinimalArity(arity)) {
-                return SCM_error(SCM_ERR_MISSING_ARGS);
-            }
-            else {
-                SCM result;
-                va_list args;
-                va_start(args, number);
-                result = ((SCM (*)(unsigned long, va_list)) behavior)
-                         (number, args);
-                va_end(args);
-                return result;
-            }
-        }
-      }</p>
-
-<p>      case SCM_CLOSURE_TAG: {
-        SCM result;
-        va_list args;
-        SCM (*behavior)(void) =
-                (SCM_Unwrap(function)->closure).behavior;
-        long arity = (SCM_Unwrap(function)->closure).arity;</p>
-
-<p>        if (arity >= 0 && number != arity) {
-            return SCM_error(SCM_ERR_WRONG_ARITY);
-        }
-        if (number < SCM_MinimalArity(arity)) {
-            return SCM_error(SCM_ERR_MISSING_ARGS);
-        }
-`\ForLayout{display}{\vskip-\baselineskip}`
-        va_start(args, number);
-        result = ((SCM (*)(SCM, unsigned long, va_list)) behavior)
-                 (function, number, args);
-        va_end(args);
-        return result;
-      }</p>
-
-<p>      /* `Невызываемо!` */
-      default:
-        SCM_error(SCM_ERR_CANNOT_APPLY);
+    <span class="comment">/* Вряд ли у нас получится вызвать число */</span>
+    <span class="keyword">if</span> (<span class="macro">SCM_FixnumP</span>(<span class="var">function</span>)) {
+        <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CANNOT_APPLY</span>);
     }
-}
-\end{code:c}</p>
 
+    <span class="keyword">switch</span> (<span class="macro">SCM_2tag</span>(<span class="var">function</span>)) {
+      <span class="keyword">case</span> <span class="var">SCM_SUBR_TAG</span>: {
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>) = (<span class="macro">SCM_Unwrap</span>(<span class="var">function</span>)-><span class="var">subr</span>).<span class="var">behavior</span>;
+        <span class="type">long</span> <span class="var">arity</span> = (<span class="macro">SCM_Unwrap</span>(<span class="var">function</span>)-><span class="var">subr</span>).<span class="var">arity</span>;
+
+        <span class="comment">/* Фиксированная арность */</span>
+        <span class="keyword">if</span> (<span class="var">arity</span> >= <span class="num">0</span>) {
+            <span class="keyword">if</span> (<span class="var">arity</span> != <span class="var">number</span>) {
+                <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_WRONG_ARITY</span>);
+            }
+            <span class="keyword">if</span> (<span class="var">arity</span> == <span class="num">0</span>) {
+                <span class="keyword">return</span> <span class="var">behavior</span>();
+            }
+            <span class="keyword">else</span> {
+                <span class="type">SCM</span> <span class="var">result</span>;
+                <span class="type">va_list</span> <span class="var">args</span>;
+                <span class="macro">va_start</span>(<span class="var">args</span>, <span class="var">number</span>);
+                <span class="keyword">switch</span> (<span class="var">number</span>) {
+                  <span class="keyword">case</span> <span class="num">1</span>: {
+                    <span class="type">SCM</span> <span class="var">a0</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="var">result</span> = ((<span class="type">SCM</span> (*)(<span class="type">SCM</span>)) <span class="var">behavior</span>)(<span class="var">a0</span>);
+                    <span class="keyword">break</span>;
+                  }
+                  <span class="keyword">case</span> <span class="num">2</span>: {
+                    <span class="type">SCM</span> <span class="var">a0</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="type">SCM</span> <span class="var">a1</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="var">result</span> = ((<span class="type">SCM</span> (*)(<span class="type">SCM</span>, <span class="type">SCM</span>)) <span class="var">behavior</span>)(<span class="var">a0</span>, <span class="var">a1</span>);
+                    <span class="keyword">break</span>;
+                  }
+                  <span class="keyword">case</span> <span class="num">3</span>: {
+                    <span class="type">SCM</span> <span class="var">a0</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="type">SCM</span> <span class="var">a1</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="type">SCM</span> <span class="var">a2</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+                    <span class="var">result</span> = ((<span class="type">SCM</span> (*)(<span class="type">SCM</span>,<span class="type">SCM</span>,<span class="type">SCM</span>)) <span class="var">behavior</span>)
+                             (<span class="var">a0</span>, <span class="var">a1</span>, <span class="var">a2</span>);
+                    <span class="keyword">break</span>;
+                  }
+                  <span class="keyword">default</span>:
+                    <span class="comment">/* Не существует примитивов большей арности */</span>
+                    <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_INTERNAL</span>);
+                }
+                <span class="macro">va_end</span>(<span class="var">args</span>);
+                <span class="keyword">return</span> <span class="var">result</span>;
+            }
+        }
+        <span class="comment">/* Переменная арность */</span>
+        <span class="keyword">else</span> {
+            <span class="keyword">if</span> (<span class="var">number</span> &lt; <span class="macro">SCM_MinimalArity</span>(<span class="var">arity</span>)) {
+                <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_MISSING_ARGS</span>);
+            }
+            <span class="keyword">else</span> {
+                <span class="type">SCM</span> <span class="var">result</span>;
+                <span class="type">va_list</span> <span class="var">args</span>;
+                <span class="macro">va_start</span>(<span class="var">args</span>, <span class="var">number</span>);
+                <span class="var">result</span> = ((<span class="type">SCM</span> (*)(<span class="type">unsigned</span> <span class="type">long</span>, <span class="type">va_list</span>)) <span class="var">behavior</span>)
+                         (<span class="var">number</span>, <span class="var">args</span>);
+                <span class="macro">va_end</span>(<span class="var">args</span>);
+                <span class="keyword">return</span> <span class="var">result</span>;
+            }
+        }
+      }
+
+      <span class="keyword">case</span> <span class="var">SCM_CLOSURE_TAG</span>: {
+        <span class="type">SCM</span> <span class="var">result</span>;
+        <span class="type">va_list</span> <span class="var">args</span>;
+        <span class="type">SCM</span> (*<span class="var">behavior</span>)(<span class="type">void</span>) =
+                (<span class="macro">SCM_Unwrap</span>(<span class="var">function</span>)-><span class="var">closure</span>).<span class="var">behavior</span>;
+        <span class="type">long</span> <span class="var">arity</span> = (<span class="macro">SCM_Unwrap</span>(<span class="var">function</span>)-><span class="var">closure</span>).<span class="var">arity</span>;
+
+        <span class="keyword">if</span> (<span class="var">arity</span> >= <span class="num">0</span> &amp;&amp; <span class="var">number</span> != <span class="var">arity</span>) {
+            <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_WRONG_ARITY</span>);
+        }
+        <span class="keyword">if</span> (<span class="var">number</span> &lt; SCM_MinimalArity(<span class="var">arity</span>)) {
+            <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_MISSING_ARGS</span>);
+        }
+
+        <span class="macro">va_start</span>(<span class="var">args</span>, <span class="var">number</span>);
+        <span class="var">result</span> = ((<span class="type">SCM</span> (*)(<span class="type">SCM</span>, <span class="type">unsigned</span> <span class="type">long</span>, <span class="type">va_list</span>)) <span class="var">behavior</span>)
+                 (<span class="var">function</span>, <span class="var">number</span>, <span class="var">args</span>);
+        <span class="macro">va_end</span>(<span class="var">args</span>);
+        <span class="keyword">return</span> <span class="var">result</span>;
+      }
+
+      <span class="comment">/* Невызываемо! */</span>
+      <span class="keyword">default</span>:
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CANNOT_APPLY</span>);
+    }
+}</pre>
 
 <!--\indexR{переменная арность!в Си}-->
 <!--\indexC{CALL-ARGUMENTS-LIMIT}-->
 <p>Реализация примитива <code><span class="func">apply</span></code> имеет сравнимые размеры. Так как это примитив
-переменной арности, то свои аргументы он получает в виде <code><span class="func">va\_list</span></code>,
+переменной арности, то свои аргументы он получает в виде <code class="c"><span class="type">va_list</span></code>,
 содержащего применяемую функцию и список аргументов для неё. Но здесь возникает
-проблема с тем, что в C90 отсутствует\trnote{В C99 появился макрос
-<code><span class="func">va\_copy</span></code>, позволяющий сделать это безопасно.} способ передать другой
-функции аргументы, оставшиеся в <code><span class="func">va\_list</span></code>. Что ж, придётся с этим смириться
+проблема с тем, что в C90 отсутствует<a class="footref" href="zz_footnotes.xhtml#foot10.tr-2"><sup>**</sup></a> способ передать другой
+функции аргументы, оставшиеся в <code class="c"><span class="type">va_list</span></code>. Что ж, придётся с этим смириться
 и разбирать все возможные арности вручную. Печально, конечно, но нам придётся
 ограничить максимальное количество аргументов <code><span class="func">apply</span></code>. Стандартизацией
 <span class="logo">Common Lisp</span> однозначно руководили реалисты, поэтому там определена специальная
-константа <code><span class="func">CALL-ARGUMENTS-LIMIT</span></code>, хранящая максимально допустимое количество
-аргументов. По стандарту она не может быть меньше 50. Мы ограничимся\footnote{%
-Если вам здесь видится нечеловеческое ущемление прав, то сперва узнайте предел
-вашей любимой реализации Scheme.} всего 14, из которых здесь покажем обработку
+константа <code><span class="var">CALL-ARGUMENTS-LIMIT</span></code>, хранящая максимально допустимое количество
+аргументов. По стандарту она не может быть меньше 50. Мы ограничимся<a class="footref" href="zz_footnotes.xhtml#foot10.11"><sup>11</sup></a> всего 14, из которых здесь покажем обработку
 лишь первых четырёх.</p>
-
 
 <!--\indexC{apply}-->
 <!--\indexC*{SCM_apply}{SCM\_apply}-->
-<p>\begin{code:c}
-SCM SCM_apply(unsigned long number, va_list arguments)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_apply</span>(<span class="type">unsigned</span> <span class="type">long</span> <span class="var">number</span>, <span class="type">va_list</span> <span class="var">arguments</span>)
 {
-    unsigned long i;
-    SCM args[31];
-    SCM last_arg;
-    SCM fun = va_arg(arguments, SCM);</p>
+    <span class="type">unsigned</span> <span class="type">long</span> <span class="var">i</span>;
+    <span class="type">SCM</span> <span class="var">args</span>[<span class="num">31</span>];
+    <span class="type">SCM</span> <span class="var">last_arg</span>;
+    <span class="type">SCM</span> <span class="var">fun</span> = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
 
-<p>    for (i = 0; i < number - 1; i++) {
-        args[i] = va_arg(arguments, SCM);
+    <span class="keyword">for</span> (<span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">number</span> - <span class="num">1</span>; <span class="var">i</span>++) {
+        <span class="var">args</span>[<span class="var">i</span>] = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
     }
-    last_arg = args[--i];
-    while (SCM_PairP(last_arg)) {
-        args[i++] = SCM_Car(last_arg);
-        last_arg = SCM_Cdr(last_arg);
+    <span class="var">last_arg</span> = <span class="var">args</span>[--<span class="var">i</span>];
+    <span class="keyword">while</span> (<span class="macro">SCM_PairP</span>(<span class="var">last_arg</span>)) {
+        <span class="var">args</span>[<span class="var">i</span>++] = <span class="macro">SCM_Car</span>(<span class="var">last_arg</span>);
+        <span class="var">last_arg</span> = <span class="macro">SCM_Cdr</span>(<span class="var">last_arg</span>);
     }
-    if (!SCM_NullP(last_arg)) {
-        SCM_error(SCM_ERR_APPLY_ARG);
-    }</p>
+    <span class="keyword">if</span> (!<span class="macro">SCM_NullP</span>(<span class="var">last_arg</span>)) {
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_APPLY_ARG</span>);
+    }
 
-<p>    switch (i) {
-      case 0: return SCM_invoke(fun, 0);
-      case 1: return SCM_invoke(fun, 1, args[0]);
-      case 2: return SCM_invoke(fun, 2, args[0], args[1]);
-      case 3: return SCM_invoke(fun, 3, args[0], args[1], args[2]);
-      /* ... */
-      default: return SCM_error(SCM_ERR_APPLY_SIZE);
+    <span class="keyword">switch</span> (<span class="var">i</span>) {
+      <span class="keyword">case</span> <span class="num">0</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">0</span>);
+      <span class="keyword">case</span> <span class="num">1</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">1</span>, <span class="var">args</span>[<span class="num">0</span>]);
+      <span class="keyword">case</span> <span class="num">2</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">2</span>, <span class="var">args</span>[<span class="num">0</span>], <span class="var">args</span>[<span class="num">1</span>]);
+      <span class="keyword">case</span> <span class="num">3</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">3</span>, <span class="var">args</span>[<span class="num">0</span>], <span class="var">args</span>[<span class="num">1</span>], <span class="var">args</span>[<span class="num">2</span>]);
+      <span class="comment">/* ... */</span>
+      <span class="keyword">default</span>: <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_APPLY_SIZE</span>);
     }
-}
-\end{code:c}</p>
+}</pre>
 
 <p>Всё равно C90 не поддерживает более 32 параметров функций, так что на 50 в нашем
 случае можно и не надеяться. Пуристы, наверное, уже давно обратили внимание на
-(ненужную?) проверку того, что в конце списка аргументов <code><span class="func">apply</span></code>
-действительно находится <code>()</code>.</p>
+(ненужную?) проверку того, что в конце списка аргументов
+<code><span class="func">apply</span></code>
+действительно находится <code><span class="hash">()</span></code>.</p>
 
 <div class="bigskip"/>
-
 
 <!--\indexR{хвостовые вызовы}-->
 <!--\indexR{вызов!хвостовой}-->
 <p>Существенной проблемой прямого использования функций Си является то, что Си
 не гарантирует оптимизацию хвостовых вызовов. Поэтому некоторые программы, без
 проблем выполняющиеся на Scheme, при буквальном переводе на Си будут умирать
-от переполнения стека. Некоторые компиляторы Scheme в Си (например, Scheme$\to$C
+от переполнения стека. Некоторые компиляторы Scheme в Си (например, Scheme<span class="math"><span class="rel">→</span></span>C
 или Bigloo) применяют множество хитроумных алгоритмов, чтобы избежать подобных
 аварий. Они генерируют специальный код для рекурсии, итерации через рекурсию
 и так далее, но, к сожалению, абсолютно все варианты предусмотреть невозможно,
 и обязательно найдётся программа, которая всё сломает. Альтернативным решением
 является отказ от использования стека Си для представления продолжений Scheme.</p>
 
-<p>
-\section{\texorpdfstring{\protect<code><span class="func">call/cc</span></code>: быть или не быть}%
-{call/cc: быть или не быть}}%
-\label{cc/sect:call/cc}</p>
+
+<h2 id="cc/sect:call/cc"><span class="seq">10.11.</span> <code><span class="func">call/cc</span></code>: быть или не быть</h2>
 
 <p>Мы только что закончили рассмотрение принципов компиляции основной части
 конструкций Scheme в программы на Си. Несмотря на то, что многие стандартные
 функции не реализованы, важнейшие из них всё же присутствуют (хоть, возможно,
 и не в самом эффективном виде). Все, кроме функций для работы с продолжениями.
-Для начала мы реализуем функцию <code><span class="func">call/ep</span></code>, предоставляющую продолжения
-с динамическим временем жизни, как в Лиспе. Она будет использовать
-<code><span class="func">setjmp</span></code>\slash<code><span class="func">longjmp</span></code>.</p>
+Для начала мы реализуем функцию <code><span class="func">call/ep</span></code>,
+предоставляющую продолжения с динамическим временем жизни, как в Лиспе. Она будет
+использовать <code class="c"><span class="func">setjmp</span></code>/<code><span class="func">longjmp</span></code>.</p>
 
 <p>Во второй же части данного раздела мы разберёмся с тем, как реализовать
 на Си истинно неограниченные продолжения Scheme.</p>
 
-<p>
-\subsection{\texorpdfstring{Функция \protect<code><span class="func">call/ep</span></code>}{Функция call/ep}}%
-\label{cc/call/cc/ssect:ep}</p>
 
+<h3 id="cc/call/cc/ssect:ep"><span class="seq">10.11.1.</span> Функция <code><span class="func">call/ep</span></code></h3>
 
 <!--\indexC{call/ep}-->
 <!--\indexC{setjmp}-->
 <!--\indexC{longjmp}-->
-<p>Функция <code><span class="func">call/ep</span></code> во всём идентична <code><span class="func">call/cc</span></code>, за исключением того, что
+<p>Функция <code><span class="func">call/ep</span></code> во всём идентична
+<code><span class="func">call/cc</span></code>, за исключением того, что
 продолжения, создаваемые ею, хоть и являются полноценными объектами Scheme, но
-не могут быть использованы вне соответствующей формы <code><span class="func">call/ep</span></code>, которая
+не могут быть использованы вне соответствующей формы
+<code><span class="func">call/ep</span></code>, которая
 ограничивает время их жизни временем исполнения собственного тела.
-\seePage[escape/sect:comparing] Для её реализации применяется подход,
+<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/sect:comparing">3.5</a>]</span>
+Для её реализации применяется подход,
 аналогичный показанному в седьмой главе, где в стек помещалась специальная
 метка, служившая точкой прибытия для продолжений. Теперь такой меткой будет
-локальная переменная типа <code><span class="func">jmp\_buf</span></code>. Вот необходимые для этого функции:</p>
-
+локальная переменная типа <code class="c"><span class="type">jmp_buf</span></code>. Вот необходимые для этого функции:</p>
 
 <!--\indexC*{SCM_allocate_continuation}{SCM\_allocate\_continuation}-->
 <!--\indexC*{SCM_jmp_buf}{SCM\_jmp\_buf}-->
 <!--\indexC*{SCM_callep}{SCM\_callep}-->
-<p>\begin{code:c}
-SCM SCM_allocate_continuation(struct SCM_jmp_buf *address)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_allocate_continuation</span>(<span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> *<span class="var">address</span>)
 {
-    SCMref continuation = malloc(sizeof(struct SCM_unwrapped_escape));
-    if (!continuation)
+    <span class="type">SCMref</span> <span class="var">continuation</span> = <span class="func">malloc</span>(<span class="keyword">sizeof</span>(<span class="keyword">struct</span> <span class="type">SCM_unwrapped_escape</span>));
+    <span class="keyword">if</span> (!<span class="var">continuation</span>)
     {
-        SCM_error(SCM_ERR_CANT_ALLOC);
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_CANT_ALLOC</span>);
     }
-`\ForLayout{display}{\vskip-0.25\baselineskip}`
-    continuation->escape.header.tag    = SCM_ESCAPE_TAG;
-    continuation->escape.stack_address = address;
-    return SCM_Wrap(continuation);
-}
-`\ForLayout{display}{\vskip-0.25\baselineskip}`
-struct SCM_jmp_buf {
-    SCM back_pointer;
-    SCM jumpvalue;
-    jmp_buf xen;
-};
-`\ForLayout{display}{\vskip-0.25\baselineskip}`
-SCM SCM_callep(SCM f)
-{
-    struct SCM_jmp_buf scmjb;
-    SCM continuation = SCM_allocate_continuation(&scmjb);
-    scmjb.back_pointer = continuation;
-`\ForLayout{display}{\vskip-0.25\baselineskip}`
-    if (setjmp(scmjb.xen)) {
-        return scmjb.jumpvalue;
-    }
-    else {
-        return SCM_invoke1(f, continuation);
-    }
-}
-\end{code:c}</p>
 
+    <span class="var">continuation</span>-><span class="var">escape</span>.<span class="var">header</span>.<span class="var">tag</span>    = <span class="var">SCM_ESCAPE_TAG</span>;
+    <span class="var">continuation</span>-><span class="var">escape</span>.<span class="var">stack_address</span> = <span class="var">address</span>;
+    <span class="keyword">return</span> <span class="macro">SCM_Wrap</span>(<span class="var">continuation</span>);
+}
+
+<span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> {
+    <span class="type">SCM</span> <span class="var">back_pointer</span>;
+    <span class="type">SCM</span> <span class="var">jumpvalue</span>;
+    <span class="type">jmp_buf</span> <span class="var">xen</span>;
+};
+
+<span class="type">SCM</span> <span class="func">SCM_callep</span>(<span class="type">SCM</span> <span class="var">f</span>)
+{
+    <span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> <span class="var">scmjb</span>;
+    <span class="type">SCM</span> <span class="var">continuation</span> = <span class="func">SCM_allocate_continuation</span>(&amp;<span class="var">scmjb</span>);
+    <span class="var">scmjb</span>.<span class="var">back_pointer</span> = <span class="var">continuation</span>;
+
+    <span class="keyword">if</span> (<span class="func">setjmp</span>(<span class="var">scmjb</span>.<span class="var">xen</span>)) {
+        <span class="keyword">return</span> <span class="var">scmjb</span>.<span class="var">jumpvalue</span>;
+    }
+    <span class="keyword">else</span> {
+        <span class="keyword">return</span> <span class="func">SCM_invoke1</span>(<span class="var">f</span>, <span class="var">continuation</span>);
+    }
+}</pre>
 
 <!--\indexR{стек!направление роста}-->
-<p>Активация продолжений обрабатывается функцией <code><span class="func">SCM\_invoke</span></code>, которая перед
+<p>Активация продолжений обрабатывается функцией
+<code class="c"><span class="func">SCM_invoke</span></code>, которая перед
 выполнением перехода ещё проверит арность вызова. Следующий фрагмент кода,
 реализующий данную обработку, должен быть добавлен в приведённое ранее
-определение <code><span class="func">SCM\_invoke</span></code>. Перед выполнением перехода достаточно (ввиду
-отсутствия форм <code><span class="func">unwind-protect</span></code>) убедиться в том, что продолжение указывает
-на соответствующий ему <code><span class="func">jmp\_buf</span></code>, а мы находимся <em>выше</em> этого
-<code><span class="func">jmp\_buf</span></code> на стеке. К сожалению, для второй проверки необходимо знать
-направление роста стека. Будем считать, что макрос <code><span class="func">SCM\_STACK\_HIGHER</span></code>
+определение <code class="c"><span class="func">SCM_invoke</span></code>.
+Перед выполнением перехода достаточно (ввиду
+отсутствия форм <code><span class="special">unwind-protect</span></code>)
+убедиться в том, что продолжение указывает
+на соответствующий ему <code class="c"><span class="type">jmp_buf</span></code>,
+а мы находимся <em>выше</em> этого
+<code class="c"><span class="type">jmp_buf</span></code> на стеке. К сожалению,
+для второй проверки необходимо знать
+направление роста стека. Будем считать, что макрос
+<code class="c"><span class="macro">SCM_STACK_HIGHER</span></code>
 раскрывается в соответствующее отношение порядка. Определение этого макроса,
 естественно, возлагается на реализацию; благо, нужную информацию легко получить
 небольшой программкой на абсолютно портируемом Си. Обычно (по крайней мере
-в \UNIX) стек растёт вниз, поэтому можете считать, что <code><span class="func">SCM\_STACK\_HIGHER</span></code>
-раскрывается в <code><span class="func"><=</span></code>.</p>
-
+в UNIX) стек растёт вниз, поэтому можете считать, что
+<code class="c"><span class="macro">SCM_STACK_HIGHER</span></code>
+раскрывается в <code class="c">&lt;=</code>.</p>
 
 <!--\indexC*{SCM_invoke}{SCM\_invoke}-->
-<p>\begin{code:c}
-    case SCM_ESCAPE_TAG:
-      if (number == 1) {
-          struct SCM_jmp_buf *address =
-              SCM_Unwrap(function)->escape.stack_address;
-          if (SCM_EqP(address->back_pointer, function) &&
-              ((void*) &address SCM_STACK_HIGHER (void*) address))
+<pre class="c">    <span class="keyword">case</span> <span class="var">SCM_ESCAPE_TAG</span>:
+      <span class="keyword">if</span> (<span class="var">number</span> == <span class="num">1</span>) {
+          <span class="keyword">struct</span> <span class="type">SCM_jmp_buf</span> *<span class="var">address</span> =
+              <span class="macro">SCM_Unwrap</span>(<span class="var">function</span>)-><span class="var">escape</span>.<span class="var">stack_address</span>;
+          <span class="keyword">if</span> (<span class="macro">SCM_EqP</span>(<span class="var">address</span>-><span class="var">back_pointer</span>, <span class="var">function</span>) &amp;&amp;
+              ((<span class="type">void</span>*) &amp;<span class="var">address</span> <span class="macro">SCM_STACK_HIGHER</span> (<span class="type">void</span>*) <span class="var">address</span>))
           {
-              va_list args;
-              va_start(args, number);
-              address->jumpvalue = va_arg(args, SCM);
-              va_end(args);
-              longjmp(address->xen, 9);
+              <span class="type">va_list</span> <span class="var">args</span>;
+              <span class="macro">va_start</span>(<span class="var">args</span>, <span class="var">number</span>);
+              <span class="var">address</span>-><span class="var">jumpvalue</span> = <span class="macro">va_arg</span>(<span class="var">args</span>, <span class="type">SCM</span>);
+              <span class="macro">va_end</span>(<span class="var">args</span>);
+              <span class="func">longjmp</span>(<span class="var">address</span>-><span class="var">xen</span>, <span class="num">9</span>);
           }
-          else {
-              /* `Слишком поздно!` */
-              return SCM_error(SCM_ERR_OUT_OF_EXTENT);
+          <span class="keyword">else</span> {
+              <span class="comment">/* Слишком поздно! */</span>
+              <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_OUT_OF_EXTENT</span>);
           }
       }
-      else {
-          return SCM_error(SCM_ERR_MISSING_ARGS);
-      }
-\end{code:c}</p>
+      <span class="keyword">else</span> {
+          <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_MISSING_ARGS</span>);
+      }</pre>
 
 <p>Эффективность <code><span class="func">call/ep</span></code>, о которой говорилось при рассмотрении компилятора
 в байт-код, сейчас несколько приуменьшилась, так как переходы с помощью
-<code><span class="func">longjmp</span></code> печально известны своей «стремительностью». Они неплохи для
+<code class="c"><span class="func">longjmp</span></code> печально известны своей «стремительностью». Они неплохи для
 реализации исключений, но при постоянном использовании существенно замедляют
 исполнение программ. Однако, мы лишь хотели показать пример интеграции Лиспа
 и Си, поэтому ничего особо страшного в этом нет.</p>
 
-<p>
-\subsection{\texorpdfstring{Функция \protect<code><span class="func">call/cc</span></code>}{Функция call/cc}}%
-\label{cc/call/cc/ssect:cc}</p>
 
+<h3 id="cc/call/cc/ssect:cc"><span class="seq">10.11.2.</span> Функция <code><span class="func">call/cc</span></code></h3>
 
 <!--\indexC{call/cc}-->
 <p>Ура! Если вы скучаете по настоящим продолжениям, то скоро ваши мечты сбудутся.
@@ -2877,36 +2767,36 @@ SCM SCM_callep(SCM f)
 этого необходимо знать, как здесь устроен стек. Проблема в том, что в Си нет
 переносимого способа взаимодействия с ним. Вернее, нет <em>простого</em> способа
 — всегда можно написать кучу платформоспецифичных вариантов и выбирать из них
-нужный с помощью <code><span class="func">\#ifdef</span></code>. Для этой книги такой вариант не подходит, так что
+нужный с помощью <code class="c"><span class="pre">#ifdef</span></code>. Для этой книги такой вариант не подходит, так что
 попробуем подойти с другой стороны: приведём программу к стилю передачи
 продолжений (CPS). Тогда и продолжения будут как на ладони, и компилятор
 останется почти неизменным.</p>
 
-<h4 id="cc/call/cc/cc/ssect:explicit">Делаем продолжения явными</h4>
 
+<h4 id="cc/call/cc/cc/ssect:explicit">Делаем продолжения явными</h4>
 
 <!--\indexE{CPS}-->
 <!--\indexR{преобразование!в CPS}-->
 <!--\indexR{стиль передачи продолжений (CPS)!CPS-преобразование}-->
 <p>Предлагаемое преобразование эквивалентно показанному ранее, только выполняется
-оно с помощью нового обходчика кода \seePage[denotational/lambdify/ssect:cps]
+оно с помощью нового обходчика кода.
+<span class="see">[см. раздел <a href="ch05_denotational_semantics.xhtml#denotational/lambdify/ssect:cps">5.9.1</a>]</span>
 Работа ведётся над уже объектифицированным исходным кодом.</p>
 
 <p>У CPS-преобразования, выполняемого в лоб, есть недостаток: оно очень щедро
-использует <code><span class="func">let</span></code>-формы, но при этом не заботится об эффективности и
+использует <code><span class="syntax">let</span></code>-формы, но при этом не заботится об эффективности и
 представляет их так называемыми административными редексами. Поэтому после
 выполнения этого преобразования мы ещё раз пройдёмся по коду, возвращая
 программу во вменяемый вид. Этим займётся функция <code><span class="func">letify</span></code>. Итак, ядро
 компилятора с поддержкой продолжений:</p>
 
-
 <!--\indexC{compile->C}-->
-<pre>(define (compile->C e out)
-  (set! g.current '())
-  (let* ((ee (letify (cpsify (Sexp->object e)) '()))
-         (prg (extract-things! (lift! ee))) )
-    (gather-temporaries! (closurize-main! prg))
-    (generate-C-program out e prg) ) )</pre>
+<pre>(<span class="special">define</span> (<span class="func">compile-&gt;C</span> <span class="var">e</span> <span class="var">out</span>)
+  (<span class="special">set!</span> <span class="var">g.current</span> <span class="hash">'()</span>)
+  (<span class="syntax">let*</span> ((<span class="var">ee</span> (<span class="func">letify</span> (<span class="func">cpsify</span> (<span class="func">Sexp-&gt;object</span> <span class="var">e</span>)) <span class="hash">'()</span>))
+         (<span class="var">prg</span> (<span class="func">extract-things!</span> (<span class="func">lift!</span> <span class="var">ee</span>))) )
+    (<span class="func">gather-temporaries!</span> (<span class="func">closurize-main!</span> <span class="var">prg</span>))
+    (<span class="func">generate-C-program</span> <span class="var">out</span> <span class="var">e</span> <span class="var">prg</span>) ) )</pre>
 
 <p>Извлечение продолжений выполняет функция <code><span class="func">cpsify</span></code>. Она организует совместную
 работу обходчика <code><span class="func">update-walk!</span></code> и функции <code><span class="func">->CPS</span></code>. Также нам понадобятся
