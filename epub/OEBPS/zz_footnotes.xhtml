@@ -1021,6 +1021,97 @@
 
 <h1><span class="seq">Глава 11.</span> Квинтэссенция объектной системы</h1>
 
+<div class="footnote" id="foot11.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вообще так звали плюшевого мишку моего сына, но если хотите, можете считать это
+    имя акронимом и придумать ему какую-нибудь расшифровку.</p>
+</div>
+
+<div class="footnote" id="foot11.2">
+  <p><span class="num"><sup>2</sup></span>
+    Полные исходные коды обеих систем — <span class="logo">Meroon</span> и
+    <span class="logo">Meroonet</span> —
+    можно найти на сервере, адрес которого приведён <a href="01_preface.xhtml#pref/sect:source">в предисловии</a>.</p>
+</div>
+
+<div class="footnote" id="foot11.3">
+  <p><span class="num"><sup>3</sup></span>
+    Кроме того такой подход немного помогает сборщику мусора:
+    ему теперь надо проверять и запоминать на одну ссылку меньше.</p>
+</div>
+
+<div class="footnote" id="foot11.4">
+  <p><span class="num"><sup>4</sup></span>
+    Конечно, как вариант, можно было бы схитрить и воспользоваться тем, что любой объект
+    <span class="logo">Meroonet</span> — это уже фактически вектор, только из-за ссылки на класс
+    в начале следует вносить небольшую поправку при индексации.</p>
+</div>
+
+<div class="footnote" id="foot11.5">
+  <p><span class="num"><sup>5</sup></span>
+    Звёздочка используется в качестве
+    символа повторения, как это принято в нотации регулярных выражений, где данный
+    символ означает замыкание Клини.</p>
+</div>
+
+<div class="footnote" id="foot11.6">
+  <p><span class="num"><sup>6</sup></span>
+    Эта функция аналогична функции <code><span class="func">class-of</span></code> из
+    <span class="logo">Common Lisp</span>, <span class="logo">EuLisp</span> и
+    <span class="logo">ISLisp</span>. Как обычно, мы назвали её по-другому,
+    чтобы избежать ложных ассоциаций и позволить использовать несколько объектных
+    систем одновременно.</p>
+</div>
+
+<div class="footnote" id="foot11.7">
+  <p><span class="num"><sup>7</sup></span>
+    Несмотря на то, что индексированные поля состоят из
+    нескольких значений, имена им лучше давать в единственном числе. Тогда выражения
+    вида <code>(<span class="func">ColoredPolygon-side</span> <i>o</i> <i>i</i>)</code>
+    читаются естественнее: «<i>i</i>-я сторона цветного многоугольника <i>o</i>». Слово
+    <code><span class="func">sides</span></code>
+    выглядело бы тут странно, ведь мы обращаемся к одной стороне, а не нескольким.</p>
+</div>
+
+<div class="footnote" id="foot11.8">
+  <p><span class="num"><sup>8</sup></span>
+    Вспомните, что в Scheme нельзя ни создавать, ни обращаться к переменным с динамически
+    вычисляемыми именами. Все имена всех используемых переменных после раскрытия
+    макросов должны быть записаны прямым текстом.</p>
+</div>
+
+<div class="footnote" id="foot11.9">
+  <p><span class="num"><sup>9</sup></span>
+    <span class="logo">Meroonet</span> не придаёт чёткого смысла переопределению классов,
+    поэтому не стоит лишний раз искушать судьбу.</p>
+</div>
+
+<div class="footnote" id="foot11.10">
+  <p><span class="num"><sup>10</sup></span>
+    На самом деле в <span class="logo">Meroon</span> всё немного сложнее: модификатор
+    <code><span class="syntax">:prototype</span></code> раскрывается в проверку того,
+    что к моменту исполнения программы реальный класс был создан и написанный прототип
+    ему соответствует.</p>
+</div>
+
+<div class="footnote" id="foot11.11">
+  <p><span class="num"><sup>11</sup></span>
+    Лисп вообще не гарантирует, что вычисление этой формы будет
+    завершено, а в Scheme она вполне может вернуть несколько значений вместо
+    предполагаемого одного.</p>
+</div>
+
+<div class="footnote" id="foot11.12">
+  <p><span class="num"><sup>12</sup></span>
+    Например, форма <code><span class="syntax">define-method</span></code>
+    явно указывает тип дискриминирующего аргумента.</p>
+</div>
+
+<div class="footnote" id="foot11.13">
+  <p><span class="num"><sup>13</sup></span>
+    По крайней мере, в стандарте R<sup>5</sup>RS, который взят за основу в этой книге.</p>
+</div>
+
 
 </body>
 </html>
