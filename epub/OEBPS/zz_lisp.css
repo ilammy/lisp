@@ -193,3 +193,15 @@ pre.shell span.arg { color: #307070; }
 blockquote.equation span.eqno{
   float: right;
 }
+
+table.numbered-source td {
+  vertical-align: top;
+}
+
+table.numbered-source td.lines {
+  text-align: right;
+}
+
+table.numbered-source span.lineno {
+  color: red;
+}

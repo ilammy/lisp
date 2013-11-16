@@ -876,7 +876,7 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
   (<span class="syntax">let</span> ((<span class="var">cname</span> (<span class="func">mapcan</span> <span class="var">convert-char</span> (<span class="func">string-&gt;list</span> <span class="var">str</span>))))
     (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">cname</span>)
         (<span class="func">list-&gt;string</span> <span class="var">cname</span>)
-        <span class="strign">"weird"</span> ) ) )</pre>
+        <span class="string">"weird"</span> ) ) )</pre>
 
 <p>Единичные подчёркивания гарантированно не встречаются в генерируемых именах,
 поэтому их можно спокойно использовать для именования разнообразных внутренних
@@ -1683,7 +1683,88 @@ coalescing); это известная оптимизация <span class="cite"
 
 <div class="snippet" id="cc/gen/init/src:result]">
   <span class="title">o/chap10ex.c</span>
-<pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
+<table class="numbered-source"><tr>
+<td class="lines"><pre>
+
+
+
+<span class="lineno">5</span>
+
+
+
+
+<span class="lineno">10</span>
+
+
+
+
+<span class="lineno">15</span>
+
+
+
+
+<span class="lineno">20</span>
+
+
+
+
+<span class="lineno">25</span>
+
+
+
+
+<span class="lineno">30</span>
+
+
+
+
+<span class="lineno">35</span>
+
+
+
+
+<span class="lineno">40</span>
+
+
+
+
+<span class="lineno">45</span>
+
+
+
+
+<span class="lineno">50</span>
+
+
+
+
+<span class="lineno">55</span>
+
+
+
+
+<span class="lineno">60</span>
+
+
+
+
+<span class="lineno">65</span>
+
+
+
+
+<span class="lineno">70</span>
+
+
+
+
+<span class="lineno">75</span>
+
+
+
+
+<span class="lineno">80</span></pre></td>
+<td><pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
 (BEGIN
   (SET! INDEX 1)
   ((LAMBDA
@@ -1764,7 +1845,7 @@ coalescing); это известная оптимизация <span class="cite"
     <span class="keyword">return</span> <span class="num">0</span>;
 }
 
-<span class="comment">/* End of generated code */</span></pre></div>
+<span class="comment">/* End of generated code */</span></pre></td></tr></table></div>
 
 <p>Также стоит взглянуть на функции <code class="c"><span class="func">function_1</span></code> и <code class="c"><span class="func">function_2</span></code> в раскрытом
 виде, без макросов (кроме <code class="c"><span class="macro">va_arg</span></code>). Остальные выражения раскрываются
@@ -2182,7 +2263,8 @@ text    data    bss     dec     hex
 <span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQ</span>,   <span class="string">"EQ?"</span>,  <span class="num">2</span>, <span class="func">SCM_eqp</span>);</pre>
 
 <p>Значения изменяемых глобальных переменных размещаются в коробках. Просмотр или
-изменение подобных значений выполняются с помощью макроса <code><span class="func">SCM\_Content</span></code>,
+изменение подобных значений выполняются с помощью макроса
+<code class="c"><span class="macro">SCM_Content</span></code>,
 определяемого следующим образом:</p>
 
 <!--\indexC*{SCM_Content}{SCM\_Content}-->
@@ -3140,7 +3222,148 @@ CPS-преобразование выдаст что-то вроде <code>(<spa
 
 <div class="snippet" id="cc/call/cc/cc/example/src:subj">
   <span class="title">o/chap10kex.c</span>
-<pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
+<table class="numbered-source"><tr>
+<td class="lines"><pre>
+
+
+
+<span class="lineno">5</span>
+
+
+
+
+<span class="lineno">10</span>
+
+
+
+
+<span class="lineno">15</span>
+
+
+
+
+<span class="lineno">20</span>
+
+
+
+
+<span class="lineno">25</span>
+
+
+
+
+<span class="lineno">30</span>
+
+
+
+
+<span class="lineno">35</span>
+
+
+
+
+<span class="lineno">40</span>
+
+
+
+
+<span class="lineno">45</span>
+
+
+
+
+<span class="lineno">50</span>
+
+
+
+
+<span class="lineno">55</span>
+
+
+
+
+<span class="lineno">60</span>
+
+
+
+
+<span class="lineno">65</span>
+
+
+
+
+<span class="lineno">70</span>
+
+
+
+
+<span class="lineno">75</span>
+
+
+
+
+<span class="lineno">80</span>
+
+
+
+
+<span class="lineno">85</span>
+
+
+
+
+<span class="lineno">90</span>
+
+
+
+
+<span class="lineno">95</span>
+
+
+
+
+<span class="lineno">100</span>
+
+
+
+
+<span class="lineno">105</span>
+
+
+
+
+<span class="lineno">110</span>
+
+
+
+
+<span class="lineno">115</span>
+
+
+
+
+<span class="lineno">120</span>
+
+
+
+
+<span class="lineno">125</span>
+
+
+
+
+<span class="lineno">130</span>
+
+
+
+
+<span class="lineno">135</span>
+
+
+
+
+<span class="lineno">140</span></pre></td>
+<td><pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
 (BEGIN
   (SET! INDEX 1)
   ((LAMBDA
@@ -3279,7 +3502,7 @@ CPS-преобразование выдаст что-то вроде <code>(<spa
     <span class="keyword">return</span> <span class="num">0</span>;
 }
 
-<span class="comment">/* End of generated code */</span></pre></div>
+<span class="comment">/* End of generated code */</span></pre></td></tr></table></div>
 
 <p>Как видите, размер получаемого файла вырос с 80 строк до 140. Функций стало
 в два раза больше (шесть вместо трёх), да и локальных переменных им теперь
