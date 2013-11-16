@@ -2176,10 +2176,10 @@ text    data    bss     dec     hex
       {{<span class="var">SCM_SUBR_TAG</span>}, <span class="var">Cfunction</span>, <span class="var">arity</span>};                            \
   <span class="macro">SCM_DefineInitializedGlobalVariable</span>(<span class="var">subr</span>, <span class="var">string</span>, &amp;(<span class="var">subr</span><span class="pre">##</span><span class="var">_object</span>))
 
-<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CAR</span>,  <span class="string">"CAR"</span>,  <span class="num">1</span>, <span class="var">SCM_car</span>);
-<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CONS</span>, <span class="string">"CONS"</span>, <span class="num">2</span>, <span class="var">SCM_cons</span>);
-<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQN</span>,  <span class="string">"="</span>,    <span class="num">2</span>, <span class="var">SCM_eqnp</span>);
-<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQ</span>,   <span class="string">"EQ?"</span>,  <span class="num">2</span>, <span class="var">SCM_eqp</span>);</pre>
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CAR</span>,  <span class="string">"CAR"</span>,  <span class="num">1</span>, <span class="func">SCM_car</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CONS</span>, <span class="string">"CONS"</span>, <span class="num">2</span>, <span class="func">SCM_cons</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQN</span>,  <span class="string">"="</span>,    <span class="num">2</span>, <span class="func">SCM_eqnp</span>);
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">EQ</span>,   <span class="string">"EQ?"</span>,  <span class="num">2</span>, <span class="func">SCM_eqp</span>);</pre>
 
 <p>Значения изменяемых глобальных переменных размещаются в коробках. Просмотр или
 изменение подобных значений выполняются с помощью макроса <code><span class="func">SCM\_Content</span></code>,
@@ -2799,236 +2799,229 @@ text    data    bss     dec     hex
     (<span class="func">generate-C-program</span> <span class="var">out</span> <span class="var">e</span> <span class="var">prg</span>) ) )</pre>
 
 <p>Извлечение продолжений выполняет функция <code><span class="func">cpsify</span></code>. Она организует совместную
-работу обходчика <code><span class="func">update-walk!</span></code> и функции <code><span class="func">->CPS</span></code>. Также нам понадобятся
+работу обходчика <code><span class="func">update-walk!</span></code> и функции <code><span class="func">-&gt;CPS</span></code>. Также нам понадобятся
 два новых класса: класс продолжений, чтобы отличать обычные функции от
 функций-продолжений, и класс псевдопеременных, представляющих временные
 переменные неявно используемых (в исходном коде на Scheme) продолжений.</p>
-
 
 <!--\indexC{Continuation}-->
 <!--\indexC{Pseudo-Variable}-->
 <!--\indexC{cpsify}-->
 <!--\indexC{new-Variable}-->
-<pre>(define-class Continuation    Function ())
-(define-class Pseudo-Variable Local-Variable ())
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define (cpsify e)
-  (let ((v (new-Variable)))
-    (->CPS e (make-Continuation (list v) (make-Local-Reference v))) ) )
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define new-Variable
-  (let ((counter 0))
-    (lambda ()
-      (set! counter (+ 1 counter))
-      (make-Pseudo-Variable counter #f #f) ) ) )</pre>
+<pre>(<span class="syntax">define-class</span> <span class="class">Continuation</span>    <span class="class">Function</span> ())
+(<span class="syntax">define-class</span> <span class="class">Pseudo-Variable</span> <span class="class">Local-Variable</span> ())
 
-<p>Функция <code><span class="func">->CPS</span></code> первым аргументом принимает объект, представляющий
+(<span class="special">define</span> (<span class="func">cpsify</span> <span class="var">e</span>)
+  (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">new-Variable</span>)))
+    (<span class="func">-&gt;CPS</span> <span class="var">e</span> (<span class="func">make-Continuation</span> (<span class="func">list</span> <span class="var">v</span>) (<span class="func">make-Local-Reference</span> <span class="var">v</span>))) ) )
+
+(<span class="special">define</span> <span class="var">new-Variable</span>
+  (<span class="syntax">let</span> ((<span class="var">counter</span> <span class="num">0</span>))
+    (<span class="special">lambda</span> ()
+      (<span class="special">set!</span> <span class="var">counter</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">counter</span>))
+      (<span class="func">make-Pseudo-Variable</span> <span class="var">counter</span> <span class="hash">#f</span> <span class="hash">#f</span>) ) ) )</pre>
+
+<p>Функция <code><span class="func">-&gt;CPS</span></code> первым аргументом принимает объект, представляющий
 вычисления, а вторым — продолжение, которому надо передать результат этих
 вычислений. В общем случае ничего кроме этого делать и не надо. Начальным
-продолжением, которому <code><span class="func">cpsify</span></code> передаёт результат выполнения всей программы,
-является тождество $\lambda x . x$.</p>
-
+продолжением, которому <code><span class="func">cpsify</span></code> передаёт
+результат выполнения всей программы, является тождество
+<span class="math"><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">x</span></span>.</p>
 
 <!--\indexC*{CPS}{->CPS}-->
 <!--\indexC{convert2Regular-Application}-->
-<pre>(define-generic (->CPS (e Program) k)
-  (convert2Regular-Application k e) )
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define (convert2Regular-Application k . args)
-  (make-Regular-Application k (convert2arguments args)) )</pre>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Program</span>) <span class="var">k</span>)
+  (<span class="func">convert2Regular-Application</span> <span class="var">k</span> <span class="var">e</span>) )
+
+(<span class="special">define</span> (<span class="func">convert2Regular-Application</span> <span class="var">k</span> . <span class="var">args</span>)
+  (<span class="func">make-Regular-Application</span> <span class="var">k</span> (<span class="func">convert2arguments</span> <span class="var">args</span>)) )</pre>
 
 <p>Теперь остаётся лишь определить методы для всех остальных узлов синтаксического
 дерева. Последовательные вычисления? Элементарно: вычисляем одну форму сейчас,
 а остальные передаём продолжению:</p>
 
-<pre>(define-method (->CPS (e Sequence) k)
-  (->CPS (Sequence-first e)
-         (let ((v (new-Variable)))
-           (make-Continuation
-            (list v) (->CPS (Sequence-last e) k) ) ) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Sequence</span>) <span class="var">k</span>)
+  (<span class="func">-&gt;CPS</span> (<span class="func">Sequence-first</span> <span class="var">e</span>)
+         (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">new-Variable</span>)))
+           (<span class="func">make-Continuation</span>
+            (<span class="func">list</span> <span class="var">v</span>) (<span class="func">-&gt;CPS</span> (<span class="func">Sequence-last</span> <span class="var">e</span>) <span class="var">k</span>) ) ) ) )</pre>
 
 <p>С ветвлением тоже всё просто, надо только помнить, что обе ветви пользуются
 одним и тем же исходным продолжением:</p>
 
-<pre>(define-method (->CPS (e Alternative) k)
-  (->CPS (Alternative-condition e)
-         (let ((v (new-Variable)))
-           (make-Continuation
-            (list v) (make-Alternative
-                      (make-Local-Reference v)
-                      (->CPS (Alternative-consequent e) k)
-                      (->CPS (Alternative-alternant e) k) ) ) ) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Alternative</span>) <span class="var">k</span>)
+  (<span class="func">-&gt;CPS</span> (<span class="func">Alternative-condition</span> <span class="var">e</span>)
+         (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">new-Variable</span>)))
+           (<span class="func">make-Continuation</span>
+            (<span class="func">list</span> <span class="var">v</span>) (<span class="func">make-Alternative</span>
+                      (<span class="func">make-Local-Reference</span> <span class="var">v</span>)
+                      (<span class="func">-&gt;CPS</span> (<span class="func">Alternative-consequent</span> <span class="var">e</span>) <span class="var">k</span>)
+                      (<span class="func">-&gt;CPS</span> (<span class="func">Alternative-alternant</span> <span class="var">e</span>) <span class="var">k</span>) ) ) ) ) )</pre>
 
 <p>И даже присваивания очевидны. Сначала вычисляется новое значение, продолжением
 этих вычислений является обновление значения переменной и выполнение всего того,
 что следует дальше за присваиванием:</p>
 
-<pre>(define-method (->CPS (e Box-Write) k)
-  (->CPS (Box-Write-form e)
-         (let ((v (new-Variable)))
-           (make-Continuation
-            (list v) (convert2Regular-Application
-                      k (make-Box-Write
-                         (Box-Write-reference e)
-                         (make-Local-Reference v) ) ) ) ) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Box-Write</span>) <span class="var">k</span>)
+  (<span class="func">-&gt;CPS</span> (<span class="func">Box-Write-form</span> <span class="var">e</span>)
+         (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">new-Variable</span>)))
+           (<span class="func">make-Continuation</span>
+            (<span class="func">list</span> <span class="var">v</span>) (<span class="func">convert2Regular-Application</span>
+                      <span class="var">k</span> (<span class="func">make-Box-Write</span>
+                         (<span class="func">Box-Write-reference</span> <span class="var">e</span>)
+                         (<span class="func">make-Local-Reference</span> <span class="var">v</span>) ) ) ) ) ) )
 
-<p>(define-method (->CPS (e Global-Assignment) k)
-  (->CPS (Global-Assignment-form e)
-         (let ((v (new-Variable)))
-           (make-Continuation
-            (list v) (convert2Regular-Application
-                      k (make-Global-Assignment
-                         (Global-Assignment-variable e)
-                         (make-Local-Reference v) ) ) ) ) ) )</pre>
-
+(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Global-Assignment</span>) <span class="var">k</span>)
+  (<span class="func">-&gt;CPS</span> (<span class="func">Global-Assignment-form</span> <span class="var">e</span>)
+         (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">new-Variable</span>)))
+           (<span class="func">make-Continuation</span>
+            (<span class="func">list</span> <span class="var">v</span>) (<span class="func">convert2Regular-Application</span>
+                      <span class="var">k</span> (<span class="func">make-Global-Assignment</span>
+                         (<span class="func">Global-Assignment-variable</span> <span class="var">e</span>)
+                         (<span class="func">make-Local-Reference</span> <span class="var">v</span>) ) ) ) ) ) )</pre>
 
 <!--\indexR{редексы!административные}-->
 <!--\indexR{административные редексы}-->
 <!--\indexR{приводимые!формы}-->
 <!--\indexR{форма!приводимая}-->
-<p>А вот введение локальных переменных <code><span class="func">let</span></code>-формами уже сложнее. Дело в том,
-что продолжение <code><span class="func">k</span></code> надо протащить внутрь узлов <code><span class="func">Fix-Let</span></code> как новую
-переменную. Самый простой способ этого добиться — превратить все <code><span class="func">Fix-Let</span></code>
+<p>А вот введение локальных переменных <code><span class="syntax">let</span></code>-формами уже сложнее. Дело в том,
+что продолжение <code><span class="func">k</span></code> надо протащить внутрь узлов <code><span class="class">Fix-Let</span></code> как новую
+переменную. Самый простой способ этого добиться — превратить все <code><span class="class">Fix-Let</span></code>
 обратно в приводимые формы (аппликации непосредственно задаваемых абстракций)
 на время выполнения CPS-преобразования. Такие вспомогательные формы называются
-<em>административными</em> редексами <span class="cite">[<a href="z1_bibliography.xhtml#sf92">sf92</a>]</span>. Хоть они выглядят не особо
+<em>административными</em> редексами <span class="cite">[<a href="z1_bibliography.xhtml#sf92">SF92</a>]</span>. Хоть они выглядят не особо
 красиво и замедляют наивную интерпретацию, это лишь временное промежуточное
 представление. На эффективность результата компиляции эти (и все остальные)
 редексы не повлияют — они будут обнаружены и оптимизированы функцией
 <code><span class="func">letify</span></code>.</p>
 
-<p>\ForLayout{display}{\begingroup
-\lstset{aboveskip=\smallskipamount, belowskip=\smallskipamount}}</p>
-
-<pre>(define-method (->CPS (e Fix-Let) k)
-  (->CPS (make-Regular-Application
-          (make-Function (Fix-Let-variables e) (Fix-Let-body e))
-          (Fix-Let-arguments e) )
-         k ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Fix-Let</span>) <span class="var">k</span>)
+  (<span class="func">-&gt;CPS</span> (<span class="func">make-Regular-Application</span>
+          (<span class="func">make-Function</span> (<span class="func">Fix-Let-variables</span> <span class="var">e</span>) (<span class="func">Fix-Let-body</span> <span class="var">e</span>))
+          (<span class="func">Fix-Let-arguments</span> <span class="var">e</span>) )
+         <span class="var">k</span> ) )</pre>
 
 <p>Все функции получают по дополнительному аргументу, представляющему продолжение
 их вызова.</p>
 
-<pre>(define-method (->CPS (e Function) k)
-  (convert2Regular-Application k
-   (let ((k (new-Variable)))
-     (make-Function (cons k (Function-variables e))
-                    (->CPS (Function-body e)
-                           (make-Local-Reference k) ) ) ) ) )</pre>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Function</span>) <span class="var">k</span>)
+  (<span class="func">convert2Regular-Application</span> <span class="var">k</span>
+   (<span class="syntax">let</span> ((<span class="var">k</span> (<span class="func">new-Variable</span>)))
+     (<span class="func">make-Function</span> (<span class="func">cons</span> <span class="var">k</span> (<span class="func">Function-variables</span> <span class="var">e</span>))
+                    (<span class="func">-&gt;CPS</span> (<span class="func">Function-body</span> <span class="var">e</span>)
+                           (<span class="func">make-Local-Reference</span> <span class="var">k</span>) ) ) ) ) )</pre>
 
 <p>Аппликации функций должны выполняться с учётом этого нововведения. Все аргументы
 последовательно вычисляются перед применением к ним функции. Порядок вычисления
 обычный: слева направо.</p>
 
-
 <!--\indexC{arguments->CPS}-->
-<pre>(define-method (->CPS (e Predefined-Application) k)
-  (let* ((args (Predefined-Application-arguments e))
-         (vars (let name ((args args))
-                 (if (not (Arguments? args)) '()
-                     (cons (new-Variable)
-                           (name (Arguments-others args)) ) ) ))
-         (application
-          (convert2Regular-Application k
-           (make-Predefined-Application
-            (Predefined-Application-variable e)
-            (convert2arguments
-             (map make-Local-Reference vars) ) ) ) ) )
-    (arguments->CPS args vars application) ) )</p>
+<pre>(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Predefined-Application</span>) <span class="var">k</span>)
+  (<span class="syntax">let*</span> ((<span class="var">args</span> (<span class="func">Predefined-Application-arguments</span> <span class="var">e</span>))
+         (<span class="var">vars</span> (<span class="syntax">let</span> <span class="func">name</span> ((<span class="var">args</span> <span class="var">args</span>))
+                 (<span class="special">if</span> (<span class="func">not</span> (<span class="func">Arguments?</span> <span class="var">args</span>)) <span class="hash">'()</span>
+                     (<span class="func">cons</span> (<span class="func">new-Variable</span>)
+                           (<span class="func">name</span> (<span class="func">Arguments-others</span> <span class="var">args</span>)) ) ) ))
+         (<span class="func">application</span>
+          (<span class="func">convert2Regular-Application</span> <span class="var">k</span>
+           (<span class="func">make-Predefined-Application</span>
+            (<span class="func">Predefined-Application-variable</span> <span class="var">e</span>)
+            (<span class="func">convert2arguments</span>
+             (<span class="func">map</span> <span class="var">make-Local-Reference</span> <span class="var">vars</span>) ) ) ) ) )
+    (<span class="func">arguments-&gt;CPS</span> <span class="var">args</span> <span class="var">vars</span> <span class="var">application</span>) ) )
 
-<p>(define-method (->CPS (e Regular-Application) k)
-  (let* ((fun (Regular-Application-function e))
-         (args (Regular-Application-arguments e))
-         (varfun (new-Variable))
-         (vars (let name ((args args))
-                 (if (not (Arguments? args)) '()
-                     (cons (new-Variable)
-                           (name (Arguments-others args)) ) ) ))
-         (application
-          (make-Regular-Application
-           (make-Local-Reference varfun)
-           (make-Arguments k (convert2arguments
-                              (map make-Local-Reference vars) )) ) ) )
-    (->CPS fun (make-Continuation
-                (list varfun)
-                (arguments->CPS args vars application) )) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">-&gt;CPS</span> (<span class="var">e</span> <span class="class">Regular-Application</span>) <span class="var">k</span>)
+  (<span class="syntax">let*</span> ((<span class="var">fun</span> (<span class="func">Regular-Application-function</span> <span class="var">e</span>))
+         (<span class="var">args</span> (<span class="func">Regular-Application-arguments</span> <span class="var">e</span>))
+         (<span class="var">varfun</span> (<span class="func">new-Variable</span>))
+         (<span class="var">vars</span> (<span class="syntax">let</span> <span class="func">name</span> ((<span class="var">args</span> <span class="var">args</span>))
+                 (<span class="special">if</span> (<span class="func">not</span> (<span class="func">Arguments?</span> <span class="var">args</span>)) <span class="hash">'()</span>
+                     (<span class="func">cons</span> (<span class="func">new-Variable</span>)
+                           (<span class="func">name</span> (<span class="func">Arguments-others</span> <span class="var">args</span>)) ) ) ))
+         (<span class="func">application</span>
+          (<span class="func">make-Regular-Application</span>
+           (<span class="func">make-Local-Reference</span> <span class="var">varfun</span>)
+           (<span class="func">make-Arguments</span> <span class="var">k</span> (<span class="func">convert2arguments</span>
+                              (<span class="func">map</span> <span class="var">make-Local-Reference</span> <span class="var">vars</span>) )) ) ) )
+    (<span class="func">-&gt;CPS</span> <span class="var">fun</span> (<span class="func">make-Continuation</span>
+                (<span class="func">list</span> <span class="var">varfun</span>)
+                (<span class="func">arguments-&gt;CPS</span> <span class="var">args</span> <span class="var">vars</span> <span class="var">application</span>) )) ) )
 
-<p>(define (arguments->CPS args vars appl)
-  (if (pair? args)
-      (->CPS (Arguments-first args)
-             (make-Continuation
-              (list (car vars))
-              (arguments->CPS (Arguments-others args)
-                              (cdr vars) appl ) ) )
-      appl ) )</pre>
+(<span class="special">define</span> (<span class="func">arguments-&gt;CPS</span> <span class="var">args</span> <span class="var">vars</span> <span class="var">appl</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">args</span>)
+      (<span class="func">-&gt;CPS</span> (<span class="func">Arguments-first</span> <span class="var">args</span>)
+             (<span class="func">make-Continuation</span>
+              (<span class="func">list</span> (<span class="func">car</span> <span class="var">vars</span>))
+              (<span class="func">arguments-&gt;CPS</span> (<span class="func">Arguments-others</span> <span class="var">args</span>)
+                              (<span class="func">cdr</span> <span class="var">vars</span>) <span class="var">appl</span> ) ) )
+      <span class="var">appl</span> ) )</pre>
 
-<p>\ForLayout{display}{\endgroup}</p>
 
 <h4 id="cc/call/cc/cc/ssect:letify">Оптимизируем редексы</h4>
-
 
 <!--\indexR{синтаксическое дерево}-->
 <!--\indexC{clone}-->
 <p>Функция <code><span class="func">letify</span></code>, упомянутая ранее, отвечает за обратное преобразование
-приводимых форм в <code><span class="func">let</span></code>-формы. Заодно её можно использовать для исправления
-других неудобств CPS-преобразования. Когда функция <code><span class="func">->CPS</span></code> обрабатывает
+приводимых форм в <code><span class="syntax">let</span></code>-формы. Заодно её можно использовать для исправления
+других неудобств CPS-преобразования. Когда функция <code><span class="func">-&gt;CPS</span></code> обрабатывает
 ветвление, она передаёт каждой ветви физически одно и то же продолжение. Из-за
 этого в итоге получается не дерево, а направленный ациклический граф. Некоторые
 из последующих преобразований могут не дружить с такими графами, поэтому
 <code><span class="func">letify</span></code>, чтобы гарантированно избежать проблем в будущем, скопирует все дуги
 графа в новое дерево (где разделяемые дуги превратятся в пары одинаковых
 ветвей). Предположим, у нас для этого есть обобщённая функция <code><span class="func">clone</span></code>,
-способная скопировать любой объект {\Meroonet}. \seeEx[objects/ex:clone]
+способная скопировать любой объект <span class="logo">Meroonet</span>.
+<span class="see">[см. упр. <a href="ch11_essence_of_an_object_system.xhtml#objects/ex:clone">11.2</a>]</span>
 Применение её к переменным отчасти напоминает переименование, выполняемое
 <code><span class="func">collect-temporaries!</span></code>.</p>
 
-
 <!--\indexC{letify}-->
-<pre>(define-generic (letify (o Program) env)
-  (update-walk! letify (clone o) env) )
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define-method (letify (o Function) env)
-  (let* ((vars (Function-variables o))
-         (body (Function-body o))
-         (new-vars (map clone vars)) )
-    (make-Function
-     new-vars
-     (letify body (append (map cons vars new-vars) env)) ) ) )
-|\ForLayout{display}{\vskip-0.333\baselineskip}|
-(define-method (letify (o Local-Reference) env)
-  (let* ((v (Local-Reference-variable o))
-         (r (assq v env)) )
-    (if (pair? r)
-        (make-Local-Reference (cdr r))
-        (letify-error "Disappeared variable" o) ) ) )
-|\ForLayout{display}{\vskip-\baselineskip}|
-(define-method (letify (o Regular-Application) env)
-  (if (Function? (Regular-Application-function o))
-      (letify (process-closed-application
-               (Regular-Application-function o)
-               (Regular-Application-arguments o) )
-              env )
-      (make-Regular-Application
-       (letify (Regular-Application-function o) env)
-       (letify (Regular-Application-arguments o) env) ) ) )</p>
+<pre>(<span class="syntax">define-generic</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Program</span>) <span class="var">env</span>)
+  (<span class="func">update-walk!</span> <span class="var">letify</span> (<span class="func">clone</span> <span class="var">o</span>) <span class="var">env</span>) )
 
-<p>(define-method (letify (o Fix-Let) env)
-  (let* ((vars (Fix-Let-variables o))
-         (new-vars (map clone vars)) )
-    (make-Fix-Let
-     new-vars
-     (letify (Fix-Let-arguments o) env)
-     (letify (Fix-Let-body o)
-             (append (map cons vars new-vars) env) ) ) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Function</span>) <span class="var">env</span>)
+  (<span class="syntax">let*</span> ((<span class="var">vars</span> (<span class="func">Function-variables</span> <span class="var">o</span>))
+         (<span class="var">body</span> (<span class="func">Function-body</span> <span class="var">o</span>))
+         (<span class="var">new-vars</span> (<span class="func">map</span> <span class="var">clone</span> <span class="var">vars</span>)) )
+    (<span class="func">make-Function</span>
+     <span class="var">new-vars</span>
+     (<span class="func">letify</span> <span class="var">body</span> (<span class="func">append</span> (<span class="func">map</span> <span class="var">cons</span> <span class="var">vars</span> <span class="var">new-vars</span>) <span class="var">env</span>)) ) ) )
 
-<p>(define-method (letify (o Box-Creation) env)
-  (let* ((v (Box-Creation-variable o))
-         (r (assq v env)) )
-    (if (pair? r)
-        (make-Box-Creation (cdr r))
-        (letify-error "Disappeared variable" o) ) ) )</p>
+(<span class="syntax">define-method</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Local-Reference</span>) <span class="var">env</span>)
+  (<span class="syntax">let*</span> ((<span class="var">v</span> (<span class="func">Local-Reference-variable</span> <span class="var">o</span>))
+         (<span class="var">r</span> (<span class="func">assq</span> <span class="var">v</span> <span class="var">env</span>)) )
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">r</span>)
+        (<span class="func">make-Local-Reference</span> (<span class="func">cdr</span> <span class="var">r</span>))
+        (<span class="func">letify-error</span> <span class="string">"Disappeared variable"</span> <span class="var">o</span>) ) ) )
 
-<p>(define-method (clone (o Pseudo-Variable)) (new-Variable))</pre>
+(<span class="syntax">define-method</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Regular-Application</span>) <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">Function?</span> (<span class="func">Regular-Application-function</span> <span class="var">o</span>))
+      (<span class="func">letify</span> (<span class="func">process-closed-application</span>
+               (<span class="func">Regular-Application-function</span> <span class="var">o</span>)
+               (<span class="func">Regular-Application-arguments</span> <span class="var">o</span>) )
+              <span class="var">env</span> )
+      (<span class="func">make-Regular-Application</span>
+       (<span class="func">letify</span> (<span class="func">Regular-Application-function</span> <span class="var">o</span>) <span class="var">env</span>)
+       (<span class="func">letify</span> (<span class="func">Regular-Application-arguments</span> <span class="var">o</span>) <span class="var">env</span>) ) ) )
+
+(<span class="syntax">define-method</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Fix-Let</span>) <span class="var">env</span>)
+  (<span class="syntax">let*</span> ((<span class="var">vars</span> (<span class="func">Fix-Let-variables</span> <span class="var">o</span>))
+         (<span class="var">new-vars</span> (<span class="func">map</span> <span class="var">clone</span> <span class="var">vars</span>)) )
+    (<span class="func">make-Fix-Let</span>
+     <span class="var">new-vars</span>
+     (<span class="func">letify</span> (<span class="func">Fix-Let-arguments</span> <span class="var">o</span>) <span class="var">env</span>)
+     (<span class="func">letify</span> (<span class="func">Fix-Let-body</span> <span class="var">o</span>)
+             (<span class="func">append</span> (<span class="func">map</span> <span class="var">cons</span> <span class="var">vars</span> <span class="var">new-vars</span>) <span class="var">env</span>) ) ) ) )
+
+(<span class="syntax">define-method</span> (<span class="func">letify</span> (<span class="var">o</span> <span class="class">Box-Creation</span>) <span class="var">env</span>)
+  (<span class="syntax">let*</span> ((<span class="var">v</span> (<span class="func">Box-Creation-variable</span> <span class="var">o</span>))
+         (<span class="var">r</span> (<span class="func">assq</span> <span class="var">v</span> <span class="var">env</span>)) )
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">r</span>)
+        (<span class="func">make-Box-Creation</span> (<span class="func">cdr</span> <span class="var">r</span>))
+        (<span class="func">letify-error</span> <span class="string">"Disappeared variable"</span> <span class="var">o</span>) ) ) )
+
+(<span class="syntax">define-method</span> (<span class="func">clone</span> (<span class="var">o</span> <span class="class">Pseudo-Variable</span>)) (<span class="func">new-Variable</span>))</pre>
+
 
 <h4 id="cc/call/cc/cc/ssect:runtime">Дорабатываем библиотеку</h4>
 
@@ -3036,34 +3029,31 @@ text    data    bss     dec     hex
 преобразование. Идея в том, чтобы сделать продолжения явными, — то есть
 сделать реализацию <code><span class="func">call/cc</span></code> тривиальной. Продолжения в таком случае являются
 просто замыканиями, никогда не возвращающими значений. Вот определение
-<code><span class="func">SCM\_callcc</span></code>. Раз это обычная функция, то первым аргументом она принимает
+<code class="c"><span class="func">SCM_callcc</span></code>. Раз это обычная функция, то первым аргументом она принимает
 продолжение своего вызова; да, теперь она бинарна. Функция
-<code><span class="func">SCM\_invoke\_continuation</span></code> определяется перед ней, так как компилятору Си
+<code class="c"><span class="func">SCM_invoke_continuation</span></code> определяется перед ней, так как компилятору Си
 не нравится беспорядок.</p>
-
 
 <!--\indexC*{SCM_invoke_continuation}{SCM\_invoke\_continuation}-->
 <!--\indexC*{SCM_callcc}{SCM\_callcc}-->
 <!--\indexC{call/cc}-->
-<p>\begin{code:c}
-SCM SCM_invoke_continuation(SCM self, unsigned long number,
-                            va_list arguments)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCM_invoke_continuation</span>(<span class="type">SCM</span> <span class="var">self</span>, <span class="type">unsigned</span> <span class="type">long</span> <span class="var">number</span>,
+                            <span class="type">va_list</span> <span class="var">arguments</span>)
 {
-    SCM current_k = va_arg(arguments, SCM);
-    SCM value     = va_arg(arguments, SCM);
-    return SCM_invoke1(SCM_Unwrap(self)->closure.environment[0], value);
-}</p>
+    <span class="type">SCM</span> <span class="var">current_k</span> = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
+    <span class="type">SCM</span> <span class="var">value</span>     = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
+    <span class="keyword">return</span> <span class="macro">SCM_invoke1</span>(<span class="macro">SCM_Unwrap</span>(<span class="var">self</span>)-><span class="var">closure</span>.<span class="var">environment</span>[<span class="num">0</span>], <span class="var">value</span>);
+}
 
-<p>SCM SCM_callcc(SCM k, SCM f)
+<span class="type">SCM</span> <span class="func">SCM_callcc</span>(<span class="type">SCM</span> <span class="var">k</span>, <span class="type">SCM</span> <span class="var">f</span>)
 {
-    SCM reified_k =
-        SCM_close(SCM_CfunctionAddress(SCM_invoke_continuation),
-                  2, 1, k);
-    return SCM_invoke2(f, k, reified_k);
-}</p>
+    <span class="type">SCM</span> <span class="var">reified_k</span> =
+        <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">SCM_invoke_continuation</span>),
+                  <span class="num">2</span>, <span class="num">1</span>, <span class="var">k</span>);
+    <span class="keyword">return</span> <span class="macro">SCM_invoke2</span>(<span class="var">f</span>, <span class="var">k</span>, <span class="var">reified_k</span>);
+}
 
-<p>SCM_DefinePredefinedFunctionVariable(CALLCC, "CALL/CC", 2, SCM_callcc);
-\end{code:c}</p>
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">CALLCC</span>, <span class="string">"CALL/CC"</span>, <span class="num">2</span>, <span class="func">SCM_callcc</span>);</pre>
 
 
 <!--\indexR{функции!протокол вызова}-->
@@ -3071,91 +3061,86 @@ SCM SCM_invoke_continuation(SCM self, unsigned long number,
 <!--\indexC*{SCMq}{SCMq\_}-->
 <p>Все остальные библиотечные функции остались нетронутыми, а ведь их протокол
 вызова претерпел некоторые изменения в связи с появлением продолжений. Если
-CPS-преобразование выдаст что-то вроде <code>(let ((f car)) (f '(a b)))</code>, то наш
+CPS-преобразование выдаст что-то вроде <code>(<span class="syntax">let</span> ((<span class="var">f</span> <span class="var">car</span>)) (<span class="var">f</span> '(<span class="var">a</span> <span class="var">b</span>)))</code>, то наш
 компилятор-дурачок так и не поймёт, что это на самом деле просто вызов примитива
-<code>(car '(a b))</code> (а то и вовсе <code>(quote a)</code>, если провести свёртку констант).
-Он честно вычислит значение глобальной переменной <code><span class="func">CAR</span></code> и выполнит вызов
+<code>(<span class="func">car</span> '(<span class="var">a</span> <span class="var">b</span>))</code> (а то и вовсе <code>(<span class="special">quote</span> <span class="var">a</span>)</code>, если провести свёртку констант).
+Он честно вычислит значение глобальной переменной <code><span class="var">CAR</span></code> и выполнит вызов
 обычной функции, строго придерживаясь протокола: передав продолжение первым
-аргументом, а точечную пару — вторым. Значением <code><span class="func">CAR</span></code> теперь должна быть
-абстракция <code>(lambda (k p) (k (car p)))</code>, определённая через изначальный
+аргументом, а точечную пару — вторым. Значением <code><span class="var">CAR</span></code> теперь должна быть
+абстракция <code>(<span class="special">lambda</span> (<span class="var">k</span> <span class="var">p</span>) (<span class="func">k</span> (<span class="func">car</span> <span class="var">p</span>)))</code>, определённая через изначальный
 примитив <code><span class="func">car</span></code>. С этой целью мы введём несколько вспомогательных макросов и
 добавим каждой библиотечной функции дополнительный аргумент. Функции
-с приставкой <code><span class="func">SCMq\_</span></code> являются новым интерфейсом функций, начинающихся
-на <code><span class="func">SCM\_</span></code>.</p>
-
+с приставкой <code class="c"><span class="func">SCMq_</span></code> являются новым интерфейсом функций, начинающихся
+на <code class="c"><span class="func">SCM_</span></code>.</p>
 
 <!--\indexC*{SCM_DefineCPSsubr0}{SCM\_DefineCPSsubr<i>n</i>}-->
-<p>\begin{code:c}
-#define SCM_DefineCPSsubr2(new_name, old_name) \
-  SCM new_name(SCM k, SCM x, SCM y)            \
+<pre class="c"><span class="pre">#define</span> <span class="macro">SCM_DefineCPSsubr2</span>(<span class="var">new_name</span>, <span class="var">old_name</span>) \
+  <span class="type">SCM</span> <span class="var">new_name</span>(<span class="type">SCM</span> <span class="var">k</span>, <span class="type">SCM</span> <span class="var">x</span>, <span class="type">SCM</span> <span class="var">y</span>)            \
   {                                            \
-      return SCM_invoke1(k, old_name(x, y));   \
-  }</p>
+      <span class="keyword">return</span> <span class="macro">SCM_invoke1</span>(<span class="var">k</span>, <span class="var">old_name</span>(<span class="var">x</span>, <span class="var">y</span>));   \
+  }
 
-<p>#define SCM_DefineCPSsubrN(new_name, old_name)                \
-  SCM new_name(unsigned long number, va_list arguments)       \
+<span class="pre">#define</span> <span class="macro">SCM_DefineCPSsubrN</span>(<span class="var">new_name</span>, <span class="var">old_name</span>)                \
+  <span class="type">SCM</span> <span class="var">new_name</span>(<span class="type">unsigned</span> <span class="type">long</span> <span class="var">number</span>, <span class="type">va_list</span> <span class="var">arguments</span>)       \
   {                                                           \
-      SCM k = va_arg(arguments, SCM);                         \
-      return SCM_invoke1(k, old_name(number - 1, arguments)); \
-  }</p>
+      <span class="type">SCM</span> <span class="var">k</span> = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);                         \
+      <span class="keyword">return</span> <span class="macro">SCM_invoke1</span>(<span class="var">k</span>, <span class="var">old_name</span>(<span class="var">number</span> - <span class="num">1</span>, <span class="var">arguments</span>)); \
+  }
 
-<p>SCM_DefineCPSsubr2(SCMq_gtp, SCM_gtp)
-SCM_DefinePredefinedFunctionVariable(GREATERP, " > ", 3, SCMq_gtp);</p>
+<span class="macro">SCM_DefineCPSsubr2</span>(<span class="func">SCMq_gtp</span>, <span class="func">SCM_gtp</span>)
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">GREATERP</span>, <span class="string">" > "</span>, <span class="num">3</span>, <span class="func">SCMq_gtp</span>);
 
-<p>SCM_DefineCPSsubrN(SCMq_list, SCM_list)
-SCM_DefinePredefinedFunctionVariable(LIST, "LIST", -2, SCMq_list);
-\end{code:c}</p>
+<span class="macro">SCM_DefineCPSsubrN</span>(<span class="func">SCMq_list</span>, <span class="func">SCM_list</span>)
+<span class="macro">SCM_DefinePredefinedFunctionVariable</span>(<span class="var">LIST</span>, <span class="string">"LIST"</span>, <span class="num">-2</span>, <span class="func">SCMq_list</span>);</pre>
 
 
 <!--\indexC{apply}-->
 <!--\indexC*{SCM_apply}{SCM\_apply}-->
-<p>Единственной проблемной функцией остаётся <code><span class="func">apply</span></code>. Она использует протокол
-вызова напрямую, так что о появившихся продолжениях ей придётся рассказывать
-лично:</p>
+<p>Единственной проблемной функцией остаётся <code><span class="func">apply</span></code>.
+Она использует протокол вызова напрямую, так что о появившихся продолжениях ей придётся
+рассказывать лично:</p>
 
-<p>\begin{code:c}
-SCM SCMq_apply(unsigned long number, va_list arguments)
+<pre class="c"><span class="type">SCM</span> <span class="func">SCMq_apply</span>(<span class="type">unsigned</span> <span class="type">long</span> <span class="var">number</span>, <span class="type">va_list</span> <span class="var">arguments</span>)
 {
-    unsigned long i;
-    SCM args[30];
-    SCM last_arg;
-    SCM k   = va_arg(arguments, SCM);
-    SCM fun = va_arg(arguments, SCM);
-`\ForLayout{display}{\vskip-0.333\baselineskip}`
-    for (i = 0; i < number - 2; i++) {
-        args[i] = va_arg(arguments, SCM);
+    <span class="type">unsigned</span> <span class="type">long</span> <span class="var">i</span>;
+    <span class="type">SCM</span> <span class="var">args</span>[<span class="num">30</span>];
+    <span class="type">SCM</span> <span class="var">last_arg</span>;
+    <span class="type">SCM</span> <span class="var">k</span>   = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
+    <span class="type">SCM</span> <span class="var">fun</span> = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
+
+    <span class="keyword">for</span> (<span class="var">i</span> = <span class="num">0</span>; <span class="var">i</span> &lt; <span class="var">number</span> - <span class="num">2</span>; <span class="var">i</span>++) {
+        <span class="var">args</span>[<span class="var">i</span>] = <span class="macro">va_arg</span>(<span class="var">arguments</span>, <span class="type">SCM</span>);
     }
-    last_arg = args[--i];
-    while (SCM_PairP(last_arg)) {
-        args[i++] = SCM_Car(last_arg);
-        last_arg = SCM_Cdr(last_arg);
+    <span class="var">last_arg</span> = <span class="var">args</span>[--<span class="var">i</span>];
+    <span class="keyword">while</span> (<span class="macro">SCM_PairP</span>(<span class="var">last_arg</span>)) {
+        <span class="var">args</span>[<span class="var">i</span>++] = <span class="macro">SCM_Car</span>(<span class="var">last_arg</span>);
+        <span class="var">last_arg</span> = <span class="macro">SCM_Cdr</span>(<span class="var">last_arg</span>);
     }
-    if (!SCM_NullP(last_arg)) {
-        SCM_error(SCM_ERR_APPLY_ARG);
+    <span class="keyword">if</span> (!<span class="macro">SCM_NullP</span>(<span class="var">last_arg</span>)) {
+        <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_APPLY_ARG</span>);
     }
-`\ForLayout{display}{\vskip-0.333\baselineskip}`
-    switch (i) {
-      case 0: return SCM_invoke(fun, 1, k);
-      case 1: return SCM_invoke(fun, 2, k, args[0]);
-      case 2: return SCM_invoke(fun, 3, k, args[0], args[1]);
-      case 3: return SCM_invoke(fun, 3, k, args[0], args[1], args[2]);
-      /* ... */
-      default: return SCM_error(SCM_ERR_APPLY_SIZE);
+
+    <span class="keyword">switch</span> (<span class="var">i</span>) {
+      <span class="keyword">case</span> <span class="num">0</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">1</span>, <span class="var">k</span>);
+      <span class="keyword">case</span> <span class="num">1</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">2</span>, <span class="var">k</span>, <span class="var">args</span>[<span class="num">0</span>]);
+      <span class="keyword">case</span> <span class="num">2</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">3</span>, <span class="var">k</span>, <span class="var">args</span>[<span class="num">0</span>], <span class="var">args</span>[<span class="num">1</span>]);
+      <span class="keyword">case</span> <span class="num">3</span>: <span class="keyword">return</span> <span class="func">SCM_invoke</span>(<span class="var">fun</span>, <span class="num">3</span>, <span class="var">k</span>, <span class="var">args</span>[<span class="num">0</span>], <span class="var">args</span>[<span class="num">1</span>], <span class="var">args</span>[<span class="num">2</span>]);
+      <span class="comment">/* ... */</span>
+      <span class="keyword">default</span>: <span class="keyword">return</span> <span class="macro">SCM_error</span>(<span class="macro">SCM_ERR_APPLY_SIZE</span>);
     }
-}
-\end{code:c}</p>
+}</pre>
+
 
 <h4 id="cc/call/cc/cc/ssect:example">Пример</h4>
-
 
 <!--\indexR{компиляция!в Си}-->
 <p>Давайте возьмём наш подопытный пример и посмотрим, что же выдаст новый
 компилятор. Хоть мы и получаем в итоге код на Си, в нём безошибочно узнаётся
 стиль передачи продолжений.</p>
 
-<p>\begin{code:c-frame}[title={\snippet{o/chap10kex.c}}, numbers=left,
-    label=cc/call/cc/cc/example/src:subj]
-/* Compiler to C \$Revision: 4.1\$
+<div class="snippet" id="cc/call/cc/cc/example/src:subj">
+  <span class="title">o/chap10kex.c</span>
+<pre class="c"><span class="comment">/* Compiler to C $Revision: 4.1$
 (BEGIN
   (SET! INDEX 1)
   ((LAMBDA
@@ -3164,161 +3149,162 @@ SCM SCMq_apply(unsigned long number, va_list arguments)
      (IF CNTER (CNTER TMP) INDEX))
     (LAMBDA (F) (SET! INDEX (+ 1 INDEX)) (F INDEX))
     'FOO))
-*/</p>
+*/</span>
 
-<p>#include "scheme.h"</p>
+<span class="pre">#include</span> <span class="string">"scheme.h"</span>
 
-<p>/* Global environment: */
-SCM_DefineGlobalVariable(INDEX, "INDEX");</p>
+<span class="comment">/* Global environment: */</span>
+<span class="macro">SCM_DefineGlobalVariable</span>(<span class="var">INDEX</span>, <span class="string">"INDEX"</span>);
 
-<p>/* Quotations: */
-#define thing3 SCM_nil                      /* () */
-SCM_DefineString(thing4_object, "FOO");
-#define thing4 SCM_Wrap(&thing4_object)
-SCM_DefineSymbol(thing2_object, thing4);    /* FOO */
-#define thing2 SCM_Wrap(&thing2_object)
-#define thing1 SCM_Int2Fixnum(1)
-#define thing0 thing1                       /* 1 */</p>
+<span class="comment">/* Quotations: */</span>
+<span class="pre">#define</span> <span class="macro">thing3</span> <span class="macro">SCM_nil</span>                      <span class="comment">/* () */</span>
+<span class="macro">SCM_DefineString</span>(<span class="var">thing4_object</span>, <span class="string">"FOO"</span>);
+<span class="pre">#define</span> <span class="macro">thing4</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing4_object</span>)
+<span class="macro">SCM_DefineSymbol</span>(<span class="var">thing2_object</span>, <span class="macro">thing4</span>);    <span class="comment">/* FOO */</span>
+<span class="pre">#define</span> <span class="macro">thing2</span> <span class="macro">SCM_Wrap</span>(&amp;<span class="var">thing2_object</span>)
+<span class="pre">#define</span> <span class="macro">thing1</span> <span class="macro">SCM_Int2Fixnum</span>(<span class="num">1</span>)
+<span class="pre">#define</span> <span class="macro">thing0</span> <span class="macro">thing1</span>                       <span class="comment">/* 1 */</span>
 
-<p>/* Functions: */
-SCM_DefineClosure(function_0, SCM I; );</p>
+<span class="comment">/* Functions: */</span>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_0</span>, <span class="type">SCM</span> <span class="var">I</span>; );
 
-<p>SCM_DeclareFunction(function_0)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_0</span>)
 {
-    SCM_DeclareLocalVariable(v_25, 0);
-    SCM_DeclareLocalDottedVariable(X, 1);
-    SCM v_27; SCM v_26;
-    return (v_26 = SCM_Free(I),
-            (v_27 = X,
-             SCM_invoke1(v_25,
-                         SCM_cons(v_26, v_27))));
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_25</span>, <span class="num">0</span>);
+    <span class="macro">SCM_DeclareLocalDottedVariable</span>(<span class="var">X</span>, <span class="num">1</span>);
+    <span class="type">SCM</span> <span class="var">v_27</span>; <span class="type">SCM</span> <span class="var">v_26</span>;
+    <span class="keyword">return</span> (<span class="var">v_26</span> = <span class="macro">SCM_Free</span>(<span class="var">I</span>),
+            (<span class="var">v_27</span> = <span class="var">X</span>,
+             <span class="macro">SCM_invoke1</span>(<span class="var">v_25</span>,
+                         <span class="func">SCM_cons</span>(<span class="var">v_26</span>, <span class="var">v_27</span>))));
+}
 
-<p>SCM_DefineClosure(function_1, );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_1</span>, );
 
-<p>SCM_DeclareFunction(function_1)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_1</span>)
 {
-    SCM_DeclareLocalVariable(v_24, 0);
-    SCM_DeclareLocalVariable(I, 1);
-    return SCM_invoke1(v_24,
-                       SCM_close(SCM_CfunctionAddress(function_0),
-                                 -2, 1, I));
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_24</span>, <span class="num">0</span>);
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">I</span>, <span class="num">1</span>);
+    <span class="keyword">return</span> <span class="macro">SCM_invoke1</span>(<span class="var">v_24</span>,
+                       <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_0</span>),
+                                 <span class="num">-2</span>, <span class="num">1</span>, <span class="var">I</span>));
+}
 
-<p>SCM_DefineClosure(function_2, SCM v_15; SCM CNTER; SCM TMP; );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_2</span>, <span class="type">SCM</span> <span class="var">v_15</span>; <span class="type">SCM</span> <span class="var">CNTER</span>; <span class="type">SCM</span> <span class="var">TMP</span>; );
 
-<p>SCM_DeclareFunction(function_2)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_2</span>)
 {
-    SCM_DeclareLocalVariable(v_21, 0);
-    SCM v_20; SCM v_19; SCM v_18; SCM v_17;
-    return (v_17 = (SCM_Content(SCM_Free(TMP)) = v_21),
-            (v_18 = SCM_Free(CNTER),
-             ((v_18 != SCM_false)
-              ? (v_19 = SCM_Free(CNTER),
-                 (v_20 = SCM_Content(SCM_Free(TMP)),
-                  SCM_invoke2(v_19,
-                              SCM_Free(v_15),
-                              v_20)))
-              : SCM_invoke1(SCM_Free(v_15),
-                            SCM_CheckedGlobal(INDEX)))));
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_21</span>, <span class="num">0</span>);
+    <span class="type">SCM</span> <span class="var">v_20</span>; <span class="type">SCM</span> <span class="var">v_19</span>; <span class="type">SCM</span> <span class="var">v_18</span>; <span class="type">SCM</span> <span class="var">v_17</span>;
+    <span class="keyword">return</span> (<span class="var">v_17</span> = (<span class="macro">SCM_Content</span>(<span class="macro">SCM_Free</span>(<span class="var">TMP</span>)) = <span class="var">v_21</span>),
+            (<span class="var">v_18</span> = <span class="macro">SCM_Free</span>(<span class="var">CNTER</span>),
+             ((<span class="var">v_18</span> != <span class="macro">SCM_false</span>)
+              ? (<span class="var">v_19</span> = <span class="macro">SCM_Free</span>(<span class="var">CNTER</span>),
+                 (<span class="var">v_20</span> = <span class="macro">SCM_Content</span>(<span class="macro">SCM_Free</span>(<span class="var">TMP</span>)),
+                  <span class="macro">SCM_invoke2</span>(<span class="var">v_19</span>,
+                              <span class="macro">SCM_Free</span>(<span class="var">v_15</span>),
+                              <span class="var">v_20</span>)))
+              : <span class="macro">SCM_invoke1</span>(<span class="macro">SCM_Free</span>(<span class="var">v_15</span>),
+                            <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>)))));
+}
 
-<p>SCM_DefineClosure(function_3, );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_3</span>, );
 
-<p>SCM_DeclareFunction(function_3)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_3</span>)
 {
-    SCM_DeclareLocalVariable(v_15, 0);
-    SCM_DeclareLocalVariable(CNTER, 1);
-    SCM_DeclareLocalVariable(TMP, 2);
-    SCM v_23; SCM v_22; SCM v_16;
-    return (v_16 = (TMP = SCM_allocate_box(TMP)),
-            (v_22 = CNTER,
-             (v_23 = SCM_close(SCM_CfunctionAddress(function_1), 2, 0),
-              SCM_invoke2(v_22,
-                          SCM_close(SCM_CfunctionAddress(function_2),
-                                    1, 3, v_15, CNTER, TMP),
-                          v_23))));
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_15</span>, <span class="num">0</span>);
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">CNTER</span>, <span class="num">1</span>);
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">TMP</span>, <span class="num">2</span>);
+    <span class="type">SCM</span> <span class="var">v_23</span>; <span class="type">SCM</span> <span class="var">v_22</span>; <span class="type">SCM</span> <span class="var">v_16</span>;
+    <span class="keyword">return</span> (<span class="var">v_16</span> = (<span class="var">TMP</span> = <span class="func">SCM_allocate_box</span>(<span class="var">TMP</span>)),
+            (<span class="var">v_22</span> = <span class="var">CNTER</span>,
+             (<span class="var">v_23</span> = <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_1</span>), <span class="num">2</span>, <span class="num">0</span>),
+              <span class="macro">SCM_invoke2</span>(<span class="var">v_22</span>,
+                          <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_2</span>),
+                                    <span class="num">1</span>, <span class="num">3</span>, <span class="var">v_15</span>, <span class="var">CNTER</span>, <span class="var">TMP</span>),
+                          <span class="var">v_23</span>))));
+}
 
-<p>SCM_DefineClosure(function_4, );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_4</span>, );
 
-<p>SCM_DeclareFunction(function_4)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_4</span>)
 {
-    SCM_DeclareLocalVariable(v_8, 0);
-    SCM_DeclareLocalVariable(F, 1);
-    SCM v_11; SCM v_10; SCM v_9; SCM v_12; SCM v_14; SCM v_13;
-    return (v_13 = thing1,
-            (v_14 = SCM_CheckedGlobal(INDEX),
-             (v_12 = SCM_Plus(v_13, v_14),
-              (v_9 = (INDEX = v_12),
-               (v_10 = F,
-                (v_11 = SCM_CheckedGlobal(INDEX),
-                 SCM_invoke2(v_10,
-                             v_8,
-                             v_11)))))));
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_8</span>, <span class="num">0</span>);
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">F</span>, <span class="num">1</span>);
+    <span class="type">SCM</span> <span class="var">v_11</span>; <span class="type">SCM</span> <span class="var">v_10</span>; <span class="type">SCM</span> <span class="var">v_9</span>; <span class="type">SCM</span> <span class="var">v_12</span>; <span class="type">SCM</span> <span class="var">v_14</span>; <span class="type">SCM</span> <span class="var">v_13</span>;
+    <span class="keyword">return</span> (<span class="var">v_13</span> = <span class="macro">thing1</span>,
+            (<span class="var">v_14</span> = <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>),
+             (<span class="var">v_12</span> = <span class="macro">SCM_Plus</span>(<span class="var">v_13</span>, <span class="var">v_14</span>),
+              (<span class="var">v_9</span> = (<span class="var">INDEX</span> = <span class="var">v_12</span>),
+               (<span class="var">v_10</span> = <span class="var">F</span>,
+                (<span class="var">v_11</span> = <span class="macro">SCM_CheckedGlobal</span>(<span class="var">INDEX</span>),
+                 <span class="macro">SCM_invoke2</span>(<span class="var">v_10</span>,
+                             <span class="var">v_8</span>,
+                             <span class="var">v_11</span>)))))));
+}
 
-<p>SCM_DefineClosure(function_5, );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_5</span>, );
 
-<p>SCM_DeclareFunction(function_5)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_5</span>)
 {
-    SCM_DeclareLocalVariable(v_1, 0);
-    return v_1;
-}</p>
+    <span class="macro">SCM_DeclareLocalVariable</span>(<span class="var">v_1</span>, <span class="num">0</span>);
+    <span class="keyword">return</span> <span class="var">v_1</span>;
+}
 
-<p>SCM_DefineClosure(function_6, );</p>
+<span class="macro">SCM_DefineClosure</span>(<span class="type">function_6</span>, );
 
-<p>SCM_DeclareFunction(function_6)
+<span class="macro">SCM_DeclareFunction</span>(<span class="func">function_6</span>)
 {
-    SCM v_5; SCM v_7; SCM v_6; SCM v_4; SCM v_3; SCM v_2; SCM v_28;
-    return (v_28 = thing0,
-            (v_2 = (INDEX = v_28),
-             (v_3 = SCM_close(SCM_CfunctionAddress(function_3), 3, 0),
-              (v_4 = SCM_close(SCM_CfunctionAddress(function_4), 2, 0),
-               (v_6 = thing2,
-                (v_7 = thing3,
-                 (v_5 = SCM_cons(v_6, v_7),
-                  SCM_invoke3(v_3,
-                              SCM_close(SCM_CfunctionAddress(function_5),
-                                        1, 0),
-                              v_4,
-                              v_5))))))));
-}</p>
+    <span class="type">SCM</span> <span class="var">v_5</span>; <span class="type">SCM</span> <span class="var">v_7</span>; <span class="type">SCM</span> <span class="var">v_6</span>; <span class="type">SCM</span> <span class="var">v_4</span>; <span class="type">SCM</span> <span class="var">v_3</span>; <span class="type">SCM</span> <span class="var">v_2</span>; <span class="type">SCM</span> <span class="var">v_28</span>;
+    <span class="keyword">return</span> (<span class="var">v_28</span> = <span class="macro">thing0</span>,
+            (<span class="var">v_2</span> = (<span class="var">INDEX</span> = <span class="var">v_28</span>),
+             (<span class="var">v_3</span> = <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_3</span>), <span class="num">3</span>, <span class="num">0</span>),
+              (<span class="var">v_4</span> = <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_4</span>), <span class="num">2</span>, <span class="num">0</span>),
+               (<span class="var">v_6</span> = <span class="macro">thing2</span>,
+                (<span class="var">v_7</span> = <span class="macro">thing3</span>,
+                 (<span class="var">v_5</span> = <span class="func">SCM_cons</span>(<span class="var">v_6</span>, <span class="var">v_7</span>),
+                  <span class="macro">SCM_invoke3</span>(<span class="var">v_3</span>,
+                              <span class="func">SCM_close</span>(<span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_5</span>),
+                                        <span class="num">1</span>, <span class="num">0</span>),
+                              <span class="var">v_4</span>,
+                              <span class="var">v_5</span>))))))));
+}
 
-<p>/* Expression: */
-int main(void)
+<span class="comment">/* Expression: */</span>
+<span class="type">int</span> <span class="func">main</span>(<span class="type">void</span>)
 {
-    SCM_print(SCM_invoke0(SCM_close(
-        SCM_CfunctionAddress(function_6), 0, 0)));</p>
+    <span class="func">SCM_print</span>(<span class="macro">SCM_invoke0</span>(<span class="func">SCM_close</span>(
+        <span class="macro">SCM_CfunctionAddress</span>(<span class="func">function_6</span>), <span class="num">0</span>, <span class="num">0</span>)));
 
-<p>    return 0;
-}</p>
+    <span class="keyword">return</span> <span class="num">0</span>;
+}
 
-<p>/* End of generated code */
-\end{code:c-frame}</p>
+<span class="comment">/* End of generated code */</span></pre></div>
 
 <p>Как видите, размер получаемого файла вырос с 80 строк до 140. Функций стало
 в два раза больше (шесть вместо трёх), да и локальных переменных им теперь
 требуется не 2, а 22. Короче говоря, программа слегка растолстела. И работать
-стала примерно в полтора раза медленнее. После того, как из <code><span class="func">main</span></code> был убран
-вызов <code><span class="func">SCM\_print</span></code>, вычисления обёрнуты в цикл на 10\,000 итераций, а
-программа скомпилирована с ключом <code><span class="func">-O1</span></code>, время работы CPS-версии по сравнению
-с оригинальной увеличилось с \hbox{1,1} секунды до \hbox{1,7}. Памяти обоим
+стала примерно в полтора раза медленнее. После того, как из
+<code class="c"><span class="func">main</span></code> был убран
+вызов <code class="c"><span class="func">SCM_print</span></code>, вычисления
+обёрнуты в цикл на 10000 итераций, а
+программа скомпилирована с ключом <code>-O1</code>, время работы CPS-версии по сравнению
+с оригинальной увеличилось с 1,1 секунды до 1,7. Памяти обоим
 вариантам требуется одинаковое количество, но в первом случае эта память берётся
 из стека (где аппаратная поддержка и компилятор Си творят чудеса), тогда как
 явные продолжения создаются в куче, что не только само по себе медленно, но и
-плохо сказывается на работе кеша. Хотя, как показано в <span class="cite">[<a href="z1_bibliography.xhtml#as94">as94</a>]</span>, от большей
+плохо сказывается на работе кеша. Хотя, как показано в
+<span class="cite">[<a href="z1_bibliography.xhtml#as94">AS94</a>]</span>, от большей
 части недостатков такого подхода вполне можно избавиться.</p>
 
-<p>\begin{shell}
-% gcc -ansi -pedantic chap10kex.c scheme.o schemeklib.o
-% time a.out
+<pre class="shell">
+<span class="prompt">%</span> <span class="cmd">gcc</span> <span class="opt">-ansi</span> <span class="opt">-pedantic</span> <span class="arg">chap10kex.c</span> <span class="arg">scheme.o</span> <span class="arg">schemeklib.o</span>
+<span class="prompt">%</span> <span class="cmd">time</span> <span class="arg">a.out</span>
 (2 3)
 0.000u 0.020s 0:00.00 0.0% 3+3k 0+0io 0pf+0w
-% size a.out
+<span class="prompt">%</span> <span class="cmd">size</span> <span class="arg">a.out</span>
 text    data    bss     dec     hex
-32768   4096    32      36896   9020
-\end{shell}</p>
+32768   4096    32      36896   9020</pre>
 
 
 <!--\indexR{хвостовые вызовы}-->
@@ -3326,13 +3312,13 @@ text    data    bss     dec     hex
 рекурсию, а значит, возможность переполнения стека никуда не делась. Фактически,
 CPS даже усугубляет ситуацию тем, что здесь постоянно вызываются функции, но
 ни одна из них никогда не возвращает значения. Функции вызываются, стек растёт,
-но все <code><span class="func">return</span></code> выполняются последними, так что уменьшаться он будет лишь
+но все <code class="c"><span class="keyword">return</span></code> выполняются последними, так что уменьшаться он будет лишь
 в самом работы программы. Вряд ли не особо большой стек Си продержится до этого
-момента. Одно из возможных решений показано в <span class="cite">[<a href="z1_bibliography.xhtml#bak95">bak95</a>]</span>: просто делать время
-от времени <code><span class="func">longjmp</span></code>, чтобы избавиться от уже ненужных записей активаций.</p>
+момента. Одно из возможных решений показано в <span class="cite">[<a href="z1_bibliography.xhtml#bak95">Bak95</a>]</span>: просто делать время
+от времени <code class="c"><span class="func">longjmp</span></code>, чтобы избавиться от уже ненужных записей активаций.</p>
 
-<h2 id="cc/sect:ffi">Взаимодействие с Си</h2>
 
+<h2 id="cc/sect:ffi"><span class="seq">10.12.</span> Взаимодействие с Си</h2>
 
 <!--\indexR{внешний интерфейс}-->
 <p>Так как наш небольшой компилятор использует структуры и функции языка Си для
@@ -3345,26 +3331,27 @@ CPS даже усугубляет ситуацию тем, что здесь п�
 использования подобного интерфейса, чтобы вы осознали его полезность, а также
 трудности, возникающие в процессе реализации.</p>
 
-<p>Стандартная функция <code><span class="func">system</span></code> принимает строку, передаёт её командному
+<p>Стандартная функция <code class="c"><span class="func">system</span></code>
+принимает строку, передаёт её командному
 интерпретатору операционной системы и возвращает обратно код возврата,
 полученный в результате выполнения команд из переданной строки. Предположим,
-у нас есть макрос <code><span class="func">defforeignprimitive</span></code>, позволяющий определить для
+у нас есть макрос <code><span class="syntax">defforeignprimitive</span></code>,
+позволяющий определить для
 компилятора интерфейс этой функции:</p>
 
-
 <!--\indexC{defforeignprimitive}-->
-<pre>(defforeignprimitive system int ("system" string) 1)</pre>
-
+<pre>(<span class="syntax">defforeignprimitive</span> <span class="var">system</span> <span class="var">int</span> (<span class="string">"system"</span> <span class="var">string</span>) <span class="num">1</span>)</pre>
 
 <!--\indexR{маршалинг}-->
-<p>Теперь компилятор будет понимать форму <code>(system $\pi$)</code> следующим образом:
-сначала выполняется проверка, что $\pi$ это действительно строка, затем
-вызывается функция <code><span class="func">system</span></code>, после чего возвращённое ею значение
-(типа <code><span class="func">int</span></code>) преобразуется в целое число Scheme и становится значением всей
+<p>Теперь компилятор будет понимать форму <code>(<span class="func">system</span> <span class="math"><span class="ord var">π</span></span>)</code> следующим образом:
+сначала выполняется проверка, что <span class="math"><span class="ord var">π</span></span> это действительно строка, затем
+вызывается функция <code class="c"><span class="func">system</span></code>, после чего возвращённое ею значение
+(типа <code class="c"><span class="type">int</span></code>) преобразуется в целое число Scheme и становится значением всей
 формы. Так как строки Scheme и Си представляются почти одинаково, то это
 преобразование выполняется легко, чего не скажешь, правда, о других возможных
 типах данных. Проблемы <em class="term">маршалинга</em> (так называются данные преобразования)
-подробнее рассматриваются в \cite{rm92,dps94a}.</p>
+подробнее рассматриваются в <span class="cite">[<a href="z1_bibliography.xhtml#rm92">RM92</a>,
+<a href="z1_bibliography.xhtml#dps94a">DPS94a</a>]</span>.</p>
 
 <p>Конечно, одних преобразований типов недостаточно для полной интеграции языков.
 Функция <code><span class="func">system</span></code> должна стать полноценным объектом Scheme. Должно быть
@@ -3372,12 +3359,13 @@ CPS даже усугубляет ситуацию тем, что здесь п�
 Всё это подразумевает существование некоторого класса значений, представляющих
 внешние функции.</p>
 
-<h2 id="cc/sect:conclusions">Заключение</h2>
+
+<h2 id="cc/sect:conclusions"><span class="seq">10.13.</span> Заключение</h2>
 
 <p>В данной главе был рассмотрен компилятор из Scheme в Си. Мы написали собственную
 библиотеку времени исполнения, но с равным успехом можно было использовать любую
-другую, например, библиотеку Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">ser94</a>]</span>, SIOD <span class="cite">[<a href="z1_bibliography.xhtml#car94">car94</a>]</span> или SCM
-<span class="cite">[<a href="z1_bibliography.xhtml#jaf94">jaf94</a>]</span>. В процессе мы обсудили проблемы, возникающие при компиляции в язык
+другую, например, библиотеку Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>, SIOD <span class="cite">[<a href="z1_bibliography.xhtml#car94">Car94</a>]</span> или SCM
+<span class="cite">[<a href="z1_bibliography.xhtml#jaf94">Jaf94</a>]</span>. В процессе мы обсудили проблемы, возникающие при компиляции в язык
 высокого уровня, различия между Scheme и Си, а также преимущества разумного
 сотрудничества двух языков.</p>
 
@@ -3385,62 +3373,65 @@ CPS даже усугубляет ситуацию тем, что здесь п�
 с компилятором в байт-код. Кроме того, остаётся ещё множество других идей,
 стоящих реализации, например:</p>
 
-<p>\begin{itemize}
-  \item использование <code><span class="func">read</span></code> для чтения и создания цитат;</p>
+<ul>
+  <li>использование <code><span class="func">read</span></code>
+    для чтения и создания цитат;</li>
 
-<p>  \item отказ от родного стека Си (и его протокола вызова функций)
-        в пользу независимого стека, заточенного под Scheme;</p>
+  <li>отказ от родного стека Си (и его протокола вызова функций)
+    в пользу независимого стека, заточенного под Scheme;</li>
 
-<p>  \item поддержка раздельной компиляции, модулей и т. д.
-        \seePage[chapter:compilation]
-\end{itemize}</p>
-
+  <li>поддержка раздельной компиляции, модулей и т. д.
+    <span class="see">[см. <a href="ch07_compilation.xhtml">7 главу</a>]</span></li>
+</ul>
 
 <!--\indexR{раскрутка (bootstrapping)}-->
 <!--\indexC{eval}-->
 <!--\indexC{load}-->
 <p>Также можно было бы оценить стоимость (в плане увеличения размера библиотеки и
 уменьшения скорости работы) реализации динамических аспектов языка: функции
-<code><span class="func">load</span></code> или её упрощённого аналога — <code><span class="func">eval</span></code>. Пусть это останется
+<code><span class="func">load</span></code> или её упрощённого аналога —
+<code><span class="func">eval</span></code>. Пусть это останется
 (трудным) упражнением для читателя. Для тех же, кто с ним справится, припасено
 ещё одно: скомпилировать полученный компилятор самим собой.</p>
 
 
-<h2 id="cc/sect:exercises">Упражнения</h2>
+<h2 id="cc/sect:exercises"><span class="seq">10.14.</span> Упражнения</h2>
 
-<h5 class="exercise" id="cc/ex:boost-calls">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="cc/ex:boost-calls">Упражнение <span class="seq">10.1</span></h5>
 <p>Вызовы замыканий можно ускорить, адаптировав для них протокол вызова
 предопределённых примитивов с фиксированной арностью: то есть вызывать их как
-$f(f, x, y)$. Доработайте компилятор соответствующим образом.</p>
+<span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">f</span><span class="punct">,</span><span class="ord var">x</span><span class="punct">,</span><span class="ord var">y</span><span class="close">)</span></span>. Доработайте компилятор соответствующим образом.</p>
 
 
-<h5 class="exercise" id="cc/ex:global-check">Упражнение <span class="seq">0.0</span></h5>
+<h5 class="exercise" id="cc/ex:global-check">Упражнение <span class="seq">10.2</span></h5>
 <!--\indexC*{SCM_CheckedGlobal}{SCM\_CheckedGlobal}-->
 <p>Доступ к глобальным переменным был бы эффективнее, если бы при чтении не было
 обязательных проверок на инициализированность, выполняемых
-<code><span class="func">SCM\_CheckedGlobal</span></code>. Придумайте, как выделить все переменные, для которых
+<code class="c"><span class="macro">SCM_CheckedGlobal</span></code>. Придумайте,
+как выделить все переменные, для которых
 эти проверки не требуются, потому что можно быть уверенным в том, что они уже
 имеют некоторое значение.</p>
 
-<p>\begin{project}
-Рассмотренный в этой главе компилятор преобразует дерево объектов в код
+
+<h5 class="exercise">Проект <span class="seq">10.3</span></h5>
+
+<p>Рассмотренный в этой главе компилятор преобразует дерево объектов в код
 на процедурном языке Си. Адаптируйте его для генерации кода на
-объектно-ориентированном Си$++$.
-\end{project}</p>
+объектно-ориентированном Си++.</p>
 
-<p>\begin{project}
-А теперь попробуйте написать компилятор в специализированный низкоуровневый
-язык для кодогенерации — Си$--$.
-\end{project}</p>
+<h5 class="exercise">Проект <span class="seq">10.3</span></h5>
 
-<p>
-\section*{Рекомендуемая литература}\label{cc/sect:recommended-reading}</p>
+<p>А теперь попробуйте написать компилятор в специализированный низкоуровневый
+язык для кодогенерации — Си−−.</p>
+
+
+<h2>Рекомендуемая литература</h2>
 
 <p>В последнее время наблюдается существенный интерес к компиляции языков высокого
 уровня в низкоуровневый Си. Ницан Сеньяк отлично раскрыл эту тему в своей
-диссертации <span class="cite">[<a href="z1_bibliography.xhtml#sen91">sen91</a>]</span>, равно как и Мануэль Серрано в статье <span class="cite">[<a href="z1_bibliography.xhtml#ser93">ser93</a>]</span>.
+диссертации <span class="cite">[<a href="z1_bibliography.xhtml#sen91">Sén91</a>]</span>, равно как и Мануэль Серрано в статье <span class="cite">[<a href="z1_bibliography.xhtml#ser93">Ser93</a>]</span>.
 Если вы уже успели влюбиться по уши в подобный подход, то будьте осторожны
-с исходным кодом Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">ser94</a>]</span> — можно ведь и не вынырнуть!</p>
+с исходным кодом Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span> — можно ведь и не вынырнуть!</p>
 
 </body>
 </html>
