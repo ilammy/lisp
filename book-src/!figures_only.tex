@@ -15,6 +15,7 @@
             hyperfootnotes=false,
             bookmarksnumbered=true,
             breaklinks=true,
+            hidelinks,
             unicode]{hyperref}
 \usepackage[protrusion=true,
             expansion=false,
@@ -25,7 +26,7 @@
 \usepackage{nccmath, amssymb, theorem,
             indentfirst, latexsym, enumitem,
             ifthen, calc, settobox, ragged2e,
-            verbatim, pscyr, preview}
+            verbatim, pscyr}
 \usepackage{tikz}
 
 \input{layout/macros}
@@ -37,32 +38,43 @@
 
 \input{zz_hyphenation}
 
-\makeindex
-\makeindex[lisp-eng]
+% Аккуратненькие компактные PDFки
+\usepackage[active, tightpage, pdftex]{preview}
+\pagestyle{empty}
+
+\newcommand{\image}[1]{\begin{preview}\input{figures/#1}\end{preview}}
 
 \begin{document}
-  \input{+title_page}
-  \input{-cc_note}
-
-\frontmatter*
-  \input{00_toc}
-  \input{01_preface}
-
-\mainmatter*
-  \input{ch01_basics}
-  \input{ch02_lisp_1_2_omega}
-  \input{ch03_escape_and_return}
-  \input{ch04_assignment_and_side_effects}
-  \input{ch05_denotational_semantics}
-  \input{ch06_fast_interpretation}
-  \input{ch07_compilation}
-  \input{ch08_evaluation_and_reflection}
-  \input{ch09_macros}
-  \input{ch10_compiling_into_c}
-  \input{ch11_essence_of_an_object_system}
-
-\backmatter
-  \input{z0_answers_to_exercises}
-  \input{z1_bibliography}
-  \input{z2_index}
+\image{title}
+\image{fig1.1}
+\image{fig4.cycle}
+\image{fig6.1}
+\image{fig6.2}
+\image{fig6.3}
+\image{fig7.1}
+\image{fig7.2}
+\image{fig7.3}
+\image{fig7.4}
+\image{fig7.5}
+\image{fig7.6}
+\image{fig8.1}
+\image{fig8.2}
+\image{fig8.3}
+\image{fig8.4}
+\image{fig8.5}
+\image{fig9.1}
+\image{fig9.2}
+\image{fig9.3}
+\image{fig9.4}
+\image{fig9.5}
+\image{fig9.6}
+\image{fig9.7}
+\image{fig9.8}
+\image{fig9.9}
+\image{fig10.1}
+\image{fig10.2}
+\image{fig10.3}
+\image{fig10.4}
+\image{fig10.5}
+\input{z1_bibliography}
 \end{document}

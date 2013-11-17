@@ -458,12 +458,10 @@
 (<span class="special">define</span> (<span class="func">GOTO</span> <span class="var">i</span>)
   (<span class="func">list</span> (<span class="special">lambda</span> () (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">list-tail</span> <span class="var">*pc*</span> <span class="var">i</span>)))) )</pre>
 
-<p>\begin{figure}[t]\begin{center}
-\input{figures/fig7.1}
-\end{center}%
-\caption{Линеаризованное ветвление.}%
-\label{compilation/bytes/customize/lin-conditional/pic:subj}%
-\end{figure}</p>
+<div class="image" id="compilation/bytes/customize/lin-conditional/pic:subj">
+<img src="images/png06.png" alt="Расположение в памяти байт-кода оператора ветвления" style="width: 3.75in"/>
+<span class="title">Рис. 7.1. Линеаризованное ветвление.</span>
+</div>
 
 <p>С использованием этих двух инструкций ветвление линеаризуется следующим
 образом. (На рисунке <a href="#compilation/bytes/customize/lin-conditional/pic:subj">7.1</a>
@@ -510,12 +508,10 @@
 (<span class="special">define</span> (<span class="func">PACK-FRAME!</span> <span class="var">arity</span>)
   (<span class="func">list</span> (<span class="special">lambda</span> () (<span class="func">listify!</span> <span class="var">*val*</span> <span class="var">arity</span>))) )</pre>
 
-<p>\begin{figure}[t]\centering
-\input{figures/fig7.2}%
-\caption{Линеаризованная абстракция.}%
-\label{compilation/bytes/customize/lin-abstraction/pic:subj}%
-\ForLayout{display}{\vskip-1.2\baselineskip}
-\end{figure}</p>
+<div class="image" id="compilation/bytes/customize/lin-abstraction/pic:subj">
+<img src="images/png07.png" alt="Расположение в памяти байт-кода абстракции" style="width: 3.75in"/>
+<span class="title">Рис. 7.2. Линеаризованная абстракция.</span>
+</div>
 
 <p>Новая машинная инструкция <code><span class="func">CREATE-CLOSURE</span></code> создаёт замыкание с телом,
 расположенным сразу же за <code><span class="func">GOTO</span></code>. Созданное замыкание кладётся в регистр
@@ -580,11 +576,10 @@
 <code><span class="var">*env*</span></code>, <code><span class="var">*val*</span></code>, <code><span class="var">*fun*</span></code>, <code><span class="var">*arg1*</span></code> и <code><span class="var">*arg2*</span></code>, счётчик команд
 <code><span class="var">*pc*</span></code>, а также стек.</p>
 
-<p>\begin{figure}[tp]\begin{center}
-\input{figures/fig7.3}\end{center}%
-\caption{Архитектура целевой виртуальной машины.}%
-\label{compilation/lang-and-target/pic:subj}%
-\end{figure}</p>
+<div class="image" id="compilation/lang-and-target/pic:subj">
+<img src="images/png08.png" alt="Архитектура целевой виртуальной машины" style="width: 5.19in"/>
+<span class="title">Рис. 7.3. Архитектура целевой виртуальной машины.</span>
+</div>
 
 <!--\indexC{FINISH}-->
 <p>Машинный язык состоит из тридцати четырёх инструкций. Все они собраны
@@ -1880,11 +1875,10 @@
     переходу.</li>
 </ol>
 
-<p>\begin{figure}[tb]\centering
-\input{figures/fig7.4}
-\caption{Состояние стека до и после инструкции <code><span class="func">PUSH-ESCAPER</span></code>.}%
-\label{compilation/escapes/pic:push-escaper}%
-\end{figure}</p>
+<div class="image" id="compilation/escapes/pic:push-escaper">
+<img src="images/png09.png" alt="Состояние стека до и после инструкции PUSH-ESCAPER" style="width: 5.55in"/>
+<span class="title">Рис. 7.4. Состояние стека до и после инструкции <code><span class="func">PUSH-ESCAPER</span></code>.</span>
+</div>
 
 <!--\indexR{переходы (escapes)!допустимость}-->
 <p>Процедура выполнения перехода несколько усложняется из-за того, что необходимо
@@ -2026,12 +2020,10 @@
 накладных расходов. С этой точки зрения введение дополнительного регистра
 является плохой идеей.</p>
 
-<p>\begin{figure}[tb]\begin{center}
-\input{figures/fig7.5}
-\end{center}%
-\caption{Состояние стека до и после инструкции \protect<code><span class="func">DYNAMIC-PUSH</span></code>.}%
-\label{compilation/dynamic/pic:subj}%
-\end{figure}</p>
+<div class="image" id="compilation/dynamic/pic:subj">
+<img src="images/png10.png" alt="Состояние стека до и после инструкции DYNAMIC-PUSH" style="width: 4.49in"/>
+<span class="title">Рис. 7.5. Состояние стека до и после инструкции <code><span class="func">DYNAMIC-PUSH</span></code>.</span>
+</div>
 
 <!--\indexR{динамические переменные!организация стека}-->
 <!--\indexR{стековые фреймы!динамические переменные}-->
@@ -2224,12 +2216,10 @@
 исключение доходит до него, то он останавливает вирутальную машину и возвращает
 управление операционной системе.</p>
 
-<p>\begin{figure}[!ht]\begin{center}
-\input{figures/fig7.6}
-\end{center}%
-\caption{Процесс обработки исключения.}%
-\label{compilation/exception/pic:subj}%
-\end{figure}</p>
+<div class="image" id="compilation/exception/pic:subj">
+<img src="images/png11.png" alt="Конфигурация стека до и после начала обработки исключения" style="width: 4.65in"/>
+<span class="title">Рис. 7.6. Процесс обработки исключения.</span>
+</div>
 
 <p>Предобработка превращает форму <code><span class="special">monitor</span></code> в комбинацию двух новых инструкций,
 отвечающих за работу со стеком обработчиков исключений:</p>

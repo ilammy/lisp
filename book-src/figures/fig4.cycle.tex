@@ -1,6 +1,10 @@
 % -*- coding: utf-8 -*-
 % (картинка справа от куска кода с циклическими парами)
-\begin{float:right}\correct{0.25em}{-1.0em}\begin{tikzpicture}
+
+% Отключить костыли для генератора картинок
+\ifPreview\else\begin{float:right}\correct{0.25em}{-1.0em}\fi
+
+\begin{tikzpicture}
   \clip (-1.75em,-0.25em) rectangle (8.00em, 10.55em);
 
 % o2
@@ -33,4 +37,6 @@
   \draw (3.0em, 4.6em) node[above] {\small\ic{o2}};
   \draw (3.0em, 9.1em) node[above] {\small\ic{o1}};
 
-\end{tikzpicture}\end{float:right}
+\end{tikzpicture}
+
+\ifPreview\else\end{float:right}\fi

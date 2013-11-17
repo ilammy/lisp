@@ -114,11 +114,10 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
      (<span class="func">f</span> <span class="var">index</span>) )
    '<span class="var">foo</span>) )        <span class="math"><span class="rel">→</span></span> (<span class="num">2</span> <span class="num">3</span>)</pre>
 
-<p>\begin{figure}\centering
-\input{figures/fig10.1}
-\caption{Объектифицированный код.}%
-\label{cc/objectification/pic:result}
-\end{figure}</p>
+<div class="image" id="cc/objectification/pic:result">
+<img src="images/png26.png" alt="Структура объектифицированного фрагмента кода" style="width: 5.94in"/>
+<span class="caption">Рис. 10.1. Объектифицированный код.</span>
+</div>
 
 
 <h2 id="cc/sect:code-walk"><span class="seq">10.2.</span> Обход кода</h2>
@@ -263,11 +262,10 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
 четырёх предельно понятных методов. Результат его выполнения можно увидеть на
 рисунке <a href="#cc/boxes/pic:result">9.2</a> (показана только изменившаяся часть).</p>
 
-<p>\begin{figure}\centering
-\input{figures/fig10.2}
-\caption{\protect{\dc{(lambda (cnter . tmp) (set! tmp ...) (if ... (... tmp) ...))}.}}%
-\label{cc/boxes/pic:result}
-\end{figure}</p>
+<div class="image" id="cc/boxes/pic:result">
+<img src="images/png27.png" alt="Объектифицированный фрагмент, использующий присваивания, после коробочного преобразования" style="width: 3.05in"/>
+<span class="caption">Рис. 10.2. <code>(<span class="special">lambda</span> (<span class="var">cnter</span> . <span class="var">tmp</span>) (<span class="special">set!</span> <span class="var">tmp</span> ...) (<span class="special">if</span> ... (... <span class="var">tmp</span>) ...))</code>.</span>
+</div>
 
 
 <h2 id="cc/sect:no-nest"><span class="seq">10.4.</span> Избавляемся от вложенных функций</h2>
@@ -432,11 +430,10 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
 <p>Как полагается, на рисунке <a href="#cc/no-nest/pic:result">10.3</a> показан результат
 применения рассмотренного преобразования к нашему бессменному примеру.</p>
 
-<p>\begin{figure}\centering
-\input{figures/fig10.3}
-\caption{\protect\dc{(lambda (i) (lambda x (cons i x)))}.}%
-\label{cc/no-nest/pic:result}
-\end{figure}</p>
+<div class="image" id="cc/no-nest/pic:result">
+<img src="images/png28.png" alt="Объектифицированный фрагмент, использующий вложенные абстракции" style="width: 3.87in"/>
+<span class="caption">Рис. 10.3. <code>(<span class="special">lambda</span> (<span class="var">i</span>) (<span class="special">lambda</span> <span class="var">x</span> (<span class="func">cons</span> <span class="var">i</span> <span class="var">x</span>)))</code>.</span>
+</div>
 
 
 <h2 id="cc/sect:collecting"><span class="seq">10.5.</span> Собираем цитаты и функции</h2>
@@ -533,11 +530,10 @@ Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</spa
 <p>И снова, на рисунке <a href="#cc/collecting/pic:result">10.4</a> показан результат применения
 преобразования к иной части примера.</p>
 
-<p>\begin{figure}\centering
-\input{figures/fig10.4}
-\caption{\protect\dc{(begin (set! index 1) ((lambda ...) ... ))}.}%
-\label{cc/collecting/pic:result}
-\end{figure}</p>
+<div class="image" id="cc/collecting/pic:result">
+<img src="images/png29.png" alt="Объектифицированный фрагмент, демонстрирующий структуру объектов FlattenedProgram" style="width: 4.48in"/>
+<span class="caption">Рис. 10.4. <code>(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">index</span> <span class="num">1</span>) ((<span class="special">lambda</span> ...) ... ))</code></span>
+</div>
 
 <p id="cc/collecting/par:main">Наконец, вся программа превращается в вызов одной
 огромной функции. То есть <span class="math"><span class="ord var">π</span></span>
@@ -1944,11 +1940,10 @@ text    data    bss     dec     hex
 <!--\indexC{SCM}-->
 <pre class="c"><span class="keyword">typedef</span> <span class="keyword">union</span> <span class="type">SCM_object</span> *<span class="type">SCM</span>;</pre>
 
-<p>\begin{figure}\centering
-\input{figures/fig10.5}
-\caption{Представление значений Scheme в Си.}%
-\label{cc/data/pic:tagptr}
-\end{figure}</p>
+<div class="image" id="cc/data/pic:tagptr">
+<img src="images/png30.png" alt="Представление чисел и значений SCM в битовой форме" style="width: 4.07in"/>
+<span class="caption">Рис. 10.5. Представление значений Scheme в Си.</span>
+</div>
 
 <!--\indexC*{SCM_FixnumP}{SCM\_FixnumP}-->
 <!--\indexC*{SCM_Fixnum2Int}{SCM\_Fixnum2Int}-->

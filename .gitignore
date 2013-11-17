@@ -1,7 +1,9 @@
 *.aux
+*.epub
 *.idx
 *.ind
 *.log
 *.out
 *.pdf
 *.toc
+/epub/OEBPS/images/

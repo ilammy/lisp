@@ -881,8 +881,7 @@
 мы каким-то образом сможем определить наличие цикла, то всё ещё неясно, как
 проводить сравнение. Допустим, у нас есть вот такие объекты:</p>
 
-<p>%\input{figures/fig4.cycle}%</p>
-
+<div id="ch4-annotated-src">
 <pre>(<span class="special">define</span> <span class="var">o1</span> (<span class="syntax">let</span> ((<span class="var">pair</span> (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>)))
              (<span class="func">set-car!</span> <span class="var">pair</span> <span class="var">pair</span>)
              (<span class="func">set-cdr!</span> <span class="var">pair</span> <span class="var">pair</span>)
@@ -892,6 +891,8 @@
              (<span class="func">set-cdr!</span> (<span class="func">car</span> <span class="var">pair</span>) <span class="var">pair</span>)
              (<span class="func">set-cdr!</span> <span class="var">pair</span> <span class="var">pair</span>)
              <span class="var">pair</span> ))</pre>
+<img src="images/png02.png" alt="Графическое отображение циклических структур данных o1 и o2" style="width: 1.5in"/>
+</div>
 
 <p>Предположим, мы хотим вычислить <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o1</span>)</code>. Пусть <code><span class="func">equal?</span></code>
 реализована так, что сначала вызывает <code><span class="func">eq?</span></code>, и только потом — если ей

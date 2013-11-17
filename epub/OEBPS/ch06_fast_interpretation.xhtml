@@ -149,12 +149,10 @@
 например, представлять окружения списками записей активаций, как на
 рисунке <a href="#fast/fast/activations/fig:env-lists">6.1</a>.</p>
 
-<p>\begin{figure}[ht]\begin{center}
-\input{figures/fig6.1}
-\end{center}%
-\caption{Окружение как список записей активаций.}%
-\label{fast/fast/activations/fig:env-lists}%
-\end{figure}</p>
+<div class="image" id="fast/fast/activations/fig:env-lists">
+<img src="images/png03.png" alt="Окружение, реализованное как обычный список объектов — записей активаций" style="width: 2.93in"/>
+<span class="title">Рис. 6.1. Окружение как список записей активаций.</span>
+</div>
 
 <p>Можно сделать ещё лучше, введя специальное поле, с помощью которого записи
 активаций будут связываться в список. Так как время на выделение памяти
@@ -209,12 +207,10 @@
       (<span class="func">set-activation-frame-argument!</span> <span class="var">sr</span> <span class="var">j</span> <span class="var">v</span>)
       (<span class="func">deep-update!</span> (<span class="func">environment-next</span> <span class="var">sr</span>) (<span class="func">-</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">j</span> <span class="var">v</span>) ) )</pre>
 
-<p>\begin{figure}[ht]\begin{center}
-\input{figures/fig6.2}
-\end{center}%
-\caption{Окружение как непосредственно связный список.}%
-\label{fast/fast/activations/fig:env-linked}%
-\end{figure}</p>
+<div class="image" id="fast/fast/activations/fig:env-linked">
+<img src="images/png04.png" alt="Окружение, реализованное как список объектов — записей активаций, связанных через специальное поле" style="width: 2.93in"/>
+<span class="title">Рис. 6.2. Окружение как непосредственно связный список.</span>
+</div>
 
 <!--\indexE{r @\protect<code><span class="func">r</span></code> (лексическое окружение)}-->
 <!--\indexE{s r@\protect<code><span class="func">sr</span></code> (записи активаций)}-->
@@ -1186,12 +1182,10 @@ S-выражений, но принципиально остаётся тем ж
 отдельно от записей, или ограничить максимально возможную высоту стека (что
 не особо в духе Лиспа).</p>
 
-<p>\begin{figure}[!h]
-\begin{center}
-\input{figures/fig6.3}
-\end{center}
-\caption{Структура дисплеев.}\label{fast/fast/variations/pic:display}
-\end{figure}</p>
+<div class="image" id="fast/fast/variations/pic:display">
+<img src="images/png05.png" alt="Иллюстрация структуры дисплеев в окружениях" style="width: 5.21in"/>
+<span class="title">Рис. 6.3. Структура дисплеев.</span>
+</div>
 
 
 <h4 id="fast/fast/variations/ssect:flat">Плоские окружения</h4>

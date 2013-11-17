@@ -205,3 +205,24 @@ table.numbered-source td.lines {
 table.numbered-source span.lineno {
   color: red;
 }
+
+div.image {
+  text-align: center;
+}
+
+div.image img {
+  display: block;
+  margin: 0 auto;
+  padding: 0.5em;
+  max-width: 95%;
+}
+
+div#ch4-annotated-src {
+/*  display: inline-block;
+  vertical-align: baseline;
+  width: 100%;*/
+}
+
+div#ch4-annotated-src * { display: inline-block; margin: 0; padding: 0; }
+div#ch4-annotated-src pre { vertical-align: bottom; }
+div#ch4-annotated-src img { margin-left: 5em; }

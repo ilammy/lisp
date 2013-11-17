@@ -158,12 +158,10 @@
         данный цикл ничуть не смущает.</p></li>
 </ul>
 
-<p>\begin{figure}\begin{center}
-\input{figures/fig8.1}
-\end{center}%
-\caption{Синтаксически рекурсивный факториал.}%
-\label{reflection/prog-and-val/pic:recusive}
-\end{figure}</p>
+<div class="image" id="reflection/prog-and-val/pic:recusive">
+<img src="images/png12.png" alt="Изображение синтаксически рекурсивной функции факториала в виде списков Лиспа" style="width: 4.19in"/>
+<span class="title">Рис. 8.1. Синтаксически рекурсивный факториал.</span>
+</div>
 
 <p>Конечно, вам может показаться, что все эти примеры взяты из специальной книги
 «Тысяча и одно извращение на Лиспе», но зато они вполне доходчиво
@@ -1033,12 +1031,10 @@ P-списков, но нередко в этой роли можно встре
 <pre>(<span class="syntax">define-class</span> <span class="class">reified-environment</span> <span class="class">Object</span>
   ( <span class="var">sr</span> <span class="var">r</span> ) )</pre>
 
-<p>\begin{figure}\begin{center}
-\input{figures/fig8.2}
-\end{center}%
-\caption{Представление окружений.}%
-\label{reflection/reifiy-env/export/pic:reified-env}%
-\end{figure}</p>
+<div class="image" id="reflection/reifiy-env/export/pic:reified-env">
+<img src="images/png13.png" alt="Изображение структуры реифицированных окружений в виде списка записей активаций" style="width: 5.52in"/>
+<span class="title">Рис. 8.2. Представление окружений.</span>
+</div>
 
 <p>Не особо (пока) углубляясь в детали, будем компилировать форму
 <code><span class="special">export</span></code> следующим образом:</p>
@@ -1205,6 +1201,10 @@ P-списков, но нередко в этой роли можно встре
 мы уже сталкивались ранее.
 <span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span></p>
 
+<div class="image" id="reflection/reify-env/enrich/pic:subj">
+<img src="images/png14.png" alt="Структура расширенного реифицированного окружения" style="width: 5.04in"/>
+<span class="title">Рис. 8.3. Расширение окружения: <code>(<span class="func">enrich</span> <i>env</i> '<span class="var">x</span> '<span class="var">y</span>)</code>.</span>
+</div>
 
 <!--\indexC{checked-local}-->
 <!--\indexR{привязки (bindings)!неинициализированные}-->
@@ -1259,12 +1259,6 @@ P-списков, но нередко в этой роли можно встре
       (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">n*</span>) (<span class="func">cons</span> (<span class="func">list</span> (<span class="func">car</span> <span class="var">n*</span>) <span class="var">`</span>(<span class="func">checked-local</span> <span class="num">0</span> . <span class="var">,i</span>))
                               (<span class="func">scan</span> (<span class="func">cdr</span> <span class="var">n*</span>) (<span class="func">+</span> <span class="var">i</span> <span class="num">1</span>)) ))
             ((<span class="func">null?</span> <span class="var">n*</span>) <span class="var">old-r</span>) ) ) ) )</pre>
-
-<p>\begin{figure}\centering
-\input{figures/fig8.3}
-\caption{Расширение окружения: \protect\ic{(enrich \protect<i>env</i> 'x 'y)}.}%
-\label{reflection/reify-env/enrich/pic:subj}%
-\end{figure}</p>
 
 <p>Также необходимо дополнить определения <code><span class="func">meaning-reference</span></code>
 и <code><span class="func">meaning-assignment</span></code>, дабы они учитывали новый тип привязок
@@ -1383,12 +1377,10 @@ P-списков, но нередко в этой роли можно встре
 известно программистам на ассемблере. Иллюстрация идеи приведена на
 рисунке <a href="#reflection/reify-env/closed/pic:subj">8.4</a>.</p>
 
-<p>\begin{figure}\begin{center}
-\input{figures/fig8.4}
-\end{center}%
-\caption{Рефлексивная абстракция.}%
-\label{reflection/reify-env/closed/pic:subj}%
-\end{figure}</p>
+<div class="image" id="reflection/reify-env/closed/pic:subj">
+<img src="images/png15.png" alt="Расположение в памяти частей реифицированной рефлексивной абстракции" style="width: 4.48in"/>
+<span class="title">Рис. 8.4. Рефлексивная абстракция.</span>
+</div>
 
 <p>Реализация данной идеи тривиальна<a class="footref" href="zz_footnotes.xhtml#foot8.8"><sup>8</sup></a>. Для нужд <code><span class="func">procedure-&gt;environment</span></code> и
 <code><span class="func">procedure-&gt;definition</span></code> в кодогенераторы абстракций
@@ -1636,13 +1628,10 @@ P-списков, но нередко в этой роли можно встре
     (<span class="special">import</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">env</span>
       (<span class="func">list</span> (<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>) ) ) )</pre>
 
-<p>\begin{figure}\begin{center}
-\input{figures/fig8.5}
-\end{center}%
-\caption{Принцип работы \protect<code><span class="func">import</span></code>.}%
-\label{reflection/reify-env/import/pic:env-struct}%
-\ForLayout{display}{\medskip}
-\end{figure}</p>
+<div class="image" id="reflection/reify-env/import/pic:env-struct">
+<img src="images/png16.png" alt="Структура окружений и псевдоокружений после исполнения специальной формы import" style="width: 5.72in"/>
+<span class="title">Рис. 8.5. Принцип работы <code><span class="special">import</span></code>.</span>
+</div>
 
 <p>Плавающие переменные должны компилироваться по-своему, так что они помечаются
 для компилятора специальной функцией <code><span class="func">shadow-extend*</span></code>:</p>
