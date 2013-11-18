@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Быстрая интерпретация</title>
+    <title>6 – Быстрая интерпретация</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1><span class="seq">Глава 6.</span> Быстрая интерпретация</h1>
 
-<p><span class="initial"><span class="letter">Д</span>енотационный</span>
+<p class="noindent"><span class="initial"><span class="letter">Д</span>енотационный</span>
 интерпретатор из предыдущей
 главы чрезвычайно точно определяет язык, но работает невероятно медленно. В этой
 главе мы разберём причины его неторопливости и разработаем несколько новых
@@ -137,7 +137,7 @@
 <!--\indexE{*@<code><span class="func">*</span></code> (в \protect\Meroon)}-->
 <!--\indexR{индексированные поля}-->
 <!--\indexR{поля!индексированные}-->
-<p>В этом определении используется новая возможность нашей объектной системы:
+<p class="noindent">В этом определении используется новая возможность нашей объектной системы:
 звёздочка <code><span class="syntax">*</span></code> обозначает <em>индексированное</em> поле; такие поля содержат
 не одно значение, а упорядоченный набор значений, размер которого определяется
 при создании объекта. (См. раздел <a href="ch11_essence_of_an_object_system.xhtml#objects/sect:repr-obj">11.2</a> за подробностями.)</p>
@@ -738,7 +738,7 @@ S-выражений, но принципиально остаётся тем ж
   (<span class="special">lambda</span> (<span class="var">sr</span> <span class="var">k</span>)
     (<span class="func">apply</span> <span class="var">wrong</span> <span class="var">message</span> <span class="var">culprits</span>) ) )</pre>
 
-<p>Как говорится, и рыбку съели, и косточкой не подавились.</p>
+<p class="noindent">Как говорится, и рыбку съели, и косточкой не подавились.</p>
 
 <!--\indexR{глобальные переменные!инициализированность}-->
 <p id="fast/fast/classify/static-err/par:self-modify">Кстати, вспомните, что при
@@ -924,7 +924,7 @@ S-выражений, но принципиально остаётся тем ж
 <pre>((<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> . <span class="var">c</span>) ...) <span class="math"><span class="rel">⇝</span></span> ((<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span>) ...)
  <i>α</i> <i>β</i> <i>γ</i> <i>δ</i> ...)               <i>α</i> <i>β</i> (<span class="func">cons</span> <i>γ</i> (<span class="func">cons</span> <i>δ</i> ...)) )</pre>
 
-<p>с помощью вот таких функций:</p>
+<p class="noindent">с помощью вот таких функций:</p>
 
 <!--\indexC{meaning-dotted-closed-application}-->
 <!--\indexC{meaning-dotted*}-->
@@ -2421,7 +2421,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
                       <span class="num">0</span> ) ) ) )
     <span class="num">1</span> )</pre>
 
-<p>Напишите подобный дизассемблер.</p>
+<p class="noindent">Напишите подобный дизассемблер.</p>
 
 
 <h5 class="exercise" id="fast/ex:act-rec-before">Упражнение <span class="seq">6.4</span></h5>

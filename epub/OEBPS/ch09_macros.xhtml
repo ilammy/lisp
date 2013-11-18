@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Макросы: употребление и злоупотребление</title>
+    <title>9 – Макросы: употребление и злоупотребление</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -12,7 +12,7 @@
 <h1><span class="seq">Глава 9.</span> Макросы: употребление и злоупотребление</h1>
 
 <!--\indexR{абстракция!и макросы}-->
-<p><span class="initial"><span class="letter">П</span>резираемые,</span> неверно используемые,
+<p class="noindent"><span class="initial"><span class="letter">П</span>резираемые,</span> неверно используемые,
 несправедливо осуждаемые, недостаточно оправданные (теоретически) — как бы их
 не клеймили, макросы остаются одним из столпов Лиспа и одной главных из причин
 его долголетия. Если функции являются абстракцией вычислений, а объекты —
@@ -864,7 +864,7 @@ S-выражений, а не функция; такой функции во в�
       (<span class="func">fact</span> <span class="var">n</span>)
       `(<span class="func">fact</span> ,<span class="var">n</span>) ) )</pre></div>
 
-<p>После раскрытия макросов он выглядит так:</p>
+<p class="noindent">После раскрытия макросов он выглядит так:</p>
 
 <div class="snippet"><span class="title">si/chap9c.escm</span>
 <pre>(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span>)
@@ -883,7 +883,7 @@ S-выражений, а не функция; такой функции во в�
 <pre>(<span class="special">define</span> (<span class="func">some-facts</span>)
   (<span class="func">list</span> (<span class="syntax">factorial</span> <span class="num">5</span>) (<span class="syntax">factorial</span> (<span class="func">+</span> <span class="num">2</span> <span class="num">3</span>))) )</pre></div>
 
-<p>Мы получим следующий результат:</p>
+<p class="noindent">Мы получим следующий результат:</p>
 
 <div class="snippet"><span class="title">si/chap9d.escm</span>
 <pre>(<span class="special">define</span> (<span class="func">some-facts</span>)
@@ -934,7 +934,7 @@ S-выражений, а не функция; такой функции во в�
       (<span class="func">fact2</span> <span class="var">n</span>)
       `(<span class="func">fact1</span> ,<span class="var">n</span>) ) )</pre></div>
 
-<p>и два:</p>
+<p class="noindent">и два:</p>
 
 <div class="snippet"><span class="title">si/librun.scm</span>
 <pre>(<span class="special">define</span> (<span class="func">fact1</span> <span class="var">n</span>)
@@ -1452,7 +1452,7 @@ S-выражений, а не функция; такой функции во в�
               <span class="var">numbers</span> )
        (<span class="syntax">else</span> <span class="hash">#f</span>) ) ) )</pre>
 
-    <p>Здесь важно то, что подобные макросы «одноразовые». У них
+    <p class="noindent">Здесь важно то, что подобные макросы «одноразовые». У них
     очень ограниченная область видимости: в любом случае не шире
     модуля, где они определены.</p></li>
 
@@ -1597,7 +1597,7 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">ES
 <pre>(<span class="special">let-syntax</span> ((<span class="syntax">foo</span> ...))
   (<span class="special">eval/ce</span> (<span class="func">read</span>)) )</pre>
 
-<p>то раскроет ли <code><span class="special">eval/ce</span></code> макровызовы <code><span class="syntax">foo</span></code> в считанном выражении? Если да,
+<p class="noindent">то раскроет ли <code><span class="special">eval/ce</span></code> макровызовы <code><span class="syntax">foo</span></code> в считанном выражении? Если да,
 то она должна сохранять не только весь лексический контекст, но также и
 макроконтекст — полное состояние макроэкспандера; только так <code><span class="special">eval/ce</span></code>
 сможет корректно раскрыть <code><span class="syntax">foo</span></code>. Поскольку подобные приёмы серьёзно нарушает
@@ -1636,7 +1636,7 @@ T-диаграммы <span class="cite">[<a href="z1_bibliography.xhtml#es70">ES
 
 <!--\indexR{бесконечная регрессия}-->
 <!--\indexR{прагматика}-->
-<p>Здесь внутреннее определение <code><span class="syntax">bar</span></code>
+<p class="noindent">Здесь внутреннее определение <code><span class="syntax">bar</span></code>
 вводится для расширения макроязыка, а не пользовательского. Макрос
 <code><span class="syntax">bar</span></code> определяется, чтобы облегчить запись
 определения другого макроса. Однако, даже если семантика данного выражения
@@ -1853,7 +1853,7 @@ matching), например, рассмотренные в работах
   (<span class="special">set!</span> <span class="var">y</span> (<span class="func">*</span> <span class="num">2</span> <span class="var">y</span>))
   <span class="var">o</span> )</pre>
 
-<p>вместо такого ужаса:</p>
+<p class="noindent">вместо такого ужаса:</p>
 
 <pre>(<span class="syntax">define-method</span> (<span class="func">double</span> (<span class="var">o</span> <span class="class">Point</span>))
   (<span class="func">set-Point-x!</span> <span class="var">o</span> (<span class="func">*</span> <span class="num">2</span> (<span class="func">Point-x</span> <span class="var">o</span>)))
@@ -2043,7 +2043,7 @@ S-выражение, в котором могут быть и другие ма
      (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">exit</span>)
                 (<span class="syntax">let</span> <span class="func">loop</span> () <span class="var">e1</span> <span class="var">e2</span> ... (<span class="func">loop</span>)) )) ) ) )</pre>
 
-<p>то из него нельзя будет выйти таким образом, потому что любое упоминание
+<p class="noindent">то из него нельзя будет выйти таким образом, потому что любое упоминание
 <code><span class="func">exit</span></code> внутри форм <code><span class="var">e1</span></code>, <code><span class="var">e2</span></code>… из-за гигиенических
 переименований будет ссылаться не на тот <code><span class="var">exit</span></code>, который объявлен внутри
 макроса, а на тот, который виден с места макровызова. Здесь необходимо как-то
@@ -2080,7 +2080,7 @@ S-выражение, в котором могут быть и другие ма
       <span class="math"><span class="ord var">π</span></span>
       <span class="var">results</span> ) ) )</pre>
 
-<p>А пример с <code><span class="syntax">loop</span></code> теперь выглядит вот так:</p>
+<p class="noindent">А пример с <code><span class="syntax">loop</span></code> теперь выглядит вот так:</p>
 
 <pre>(<span class="syntax">with-aliases</span> ((<span class="var">cc</span> <span class="func">call/cc</span>) (<span class="var">lam</span> <span class="special">lambda</span>) (<span class="var">ll</span> <span class="syntax">let</span>))
   (<span class="syntax">define-abbreviation</span> (<span class="syntax">loop</span> . <span class="var">body</span>)
@@ -2858,7 +2858,7 @@ Scheme. Если нужны именно такие выражения, то н�
     (<span class="syntax">let</span> ((<span class="var">loop</span> (<span class="func">gensym</span>)))
       `(,<span class="var">cc</span> (,<span class="var">lam</span> (<span class="var">exit</span>) (,<span class="var">ll</span> ,<span class="var">loop</span> () ,@<span class="var">body</span> (,<span class="var">loop</span>)))) ) ) )</pre>
 
-<p>то форма <code><span class="syntax">with-aliases</span></code> захватит смысл
+<p class="noindent">то форма <code><span class="syntax">with-aliases</span></code> захватит смысл
 символов на уровне макроопределений, так что использовать их можно только на этом
 или более высоком уровне. Здесь <code><span class="syntax">with-aliases</span></code>
 содержится внутри <code><span class="syntax">define-abbreviation</span></code>, поэтому в момент

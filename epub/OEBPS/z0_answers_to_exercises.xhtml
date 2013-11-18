@@ -87,7 +87,7 @@
                         (<span class="special">wrong</span> <span class="string">"Too few values"</span>) )) ) )
       (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
 
-<p>Реализация <code><span class="func">update!</span></code> аналогична по структуре.</p>
+<p class="noindent">Реализация <code><span class="func">update!</span></code> аналогична по структуре.</p>
 
 
 <h4>Упражнение <a class="seq" href="ch01_basics.xhtml#basics/ex:racks">1.4</a></h4>
@@ -229,7 +229,7 @@
 <pre>(<span class="special">define</span> (<span class="func">funcall</span> <span class="var">f</span> . <span class="var">args</span>) (<span class="func">apply</span> <span class="var">f</span> <span class="var">args</span>))
 (<span class="special">define</span> (<span class="func">function</span> <span class="var">f</span>) <span class="var">f</span>)</pre>
 
-<p>Или то же самое с помощью макросов:</p>
+<p class="noindent">Или то же самое с помощью макросов:</p>
 
 <pre>(<span class="special">define-syntax</span> <span class="var">funcall</span>
   (<span class="syntax">syntax-rules</span> ()
@@ -425,7 +425,7 @@
                (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span> <span class="var">y</span>))) ) )))
     (<span class="func">d</span> <span class="var">d</span>) ) )</pre>
 
-<p>После этого довольно легко догадаться, как сделать <i>n</i>-арную версию:</p>
+<p class="noindent">После этого довольно легко догадаться, как сделать <i>n</i>-арную версию:</p>
 
 <pre>(<span class="special">define</span> <span class="var">fixN</span>
   (<span class="syntax">let</span> ((<span class="var">d</span> (<span class="special">lambda</span> (<span class="var">w</span>)
@@ -517,7 +517,7 @@
 
 <pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="ord var">φ</span></span>)  <span class="math"><span class="rel">→</span></span>  <sub><i>k</i></sub>(<span class="math"><span class="ord var">φ</span></span> <i>k</i>)</pre>
 
-<p>Следовательно, <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code> становится
+<p class="noindent">Следовательно, <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code> становится
 <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>2</sub> <i>k</i><sub><span class="normal">0</span></sub>)</code>, которое в свою очередь переходит
 в <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">0</span></sub> <i>k</i><sub><span class="normal">0</span></sub>)</code>, которое, очевидно, возвращает <i>k</i><sub><span class="normal">0</span></sub>.</p>
 
@@ -573,7 +573,7 @@
 <pre>(<span class="special">tagbody</span>  <span class="var">A</span> (<span class="special">return</span> (<span class="func">+</span> <span class="num">1</span> (<span class="special">catch</span> '<span class="var">foo</span> (<span class="special">go</span> <span class="var">B</span>))))
           <span class="var">B</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">throw</span> '<span class="var">foo</span> <span class="num">5</span>)) )</pre>
 
-<p>См. также <span class="cite">[<a href="z1_bibliography.xhtml#bak92c">Bak92c</a>]</span>.</p>
+<p class="noindent">См. также <span class="cite">[<a href="z1_bibliography.xhtml#bak92c">Bak92c</a>]</span>.</p>
 
 
 <h4>Упражнение <a class="seq" href="ch03_escape_and_return.xhtml#escape/ex:arity-optimize">3.4</a></h4>
@@ -582,13 +582,13 @@
 
 <pre>(<span class="syntax">define-class</span> <span class="class">function-with-arity</span> <span class="class">function</span> (<span class="var">arity</span>))</pre>
 
-<p>Затем измените обработку <code><span class="special">lambda</span></code>-форм,
+<p class="noindent">Затем измените обработку <code><span class="special">lambda</span></code>-форм,
 чтобы они возвращали именно такие объекты:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">evaluate-lambda</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">k</span>)
   (<span class="func">resume</span> <span class="var">k</span> (<span class="func">make-function-with-arity</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span> (<span class="func">length</span> <span class="var">n*</span>))) )</pre>
 
-<p>И, наконец, реализуйте оптимизированный протокол вызова данных функций:</p>
+<p class="noindent">И, наконец, реализуйте оптимизированный протокол вызова данных функций:</p>
 
 <pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">function-with-arity</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
   (<span class="special">if</span> (<span class="func">=</span> (<span class="func">function-with-arity-arity</span> <span class="var">f</span>) (<span class="func">length</span> <span class="var">v*</span>))
@@ -706,7 +706,7 @@
 <pre>(<span class="syntax">define-generic</span> (<span class="func">evaluate</span> (<span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>)
   (<span class="func">wrong</span> <span class="string">"Not a program"</span> <span class="var">e</span>) )</pre>
 
-<p>Затем напишите для неё методы, вызывающие соответствующие функции:</p>
+<p class="noindent">Затем напишите для неё методы, вызывающие соответствующие функции:</p>
 
 <pre>(<span class="syntax">define-method</span> (<span class="func">evaluate</span> (<span class="var">e</span> <span class="class">quotation</span>) <span class="var">r</span> <span class="var">k</span>)
   (<span class="func">evaluate-quote</span> (<span class="func">quotation-value</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>) )
@@ -717,7 +717,7 @@
                  <span class="var">r</span> <span class="var">k</span> ) )
 ...</pre>
 
-<p>Также вам понадобятся новые классы объектов для представления различных частей
+<p class="noindent">Также вам понадобятся новые классы объектов для представления различных частей
 программ:</p>
 
 <pre>(<span class="syntax">define-class</span> <span class="class">program</span>    <span class="class">Object</span>  ())
@@ -861,7 +861,7 @@
 ((<span class="var">or</span>) (<span class="func">evaluate-or</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
 ...</pre>
 
-<p>После этого определяете её как-то так:</p>
+<p class="noindent">После этого определяете её как-то так:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">evaluate-or</span> <span class="var">e1</span> <span class="var">e2</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
   (<span class="func">evaluate</span> <span class="var">e1</span> <span class="var">r</span> <span class="var">s</span> (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
@@ -892,7 +892,7 @@
     (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
       (<span class="func">k</span> (<span class="highlight"><span class="func">s</span></span> (<span class="func">r</span> <span class="var">n</span>)) (<span class="func">update</span> <span class="var">ss</span> (<span class="func">r</span> <span class="var">n</span>) <span class="var">v</span>)) ) ) )</pre>
 
-<p>Это важно. Например, значение данного выражения зависит от реализации:</p>
+<p class="noindent">Это важно. Например, значение данного выражения зависит от реализации:</p>
 
 <pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="num">1</span>))
   (<span class="special">set!</span> <span class="var">x</span> (<span class="special">set!</span> <span class="var">x</span> <span class="num">2</span>)) )</pre>
@@ -1051,7 +1051,7 @@
 <pre>(<span class="special">define</span> (<span class="func">random-permutation</span> <span class="var">n</span>)
   (<span class="func">shuffle</span> (<span class="func">iota</span> <span class="num">0</span> <span class="var">n</span>)) )</pre>
 
-<p>то последовательность вычислений выбирается действительно динамически:</p>
+<p class="noindent">то последовательность вычислений выбирается действительно динамически:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">d.determine!</span> . <span class="var">thunks</span>)
   (<span class="syntax">let</span> ((<span class="var">results</span> (<span class="func">iota</span> <span class="num">0</span> (<span class="func">length</span> <span class="var">thunks</span>))))
@@ -1147,7 +1147,7 @@
 
 <pre>... ((<span class="var">redefine</span>) (<span class="func">meaning-redefine</span> (<span class="func">cadr</span> <span class="var">e</span>))) ...</pre>
 
-<p>Затем реализуйте её предобработку:</p>
+<p class="noindent">Затем реализуйте её предобработку:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">meaning-redefine</span> <span class="var">n</span>)
   (<span class="syntax">let</span> ((<span class="var">kind1</span> (<span class="func">global-variable?</span> <span class="var">g.init</span> <span class="var">n</span>)))
@@ -1200,7 +1200,7 @@
 
 <pre>(<span class="special">define</span> <span class="var">*dynenv*</span> <span class="num">-1</span>)</pre>
 
-<p>Затем сохраняйте его вместе с остальным окружением:</p>
+<p class="noindent">Затем сохраняйте его вместе с остальным окружением:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">preserve-environment</span>)
   (<span class="func">stack-push</span> <span class="var">*dynenv*</span>)
@@ -1210,7 +1210,7 @@
   (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">stack-pop</span>))
   (<span class="special">set!</span> <span class="var">*dynenv*</span> (<span class="func">stack-pop</span>)) )</pre>
 
-<p>Теперь динамическое окружение извлекается элементарно; лишь несколько
+<p class="noindent">Теперь динамическое окружение извлекается элементарно; лишь несколько
 изменилась работа со стеком:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">search-dynenv-index</span>)
@@ -1243,7 +1243,7 @@
            (<span class="func">signal-exception</span>
             <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Incorrect arity"</span> '<span class="var">load</span>) ) ) ) ) ) )</pre>
 
-<p>Но вот при её использовании возникают определённые сложности. Всё дело
+<p class="noindent">Но вот при её использовании возникают определённые сложности. Всё дело
 в продолжениях. Допустим, с помощью <code><span class="func">load</span></code>
 загружается следующий файл:</p>
 
@@ -1251,7 +1251,7 @@
 (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) (<span class="special">set!</span> <span class="var">*k*</span> <span class="var">k</span>)))
 (<span class="func">display</span> '<span class="var">caution</span>)</pre>
 
-<p>Что случится, если после этого активировать продолжение
+<p class="noindent">Что случится, если после этого активировать продолжение
 <code><span class="func">*k*</span></code>? Правильно, выведется символ
 <code><span class="var">caution</span></code>! А потом?</p>
 
@@ -1297,7 +1297,7 @@
 <pre>... (<span class="special">set!</span> <span class="var">*dynamics*</span> (<span class="func">make-vector</span> (<span class="func">+</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">dynamics</span>))
                                   <span class="var">undefined-value</span> )) ...</pre>
 
-<p>После чего переопределите функции-аксессоры на новый лад:</p>
+<p class="noindent">После чего переопределите функции-аксессоры на новый лад:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">find-dynamic-value</span> <span class="var">index</span>)
   (<span class="syntax">let</span> ((<span class="var">v</span> (<span class="func">vector-ref</span> <span class="var">*dynamics*</span> <span class="var">index</span>)))
@@ -1489,7 +1489,7 @@
        (<span class="special">if</span> <span class="var">p</span> (<span class="special">begin</span> (<span class="special">if</span> (<span class="func">not</span> <span class="var">q</span>) (<span class="special">begin</span> <span class="var">body</span> ...))
                     (<span class="func">loop</span>) )) ) ) ) )</pre>
 
-<p>Как вариант, можно всё сделать вручную с помощью
+<p class="noindent">Как вариант, можно всё сделать вручную с помощью
 <code><span class="syntax">define-abbreviation</span></code>:</p>
 
 <pre>(<span class="syntax">with-aliases</span> ((<span class="var">+let</span> <span class="syntax">let</span>) (<span class="var">+begin</span> <span class="special">begin</span>) (<span class="var">+when</span> <span class="syntax">when</span>) (<span class="var">+not</span> <span class="func">not</span>))

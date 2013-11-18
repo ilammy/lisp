@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Lisp, 1, 2, …, ω</title>
+    <title>2 – Lisp, 1, 2, …, ω</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1><span class="seq">Глава 2.</span> Lisp, 1, 2, …, ω</h1>
 
-<p><span class="initial"><span class="letter">Ф</span>ункции занимают</span> центральное место
+<p class="noindent"><span class="initial"><span class="letter">Ф</span>ункции занимают</span> центральное место
 в Лиспе, поэтому очевидно, что эффективность их вызовов очень важна.
 Неудивительно, что за прошедшее время соответствующие механизмы были изучены
 вдоль и поперёк, а исследования по диагонали всё ещё продолжаются. В этой главе
@@ -448,7 +448,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 (<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)
 (<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="var">cons</span> <span class="num">2</span>)</pre>
 
-<p>И наконец:</p>
+<p class="noindent">И наконец:</p>
 
 <pre>(<span class="special">define</span> (<span class="fbox"><i>бесспорно Lisp<sub>2</sub></i></span>)
   (<span class="special">define</span> (<span class="func">toplevel</span>)
@@ -677,7 +677,7 @@ Lisp<sub>2</sub> состоит в читабельности. Хотя, кон�
   (<span class="func">list</span> <span class="var">list</span>) )</pre>
 
 <!--\indexR{самоприменение!в \protectLisp<sub>1</sub> и \protectLisp<sub>2</sub>}-->
-<p>С точки зрения Lisp<sub>1</sub>, <code>(<span class="func">list</span> <span class="var">list</span>)</code> — это вполне допустимое
+<p class="noindent">С точки зрения Lisp<sub>1</sub>, <code>(<span class="func">list</span> <span class="var">list</span>)</code> — это вполне допустимое
 самоприменение,<a class="footref" href="zz_footnotes.xhtml#foot2.2"><sup>2</sup></a> но в Lisp<sub>2</sub>
 это выражение имеет совершенно различный смысл. В <span class="logo">Common Lisp</span> эти два имени
 принадлежат различным окружениям и не конфликтуют. Тем не менее, лучше избегать
@@ -940,8 +940,8 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
   <li>привязки автоматически уничтожаются после завершения вычислений.</li>
 </ul>
 
-<p>Поэтому <code><span class="special">dynamic-let</span></code> идеально подходит для
-временной установки функций-обработчиков ошибок.</p>
+<p class="noindent">Поэтому <code><span class="special">dynamic-let</span></code>
+идеально подходит для временной установки функций-обработчиков ошибок.</p>
 
 <p>Вот ещё один пример разумного использования динамических переменных. Функции
 вывода в <span class="logo">Common Lisp</span> настраиваются динамическими переменными вроде
@@ -1582,7 +1582,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
   <i>выражения</i>... )</pre>
 
 <!--\indexC{let}-->
-<p>И она эквивалентна такому выражению:</p>
+<p class="noindent">И она эквивалентна такому выражению:</p>
 
 <pre>((<span class="special">lambda</span> (<i>переменная<sub>1</sub></i> <i>переменная<sub>2</sub></i> ... <i>переменная<sub>n</sub></i>) <i>выражения</i>...)
  <i>выражение<sub>1</sub></i> <i>выражение<sub>2</sub></i> ... <i>выражение<sub>n</sub></i> )</pre>
@@ -1908,7 +1908,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
            (<span class="var">even?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) )
     ... ) )</pre>
 
-<p>В данном случае <code><span class="syntax">letrec</span></code> создаёт опережающие ссылки на <code><span class="var">fact</span></code>, <code><span class="var">odd?</span></code>
+<p class="noindent">В данном случае <code><span class="syntax">letrec</span></code> создаёт опережающие ссылки на <code><span class="var">fact</span></code>, <code><span class="var">odd?</span></code>
 и <code><span class="var">even?</span></code>, так что определения будут работать и в гиперстатическом окружении.</p>
 
 
@@ -2013,7 +2013,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
   (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
       (<span class="func">*</span> <span class="var">n</span> (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )</pre>
 
-<p>то фактически записываем уравнение относительно переменной <code><span class="var">fact</span></code>. Форма
+<p class="noindent">то фактически записываем уравнение относительно переменной <code><span class="var">fact</span></code>. Форма
 <code><span class="special">define</span></code> решает это уравнение и связывает полученное решение
 с переменной <code><span class="var">fact</span></code>. Такая трактовка уводит нас далеко от обсуждения
 инициализации глобальных переменных
@@ -2346,7 +2346,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
     (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
         (<span class="func">*</span> <span class="var">n</span> ((<span class="func">f</span> <span class="var">f</span>) (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) ) )</pre>
 
-<p>то что вернёт <code>((<span class="func">hyper-fact</span> <span class="var">hyper-fact</span>) <span class="num">5</span>)</code>?</p>
+<p class="noindent">то что вернёт <code>((<span class="func">hyper-fact</span> <span class="var">hyper-fact</span>) <span class="num">5</span>)</code>?</p>
 
 
 <h2 id="lisp1-2-omega/sect:recommended-reading">Рекомендуемая литература</h2>

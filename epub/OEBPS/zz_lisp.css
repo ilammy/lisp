@@ -1,3 +1,212 @@
+            /* reset.css :: modified Eric Meyer's Reset CSS 2.0 */
+            html, blockquote, body, div, span, h1, h2, h3, h4, h5,
+            h6, p, pre, a, code, em, img, strong, sub, table, sup,
+            thead, tt, b, tbody, i, dl, dt, dd, ol, ul, tfoot, li,
+            caption, tr, th, td { vertical-align: baseline;  font:
+            inherit; margin:  0; border: 0; padding: 0; font-size:
+            100%;} body { line-height: 1;} table { border-spacing:
+            0; border-collapse: collapse;} blockquote, q { quotes:
+            none; } blockquote:before , blockquote:after {content:
+              ''; content: none; } ol, ul { list-style: none; }
+/******************************************************************************/
+
+@font-face {
+    font-family: STIX;
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/stix-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: italic;
+    font-weight: bold;
+    src: url('fonts/stix-bolditalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: italic;
+    font-weight: normal;
+    src: url('fonts/stix-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/stix-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSerif.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: italic;
+    font-weight: normal;
+    src: url('fonts/DejaVuSerif-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerif-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: italic;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerif-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSansMono.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSansMono-Bold.ttf') format('truetype');
+}
+
+/******************************************************************************/
+
+/* Layout debugging */
+
+body {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    padding: 0 3pt;
+    margin: 0 auto;
+    width: 140mm;
+}
+
+span { color: red; }
+
+/******************************************************************************/
+
+body {
+    font-family: 'DejaVu Serif', serif;
+    font-size: 10pt;
+    line-height: 1.34;
+}
+
+code, pre {
+    font-family: 'DejaVu Sans Mono', monospace;
+}
+
+code {
+    font-size: 10pt;
+}
+
+pre {
+    font-size: 9pt;
+}
+
+/******************************************************************************/
+
+/* Basic layout */
+
+h1 {
+    font-size: 25pt;
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 50pt;
+    margin-top: 20pt;
+}
+
+h1 .seq {
+    display: block;
+    font-size: 14pt;
+    font-variant: small-caps;
+    font-weight: normal;
+    margin-bottom: 15pt;
+}
+
+h2 {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-bottom: 2.3ex;
+    margin-top: 3.5ex;
+}
+
+h3 {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+h4 {
+    font-weight: bold;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+h5 {
+    font-weight: bold;
+    margin-top: 3.25ex;
+}
+
+h5.exercise {
+}
+
+h5.exercise + p {
+    text-indent: 0;
+}
+
+p {
+    text-indent: 1.25em;
+}
+
+pre {
+    margin: 0.4em 1.25em;
+}
+
+/******************************************************************************/
+
+/* Accidental */
+
+p .initial {
+    font-variant: small-caps;
+}
+
+p .initial .letter {
+    float: left;
+    font-size: 7ex;
+    height: 0.9em;
+}
+
+p.noindent {
+    text-indent: 0;
+}
+
+/******************************************************************************/
+
+i {
+    font-family: 'DejaVu Serif', serif;
+    font-style: italic;
+}
+/*
+.math {
+    font-family: STIX, serif !important;
+}
+
+.math .ord.var {
+    font-style: italic;
+}
+
 div.where {
     border-left: solid black 1pt;
     display: inline-block;
@@ -13,10 +222,7 @@ div.complex {
     vertical-align: top;
 }
 
-span { color: red; }
-
 span.logo {
-    font-family: serif; /* fix */
     font-variant: small-caps;
 }
 
@@ -40,7 +246,6 @@ span.quad-stub {
     display: inline-block;
 }
 
-/* HTML5 does not allow align attribute? Eat this. */
 table#pref-table-signatures td:nth-child(1) { text-align: center; }
 table#pref-table-signatures td:nth-child(2) { text-align: left; }
 
@@ -75,7 +280,6 @@ table#ch5-table-domains td:nth-child(1) { text-align: right; }
 table#ch5-table-domains td:nth-child(2) { text-align: center; }
 table#ch5-table-domains td:nth-child(3) { text-align: left; }
 
-/* code */
 code span.special,
 pre span.special { color: #CC1212; font-size: 100%; }
 
@@ -218,11 +422,10 @@ div.image img {
 }
 
 div#ch4-annotated-src {
-/*  display: inline-block;
-  vertical-align: baseline;
-  width: 100%;*/
+
 }
 
 div#ch4-annotated-src * { display: inline-block; margin: 0; padding: 0; }
 div#ch4-annotated-src pre { vertical-align: bottom; }
 div#ch4-annotated-src img { margin-left: 5em; }
+*/

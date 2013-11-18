@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Денотационная семантика</title>
+    <title>5 – Денотационная семантика</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1><span class="seq">Глава 5.</span> Денотационная семантика</h1>
 
-<p><span class="initial"><span class="letter">Э</span>та глава</span> начинается кратким обзором
+<p class="noindent"><span class="initial"><span class="letter">Э</span>та глава</span> начинается кратким обзором
 λ-исчисления, после чего переходит к денотационной семантике во всей её
 красе. Мы рассмотрим ещё одно определение Лиспа — в этот раз денотационное,
 — значительно отличающееся от предыдущих интерпретаторов: смысл программ
@@ -674,7 +674,7 @@ Scheme — является <em class="term">аппликативный</em> п�
 
 <div class="denotation math"><span class="ord var">ε<sub><span class="ord num">0</span></sub></span><span class="rel">→</span><span class="ord var">ε<sub><span class="ord num">1</span></sub></span><span class="rel">[]</span><span class="ord var">ε<sub><span class="ord num">2</span></sub></span></div>
 
-<p>В R<sup>5</sup>RS применяется немного другая нотация:</p>
+<p class="noindent">В R<sup>5</sup>RS применяется немного другая нотация:</p>
 
 <div class="denotation math"><span class="ord var">ε<sub><span class="ord num">0</span></sub></span><span class="rel">→</span><span class="ord var">ε<sub><span class="ord num">1</span></sub></span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord num">2</span></sub></span></div>
 
@@ -1713,7 +1713,7 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 <pre>(<span class="special">define</span> (<span class="func">weird</span> <span class="var">v</span>)
   (<span class="special">set!</span> <span class="var">a-new-variable</span> <span class="var">v</span>) )</pre>
 
-<p>Присваивание внутри <code><span class="func">weird</span></code> расширяет
+<p class="noindent">Присваивание внутри <code><span class="func">weird</span></code> расширяет
 глобальное окружение, захваченное замыканием. Но состояние этого окружения не сохраняется между
 вызовами <code><span class="func">weird</span></code>, каждый из них начинает с чистого листа.</p>
 
@@ -2004,7 +2004,7 @@ style). Очевидно, что мы можем транслировать лю
      (<span class="special">lambda</span> (<span class="var">a</span>)
        (<span class="func">k</span> `(<span class="special">set!</span> ,<span class="var">variable</span> ,<span class="var">a</span>)) ) ) ) )</pre>
 
-<p>Мы вычисляем новое значение переменной <code>(<span class="func">cps</span> <span class="var">form</span>)</code>,
+<p class="noindent">Мы вычисляем новое значение переменной <code>(<span class="func">cps</span> <span class="var">form</span>)</code>,
 передаём его промежуточному продолжению через переменную
 <code><span class="var">a</span></code>, затем передаём результат
 присваивания дальнейшей программе.</p>
@@ -2035,7 +2035,7 @@ style). Очевидно, что мы можем транслировать лю
           (<span class="func">cps</span> (<span class="func">car</span> <span class="var">e</span>)) )
       (<span class="func">cps</span> <span class="hash">'()</span>) ) )</pre>
 
-<p>Здесь интересным местом является способ игнорирования промежуточных значений.</p>
+<p class="noindent">Здесь интересным местом является способ игнорирования промежуточных значений.</p>
 
 <p>Самое сложное — это обработка <code><span class="special">lambda</span></code>-форм.
 Им всем надо добавить ещё один аргумент — продолжение — и гарантировать правильность его
@@ -2077,7 +2077,7 @@ style). Очевидно, что мы можем транслировать лю
             ,((<span class="func">cps</span> `(<span class="special">begin</span> ,@<span class="var">body</span>))
               (<span class="special">lambda</span> (<span class="var">a</span>) `(,<span class="func">c</span> ,<span class="var">a</span>)) ) ) )) ) )</pre>
 
-<p>Готово. Посмотрим, во что данная трансформация превратит факториал:</p>
+<p class="noindent">Готово. Посмотрим, во что данная трансформация превратит факториал:</p>
 
 <!--\indexC{fact}-->
 <pre>(<span class="special">set!</span> <span class="var">fact</span> (<span class="special">lambda</span> (<span class="var">n</span>)

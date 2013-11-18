@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Переходы и возвраты: продолжения</title>
+    <title>3 – Переходы и возвраты: продолжения</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
 
-<p><span class="initial"><span class="letter">К</span>аждое вычисление</span> в конечном счёте
+<p class="noindent"><span class="initial"><span class="letter">К</span>аждое вычисление</span> в конечном счёте
 приводит к возврату результата сущности, которая называется <em class="term">продолжением</em>.
 В данной главе разбирается эта идея и её исторические предпосылки. Мы также
 создадим ещё один интерпретатор, призванный явно оперировать продолжениями.
@@ -224,7 +224,7 @@
 
 <pre>(<span class="special">throw</span> <i>метка</i> <i>форма</i>)</pre>
 
-<p>Первый аргумент должен вычисляться в значение, с которым <code><span class="special">catch</span></code> динамически
+<p class="noindent">Первый аргумент должен вычисляться в значение, с которым <code><span class="special">catch</span></code> динамически
 связала продолжение. Если это так, то исполнение переходит в соответствующее
 продолжение, а вместо значения <code><span class="special">catch</span></code> подставляется значение <i>формы</i>
 из <code><span class="special">throw</span></code>.</p>
@@ -308,7 +308,7 @@
 <pre>(<span class="special">block</span> <i>метка</i> <i>формы</i>...)</pre>
 
 <!--\indexR{лексическое окружение!окружение меток}-->
-<p>Первый аргумент не вычисляется и должен быть идентификатором. Форма <code><span class="special">block</span></code>
+<p class="noindent">Первый аргумент не вычисляется и должен быть идентификатором. Форма <code><span class="special">block</span></code>
 связывает текущее продолжение с <i>меткой</i> в <em>лексическом окружении
 меток</em>. Далее вычисляется тело <code><span class="special">block</span></code> как в <code><span class="special">progn</span></code> и последнее
 полученное значение становится значением всей формы
@@ -321,7 +321,7 @@
 
 <pre>(<span class="special">return-from</span> <i>метка</i> <i>форма</i>)</pre>
 
-<p>Первый аргумент не вычисляется и должен быть именем лексически видимой метки;
+<p class="noindent">Первый аргумент не вычисляется и должен быть именем лексически видимой метки;
 читай: <code><span class="special">return-from</span></code> может находиться только внутри <code><span class="special">block</span></code>
 с одноимённой меткой, как переменная может использоваться только внутри
 соответствующей <code><span class="special">lambda</span></code>-формы. При вычислении <code><span class="special">return-from</span></code>
@@ -701,7 +701,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
     (<span class="special">set!</span> <span class="var">n</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))
     (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">r</span> (<span class="func">k</span> '<span class="var">recurse</span>)) ) )</pre>
 
-<p>Продолжение, которое передаётся через <code><span class="var">c</span></code> и сохраняется в <code><span class="var">k</span></code>, выглядит
+<p class="noindent">Продолжение, которое передаётся через <code><span class="var">c</span></code> и сохраняется в <code><span class="var">k</span></code>, выглядит
 так:</p>
 
 <pre><i>k</i> = (<span class="func">lambda</span> (<i>u</i>)
@@ -780,7 +780,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="var ord">φ</span></span>) <span class="math"><span class="rel">→</span></span> <sub><i>k</i></sub>(<span class="math"><span class="var ord">φ</span></span> <i>k</i>)</pre>
 
-<p>где <i>k</i> является продолжением вызова <code><span class="func">call/cc</span></code>,
+<p class="noindent">где <i>k</i> является продолжением вызова <code><span class="func">call/cc</span></code>,
 а <span class="math"><span class="var ord">φ</span></span> — какой-то
 унарной функцией. Вызов <code><span class="func">call/cc</span></code> лишь превращает <i>k</i>
 в объект языка, который можно передать как аргумент. Заметьте, что продолжением вызова
@@ -1037,7 +1037,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <pre>(<span class="syntax">define-class</span> <span class="class">continuation</span> <span class="class">Object</span> (<span class="var">k</span>))</pre>
 
-<p>создаст следующие функции:</p>
+<p class="noindent">создаст следующие функции:</p>
 
 <pre>(<span class="func">make-continuation</span> <span class="var">k</span>)         <span class="comment">; конструктор</span>
 (<span class="func">continuation-k</span> <span class="var">c</span>)            <span class="comment">; аксессор чтения</span>
@@ -1668,13 +1668,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
          (<span class="func">*</span> <span class="num">3</span> (<span class="special">catch</span> <span class="num">2</span>
                 (<span class="special">throw</span> <span class="num">1</span> (<span class="special">throw</span> <span class="num">2</span> <span class="num">5</span>)) )) )) )</pre>
 
-<p>то получаем <code>(<span class="func">*</span> <span class="num">7</span> <span class="num">3</span> <span class="num">5</span>)</code>, а не <code><span class="num">5</span></code>.</p>
+<p class="noindent">то получаем <code>(<span class="func">*</span> <span class="num">7</span> <span class="num">3</span> <span class="num">5</span>)</code>, а не <code><span class="num">5</span></code>.</p>
 
 <p>Кроме того, реализация <code><span class="special">throw</span></code> как специальной формы позволяет отлавливать больше ошибок.</p>
 
 <pre>(<span class="special">catch</span> <span class="num">2</span> (<span class="func">*</span> <span class="num">7</span> (<span class="special">throw</span> <span class="num">1</span> (<span class="special">throw</span> <span class="num">2</span> <span class="num">3</span>))))</pre>
 
-<p>Эта форма гарантированно вернёт не <code><span class="num">3</span></code>, а ошибку <code><span class="string">"No associated catch"</span></code>,
+<p class="noindent">Эта форма гарантированно вернёт не <code><span class="num">3</span></code>, а ошибку <code><span class="string">"No associated catch"</span></code>,
 так как действительно нет <code><span class="special">catch</span></code> с меткой <code><span class="num">1</span></code> и не важно, что она
 вроде бы как не используется.</p>
 
@@ -1719,7 +1719,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 ((<span class="var">return-from</span>) (<span class="func">evaluate-return-from</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">k</span>))
 ...</pre>
 
-<p>Затем описываем обработку:</p>
+<p class="noindent">Затем описываем обработку:</p>
 
 <!--\indexC{return-from-cont}-->
 <!--\indexC{evaluate-return-from}-->
@@ -1826,7 +1826,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <pre>(<span class="syntax">define-method</span> (<span class="func">resume</span> (<span class="var">k</span> <span class="class">throwing-cont</span>) <span class="var">v</span>)
   (<span class="func">unwind</span> (<span class="func">throwing-cont-k</span> <span class="var">k</span>) <span class="var">v</span> (<span class="func">throwing-cont-cont</span> <span class="var">k</span>)) )</pre>
 
-<p>И научить <code><span class="func">unwind</span></code> выполнять сохранённые действия в процессе обхода стека:</p>
+<p class="noindent">И научить <code><span class="func">unwind</span></code> выполнять сохранённые действия в процессе обхода стека:</p>
 
 <!--\indexC{unwind-cont}-->
 <!--\indexCS{unwind}{<code><span class="func">unwind-protect-cont</span></code>}-->
@@ -1864,7 +1864,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
       (<span class="func">unwind</span> <span class="var">k</span> <span class="var">v</span> (<span class="func">block-env-cont</span> <span class="var">r</span>))
       (<span class="func">block-lookup</span> (<span class="func">block-env-others</span> <span class="var">r</span>) <span class="var">n</span> <span class="var">k</span> <span class="var">v</span>) ) )</pre>
 
-<p>Так что остаётся только сказать спасибо обобщённым функциям.</p>
+<p class="noindent">Так что остаётся только сказать спасибо обобщённым функциям.</p>
 
 <!--\indexCS{block}{и <code><span class="func">unwind-protect</span></code>}-->
 <p>Может показаться, что с появлением <code><span class="special">unwind-protect</span></code> форма <code><span class="special">block</span></code>
@@ -1929,7 +1929,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <pre>(<span class="special">bind-exit</span> (<i>переменная</i>) <i>формы</i>...)  <span class="dialect">Dylan</span></pre>
 
-<p>Эта форма связывает текущее продолжение с <i>переменной</i>, имеющей область
+<p class="noindent">Эта форма связывает текущее продолжение с <i>переменной</i>, имеющей область
 видимости, ограниченную телом <code><span class="special">let/cc</span></code> или <code><span class="special">bind-exit</span></code>. В этом случае
 продолжение несомненно является полноценным объектом, имеющим интерфейс унарной
 функции. Но его <em>полезное</em> время жизни динамическое, его можно использовать
@@ -2243,7 +2243,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <pre>(<span class="func">+</span> <span class="num">1</span> (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) (<span class="special">set!</span> <span class="var">foo</span> <span class="var">k</span>) <span class="num">2</span>))) <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 (<span class="func">foo</span> <span class="num">3</span>)                                     <span class="math"><span class="rel">→</span></span> <span class="num">4</span></pre>
 
-<p>Какое именно продолжение хранится в <code><span class="var">foo</span></code>?
+<p class="noindent">Какое именно продолжение хранится в <code><span class="var">foo</span></code>?
 Казалось бы <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>,
 но чему тогда равно <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code>?</p>
 

@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Присваивание и побочные эффекты</title>
+    <title>4 – Присваивание и побочные эффекты</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1 id="chapter:assignment"><span class="seq">Глава 4.</span> Присваивание и побочные эффекты</h1>
 
-<p><span class="initial"><span class="letter">П</span>редыдущие главы</span> с их нескончаемыми
+<p class="noindent"><span class="initial"><span class="letter">П</span>редыдущие главы</span> с их нескончаемыми
 повторениями и вариациями чем-то напоминают «Болеро» Мориса Равеля. Но один
 мотив, как вы могли заметить, в них отсутствовал: присваивание и побочные
 эффекты. Чистые языки их презирают из-за некоторых скверных особенностей, но
@@ -315,7 +315,7 @@
 <pre>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="binop">∧</span></span> (<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> ...)<span class="math"><span class="ord"></span><span class="rel">∈</span><span class="ord var">π</span></span>
 <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) (<span class="syntax">let</span> ((<span class="math"><span class="ord var">x</span></span> (<span class="func">make-box</span> <span class="math"><span class="ord var">x</span></span>))) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">x</span></span></sup>))</pre>
 
-<p>В результате, предыдущий пример переписывается следующим образом:</p>
+<p class="noindent">В результате, предыдущий пример переписывается следующим образом:</p>
 
 <pre>(<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">make-box</span> <span class="var">"Nemo"</span>)))
   (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () (<span class="func">box-ref</span> <span class="var">name</span>)))
@@ -646,7 +646,7 @@
 <pre><span class="syntax">let</span> <span class="syntax">rec</span> <span class="func">odd</span> <span class="var">n</span> = <span class="syntax">if</span> <span class="var">n</span> <span class="func">=</span> <span class="num">0</span> <span class="syntax">then</span> <span class="hash">false</span> <span class="syntax">else</span> <span class="func">even</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)
     <span class="syntax">and</span> <span class="func">even</span> <span class="var">n</span> <span class="func">=</span> <span class="syntax">if</span> <span class="var">n</span> = <span class="num">0</span> <span class="syntax">then</span> <span class="hash">true</span> <span class="syntax">else</span> <span class="func">odd</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)</pre>
 
-<p>легко переводится на Scheme следующим образом:</p>
+<p class="noindent">легко переводится на Scheme следующим образом:</p>
 
 <pre>(<span class="syntax">letrec</span> ((<span class="var">odd?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span> (<span class="func">even?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)))))
          (<span class="var">even?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) )
@@ -1034,7 +1034,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
             ((<span class="var">ref</span>)  <span class="var">value-closure</span>)
             ((<span class="var">set!</span>) <span class="var">set!-closure</span>) ) ) ) ) ) )</pre>
 
-<p>Отлично, <code><span class="var">type-closure</span></code> теперь создаётся только один раз для всех коробок, а
+<p class="noindent">Отлично, <code><span class="var">type-closure</span></code> теперь создаётся только один раз для всех коробок, а
 не при каждом разборе <code><span class="var">msg</span></code>.</p>
 
 <p>Но что мы получим в результате следующего сравнения?</p>
@@ -1056,7 +1056,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <pre>(<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) (<span class="func">cons</span> <span class="var">x</span> <span class="var">y</span>))))
   (<span class="func">eqv?</span> <span class="var">f</span> <span class="var">f</span>) ) <span class="math"><span class="rel">→</span></span> <span class="hash">#t</span></pre>
 
-<p>Так как <code><span class="func">eqv?</span></code> передан один и тот же объект, она
+<p class="noindent">Так как <code><span class="func">eqv?</span></code> передан один и тот же объект, она
 вправе вернуть истину; даже если <code>(<span class="func">eqv?</span> (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>) (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>))</code> возвращает ложь.</p>
 
 <div class="bigskip"/>
@@ -1401,7 +1401,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
                 (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) ) )
       <span class="var">ss</span> ) ) ) )</pre>
 
-<p>В этом случае место в памяти под аргументы выделяется один раз при создании
+<p class="noindent">В этом случае место в памяти под аргументы выделяется один раз при создании
 замыкания; так поступает, например, Фортран. Но, к сожалению, такой подход
 лишает нас рекурсии, ведь теперь нет возможности хранить несколько отдельных
 наборов аргументов для каждого вызова функции. В Фортране подобное решение
@@ -1631,7 +1631,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
        (<span class="special">set!</span> <span class="var">r.global</span> (<span class="func">update</span> <span class="var">r.global</span> '<span class="var">name</span> (<span class="func">car</span> <span class="var">a*</span>)))
        (<span class="special">set!</span> <span class="var">s.global</span> (<span class="func">update</span> <span class="var">ss</span> (<span class="func">car</span> <span class="var">a*</span>) <span class="var">value</span>)) ) ) ) ) )</pre>
 
-<p>Макрос <code><span class="syntax">defprimitive</span></code> определяет глобальные функции.</p>
+<p class="noindent">Макрос <code><span class="syntax">defprimitive</span></code> определяет глобальные функции.</p>
 
 <!--\indexC{defprimitive}-->
 <pre>(<span class="special">define-syntax</span> <span class="var">defprimitive</span>
@@ -1692,7 +1692,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
     (<span class="func">allocate-pair</span> (<span class="func">car</span> <span class="var">v*</span>) (<span class="func">cadr</span> <span class="var">v*</span>) <span class="var">s</span> <span class="var">k</span>) )
   <span class="num">2</span> )</pre>
 
-<p>С чтением и модификацией тоже нет проблем:</p>
+<p class="noindent">С чтением и модификацией тоже нет проблем:</p>
 
 <!--\indexC{car}-->
 <!--\indexC{set-cdr"!}-->
@@ -2127,7 +2127,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
                        (<span class="func">set-cdr!</span> (<span class="func">cdr</span> <span class="var">list</span>) <span class="var">list</span>)
                        <span class="var">list</span> )))</pre>
 
-<p>После этого переменная <code><span class="func">bar</span></code> будет содержать бесконечный
+<p class="noindent">После этого переменная <code><span class="func">bar</span></code> будет содержать бесконечный
 список из чередующихся нулей и единиц. С помощью <code><span class="hash">#.</span></code> мы
 процитировали пару, чей
 <code><span class="var">cddr</span></code> равен ей самой. В CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span> прямым текстом написано, что

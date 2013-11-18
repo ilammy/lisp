@@ -48,7 +48,7 @@ function prepare_epub {
 
     echo "== Done =="
     mv $JOBNAME.epub $ROOT
-#    rm -rf $ROOT/epub/OEBPS/images
+    rm -rf $ROOT/epub/OEBPS/images
 }
 
 function print_usage {

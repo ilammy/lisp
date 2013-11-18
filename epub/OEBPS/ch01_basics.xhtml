@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Основы интерпретации</title>
+    <title>1 – Основы интерпретации</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1 id="chapter:basics"><span class="seq">Глава 1.</span> Основы интерпретации</h1>
 
-<p><span class="initial"><span class="letter">В</span> этой главе</span> описывается базовый интерпретатор, идеи
+<p class="noindent"><span class="initial"><span class="letter">В</span> этой главе</span> описывается базовый интерпретатор, идеи
 которого проходят красной нитью через большую часть этой книги. Он намеренно
 сделан простым и более близким к Scheme, чем к Лиспу; это позволит нам
 в дальнейшем описывать Лисп в терминах Scheme. Мы коснёмся следующих тем в этой
@@ -605,7 +605,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 
 <pre>(<span class="special">if</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> (<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</pre>
 
-<p id="basics/forms/sequence/par:gensym-puzzle">
+<p id="basics/forms/sequence/par:gensym-puzzle" class="noindent">
 И <code><span class="special">lambda</span></code> тоже может<a class="footref" href="zz_footnotes.xhtml#foot1.7"><sup>7</sup></a>:</p>
 
 <pre>(<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<i>void</i>) <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="ord var">α</span></span>)</pre>

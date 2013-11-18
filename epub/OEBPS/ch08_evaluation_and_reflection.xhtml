@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Вычисления и рефлексия</title>
+    <title>8 – Вычисления и рефлексия</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -13,7 +13,7 @@
 
 <!--\indexC{eval}-->
 <!--\indexR{вычислитель}-->
-<p><span class="initial"><span class="letter">У</span>никальной чертой</span> Лиспа
+<p class="noindent"><span class="initial"><span class="letter">У</span>никальной чертой</span> Лиспа
 является его вычислитель: <code><span class="func">eval</span></code>. Хотя в данной
 книге вычисления упоминаются чуть ли не на каждой странице, мы никогда не касались
 возможности явного использования
@@ -504,7 +504,7 @@
     вызове <code><span class="special">eval</span></code>.</li>
 </ul>
 
-<p>К счастью, дополнительные окружения необходимо сохранять только при этих
+<p class="noindent">К счастью, дополнительные окружения необходимо сохранять только при этих
 вызовах, так что суммарная стоимость использования
 <code><span class="special">eval</span></code> линейно зависит
 от количества данных форм в программе.</p>
@@ -585,11 +585,11 @@
 ((<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span> <span class="var">z</span>) (<span class="func">eval/at</span> <span class="var">y</span>))
  <span class="num">5</span> (<span class="func">list</span> '<span class="var">eval/at</span> '<span class="var">z</span>) '<span class="var">x</span> )    <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
 
-<p>При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="special">eval/ce</span></code>:</p>
+<p class="noindent">При необходимости можно (приближённо) выразить <code><span class="func">eval/at</span></code> через <code><span class="special">eval/ce</span></code>:</p>
 
 <pre>(<span class="special">define</span> (<span class="func">eval/at</span> <span class="var">x</span>) (<span class="special">eval/ce</span> <span class="var">x</span>))</pre>
 
-<p>К сожалению, в захватываемом <code><span class="special">eval/ce</span></code> окружении
+<p class="noindent">К сожалению, в захватываемом <code><span class="special">eval/ce</span></code> окружении
 оказывается одна лишняя переменная — локальная переменная <code><span class="var">x</span></code>
 скрывает одноимённую глобальную.
 <span class="see">[см. упр. <a href="#reflection/ex:no-capture">8.3</a>]</span>

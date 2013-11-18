@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
 
 <head>
-    <title>Компиляция</title>
+    <title>7 – Компиляция</title>
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
@@ -11,7 +11,7 @@
 
 <h1><span class="seq">Глава 7.</span> Компиляция</h1>
 
-<p><span class="initial"><span class="letter">В</span> предыдущей главе</span>
+<p class="noindent"><span class="initial"><span class="letter">В</span> предыдущей главе</span>
 был изложен метод перевода
 программ со Scheme на древовидный язык, содержащий около двадцати инструкций.
 В этой главе мы покажем, как преобразовать результат данной предварительной
@@ -65,7 +65,7 @@
  (<span class="special">lambda</span> (<span class="var">n</span> <span class="var">f</span> <span class="var">k</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) (<span class="func">k</span> <span class="num">1</span>)
                      (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">f</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))) )) )</pre>
 
-<p>После обработки она превращается в следующую:</p>
+<p class="noindent">После обработки она превращается в следующую:</p>
 
 <pre>(<span class="func">TR-FIX-LET</span>
  (<span class="func">STORE-ARGUMENT</span>
@@ -186,7 +186,7 @@
   (<span class="special">lambda</span> ()
     (<span class="special">set!</span> <span class="var">*val*</span> <span class="var">value</span>) ) )</pre>
 
-<p>а потребители значений вроде <code><span class="func">GLOBAL-SET!</span></code> становятся такими:</p>
+<p class="noindent">а потребители значений вроде <code><span class="func">GLOBAL-SET!</span></code> становятся такими:</p>
 
 <!--\indexC{GLOBAL-SET"!}-->
 <pre>(<span class="special">define</span> (<span class="func">GLOBAL-SET!</span> <span class="var">i</span> <span class="var">m</span>)
@@ -208,7 +208,7 @@
 <pre>(<span class="special">define</span> (<span class="func">SEQUENCE</span> <span class="var">m</span> <span class="var">m+</span>)
   (<span class="special">lambda</span> () (<span class="func">m</span>) (<span class="func">m+</span>)) )</pre>
 
-<p>а <code><span class="func">FIX-LET</span></code> принимает следующий вид:</p>
+<p class="noindent">а <code><span class="func">FIX-LET</span></code> принимает следующий вид:</p>
 
 <!--\indexC{FIX-LET}-->
 <pre>(<span class="special">define</span> (<span class="func">FIX-LET</span> <span class="var">m*</span> <span class="var">m+</span>)
@@ -1371,7 +1371,7 @@
 
 <pre>(<span class="special">define</span> (<span class="func">RESTORE-ENV</span>) (<span class="func">list</span> <span class="num">38</span>))</pre>
 
-<p>А вот и их определения:</p>
+<p class="noindent">А вот и их определения:</p>
 
 <!--\indexC{EXTEND-ENV}     -->
 <!--\indexC{UNLINK-ENV}-->
@@ -2532,7 +2532,7 @@
              (<span class="func">k</span> <span class="num">1</span>)
              (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">f</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))) ) ) ) )</pre></div>
 
-<p>создаёт следующий объектный файл:</p>
+<p class="noindent">создаёт следующий объектный файл:</p>
 
 <div class="snippet"><span class="title">si/example.so</span>
 <pre><span class="comment">;;; Bytecode object file for si/example.scm</span>
@@ -2614,7 +2614,7 @@
     вектор байт-кодов.</li>
 </ul>
 
-<p>После сборки всех объектных файлов остаётся только создать записать результат
+<p class="noindent">После сборки всех объектных файлов остаётся только создать записать результат
 в исполнимый файл. Его формат совпадает с форматом объектных файлов во всём,
 кроме точки входа: теперь это будет список точек входа.</p>
 
