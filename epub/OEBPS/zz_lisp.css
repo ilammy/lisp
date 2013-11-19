@@ -99,7 +99,7 @@ span { color: red; }
 body {
     font-family: 'DejaVu Serif', serif;
     font-size: 10pt;
-    line-height: 1.34;
+    line-height: 1.4;
 }
 
 code, pre {
@@ -157,13 +157,7 @@ h4 {
 h5 {
     font-weight: bold;
     margin-top: 3.25ex;
-}
-
-h5.exercise {
-}
-
-h5.exercise + p {
-    text-indent: 0;
+    margin-bottom: 1ex;
 }
 
 p {
@@ -172,6 +166,42 @@ p {
 
 pre {
     margin: 0.4em 1.25em;
+}
+
+table {
+    margin: 1.2em auto 0;
+    max-width: 95%;
+}
+
+table + .caption {
+    display: table;
+    margin: 0.6em auto 1.2em;
+    font-size: 9pt;
+}
+
+table.nocaption {
+    margin-bottom: 0.8em;
+}
+
+table .underlined
+{
+    border-bottom: 1px solid black;
+}
+
+.image {
+    margin: 1.2em auto;
+    max-width: 95%;
+}
+
+.image img {
+    display: table;
+    margin: 0 auto;
+}
+
+.image .caption {
+    display: table;
+    margin: 0.6em auto 0;
+    font-size: 9pt;
 }
 
 /******************************************************************************/
@@ -192,11 +222,142 @@ p.noindent {
     text-indent: 0;
 }
 
+span.logo {
+    font-variant: small-caps;
+}
+
+span.see {
+    font-weight: bold;
+}
+
+span.see span.stub {
+    visibility: hidden;
+}
+
+div.bigskip { height: 1.25em; }
+
 /******************************************************************************/
+
+/* Generic */
+
+a {
+    text-decoration: none;
+}
 
 i {
     font-family: 'DejaVu Serif', serif;
     font-style: italic;
+}
+
+sub, sup {
+    font-size: 7pt;
+    position: relative;
+}
+
+sub {
+    bottom: -0.5ex;
+    vertical-align: text-bottom;
+}
+
+sup {
+    top: -0.5ex;
+    vertical-align: text-top;
+}
+
+/******************************************************************************/
+
+/* Lists */
+
+ol, ul {
+    list-style-position: outside;
+    padding-left: 2.75em;
+    margin: 0.6em 0;
+}
+
+li + li {
+    margin-top: 0.4em;
+}
+
+li p {
+    text-indent: 0;
+}
+
+li p + p {
+    margin-top: 0.4em;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ol li {
+    position: relative;
+}
+
+ol li:before {
+    background-color: white;
+    content: ')';
+    display: inline-block;
+    left: -12px;
+    position: absolute;
+    text-align: center;
+    width: 7px; }
+
+ul {
+    list-style-type: disc;
+}
+
+ul ul {
+    list-style-type: circle;
+}
+
+/******************************************************************************/
+
+/* Nested environments */
+
+div.where {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 0.1em;
+    margin: 3px 0;
+    white-space: pre;
+}
+
+div.complex {
+    display: inline-block;
+    vertical-align: text-top;
+    white-space: pre;
+}
+
+div.wrap {
+    display: inline-block;
+    border-left: 1px black solid;
+    padding-left: 0.4em;
+}
+
+/******************************************************************************/
+
+/* Table specifics */
+table#pref-table-signatures .col1 { text-align: center; }
+table#pref-table-signatures .col2 { text-align: left;
+                                    padding-left: 1em;  }
+
+table#ch1-table-grammar .left   { text-align: right; }
+table#ch1-table-grammar .center { text-align: center; padding-left: 0.333em; }
+table#ch1-table-grammar .right  { text-align: left;   padding-left: 0.333em; }
+
+table#ch1-table-let-expand pre { margin: 0; }
+table#ch1-table-let-expand .divider { padding: 0 0.25em 1em 1em;
+                                      vertical-align: middle; }
+
+table.envtable {
+    border: 1px solid black;
+    margin-bottom: 1.2em;
+}
+
+table.envtable td {
+    padding: 0.15em 0.75em;
+    border-right: 1px solid black;
 }
 /*
 .math {
@@ -245,9 +406,6 @@ span.see span.stub {
 span.quad-stub {
     display: inline-block;
 }
-
-table#pref-table-signatures td:nth-child(1) { text-align: center; }
-table#pref-table-signatures td:nth-child(2) { text-align: left; }
 
 table#ch1-table-grammar td:nth-child(1) { text-align: right; }
 table#ch1-table-grammar td:nth-child(2) { text-align: center; }

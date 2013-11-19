@@ -835,12 +835,21 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 (<em class="term">точечную переменную</em>). Более формально список аргументов описывается
 следующей грамматикой:</p>
 
-
-<table id="ch1-table-grammar">
-    <tr><td>&lt;<i>список аргументов</i>&gt;</td><td>::=</td><td><code><span class="hash">()</span></code></td></tr>
-    <tr><td/><td>|</td><td>&lt;<i>переменная</i>&gt;</td></tr>
-    <tr><td/><td>|</td><td><code>(<span class="normal">&lt;<i>переменная</i>&gt;</span> . <span class="normal">&lt;<i>список аргументов</i>&gt;</span>)</code></td></tr>
-    <tr><td>&lt;<i>переменная</i>&gt;</td><td><span class="math"><span class="binop">∈</span></span></td><td><span class="Vset">Символы</span></td></tr>
+<table id="ch1-table-grammar" class="nocaption">
+<tbody>
+    <tr><td class="left">&lt;<i>список аргументов</i>&gt;</td>
+        <td class="center">::=</td>
+        <td class="right"><code><span class="hash">()</span></code></td></tr>
+    <tr><td class="left"/>
+        <td class="center">|</td>
+        <td class="right">&lt;<i>переменная</i>&gt;</td></tr>
+    <tr><td class="left"/>
+        <td class="center">|</td>
+        <td class="right"><code>(<span class="normal">&lt;<i>переменная</i>&gt;</span> . <span class="normal">&lt;<i>список аргументов</i>&gt;</span>)</code></td></tr>
+    <tr><td class="left">&lt;<i>переменная</i>&gt;</td>
+        <td class="center"><span class="math"><span class="binop">∈</span></span></td>
+        <td class="right"><span class="Vset">Символы</span></td></tr>
+</tbody>
 </table>
 
 <p>Когда мы расширяем окружение, количество значений переменных должно
@@ -898,7 +907,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>Конечно, мы могли бы действовать эффективнее, проверяя арность ещё раньше:</p>
 
 <ol>
-  <li>ычислить элемент на месте функции;</li>
+  <li>вычислить элемент на месте функции;</li>
 
   <li>если это не функция, сообщить об ошибке, иначе запомнить ожидаемое
     количество аргументов;</li>
@@ -976,31 +985,32 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 Также, какой результат даст программа слева (справа она же с раскрытыми
 макросами)?</p>
 
-<table id="ch1-table-let-expand"><tr>
+<table id="ch1-table-let-expand" class="nocaption">
+<tbody><tr>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">a</span> <span class="num">1</span>))
   (<span class="syntax">let</span> ((<span class="var">b</span> (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>)))
     (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) ) )</pre></td>
-<td><span class="math"><span class="rel">≡</span></span></td>
+<td class="divider"><span class="math"><span class="rel">≡</span></span></td>
 <td><pre>((<span class="special">lambda</span> (<span class="var">a</span>)
    ((<span class="special">lambda</span> (<span class="var">b</span>)
       (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) )
     (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>) ) )
  <span class="num">1</span> )</pre></td>
-</tr></table>
+</tr></tbody></table>
 
 <p>Давайте рассмотрим по шагам, как вычисляется это выражение:</p>
 
-<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where">
+<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where"><div class="wrap">
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span>  ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
+</div></div>
+<span class="math"><span class="rel">≡</span></span>  ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where"><div class="wrap">
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span>  (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
-                     <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
-                     <i>env.global</i>
-                     </div></pre>
+</div></div>
+<span class="math"><span class="rel">≡</span></span>  (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<i>env.global</i>
+</div></div></pre>
 
 <p>Тело внутренней функции <code>(<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))</code> выполняется в окружении,
 полученном расширением глобального окружения переменной <code><span class="var">b</span></code>. Всё верно. Но
@@ -1044,18 +1054,18 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>Давайте теперь ещё раз рассмотрим пример, приведённый выше. Сейчас переменные
 не пропадают:</p>
 
-<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where">
+<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where"><div class="wrap">
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where">
+</div></div>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where"><div class="wrap">
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
+</div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
 <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
-</div></pre>
+</div></div></pre>
 
 <p>Заодно мы явно видим <em>стек вызовов</em>: каждая связывающая форма сначала
 укладывает свои новые переменные поверх текущего окружения, а потом убирает их
@@ -1094,21 +1104,21 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <p>Теперь все приведённые примеры работают нормально. В частности, пример выше
 вычисляется следующим образом:</p>
 
-<pre>(((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))) <span class="num">1</span>) <span class="num">2</span>)<div class="where">
+<pre>(((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))) <span class="num">1</span>) <span class="num">2</span>)<div class="where"><div class="wrap">
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))<div class="where">
+</div></div>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))<div class="where"><div class="wrap">
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
 </div>
     <span class="num">2</span> )<div class="where">
 <i>env.global</i>
-</div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where">
+</div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
 <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <i>env.global</i>
-</div></pre>
+</div></div></pre>
 
 <!--\indexR{абстракция!замыкание}-->
 <!--\indexR{абстракция!значение}-->

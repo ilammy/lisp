@@ -141,21 +141,25 @@ Lisp<sub>2</sub> и т. д.), продолжения (и связанные с �
 уникальный набор черт, которые мы будем рассматривать.</p>
 
 <table id="pref-table-signatures">
-    <caption>Таблица 1. Прототипы интерпретаторов и компиляторов.</caption>
-    <tr><th>Глава</th><th>Прототип</th></tr>
-    <tr><td>1 </td><td><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span>)</code></td></tr>
-    <tr><td>2 </td><td><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span>)</code></td></tr>
-    <tr><td>  </td><td><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)</code></td></tr>
-    <tr><td>  </td><td><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">denv</span>)</code></td></tr>
-    <tr><td>3 </td><td><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">cont</span>)</code></td></tr>
-    <tr><td>4 </td><td><code>(<span class="func">eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
-    <tr><td>5 </td><td><code>((<span class="func">meaning</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
-    <tr><td>6 </td><td><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>) <span class="var">sr</span> <span class="var">k</span>)</code></td></tr>
-    <tr><td>  </td><td><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) <span class="var">k</span>)</code></td></tr>
-    <tr><td>  </td><td><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
-    <tr><td>7 </td><td><code>(<span class="func">run</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
-    <tr><td>10</td><td><code>(<span class="func">-&gt;C</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>))</code></td></tr>
+<thead class="underlined">
+    <tr><th class="col1">Глава</th><th class="col2">Прототип</th></tr>
+</thead>
+<tbody>
+    <tr><td class="col1">1 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span>)</code></td></tr>
+    <tr><td class="col1">2 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">denv</span>)</code></td></tr>
+    <tr><td class="col1">3 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">cont</span>)</code></td></tr>
+    <tr><td class="col1">4 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">5 </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">6 </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>) <span class="var">sr</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
+    <tr><td class="col1">7 </td><td class="col2"><code>(<span class="func">run</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
+    <tr><td class="col1">10</td><td class="col2"><code>(<span class="func">-&gt;C</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>))</code></td></tr>
+</tbody>
 </table>
+<span class="caption">Таблица 1. Прототипы интерпретаторов и компиляторов.</span>
 
 <p>Главы более-менее независимы, занимают примерно по 40 страниц; каждая глава
 имеет список упражнений, ответы к которым можно найти в конце книги. Список
@@ -212,8 +216,8 @@ PowerBook) и вообще сделали эту книгу возможной: 
 
 <h2 id="pref/sect:notation">Нотация</h2>
 
-<p>Фрагменты программ будут набраны <tt>таким шрифтом, который несомненно
-напомнит вам о старых добрых печатных машинках</tt>. Некоторые слова в коде
+<p>Фрагменты программ будут набраны <code>таким шрифтом, который несомненно
+напомнит вам о старых добрых печатных машинках</code>. Некоторые слова в коде
 также будут набраны <i>курсивом</i> для обозначения понятий, подразумеваемых на
 месте этих слов.</p>
 
@@ -227,27 +231,31 @@ PowerBook) и вообще сделали эту книгу возможной: 
 
 <pre>(<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
   (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
-    (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where">
+    (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where"><div class="wrap">
 <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 <span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
-</div>
+</div></div>
 
-<span class="math"><span class="rel">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where">
+<span class="math"><span class="rel">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where"><div class="wrap">
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
 <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 <span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
-<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
-</div>
-</div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where">
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)</div><div class="where">
+
+
+
+<div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span></div></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where"><div class="wrap">
 <span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
 <span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 <span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
-<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)<div class="where">
-<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
-</div>
-             </div>
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)</div><div class="where">
+
+
+
+<div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span></div></div></div>
 <span class="math"><span class="rel">→</span></span> (<span class="num">4</span> . <span class="num">4</span>)</pre>
 
 <p>Все имена переменных и сообщения об ошибках в приводимых программах мы будем

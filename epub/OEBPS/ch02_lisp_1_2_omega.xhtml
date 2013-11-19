@@ -1022,7 +1022,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 зрения вычислений, но синтаксис их использования отличается слабо. В нём нет
 формы <code><span class="special">dynamic-let</span></code>, но её можно легко сымитировать:</p>
 
-<table><tr>
+<table class="nocaption"><tr>
 <td><pre>(<span class="special">dynamic-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
 <td><span class="math"><span class="rel">≡</span></span></td>
@@ -1277,7 +1277,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 реализацию.</p>
 
 
-<h3 id="lisp1-2-omega/namespaces/ssect:conclusions"><span class="seq">2.5.4.</span>В заключение о пространствах имён</h3>
+<h3 id="lisp1-2-omega/namespaces/ssect:conclusions"><span class="seq">2.5.4.</span> В заключение о пространствах имён</h3>
 
 <p>После отступления к динамическим переменным, вернёмся к идее пространств имён
 в общем: специализированные окружения для специализированных объектов. Мы уже
@@ -2030,8 +2030,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <!--\indexC{fix}-->
 <pre>((<span class="func">fix</span> <span class="func">meta-fact</span>) <span class="num">3</span>)
-<span class="math"><span class="rel">≡</span></span> (((<span class="func">d</span> <span class="var">d</span>)<div class="where">
-<span class="var">d</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="math"><span class="rel">≡</span></span> (((<span class="func">d</span> <span class="var">d</span>)<div class="where"><div class="wrap">
+<span class="var">d</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2040,8 +2040,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <span class="math"><span class="rel">≡</span></span> (((<span class="special">lambda</span> (<span class="var">f</span>)               <span class="comment">; <em class="term">шаг I</em></span>
       (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
-           (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+           (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2049,8 +2049,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
    <span class="num">3</span> )
 
 <span class="math"><span class="rel">≡</span></span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
-                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) ))<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) ))<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2058,33 +2058,33 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">n</span>)
      (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
-         (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
-  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+         (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where"><div class="wrap">
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
    <span class="num">3</span> )
 
-<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">f</span> <span class="num">2</span>))<div class="where">
-<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
-  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">f</span> <span class="num">2</span>))<div class="where"><div class="wrap">
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">x</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) )<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></div></div>
 
-<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="num">2</span>))<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="num">2</span>))<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
 
 <span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (((<span class="special">lambda</span> (<span class="var">f</span>)           <span class="comment">; <em class="term">шаг II</em></span>
            (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
-                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+                (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2096,8 +2096,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <pre>(<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (((<span class="special">lambda</span> (<span class="var">f</span>)
               (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
-                   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+                   (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) )<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2105,8 +2105,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
            <span class="num">1</span> )))
 
 <span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="func">meta-fact</span> (<span class="special">lambda</span> (<span class="var">x</span>)
-                          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) ))<div class="where">
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+                          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">meta-fact</span>) <span class="var">x</span>) ))<div class="where"><div class="wrap">
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div>
@@ -2114,13 +2114,13 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> ((<span class="special">lambda</span> (<span class="var">n</span>)
                (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
-                   (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div>
+                   (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )<div class="where"><div class="wrap">
+<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div></div>
              <span class="num">1</span> )))
 
-<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))))<div class="where">
+<span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span> (<span class="func">*</span> <span class="var">n</span> (<span class="func">f</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))))<div class="where"><div class="wrap">
 <span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
-<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div>
+<span class="var">f</span> <span class="math"><span class="rel">→</span></span> ...</div></div>
 <span class="math"><span class="rel">≡</span></span> (<span class="func">*</span> <span class="num">3</span> (<span class="func">*</span> <span class="num">2</span> <span class="num">1</span>))
 
 <span class="math"><span class="rel">→</span></span> <span class="num">6</span></pre>
@@ -2129,9 +2129,9 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 функцию, вычисляющую факториал. Это значение выражения:</p>
 
 <pre>(<span class="special">lambda</span> (<span class="var">x</span>)
-  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )<div class="where">
-<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <span class="func">meta-fact</span>
-<span class="var">w</span> <span class="math"><span class="rel">≡</span></span> <div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
+  (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )<div class="where"><div class="wrap">
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> <span class="func" style="display: inline-block; width: 0">meta-fact</span>
+<span class="var">w</span> <span class="math"><span class="rel">≡</span></span></div><div class="complex">(<span class="special">lambda</span> (<span class="var">w</span>)
   (<span class="special">lambda</span> (<span class="var">f</span>)
     (<span class="func">f</span> (<span class="special">lambda</span> (<span class="var">x</span>)
          (((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>) <span class="var">x</span>) )) ) )</div></div></pre>
