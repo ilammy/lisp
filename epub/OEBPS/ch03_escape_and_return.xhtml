@@ -707,10 +707,10 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <pre><i>k</i> = (<span class="func">lambda</span> (<i>u</i>)
       (<span class="func">set!</span> <span class="var">r</span> (<span class="func">*</span> <span class="var">r</span> <span class="var">n</span>))
       (<span class="func">set!</span> <span class="var">n</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))
-      (<span class="func">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">r</span> (<span class="func">k</span> '<span class="var">recurse</span>)) )<div class="where">
+      (<span class="func">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">r</span> (<span class="func">k</span> '<span class="var">recurse</span>)) )<div class="where"><div class="wrap">
 <span class="var">r</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
 <span class="var">k</span> <span class="math"><span class="rel">→</span></span> <i>k</i>
-<span class="var">n</span></div></pre>
+<span class="var">n</span></div></div></pre>
 
 <p>Это же продолжение <i>k</i> связано с переменной <code><span class="var">k</span></code> внутри самого себя.
 Рекурсия, как мы знаем, всегда означает какой-то цикл; в данном случае <code><span class="func">k</span></code>
@@ -736,9 +736,9 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="syntax">let</span> ((<span class="var">k</span> <i>u</i>))
     (<span class="special">set!</span> <span class="var">r</span> (<span class="func">*</span> <span class="var">r</span> <span class="var">n</span>))
     (<span class="special">set!</span> <span class="var">n</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))
-    (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">r</span> (<span class="func">k</span> <span class="var">k</span>)) ) )<div class="where">
+    (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) <span class="var">r</span> (<span class="func">k</span> <span class="var">k</span>)) ) )<div class="where"><div class="wrap">
 <span class="var">r</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
-<span class="var">n</span></div></pre>
+<span class="var">n</span></div></div></pre>
 
 <!--\indexR{продолжения (continuations)!сложность реализации}-->
 <!--\indexR{стек!и продолжения}-->
@@ -933,7 +933,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 лексическую переменную, восстановив впоследствии её значение обратно. Подобные
 динамические переменные реализуются с помощью формы <code><span class="syntax">fluid-let</span></code>:</p>
 
-<table><tr>
+<table class="nocaption"><tbody><tr>
 <td><pre>(<span class="syntax">fluid-let</span> ((<span class="var">x</span> <span class="math"><span class="var ord">α</span></span>))
   <span class="math"><span class="var ord">β</span></span>... ) </pre></td>
 <td><span class="math"><span class="rel">≡</span></span></td>
@@ -942,7 +942,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="special">unwind-protect</span>
     (<span class="special">begin</span> <span class="math"><span class="var ord">β</span></span>...)
     (<span class="special">set!</span> <span class="var">x</span> <i>tmp</i>) ) )</pre></td>
-</tr></table>
+</tr></tbody></table>
 
 <p>В процессе вычисления <span class="math"><span class="var ord">β</span></span>
 будет видна переменная <code><span class="var">x</span></code> со значением
@@ -1114,16 +1114,24 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 одной-двумя буквами для краткости:</p>
 
 <table class="term-def">
-<tr><td><code><span class="var">e</span></code>,
-        <code><span class="var">et</span></code>,
-        <code><span class="var">ec</span></code>,
-        <code><span class="var">ef</span></code></td><td>выражения, формы</td></tr>
-<tr><td><code><span class="var">r</span></code></td><td>окружения</td></tr>
-<tr><td><code><span class="var">k</span></code>,
-        <code><span class="var">kk</span></code></td><td>продолжения</td></tr>
-<tr><td><code><span class="var">v</span></code></td><td>значения (числа, пары, замыкания и т. д.)</td></tr>
-<tr><td><code><span class="var">f</span></code></td><td>функции</td></tr>
-<tr><td><code><span class="var">n</span></code></td><td>идентификаторы</td></tr>
+<tbody>
+<tr><td class="left"><code><span class="var">e</span></code>,
+                           <code><span class="var">et</span></code>,
+                           <code><span class="var">ec</span></code>,
+                           <code><span class="var">ef</span></code></td>
+    <td class="right">выражения, формы</td></tr>
+<tr><td class="left"><code><span class="var">r</span></code></td>
+    <td class="right">окружения</td></tr>
+<tr><td class="left"><code><span class="var">k</span></code>,
+                     <code><span class="var">kk</span></code></td>
+    <td class="right">продолжения</td></tr>
+<tr><td class="left"><code><span class="var">v</span></code></td>
+    <td class="right">значения (числа, пары, замыкания и т. д.)</td></tr>
+<tr><td class="left"><code><span class="var">f</span></code></td>
+    <td class="right">функции</td></tr>
+<tr><td class="left"><code><span class="var">n</span></code></td>
+    <td class="right">идентификаторы</td></tr>
+</tbody>
 </table>
 
 <p>Всё, теперь принимаемся за интерпретатор. Для простоты он считает все атомы,
@@ -1436,20 +1444,22 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <i>cons</i>.</p>
 
 <table id="ch3-eval-stack">
-<tr><td><code><i>evaluate</i> (<span class="func">cons</span> <span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate</i> <span class="var">cons</span> <i>r</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <i>cons</i> </code></td><td><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate-arguments</i> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate</i> <span class="var">foo</span> <i>r</i> </code></td><td><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <span class="value">33</span> </code></td><td><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate-arguments</i> (<span class="var">bar</span>) <i>r</i> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate</i> <span class="var">bar</span> <i>r</i> </code></td><td><code><span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <span class="value">–77</span> </code></td><td><code> <span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>evaluate-arguments</i> () <i>r</i> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <span class="value">()</span> </code></td><td><code><span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <span class="value">(–77)</span> </code></td><td><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>resume</i> <span class="value">(33 –77)</span> </code></td><td><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
-<tr><td><code><i>invoke</i> <i>cons</i> <span class="value">(33 –77)</span></code></td><td><code> <i>k</i></code></td></tr>
+<tbody>
+<tr><td class="left"><code><i>evaluate</i> (<span class="func">cons</span> <span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td class="right"><code> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate</i> <span class="var">cons</span> <i>r</i> </code></td><td class="right"><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <i>cons</i> </code></td><td class="right"><code> <span class="cont">evfun-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate-arguments</i> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> </code></td><td class="right"><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate</i> <span class="var">foo</span> <i>r</i> </code></td><td class="right"><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <span class="value">33</span> </code></td><td class="right"><code> <span class="cont">argument-cont</span> (<span class="var">foo</span> <span class="var">bar</span>) <i>r</i> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate-arguments</i> (<span class="var">bar</span>) <i>r</i> </code></td><td class="right"><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate</i> <span class="var">bar</span> <i>r</i> </code></td><td class="right"><code><span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <span class="value">–77</span> </code></td><td class="right"><code> <span class="cont">argument-cont</span> () <i>r</i> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>evaluate-arguments</i> () <i>r</i> </code></td><td class="right"><code> <span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <span class="value">()</span> </code></td><td class="right"><code><span class="cont">gather-cont</span> <span class="value">–77</span> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <span class="value">(–77)</span> </code></td><td class="right"><code> <span class="cont">gather-cont</span> <span class="value">33</span> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>resume</i> <span class="value">(33 –77)</span> </code></td><td class="right"><code> <span class="cont">apply-cont</span> <i>cons</i> <i>k</i></code></td></tr>
+<tr><td class="left"><code><i>invoke</i> <i>cons</i> <span class="value">(33 –77)</span></code></td><td class="right"><code> <i>k</i></code></td></tr>
+</tbody>
 </table>
 
 
@@ -2378,9 +2388,9 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <pre>(<span class="special">tagbody</span>
           <i>выражения<sub>0</sub></i>...
-  <i>метка<sub>1</sub></i>  <i>выражения<sub>1</sub></i>...
+  <span class="llap"><i>метка<sub>1</sub></i></span>        <i>выражения<sub>1</sub></i>...
           ...
-  <i>метка<sub>i</sub></i>  <i>выражения<sub>i</sub></i>...
+  <span class="llap"><i>метка<sub>i</sub></i></span>        <i>выражения<sub>i</sub></i>...
           ... )</pre>
 
 <p>Все <i>выражения<sub>i</sub></i> (и только они) могут содержать безусловные переходы

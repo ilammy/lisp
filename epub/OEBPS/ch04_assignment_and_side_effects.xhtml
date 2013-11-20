@@ -255,50 +255,52 @@
 переменных.)</p>
 
 <table id="ch4-box-transform">
+<tbody>
 <tr>
-  <td><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td>если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-ref</span> <span class="math"><span class="ord var">v</span></span>)</code>, иначе <span class="math"><span class="ord var">x</span></span></td>
+  <td class="left"><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-ref</span> <span class="math"><span class="ord var">v</span></span>)</code>, иначе <span class="math"><span class="ord var">x</span></span></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td>если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code>,</td>
+  <td class="left"><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code>,</td>
 </tr>
 <tr><td/><td/>
-  <td>иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right">иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td>если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
+  <td class="left"><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
 </tr>
 <tr><td/><td/>
-  <td>то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
+  <td class="right">то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
 </tr>
 <tr><td/><td/>
-  <td>иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right">иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
 </tr>
 <tr>
-  <td><span class="boxed"><code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
-  <td><span class="math"><span class="rel">⇒</span></span></td>
-  <td><code>(<span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="left"><span class="boxed"><code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
 </tr>
+</tbody>
 </table>
 
 <!--\indexR{преобразование!в коробочный стиль}-->
@@ -1120,22 +1122,32 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 список новыми типами:</p>
 
 <table class="term-def">
-<tr><td><code><span class="var">e</span></code>,
-        <code><span class="var">et</span></code>,
-        <code><span class="var">ec</span></code>,
-        <code><span class="var">ef</span></code></td><td>выражения, формы</td></tr>
-<tr><td><code><span class="var">r</span></code></td><td>окружения</td></tr>
-<tr><td><code><span class="var">k</span></code>,
-        <code><span class="var">kk</span></code></td><td>продолжения</td></tr>
-<tr><td><code><span class="var">v</span></code>,
-        <code><span class="var">void</span></code></td><td>значения</td></tr>
-<tr><td><code><span class="var">f</span></code></td><td>функции</td></tr>
-<tr><td><code><span class="var">n</span></code></td><td>идентификаторы</td></tr>
-<tr><td><code><span class="var">s</span></code>,
-        <code><span class="var">ss</span></code>,
-        <code><span class="var">sss</span></code></td><td>память</td></tr>
-<tr><td><code><span class="var">a</span></code>,
-        <code><span class="var">aa</span></code></td><td>адреса (коробки)</td></tr>
+<tbody>
+<tr><td class="left"><code><span class="var">e</span></code>,
+                     <code><span class="var">et</span></code>,
+                     <code><span class="var">ec</span></code>,
+                     <code><span class="var">ef</span></code></td>
+    <td class="right">выражения, формы</td></tr>
+<tr><td class="left"><code><span class="var">r</span></code></td>
+    <td class="right">окружения</td></tr>
+<tr><td class="left"><code><span class="var">k</span></code>,
+                     <code><span class="var">kk</span></code></td>
+    <td class="right">продолжения</td></tr>
+<tr><td class="left"><code><span class="var">v</span></code>,
+                     <code><span class="var">void</span></code></td>
+    <td class="right">значения</td></tr>
+<tr><td class="left"><code><span class="var">f</span></code></td>
+    <td class="right">функции</td></tr>
+<tr><td class="left"><code><span class="var">n</span></code></td>
+    <td class="right">идентификаторы</td></tr>
+<tr><td class="left"><code><span class="var">s</span></code>,
+                     <code><span class="var">ss</span></code>,
+                     <code><span class="var">sss</span></code></td>
+    <td class="right">память</td></tr>
+<tr><td class="left"><code><span class="var">a</span></code>,
+                     <code><span class="var">aa</span></code></td>
+    <td class="right">адреса (коробки)</td></tr>
+</tbody>
 </table>
 
 <p>Так как у нас увеличилось количество аргументов функций, то отныне будем всегда

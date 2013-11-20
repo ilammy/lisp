@@ -21,10 +21,7 @@
 вроде переходов, динамических переменных, исключений.</p>
 
 <table id="ch7-interm-instruction-list" class="instruction-list">
-  <caption>Таблица 7.1. Все 25 инструкций промежуточного языка. <i>m</i>, <i>m<sub><span class="normal">1</span></sub></i>, <i>m<sub><span class="normal">2</span></sub></i>, <i>m<sub><span class="normal">3</span></sub></i>,
-<i>m<span class="normal">+</span></i> и <i>v</i> — значения; <i>m<span class="normal">*</span></i> — запись активации; <i>индекс</i>, <i>арность</i>, <i>размер</i>,
-<i>i</i> и <i>j</i> — натуральные числа (с нулём); <i>адрес</i> представляет примитивную
-функцию, принимающую и возвращающую значения.</caption>
+<tbody>
 <tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <i>j</i>)</code></td>
 <td><code>(<span class="func">PREDEFINED</span> <i>i</i>)</code></td></tr>
 <tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <i>i</i> <i>j</i>)</code></td>
@@ -51,7 +48,11 @@
 <td><code>(<span class="func">ALLOCATE-FRAME</span> <i>размер</i>)</code></td></tr>
 <tr><td><code>(<span class="func">ALLOCATE-DOTTED-FRAME</span> <i>арность</i>)</code></td>
 <td/></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 7.1. Все 25 инструкций промежуточного языка. <i>m</i>, <i>m<sub><span class="normal">1</span></sub></i>, <i>m<sub><span class="normal">2</span></sub></i>, <i>m<sub><span class="normal">3</span></sub></i>,
+<i>m<span class="normal">+</span></i> и <i>v</i> — значения; <i>m<span class="normal">*</span></i> — запись активации; <i>индекс</i>, <i>арность</i>, <i>размер</i>,
+<i>i</i> и <i>j</i> — натуральные числа (с нулём); <i>адрес</i> представляет примитивную
+функцию, принимающую и возвращающую значения.</span>
 
 <!--\indexR{язык!промежуточный}-->
 <!--\indexR{промежуточное представление}-->
@@ -460,7 +461,7 @@
 
 <div class="image" id="compilation/bytes/customize/lin-conditional/pic:subj">
 <img src="images/png06.png" alt="Расположение в памяти байт-кода оператора ветвления" style="width: 3.75in"/>
-<span class="title">Рис. 7.1. Линеаризованное ветвление.</span>
+<span class="caption">Рис. 7.1. Линеаризованное ветвление.</span>
 </div>
 
 <p>С использованием этих двух инструкций ветвление линеаризуется следующим
@@ -510,7 +511,7 @@
 
 <div class="image" id="compilation/bytes/customize/lin-abstraction/pic:subj">
 <img src="images/png07.png" alt="Расположение в памяти байт-кода абстракции" style="width: 3.75in"/>
-<span class="title">Рис. 7.2. Линеаризованная абстракция.</span>
+<span class="caption">Рис. 7.2. Линеаризованная абстракция.</span>
 </div>
 
 <p>Новая машинная инструкция <code><span class="func">CREATE-CLOSURE</span></code> создаёт замыкание с телом,
@@ -578,7 +579,7 @@
 
 <div class="image" id="compilation/lang-and-target/pic:subj">
 <img src="images/png08.png" alt="Архитектура целевой виртуальной машины" style="width: 5.19in"/>
-<span class="title">Рис. 7.3. Архитектура целевой виртуальной машины.</span>
+<span class="caption">Рис. 7.3. Архитектура целевой виртуальной машины.</span>
 </div>
 
 <!--\indexC{FINISH}-->
@@ -606,7 +607,7 @@
 <table id="ch7-vm-instruction-list" class="instruction-list">
 <!--\indexR{виртуальная машина!язык}%-->
 <!--\indexR{язык!машинный}%-->
-<caption>Таблица 7.2. Символьная форма машинных инструкций.</caption>
+<tbody>
 <tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <i>j</i>)</code><sub>*</sub></td>
 <td><code>(<span class="func">PREDEFINED</span> <i>i</i>)</code><sub>*</sub></td></tr>
 <tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <i>i</i> <i>j</i>)</code><sub>*</sub></td>
@@ -641,7 +642,8 @@
 <td><code>(<span class="func">ALLOCATE-FRAME</span> <i>размер</i>)</code><sub>*</sub></td></tr>
 <tr><td><code>(<span class="func">ALLOCATE-DOTTED-FRAME</span> <i>арность</i>)</code><sub>*</sub></td>
 <td><code>(<span class="func">FINISH</span>)</code></td></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 7.2. Символьная форма машинных инструкций.</span>
 
 <p>Тривиальной части составных инструкций мы не касались, но их определения
 на машинном языке всё же стоит привести. Они собраны ниже, без каких-либо
@@ -777,86 +779,87 @@
 листингом.</p>
 
 <table id="ch7-disasm-1" class="disasm">
-  <caption>Таблица 7.3. Результат компиляции.</caption>
-<tr><td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;*&gt;</span>)</code></td></tr>
-<tr><td><code>(<span class="func">GOTO</span> <span class="num">82</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ARITY=?</span> <span class="num">4</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">EXTEND-ENV</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;=&gt;</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">3</span>)</code></td></tr>
-<tr><td><code>(<span class="func">JUMP-FALSE</span> <span class="num">13</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT</span> <span class="num">1</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-FUNCTION</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">GOTO</span> <span class="num">54</span>)</code></td>
-<td><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">1</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">CONSTANT</span> <span class="num">5</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT</span> <span class="num">1</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;-&gt;</span>)</code></td>
-<td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">GOTO</span> <span class="num">6</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">1</span>)</code></td>
-<td><code>(<span class="func">ARITY=?</span> <span class="num">2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">GOTO</span> <span class="num">24</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ARITY=?</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">EXTEND-ENV</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">3</span>)</code></td></tr>
-<tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-</table>
+<tbody>
+<tr><td class="col1"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;*&gt;</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">GOTO</span> <span class="num">82</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ARITY=?</span> <span class="num">4</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">EXTEND-ENV</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;=&gt;</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">3</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">JUMP-FALSE</span> <span class="num">13</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT</span> <span class="num">1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-FUNCTION</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">GOTO</span> <span class="num">54</span>)</code></td>
+    <td class="col2"><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">CONSTANT</span> <span class="num">5</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT</span> <span class="num">1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">INVOKE2</span> <span class="hash">#&lt;-&gt;</span>)</code></td>
+    <td class="col2"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">GOTO</span> <span class="num">6</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ARITY=?</span> <span class="num">2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">GOTO</span> <span class="num">24</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ARITY=?</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">EXTEND-ENV</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME</span> <span class="num">3</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!</span> <span class="num">0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-INVOKE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+</tbody></table>
+<span class="caption">Таблица 7.3. Результат компиляции.</span>
 
 
 <h2 id="compilation/sect:coding"><span class="seq">7.3.</span> Кодирование инструкций</h2>
@@ -1037,17 +1040,21 @@
 в таблице <a href="#ch7-arity-probs">7.4</a>.</p>
 
 <table id="ch7-arity-probs">
-  <caption>Таблица 7.4. Распределение функций по количеству аргументов.</caption>
-<tr><td>арность</td>
+<thead>
+<tr><td class="desc">арность</td>
   <td>0</td><td>1</td><td>2</td><td>3</td><td>4</td>
   <td>5</td><td>6</td><td>7</td><td>8</td></tr>
-<tr><td>доля, %</td>
+</thead>
+<tbody>
+<tr><td class="desc">доля, %</td>
   <td>35</td><td>30</td><td>18</td><td>9</td><td>4</td>
   <td>1</td><td>0</td><td>0</td><td>0</td></tr>
-<tr><td>накопление, %</td>
+<tr><td class="desc">накопление, %</td>
   <td>35</td><td>66</td><td>84 </td><td>93</td><td>97</td>
   <td>99</td><td>99</td><td>99</td><td>100</td></tr>
+</tbody>
 </table>
+<span class="caption">Таблица 7.4. Распределение функций по количеству аргументов.</span>
 
 <p>Как видим, подавляющее большинство функций имеет не более четырёх аргументов.
 При обобщении этих результатов следует учесть, что настолько большие числа для
@@ -1565,87 +1572,87 @@
 таблица <a href="#ch7-disasm-2">7.5</a>.</p>
 
 <table id="ch7-disasm-2" class="disasm">
-  <caption>Таблица 7.5. Откомпилированная программа.</caption>
-<tr><td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">CALL2-*</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHORT-GOTO</span> <span class="num">60</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ARITY=?4</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">EXTEND-ENV</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT0</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CALL2-=</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME4</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHORT-JUMP-FALSE</span> <span class="num">10</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF2</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT1</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-FRAME!0</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-FUNCTION</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">FUNCTION-GOTO</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHORT-GOTO</span> <span class="num">40</span>)</code></td>
-<td><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF1</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
-<td><code>(<span class="func">SHORT-NUMBER</span> <span class="num">5</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CONSTANT1</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CALL2--</span>)</code></td>
-<td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">SHORT-GOTO</span> <span class="num">4</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF1</span>)</code></td>
-<td><code>(<span class="func">ARITY=?2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
-<tr><td><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHORT-GOTO</span> <span class="num">19</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-<tr><td><code>(<span class="func">ARITY=?2</span>)</code></td>
-<td><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
-<tr><td><code>(<span class="func">EXTEND-ENV</span>)</code></td>
-<td><code>(<span class="func">ALLOCATE-FRAME4</span>)</code></td></tr>
-<tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">2</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!2</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!1</span>)</code></td></tr>
-<tr><td><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">0</span>)</code></td>
-<td><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
-<tr><td><code>(<span class="func">PUSH-VALUE</span>)</code></td>
-<td><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
-<tr><td><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
-<td><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
-<tr><td><code>(<span class="func">POP-ARG1</span>)</code></td>
-<td><code>(<span class="func">RETURN</span>)</code></td></tr>
-</table>
-
+<tbody>
+<tr><td class="col1"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">CALL2-*</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHORT-GOTO</span> <span class="num">60</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ARITY=?4</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">EXTEND-ENV</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CALL2-=</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME4</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHORT-JUMP-FALSE</span> <span class="num">10</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-FRAME!0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-FUNCTION</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">FUNCTION-GOTO</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHORT-GOTO</span> <span class="num">40</span>)</code></td>
+    <td class="col2"><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHORT-NUMBER</span> <span class="num">5</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CONSTANT1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CALL2--</span>)</code></td>
+    <td class="col2"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHORT-GOTO</span> <span class="num">4</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ARITY=?2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">EXTEND-ENV</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">CREATE-CLOSURE</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHORT-GOTO</span> <span class="num">19</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">ARITY=?2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">PUSH-VALUE</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">EXTEND-ENV</span>)</code></td>
+    <td class="col2"><code>(<span class="func">ALLOCATE-FRAME4</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">2</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!2</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!1</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">DEEP-ARGUMENT-REF</span> <span class="num">1</span> <span class="num">0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FRAME!0</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">PUSH-VALUE</span>)</code></td>
+    <td class="col2"><code>(<span class="func">POP-FUNCTION</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">SHALLOW-ARGUMENT-REF0</span>)</code></td>
+    <td class="col2"><code>(<span class="func">FUNCTION-GOTO</span>)</code></td></tr>
+<tr><td class="col1"><code>(<span class="func">POP-ARG1</span>)</code></td>
+    <td class="col2"><code>(<span class="func">RETURN</span>)</code></td></tr>
+</tbody></table>
+<span class="caption">Таблица 7.5. Откомпилированная программа.</span>
 
 <h2 id="compilation/sect:continue"><span class="seq">7.6.</span> Продолжения</h2>
 
@@ -1877,7 +1884,7 @@
 
 <div class="image" id="compilation/escapes/pic:push-escaper">
 <img src="images/png09.png" alt="Состояние стека до и после инструкции PUSH-ESCAPER" style="width: 5.55in"/>
-<span class="title">Рис. 7.4. Состояние стека до и после инструкции <code><span class="func">PUSH-ESCAPER</span></code>.</span>
+<span class="caption">Рис. 7.4. Состояние стека до и после инструкции <code><span class="func">PUSH-ESCAPER</span></code>.</span>
 </div>
 
 <!--\indexR{переходы (escapes)!допустимость}-->
@@ -2022,7 +2029,7 @@
 
 <div class="image" id="compilation/dynamic/pic:subj">
 <img src="images/png10.png" alt="Состояние стека до и после инструкции DYNAMIC-PUSH" style="width: 4.49in"/>
-<span class="title">Рис. 7.5. Состояние стека до и после инструкции <code><span class="func">DYNAMIC-PUSH</span></code>.</span>
+<span class="caption">Рис. 7.5. Состояние стека до и после инструкции <code><span class="func">DYNAMIC-PUSH</span></code>.</span>
 </div>
 
 <!--\indexR{динамические переменные!организация стека}-->
@@ -2218,7 +2225,7 @@
 
 <div class="image" id="compilation/exception/pic:subj">
 <img src="images/png11.png" alt="Конфигурация стека до и после начала обработки исключения" style="width: 4.65in"/>
-<span class="title">Рис. 7.6. Процесс обработки исключения.</span>
+<span class="caption">Рис. 7.6. Процесс обработки исключения.</span>
 </div>
 
 <p>Предобработка превращает форму <code><span class="special">monitor</span></code> в комбинацию двух новых инструкций,

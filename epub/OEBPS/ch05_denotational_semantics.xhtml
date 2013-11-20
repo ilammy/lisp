@@ -168,21 +168,23 @@ href="zz_footnotes.xhtml#foot5.1"><sup>1</sup></a> Его
 обозначать Λ; его можно индуктивно определить следующим образом:</p>
 
 <table id="ch5-table-lambda-syntax">
+<tbody>
 <tr>
-  <td><i>переменные</i>:</td>
-  <td><span class="ord">∀</span><span class="ord var">x</span><span class="rel">∈</span><span class="ord"><span class="Vset">Переменные</span></span><span class="ord">:</span></td>
-  <td><span class="ord var">x</span><span class="rel">∈</span><span class="ord">Λ</span></td>
+  <td class="col1"><i>переменные</i>:</td>
+  <td class="col2"><span class="ord">∀</span><span class="ord var">x</span><span class="rel">∈</span><span class="ord"><span class="Vset">Переменные</span></span><span class="ord">:</span></td>
+  <td class="col3"><span class="ord var">x</span><span class="rel">∈</span><span class="ord">Λ</span></td>
 </tr>
 <tr>
-  <td><i>абстракции</i>:</td>
-  <td><span class="ord">∀</span><span class="ord var">x</span><span class="rel">∈</span><span class="ord"><span class="Vset">Переменные</span></span><span class="punct">,</span><span class="ord var">M</span><span class="rel">∈</span><span class="ord">Λ</span><span class="ord">:</span></td>
-  <td><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">M</span><span class="rel">∈</span><span class="ord">Λ</span></td>
+  <td class="col1"><i>абстракции</i>:</td>
+  <td class="col2"><span class="ord">∀</span><span class="ord var">x</span><span class="rel">∈</span><span class="ord"><span class="Vset">Переменные</span></span><span class="punct">,</span><span class="ord var">M</span><span class="rel">∈</span><span class="ord">Λ</span><span class="ord">:</span></td>
+  <td class="col3"><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">M</span><span class="rel">∈</span><span class="ord">Λ</span></td>
 </tr>
 <tr>
-  <td><i>аппликации</i>:</td>
-  <td><span class="ord">∀</span><span class="ord var">M</span><span class="punct">,</span><span class="ord var">N</span><span class="rel">∈</span><span class="ord">Λ</span><span class="ord">:</span></td>
-  <td><span class="open">(</span><span class="ord var">M</span> <span class="ord var">N</span><span class="close">)</span><span class="rel">∈</span><span class="ord var">Λ</span></td>
+  <td class="col1"><i>аппликации</i>:</td>
+  <td class="col2"><span class="ord">∀</span><span class="ord var">M</span><span class="punct">,</span><span class="ord var">N</span><span class="rel">∈</span><span class="ord">Λ</span><span class="ord">:</span></td>
+  <td class="col3"><span class="open">(</span><span class="ord var">M</span> <span class="ord var">N</span><span class="close">)</span><span class="rel">∈</span><span class="ord var">Λ</span></td>
 </tr>
+</tbody>
 </table>
 
 <!--\indexR{Лисп!и лямбда-исчисление@и λ-исчисление}-->
@@ -224,13 +226,13 @@ href="zz_footnotes.xhtml#foot5.1"><sup>1</sup></a> Его
 связывание. Подобная подстановка определяется следующим образом (скобки отделяют
 выражения, где происходят изменения):</p>
 
-<table id="ch5-table-beta-reduction">
+<table id="ch5-table-beta-reduction"><tbody>
 <tr><td><span class="math"><span class="ord var">x</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="rel">=</span><span class="ord var">N</span></span></td></tr>
 <tr><td><span class="math"><span class="ord var">y</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="rel">=</span><span class="ord var">y</span><span class="quad-stub" style="width: 1em"/><span class="normal">если <span class="math"><span class="ord var">x</span><span class="rel">≠</span><span class="ord var">y</span></span></span></span></td></tr>
 <tr><td><span class="open">(</span><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">M</span><span class="close">)</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="rel">=</span><span class="ord var">λ</span><span class="ord var">x</span><span class="punct">.</span><span class="ord var">M</span></td></tr>
 <tr><td><span class="open">(</span><span class="ord var">λ</span><span class="ord var">y</span><span class="punct">.</span><span class="ord var">M</span><span class="close">)</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="rel">=</span><span class="ord var">λ</span><span class="ord var">z</span><span class="punct">.</span><span class="open"><span class="big">(</span></span><span class="ord var">M</span><span class="open">[</span><span class="ord var">y</span><span class="rel">→</span><span class="ord var">z</span><span class="close">]</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="close"><span class="big">)</span></span><span class="quad-stub" style="width: 1em"/><span class="normal">где <span class="math"><span class="ord var">x</span><span class="rel">≠</span><span class="ord var">y</span></span> и <span class="math"><span class="ord var">z</span></span> не свободна в <span class="math"><span class="ord var">M</span></span> и <span class="math"><span class="ord var">N</span></span></span></td></tr>
 <tr><td><span class="open">(</span><span class="ord var">M<sub><span class="ord num">1</span></sub></span> <span class="ord var">M<sub><span class="ord num">2</span></sub></span><span class="close">)</span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="rel">=</span><span class="open">(</span><span class="ord var">M<sub><span class="ord num">1</span></sub></span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span> <span class="ord var">M<sub><span class="ord num">2</span></sub></span><span class="open">[</span><span class="ord var">x</span><span class="rel">→</span><span class="ord var">N</span><span class="close">]</span><span class="close">)</span></td></tr>
-</table>
+</tbody></table>
 
 <!--\indexR{редексы}-->
 <!--\indexR{приводимые!выражения}-->
@@ -357,10 +359,10 @@ Scheme — является <em class="term">аппликативный</em> п�
 возвращаемое значение. Это похоже на понятие смысла программы, так что
 остановимся на таком определении:</p>
 
-<table id="ch5-table-denotation-essence">
+<table id="ch5-table-denotation-essence"><tbody>
 <tr><td><span class="math"><span class="normal"><i>интерпретация</i></span><span class="ord">: </span><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Программа</span><span class="rel">→</span><span class="ord Vset">Денотация</span></span></td></tr>
 <tr><td><span class="math"><span class="ord Vset">Денотация</span><span class="ord">: </span><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Окружение</span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-</table>
+</tbody></table>
 
 <!--\indexR{соглашения именования!в денотациях}-->
 <p>Люди, серьёзно занимающиеся денотационной семантикой, не особо любят скобочки
@@ -401,24 +403,24 @@ Scheme — является <em class="term">аппликативный</em> п�
 идентификаторов (name), <span class="math"><span class="ord var">π</span></span> для программ, <span class="math"><span class="ord var">σ</span></span> для памяти (store или state).
 Попробуйте самостоятельно догадаться, почему окружения обозначаются буквой <span class="math"><span class="ord var">ρ</span></span>.</p>
 
-<table id="ch5-table-notation">
-<tr><td><span class="math"><span class="ord var">π</span></span></td>
-    <td><span class="Vset">Программы</span></td>
-    <td><span class="math"><span class="ord var">ρ</span></span></td>
-    <td><span class="Vset">Окружения</span></td></tr>
-<tr><td><span class="math"><span class="ord var">ν</span></span></td>
-    <td><span class="Vset">Переменные</span></td>
-    <td><span class="math"><span class="ord var">α</span></span></td>
-    <td><span class="Vset">Адреса</span></td></tr>
-<tr><td><span class="math"><span class="ord var">σ</span></span></td>
-    <td><span class="Vset">Память</span></td>
-    <td><span class="math"><span class="ord var">ε</span></span></td>
-    <td><span class="Vset">Значения</span></td></tr>
-<tr><td><span class="math"><span class="ord var">κ</span></span></td>
-    <td><span class="Vset">Продолжения</span></td>
-    <td><span class="math"><span class="ord var">φ</span></span></td>
-    <td><span class="Vset">Функции</span></td></tr>
-</table>
+<table id="ch5-table-notation" class="term-def"><tbody>
+<tr><td class="left"><span class="math"><span class="ord var">π</span></span></td>
+    <td class="right extra"><span class="Vset">Программы</span></td>
+    <td class="left extra"><span class="math"><span class="ord var">ρ</span></span></td>
+    <td class="right"><span class="Vset">Окружения</span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">ν</span></span></td>
+    <td class="right extra"><span class="Vset">Переменные</span></td>
+    <td class="left extra"><span class="math"><span class="ord var">α</span></span></td>
+    <td class="right"><span class="Vset">Адреса</span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">σ</span></span></td>
+    <td class="right extra"><span class="Vset">Память</span></td>
+    <td class="left extra"><span class="math"><span class="ord var">ε</span></span></td>
+    <td class="right"><span class="Vset">Значения</span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">κ</span></span></td>
+    <td class="right extra"><span class="Vset">Продолжения</span></td>
+    <td class="left extra"><span class="math"><span class="ord var">φ</span></span></td>
+    <td class="right"><span class="Vset">Функции</span></td></tr>
+</tbody></table>
 
 <!--\indexR{домены}-->
 <!--\indexR{Программы@\protect\Vset{Программы}}-->
@@ -433,23 +435,23 @@ Scheme — является <em class="term">аппликативный</em> п�
 Здесь присутствуют все классы объектов, которые мы рассматривали в предыдущих
 главах.</p>
 
-<table id="ch5-table-domains">
-<tr><td><span class="Vset">Окружение</span></td>
-    <td><span class="math"><span class="rel">=</span></span></td>
-    <td><span class="math"><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span></span></td></tr>
-<tr><td><span class="Vset">Память</span></td>
-    <td><span class="math"><span class="rel">=</span></span></td>
-    <td><span class="math"><span class="ord Vset">Адрес</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-<tr><td><span class="Vset">Значения</span></td>
-    <td><span class="math"><span class="rel">=</span></span></td>
-    <td><span class="math"><span class="ord Vset">Функции</span><span class="binop">+</span><span class="ord Vset">Числа</span><span class="binop">+</span><span class="ord Vset">Пары</span><span class="binop">+</span><span class="ord">…</span></span></td></tr>
-<tr><td><span class="Vset">Продолжение</span></td>
-    <td><span class="math"><span class="rel">=</span></span></td>
-    <td><span class="math"><span class="ord Vset">Значение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-<tr><td><span class="Vset">Функция</span></td>
-    <td><span class="math"><span class="rel">=</span></span></td>
-    <td><span class="math"><span class="ord Vset">Значения<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-</table>
+<table class="domains"><tbody>
+<tr><td class="lhs"><span class="Vset">Окружение</span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span></span></td></tr>
+<tr><td class="lhs"><span class="Vset">Память</span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Адрес</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
+<tr><td class="lhs"><span class="Vset">Значения</span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Функции</span><span class="binop">+</span><span class="ord Vset">Числа</span><span class="binop">+</span><span class="ord Vset">Пары</span><span class="binop">+</span><span class="ord">…</span></span></td></tr>
+<tr><td class="lhs"><span class="Vset">Продолжение</span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Значение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
+<tr><td class="lhs"><span class="Vset">Функция</span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Значения<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
+</tbody></table>
 
 <!--\indexR{приведение типов}-->
 <!--\indexR{инъекция, $\protect\Inj{Домен}(x)$}-->
@@ -895,8 +897,8 @@ Scheme — является <em class="term">аппликативный</em> п�
 см. таблицу <a href="#denotational/sematics/fig:naked-scheme">5.1</a>.</p>
 
 <table id="denotational/sematics/fig:naked-scheme" class="semantic">
-  <!--\indexE{Scheme!семантика}-->
-  <caption>Таблица 5.1. Сущность Scheme.</caption>
+<!--\indexE{Scheme!семантика}-->
+<tbody>
 <tr><td><div class="denotation math"><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">ν</span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">σ</span> <span class="open">(</span><span class="ord var">ρ</span> <span class="ord var">ν</span><span class="close">)</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>
 <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π</span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord var">σ<sub><span class="ord num">1</span></sub></span><span class="punct">.</span><span class="open">(</span><div class="valign math"><span/><span class="rel syntax">if</span> <span class="open">(</span><span class="ord var">boolify</span> <span class="ord var">ε</span><span class="close">)</span>
 <span/><span class="rel syntax">then</span> <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord num">1</span></sub></span><span class="close sem-brace">]]</span>
@@ -924,7 +926,9 @@ Scheme — является <em class="term">аппликативный</em> п�
 <span/><span class="rel syntax">endif</span><span class="close">)</span><span class="close">⟩</span> <span class="ord var">κ</span> <span class="ord var">σ</span><span class="close">)</span></div></div>
 <span/><span class="rel syntax">else</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"Incorrect arity"</span></code></span>
 <span/><span class="rel syntax">endif</span><span class="close">)</span></div></div></td></tr>
+</tbody>
 </table>
+<span class="caption">Таблица 5.1. Сущность Scheme.</span>
 
 <p>Конечно, специальная форма <code><span class="special">quote</span></code>
 остаётся нереализованной (как вы помните, с цитированием не всё так просто
@@ -965,18 +969,18 @@ Scheme — является <em class="term">аппликативный</em> п�
 λ-исчислением — то есть никаких чисел и всего такого, только голые
 абстракции. Итак, домены:</p>
 
-<table id="ch5-lcalc-domains">
-<tr><td><span class="math"><span class="ord var">π</span></span></td>
-<td colspan="2"><span class="math"><span class="ord Vset">Программы</span></span></td></tr>
-<tr><td><span class="math"><span class="ord var">ν</span></span></td>
-<td colspan="2"><span class="math"><span class="ord Vset">Переменные</span></span></td></tr>
-<tr><td><span class="math"><span class="ord var">ρ</span></span></td>
-<td><span class="math"><span class="ord Vset">Окружения</span></span></td><td><span class="math"><span class="rel">=</span><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-<tr><td><span class="math"><span class="ord var">ε</span></span></td>
-<td><span class="math"><span class="ord Vset">Значения</span></span></td><td><span class="math"><span class="rel">=</span><span class="ord Vset">Функции</span></span></td></tr>
-<tr><td><span class="math"><span class="ord var">φ</span></span></td>
-<td><span class="math"><span class="ord Vset">Функции</span></span></td><td><span class="math"><span class="rel">=</span><span class="ord Vset">Значение</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
-</table>
+<table id="ch5-lcalc-domains" class="term-def"><tbody>
+<tr><td class="left"><span class="math"><span class="ord var">π</span></span></td>
+<td class="right" colspan="2"><span class="math"><span class="ord Vset">Программы</span></span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">ν</span></span></td>
+<td class="right" colspan="2"><span class="math"><span class="ord Vset">Переменные</span></span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">ρ</span></span></td>
+<td class="right"><span class="math"><span class="ord Vset">Окружения</span></span></td><td><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">ε</span></span></td>
+<td class="right"><span class="math"><span class="ord Vset">Значения</span></span></td><td><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord Vset">Функции</span></span></td></tr>
+<tr><td class="left"><span class="math"><span class="ord var">φ</span></span></td>
+<td class="right"><span class="math"><span class="ord Vset">Функции</span></span></td><td><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord Vset">Значение</span><span class="rel">→</span><span class="ord Vset">Значение</span></span></td></tr>
+</tbody></table>
 
 <!--\indexR{интерпретатор!L@$\protect\Lain$}-->
 <!--\indexE{L@$\protect\Lain$, интерпретатор}-->
@@ -990,12 +994,13 @@ Scheme — является <em class="term">аппликативный</em> п�
 огромное разнообразие собрано в таблице <a href="#denotational/lambda/fig:self">5.2</a>.</p>
 
 <table id="denotational/lambda/fig:self" class="semantic">
-  <!--\indexR{лямбда-исчисление@λ-исчисление!семантика}-->
-  <caption>Таблица 5.2. Семантика λ-исчисления.</caption>
+<!--\indexR{лямбда-исчисление@λ-исчисление!семантика}-->
+<tbody>
 <tr><td><div class="denotation math"><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="ord var">ν</span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="rel">=</span><span class="open">(</span><span class="ord var">ρ</span> <span class="ord var">ν</span><span class="close">)</span>
 <span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">lambda</span> (<span class="math"><span class="ord var">ν</span></span>) <span class="math"><span class="ord var">π</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="rel">=</span><span class="ord var">λ</span><span class="ord var">ε</span><span class="punct">.</span><span class="open">(</span><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span><span class="open">[</span><span class="ord var">ν</span><span class="rel">→</span><span class="ord var">ε</span><span class="close">]</span><span class="close">)</span>
 <span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="math"><span class="ord var">π</span></span> <span class="math"><span class="ord var">π</span><span class="ord">′</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="rel">=</span><span class="open"><span class="big">(</span></span><span class="open">(</span><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span><span class="close">)</span> <span class="open">(</span><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="ord">′</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span><span class="close">)</span><span class="close"><span class="big">)</span></span></div></td></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 5.2. Семантика λ-исчисления.</span>
 
 <p>Данная семантика очень точна, вплоть до неопределённости порядка вычислений.
 Аппликация переводится в аппликацию, так что никакого порядка
@@ -1040,12 +1045,14 @@ Scheme — является <em class="term">аппликативный</em> п�
 входит в дизъюнктивную сумму <span class="Vset">Значений</span>. Точечные пары представляются
 так же, как и в предыдущей главе: двумя адресами.</p>
 
-<table>
-<tr><td><span class="math"><span class="ord Vset">Значения</span></span></td>
-<td><span class="math"><span class="rel">=</span><span class="ord Vset">Функции</span><span class="binop">+</span><span class="ord Vset">Числа</span><span class="binop">+</span><span class="ord Vset">Пары</span><span class="binop">+</span><span class="ord">…</span></span></td></tr>
-<tr><td><span class="math"><span class="ord Vset">Пара</span></span></td>
-<td><span class="math"><span class="rel">=</span><span class="ord Vset">Адрес</span><span class="rel">×</span><span class="ord Vset">Адрес</span></span></td></tr>
-</table>
+<table class="domains"><tbody>
+<tr><td class="lhs"><span class="math"><span class="ord Vset">Значения</span></span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Функции</span><span class="binop">+</span><span class="ord Vset">Числа</span><span class="binop">+</span><span class="ord Vset">Пары</span><span class="binop">+</span><span class="ord">…</span></span></td></tr>
+<tr><td class="lhs"><span class="math"><span class="ord Vset">Пара</span></span></td>
+    <td class="eq"><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span></td>
+    <td class="rhs"><span class="math"><span class="ord Vset">Адрес</span><span class="rel">×</span><span class="ord Vset">Адрес</span></span></td></tr>
+</tbody></table>
 
 <p>Денотации <code><span class="func">cons</span></code>,
 <code><span class="func">car</span></code> и
@@ -1121,11 +1128,11 @@ Scheme — является <em class="term">аппликативный</em> п�
 подготавливает аргументы, а для контекста вычислений используем букву
 <span class="math"><span class="ord var">τ</span></span>:</p>
 
-<table>
+<table class="nocaption"><tbody>
 <tr><td colspan="2"><span class="math"><span class="ord var">τ</span><span class="rel">≡</span><span class="ord Vset">Значения<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Окружение</span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span></span></td></tr>
 <tr><td><span class="math"><span class="ord cal">E</span><span class="ord">:</span><span class="quad-stub" style="width: 1em"/></span></td><td><span class="math"><span class="ord Vset">Программа</span><span class="rel">→</span><span class="open">(</span><span class="ord var">τ</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></span></td></tr>
 <tr><td><span class="math"><span class="ord cal">B</span><span class="ord">:</span><span class="quad-stub" style="width: 1em"/></span></td><td><span class="ord Vset">СписокАргументов</span><span class="rel">→</span><span class="open"><span class="big">(</span></span><span class="gather"><div class="base math"><span class="open">(</span><span class="ord var">τ</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></div><div class="note math"><span class="ord var">μ</span></div></span><span class="binop">×</span><span class="ord var">τ</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close"><span class="big">)</span></span></td></tr>
-</table>
+</tbody></table>
 
 <p><span class="math"><span class="ord cal">B</span></span>, связывающий интерпретатор,
 начинает работу после проверки арности. Если с ней всё в порядке, то он заносит один за
@@ -1290,12 +1297,12 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 как <span class="math"><span class="ord cal">P</span><span class="open">(</span><span class="ord var">Q</span><span class="close">)</span></span>,
 то эти функции имеют следующие типы:</p>
 
-<table>
+<table class="nocaption"><tbody>
 <tr><td><span class="math"><span class="ord cal">E</span><span class="ord">:</span><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Программа</span><span class="rel">→</span><span class="ord Vset">Значения<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Окружение</span><span class="binop">×</span></span></td></tr>
 <tr><td><span class="math"><span class="quad-stub" style="width: 10em"/><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord cal">P</span><span class="open">(</span><span class="ord Vset">Результаты</span><span class="close">)</span></span></td></tr>
 <tr><td><span class="math"><span class="ord cal">N</span><span class="ord">:</span><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Программа</span><span class="rel">→</span><span class="ord Vset">Значения<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Окружение</span><span class="binop">×</span></span></td></tr>
 <tr><td><span class="math"><span class="quad-stub" style="width: 10em"/><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="binop">×</span><span class="ord Vset">Память</span><span class="rel">→</span><span class="ord Vset">Результат</span></span></td></tr>
-</table>
+</tbody></table>
 
 <!--\indexE{oneof@\protect<i>oneof</i>}-->
 <p><span class="math"><span class="ord cal">N</span></span> определяется просто:
@@ -1418,8 +1425,8 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 в таблице <a href="#denotational/dynamic/fig:dynamic-scheme">5.3</a>.</p>
 
 <table id="denotational/dynamic/fig:dynamic-scheme" class="semantic">
-  <!--\indexE{Scheme!семантика!динамическое окружение}-->
-  <caption>Таблица 5.3. Scheme с динамическим окружением.</caption>
+<!--\indexE{Scheme!семантика!динамическое окружение}-->
+<tbody>
 <tr><td><div class="denotation math"><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">ν</span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">δ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">σ</span> <span class="open">(</span><span class="ord var">ρ</span> <span class="ord var">ν</span><span class="close">)</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>
 <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π</span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">δ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span> <span class="ord var">δ</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord var">σ<sub><span class="ord num">1</span></sub></span><span class="punct">.</span><span class="open">(</span><div class="valign math"><span/><span class="rel syntax">if</span> <span class="open">(</span><span class="ord var">boolify</span> <span class="ord var">ε</span><span class="close">)</span>
 <span/><span class="rel syntax">then</span> <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord num">1</span></sub></span><span class="close sem-brace">]]</span>
@@ -1447,8 +1454,8 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 <span/><span class="rel syntax">endif</span><span class="close">)</span><span class="close">⟩</span> <span class="ord var">δ</span> <span class="ord var">κ</span> <span class="ord var">σ</span><span class="close">)</span></div></div>
 <span/><span class="rel syntax">else</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"Incorrect arity"</span></code></span>
 <span/><span class="rel syntax">endif</span><span class="close">)</span></div></div></td></tr>
-</table>
-
+</tbody></table>
+<span class="caption">Таблица 5.3. Scheme с динамическим окружением.</span>
 
 <!--\indexR{д ельта@$\d$ (динамическое окружение)}-->
 <!--\indexE{d elta@$\d$ (динамическое окружение)}-->
@@ -1491,11 +1498,12 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 <!--\indexR{динамическое связывание!семантика}-->
 <!--\indexR{д ельта0@$\delta_0$ (начальное окружение)}-->
 <!--\indexE{d elta0@$\delta_0$ (начальное окружение)}-->
-<caption>Таблица 5.4. Семантика специальных форм динамического связывания.</caption>
+<tbody>
 <tr><td><div class="denotation math"><span class="open">(</span><span class="ord var">δ<sub><span class="ord num">0</span></sub></span> <span class="ord var">ν</span><span class="close">)</span><span class="rel">=</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"No such dynamic variable"</span></code></span>
 <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">δ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">δ</span> <span class="ord var">ν</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>
 <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic-let</span> (<span class="math"><span class="ord var">ν</span></span> <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="ord var">π<sup><span class="binop">+</span></sup></span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">δ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span> <span class="ord var">δ</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord var">σ<sub><span class="ord num">1</span></sub></span><span class="punct">.</span><span class="open">(</span><span class="ord cal">E<sup><span class="binop">+</span></sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup><span class="binop">+</span></sup></span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span> <span class="ord var">δ</span><span class="open">[</span><span class="ord var">ν</span><span class="rel">→</span><span class="ord var">ε</span><span class="close">]</span> <span class="ord var">κ</span> <span class="ord var">σ<sub><span class="ord num">1</span></sub></span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span></div></td></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 5.4. Семантика специальных форм динамического связывания.</span>
 
 <p>Приведённая денотация довольно очевидна. Формы получают значение из
 динамического окружения или же расширяют его, таким образом мы получаем второе
@@ -1552,7 +1560,7 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 
 <table id="denotational/global/fig:global-scheme" class="semantic">
 <!--\indexE{Scheme!семантика!глобальное окружение}-->
-<caption>Таблица 5.5. Scheme с глобальным окружением.</caption>
+<tbody>
 <tr><td><div class="denotation math"><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π</span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">2</span></sub></span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">γ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="open">(</span><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span> <span class="ord var">γ</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord var">γ<sub><span class="ord num">1</span></sub></span><span class="ord var">σ<sub><span class="ord num">1</span></sub></span><span class="punct">.</span><span class="open">(</span><div class="valign math"><span/><span class="rel syntax">if</span> <span class="open">(</span><span class="ord var">boolify</span> <span class="ord var">ε</span><span class="close">)</span>
 <span/><span class="rel syntax">then</span> <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord num">1</span></sub></span><span class="close sem-brace">]]</span>
 <span/><span class="rel syntax">else</span> <span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord num">2</span></sub></span><span class="close sem-brace">]]</span>
@@ -1578,7 +1586,8 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 <span/><span class="rel syntax">endif</span><span class="close">)</span><span class="close">⟩</span> <span class="ord var">γ</span> <span class="ord var">κ</span> <span class="ord var">σ</span><span class="close">)</span></div></div>
 <span/><span class="rel syntax">else</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"Incorrect arity"</span></code></span>
 <span/><span class="rel syntax">endif</span><span class="close">)</span></div></div></td></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 5.5. Scheme с глобальным окружением.</span>
 
 
 <h3 id="denotational/global/ssect:in-scheme"><span class="seq">5.7.1.</span> Глобальное окружение в Scheme</h3>
@@ -1599,9 +1608,9 @@ href="zz_footnotes.xhtml#foot5.4"><sup>4</sup></a>:</p>
 адресов прибавим специальное значение, которое не является адресом и обозначает
 отсутствие привязки в окружении:</p>
 
-<table>
-<tr><td><span class="math"><span class="ord Vset">ЛокальноеОкружение</span><span class="ord">:</span></span></td><td><span class="math"><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span><span class="binop">+</span><span class="open">{</span><span class="ord var">no-binding</span><span class="close">}</span></span></td></tr>
-<tr><td><span class="math"><span class="ord Vset">ГлобальноеОкружение</span><span class="ord">:</span></span></td><td><span class="math"><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span><span class="binop">+</span><span class="open">{</span><span class="ord var">no-global-binding</span><span class="close">}</span></span></td></tr>
+<table class="domains">
+<tr><td class="lhs"><span class="math"><span class="ord Vset">ЛокальноеОкружение</span><span class="ord">:</span></span></td><td class="rhs"><span class="math"><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span><span class="binop">+</span><span class="open">{</span><span class="ord var">no-binding</span><span class="close">}</span></span></td></tr>
+<tr><td class="lhs"><span class="math"><span class="ord Vset">ГлобальноеОкружение</span><span class="ord">:</span></span></td><td class="rhs"><span class="math"><span class="quad-stub" style="width: 1em"/><span class="ord Vset">Переменная</span><span class="rel">→</span><span class="ord Vset">Адрес</span><span class="binop">+</span><span class="open">{</span><span class="ord var">no-global-binding</span><span class="close">}</span></span></td></tr>
 </table>
 
 <p>Теперь смысл ссылок и присваиваний должен быть ясен: сначала мы ищем локальную
@@ -2137,35 +2146,36 @@ style). Очевидно, что мы можем транслировать лю
 переменными и т. п. Используя всё это, можно реализовать преобразования
 <span class="math"><span class="ord cal">D</span></span>
 и <span class="math"><span class="ord cal">D<sup>*</sup></span></span>,
-приведённые в таблице <a href="#denotational/lambdify/dynamic/fig:transform">5.6</a>.</p>
+приведённые в таблице <a href="#ch5-dynamic-denotation-transform">5.6</a>.</p>
 
-<table id="denotational/lambdify/dynamic/fig:transform">
-<caption>Таблица 5.6. Трансформация, убирающая динамическое окружение.</caption>
+<table id="ch5-dynamic-denotation-transform">
+<tbody>
 <tr><td><span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="quad-stub" style="width: 0.1em"/><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td/></tr>
 <tr><td><span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π</span> <span class="ord var">π<sup>*</sup></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup>*</sup></span><span class="close sem-brace">]]</span></span></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="special">if</span> <span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord var">c</span></sub></span><span class="close sem-brace">]]</span></span> <span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord var">t</span></sub></span><span class="close sem-brace">]]</span></span> <span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="ord var">π<sub><span class="ord var">f</span></sub></span><span class="close sem-brace">]]</span></span>)</code></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sup>*</sup></span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="special">begin</span> <span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup>*</sup></span><span class="close sem-brace">]]</span></span>)</code></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="math"><span class="ord var">π</span></span> <span class="math"><span class="ord var">π<sup>*</sup></span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span></span> <span class="math"><span class="ord var">δ</span></span> <span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup>*</sup></span><span class="close sem-brace">]]</span></span>)</code></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">lambda</span> (<span class="math"><span class="ord var">ν<sup>*</sup></span></span>) <span class="math"><span class="ord var">π<sup>*</sup></span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="special">lambda</span> (<span class="math"><span class="ord var">δ</span></span> <span class="math"><span class="ord var">ν<sup>*</sup></span></span>) <span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup>*</sup></span><span class="close sem-brace">]]</span></span>)</code></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="math"><span class="ord var">δ</span></span> (<span class="special">quote</span> <span class="math"><span class="ord var">ν</span></span>))</code></td></tr>
 <tr><td><span class="math"><span class="ord cal">D</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic-let</span> (<span class="math"><span class="ord var">ν</span></span> <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="ord var">π<sup><span class="binop">+</span></sup></span></span>)</code></span><span class="close sem-brace">]]</span></span></td>
-<td><span class="math"><span class="rel">→</span></span></td>
+<td class="arrow"><span class="math"><span class="rel">→</span></span></td>
 <td><code>(<span class="syntax">let</span> ((<span class="math"><span class="ord var">δ</span></span> (<span class="func">update</span> <span class="math"><span class="ord var">δ</span></span> (<span class="special">quote</span> <span class="math"><span class="ord var">ν</span></span>))) <span class="math"><span class="ord cal">D<sup>*</sup></span><span class="open sem-brace">[[</span><span class="ord var">π<sup><span class="binop">+</span></sup></span><span class="close sem-brace">]]</span></span>)</code></td></tr>
-</table>
+</tbody></table>
+<span class="caption">Таблица 5.6. Трансформация, убирающая динамическое окружение.</span>
 
 <p>Таким образом мы можем проэмулировать динамическое окружение, если не можем или
 не хотим встраивать его поддержку в ядро языка. Последний штрих: начальное

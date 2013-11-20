@@ -151,7 +151,7 @@
 
 <div class="image" id="fast/fast/activations/fig:env-lists">
 <img src="images/png03.png" alt="Окружение, реализованное как обычный список объектов — записей активаций" style="width: 2.93in"/>
-<span class="title">Рис. 6.1. Окружение как список записей активаций.</span>
+<span class="caption">Рис. 6.1. Окружение как список записей активаций.</span>
 </div>
 
 <p>Можно сделать ещё лучше, введя специальное поле, с помощью которого записи
@@ -209,7 +209,7 @@
 
 <div class="image" id="fast/fast/activations/fig:env-linked">
 <img src="images/png04.png" alt="Окружение, реализованное как список объектов — записей активаций, связанных через специальное поле" style="width: 2.93in"/>
-<span class="title">Рис. 6.2. Окружение как непосредственно связный список.</span>
+<span class="caption">Рис. 6.2. Окружение как непосредственно связный список.</span>
 </div>
 
 <!--\indexE{r @\protect<code><span class="func">r</span></code> (лексическое окружение)}-->
@@ -229,7 +229,6 @@
 <code><span class="func">r-extend*</span></code> (не путать
 с <code><span class="func">sr-extend*</span></code>); кроме неё нам потребуется «полупредикат»
 <code><span class="func">local-variable?</span></code>, возвращающий <em class="term">лексические индексы</em> переменных.</p>
-
 
 <!--\indexC{r-extend*}-->
 <!--\indexC{local-variable"?}-->
@@ -298,17 +297,24 @@ S-выражений, но принципиально остаётся тем ж
 считаются синтаксически корректными. Вспомним наши соглашения именования
 сущностей:</p>
 
-<table class="term-def">
-<tr><td><code><span class="var">e</span></code></td><td>выражения, формы</td></tr>
-<tr><td><code><span class="var">r</span></code></td><td>окружения</td></tr>
-<tr><td><code><span class="var">sr</span></code>,
-        <code><span class="var">v*</span></code></td><td>записи активаций</td></tr>
-<tr><td><code><span class="var">k</span></code>,
-        <code><span class="var">kk</span></code></td><td>продолжения</td></tr>
-<tr><td><code><span class="var">v</span></code></td><td>значения</td></tr>
-<tr><td><code><span class="var">f</span></code></td><td>функции</td></tr>
-<tr><td><code><span class="var">n</span></code></td><td>идентификаторы</td></tr>
-</table>
+<table class="term-def"><tbody>
+<tr><td class="left"><code><span class="var">e</span></code></td>
+    <td class="right">выражения, формы</td></tr>
+<tr><td class="left"><code><span class="var">r</span></code></td>
+    <td class="right">окружения</td></tr>
+<tr><td class="left"><code><span class="var">sr</span></code>,
+                     <code><span class="var">v*</span></code></td>
+    <td class="right">записи активаций</td></tr>
+<tr><td class="left"><code><span class="var">k</span></code>,
+                     <code><span class="var">kk</span></code></td>
+    <td class="right">продолжения</td></tr>
+<tr><td class="left"><code><span class="var">v</span></code></td>
+    <td class="right">значения</td></tr>
+<tr><td class="left"><code><span class="var">f</span></code></td>
+    <td class="right">функции</td></tr>
+<tr><td class="left"><code><span class="var">n</span></code></td>
+    <td class="right">идентификаторы</td></tr>
+</tbody></table>
 
 <p>Отлично, вот синтаксический анализатор:</p>
 
@@ -1184,7 +1190,7 @@ S-выражений, но принципиально остаётся тем ж
 
 <div class="image" id="fast/fast/variations/pic:display">
 <img src="images/png05.png" alt="Иллюстрация структуры дисплеев в окружениях" style="width: 5.21in"/>
-<span class="title">Рис. 6.3. Структура дисплеев.</span>
+<span class="caption">Рис. 6.3. Структура дисплеев.</span>
 </div>
 
 
