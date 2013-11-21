@@ -485,9 +485,9 @@
 (<span class="special">set!</span> <span class="var">e</span> <span class="num">2.78</span>)          <span class="comment">; ошибка: неизвестная переменная <code><span class="var">e</span></code></span></pre>
 
 <p>После этого легко сообразить, как перенести обычные программы в такое окружение.
-Вся программа представляется последовательностью выражений <span class="math"><span class="var ord">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="var ord">π<sub><span class="var ord">n</span></sub></span></span>.
+Вся программа представляется последовательностью выражений <span class="math"><span class="ord var">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>.
 Она преобразуется в одно большое выражение следующим образом: проводится анализ
-выражений <span class="math"><span class="var ord">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="var ord">π<sub><span class="var ord">n</span></sub></span></span> для выделения всех свободных переменных; сами
+выражений <span class="math"><span class="ord var">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span> для выделения всех свободных переменных; сами
 выражения помещаются в тело <code><span class="syntax">let</span></code>-формы, которая определяет все свободные
 переменные как неинициализированные локальные переменные; наконец, все
 <code><span class="special">define</span></code>-формы заменяются эквивалентными <code><span class="special">set!</span></code>-формами.</p>

@@ -101,6 +101,8 @@ body {
 
 span { color: red; }
 
+.math, .math * { color: green !important; }
+
 /******************************************************************************/
 
 body {
@@ -223,6 +225,12 @@ table .underlined
     font-size: 9pt;
 }
 
+blockquote.equation {
+    margin: 0.6em auto;
+    max-width: 95%;
+    text-align: center;
+}
+
 /******************************************************************************/
 
 /* Accidental */
@@ -302,13 +310,11 @@ sub, sup {
 }
 
 sub {
-    bottom: -0.5ex;
-    vertical-align: text-bottom;
+    bottom: -1.0ex;
 }
 
 sup {
-    top: -0.5ex;
-    vertical-align: text-top;
+    top: -1.5ex;
 }
 
 /******************************************************************************/
@@ -436,7 +442,114 @@ table.numbered-source .lines pre {
 
 /******************************************************************************/
 
+/* Math */
+
+.math {
+    font-family: STIX, serif;
+    font-size: 12pt;
+    line-height: 0.8333;
+}
+
+.math .ord {
+    font-style: normal;
+}
+
+.math .num {
+    font-style: normal;
+}
+
+.math .var {
+    font-style: italic;
+}
+
+.math .normal {
+    font-family: 'DejaVu Serif', serif;
+    font-size: 10pt;
+}
+
+.math .sem-brace {
+    letter-spacing: -0.225em;
+    margin-right: 0.225em;
+}
+
+span.quad-stub {
+    display: inline-block;
+}
+
+div.denotation {
+    margin: 0.1em 1.04em;
+    line-height: 1.1em;
+    white-space: pre-line;
+}
+
+.semantic div.denotation {
+    margin: 0;
+}
+
+.math div.valign {
+    display: inline-block;
+    line-height: 1.1em;
+    vertical-align: top;
+    white-space: pre-line;
+}
+
+.math sub, .math sup {
+    font-size: 8pt;
+    font-style: normal;
+}
+
+.math sub {
+    bottom: -0.75ex;
+}
+
+.math sup {
+    top: -1ex;
+}
+
+.math sub + sup {
+    display: inline-block;
+    left: -0.8ex;
+    width: 0;
+}
+
+.math .syntax {
+    font-weight: bold;
+}
+
+/* TeX math spacing rules */
+
+.math .ord   + .op    { margin-left: 0.1666em; }
+.math .ord   + .binop { margin-left: 0.2222em; }
+.math .ord   + .rel   { margin-left: 0.2555em; }
+.math .op    + .ord   { margin-left: 0.1666em; }
+.math .op    + .op    { margin-left: 0.1666em; }
+.math .op    + .rel   { margin-left: 0.2555em; }
+.math .binop + .ord   { margin-left: 0.2222em; }
+.math .binop + .op    { margin-left: 0.2222em; }
+.math .binop + .open  { margin-left: 0.2555em; }
+.math .rel   + .ord   { margin-left: 0.2555em; }
+.math .rel   + .op    { margin-left: 0.2555em; }
+.math .rel   + .open  { margin-left: 0.2555em; }
+.math .close + .op    { margin-left: 0.1666em; }
+.math .close + .binop { margin-left: 0.2222em; }
+.math .close + .rel   { margin-left: 0.2555em; }
+.math .punct + .ord   { margin-left: 0.1666em; }
+.math .punct + .op    { margin-left: 0.1666em; }
+.math .punct + .rel   { margin-left: 0.1666em; }
+.math .punct + .open  { margin-left: 0.1666em; }
+.math .punct + .close { margin-left: 0.1666em; }
+.math .punct + .punct { margin-left: 0.1666em; }
+
+/******************************************************************************/
+
+/* Bibliography */
+
+table#bibliography td { padding-bottom: 1em; }
+
+/******************************************************************************/
+
 /* Table specifics */
+
 table#pref-table-signatures .col1 { text-align: center; }
 table#pref-table-signatures .col2 { text-align: left;
                                     padding-left: 1em;  }
@@ -544,21 +657,12 @@ table#ch7-arity-probs td      { text-align: center;
                                 padding-left: 1em; }
 
 /*
-.math {
-    font-family: STIX, serif !important;
-}
-
-.math .ord.var {
-    font-style: italic;
-}
 
 span.comb {
 
 }
 
-span.quad-stub {
-    display: inline-block;
-}
+
 
 
 
@@ -648,20 +752,6 @@ pre.shell span.arg { color: #307070; }
 .math .sem-brace {
   letter-spacing: -0.125em;
   margin-right: 0.125em;
-}
-
-.denotation {
-  white-space: pre-line;
-}
-
-.math div.valign {
-  display: inline-block;
-  vertical-align: top;
-  white-space: pre-line;
-}
-
-.math .syntax {
-  font-weight: bold;
 }
 
 .math .bf {

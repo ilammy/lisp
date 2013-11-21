@@ -273,17 +273,18 @@
 
 <span class="gather"><div class="base math"><span class="prd Vset">Программа</span><span class="binop">×</span><span class="prd Vset">Окружение</span></div><div class="note">статическая часть</div></span><span class="rel">→</span><br/>
 
-<span class="quad-stub" style="width: 9em"/><span class="rel">→</span><span class="gather"><div class="base math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>*</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></div><div class="note">динамическая часть</div></span>
+<span class="quad-stub" style="width: 9em"/><span class="rel">→</span><span class="gather"><div class="base math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>∗</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></div><div class="note">динамическая часть</div></span>
 </blockquote>
 
 <!--\indexR{предобработка программ}-->
 <p>Здесь чётко видно, как именно лексические окружения разделяются на две части:
-статические привязки имён к адресам в <span class="Vset">Окружениях</span> и динамические привязки
-адресов к значениям в <span class="Vset">ЗаписяхАктиваций</span>. Программа, прошедшая подобную
-<em class="term">предобработку</em>, превращается в функцию, ожидающую связный список записей
-активаций (состояние памяти) и продолжение для того, чтобы вычислить результат.
-Такой необычный способ представления программ весьма далёк от изначальных
-S-выражений, но принципиально остаётся тем же.</p>
+статические привязки имён к адресам в
+<span class="math"><span class="Vset">Окружениях</span></span> и динамические привязки
+адресов к значениям в <span class="math"><span class="Vset">ЗаписяхАктиваций</span></span>.
+Программа, прошедшая подобную <em class="term">предобработку</em>, превращается в функцию,
+ожидающую связный список записей активаций (состояние памяти) и продолжение для того,
+чтобы вычислить результат. Такой необычный способ представления программ весьма далёк
+от изначальных S-выражений, но принципиально остаётся тем же.</p>
 
 <!--\indexR{соглашения именования}-->
 <!--\indexE{e @\protect<code><span class="func">e</span></code> (выражения)}-->

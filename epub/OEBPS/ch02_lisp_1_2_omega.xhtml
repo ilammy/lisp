@@ -1547,7 +1547,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 <!--\indexR{специальные формы!labels@\protect<code><span class="func">labels</span></code>}-->
 <p>К сожалению, нельзя сказать, что <span class="logo">Lisp 1.5</span> был Lisp<sub>2</sub>, а <code><span class="special">label</span></code>, какой бы
 удобной она не была, не может легко справиться со взаимной рекурсией. Поэтому
-гораздо позже, судя по <span class="cite">[<a href="z1_bibliography.xhtml#hs75">HS75</a>]</span>, был изобретён её <span class="math"><span class="var ord">n</span></span>-арный аналог:
+гораздо позже, судя по <span class="cite">[<a href="z1_bibliography.xhtml#hs75">HS75</a>]</span>, был изобретён её <span class="math"><span class="ord var">n</span></span>-арный аналог:
 <code><span class="special">labels</span></code>. Эта форма имеет тот же синтаксис, что и <code><span class="special">flet</span></code>, но гарантирует,
 что замыкания будут создаваться в окружении, где можно ссылаться на локальные
 функции. С её помощью можно определить и <code><span class="func">fact</span></code>, и взаимно рекурсивные
@@ -1674,8 +1674,8 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 
 <p>Но что делать, если у уравнения нет корней или если их несколько?</p>
 
-<pre>(<span class="syntax">letrec</span> ((<span class="var">x</span> (<span class="func">+</span> <span class="var">x</span> <span class="num">1</span>))) <span class="var">x</span>)            <span class="comment">; <span class="math"><span class="var ord">x</span><span class="rel">=</span><span class="var ord">x</span><span class="binop">+</span><span class="num ord">1</span></span></span>
-(<span class="syntax">letrec</span> ((<span class="var">x</span> (<span class="func">+</span> (<span class="func">power</span> <span class="var">x</span> <span class="num">37</span>) <span class="num">1</span>))) <span class="var">x</span>) <span class="comment">; <span class="math"><span class="var ord">x</span><span class="rel">=</span><span class="var ord">x</span><sup><span class="ord num">37</span></sup><span class="binop">+</span><span class="ord num">1</span></span></span></pre>
+<pre>(<span class="syntax">letrec</span> ((<span class="var">x</span> (<span class="func">+</span> <span class="var">x</span> <span class="num">1</span>))) <span class="var">x</span>)            <span class="comment">; <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">x</span><span class="binop">+</span><span class="num ord">1</span></span></span>
+(<span class="syntax">letrec</span> ((<span class="var">x</span> (<span class="func">+</span> (<span class="func">power</span> <span class="var">x</span> <span class="num">37</span>) <span class="num">1</span>))) <span class="var">x</span>) <span class="comment">; <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">x</span><sup><span class="ord num">37</span></sup><span class="binop">+</span><span class="ord num">1</span></span></span></pre>
 
 <p>Однако, существуют множества, вроде известного вам множества S-выражений, где
 достаточно легко убедиться в том, что уравнение имеет единственное решение
@@ -1925,8 +1925,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 из них — <em>парадоксальный</em> или Y-комбинатор. Функция
 <span class="math"><span class="ord var">f</span></span> имеет
 неподвижную точку, если в её области определения существует элемент
-<span class="math"><span class="var ord">x</span></span> такой,
-что <span class="math"><span class="var ord">f</span><span class="open">(</span><span class="var ord">x</span><span class="close">)</span><span class="rel">=</span><span class="var ord">x</span></span>.
+<span class="math"><span class="ord var">x</span></span> такой,
+что <span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">x</span><span class="close">)</span><span class="rel">=</span><span class="ord var">x</span></span>.
 Комбинатор <span class="comb">Y</span> принимает любую функцию
 λ-исчисления и возвращает её неподвижную точку. Эта идея выражена
 в одной из наиболее прекрасных и содержательных теорем λ-исчисления:</p>
@@ -1941,9 +1941,9 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
              (<span class="func">f</span> ((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>)) ) )))
   (<span class="func">W</span> <span class="var">W</span>) )</pre>
 
-<p>Доказать это весьма просто. Если предположить, что <span class="comb">Y</span> равен <span class="math"><span class="open">(</span><span class="var ord">W</span><span class="var ord">W</span><span class="close">)</span></span>, то какой должна быть <span class="math"><span class="var ord">W</span></span>, чтобы <span class="math"><span class="open">(</span><span class="var ord">W</span><span class="var ord">W</span><span class="close">)<span class="var ord">F</span></span></span> равнялось <span class="math"><span class="open"><span class="var ord">F</span>(</span><span class="var ord">W</span><span class="var ord">W</span><span class="close">)<span class="var ord">F</span></span></span>?
+<p>Доказать это весьма просто. Если предположить, что <span class="comb">Y</span> равен <span class="math"><span class="open">(</span><span class="ord var">W</span><span class="ord var">W</span><span class="close">)</span></span>, то какой должна быть <span class="math"><span class="ord var">W</span></span>, чтобы <span class="math"><span class="open">(</span><span class="ord var">W</span><span class="ord var">W</span><span class="close">)<span class="ord var">F</span></span></span> равнялось <span class="math"><span class="open"><span class="ord var">F</span>(</span><span class="ord var">W</span><span class="ord var">W</span><span class="close">)<span class="ord var">F</span></span></span>?
 
-Очевидно, что функция <span class="var ord">W</span> должна быть ничем иным, как <span class="math"><span class="var ord">λ</span><span class="var ord">W</span><span class="punct">.</span><span class="var ord">λ</span><span class="var ord">F</span><span class="punct">.</span><span class="var ord">F</span><span class="open">(</span><span class="open">(</span><span class="var ord">W</span><span class="var ord">W</span><span class="close">)</span><span class="var ord">F</span><span class="close">)</span></span>. Приведённое выражение лишь записывает эту идею на Лиспе.</p>
+Очевидно, что функция <span class="ord var">W</span> должна быть ничем иным, как <span class="math"><span class="ord var">λ</span><span class="ord var">W</span><span class="punct">.</span><span class="ord var">λ</span><span class="ord var">F</span><span class="punct">.</span><span class="ord var">F</span><span class="open">(</span><span class="open">(</span><span class="ord var">W</span><span class="ord var">W</span><span class="close">)</span><span class="ord var">F</span><span class="close">)</span></span>. Приведённое выражение лишь записывает эту идею на Лиспе.</p>
 
 <!--\indexR{комбинаторы!Z@\protect\comb{Z}}-->
 <!--\indexE{Z@\protect\comb{Z}, комбинатор}-->
@@ -1972,15 +1972,15 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <p>Эта функция подозрительно похожа на факториал. Проверив, мы убеждаемся, что
 <code>(<span class="func">meta-fact</span> <span class="func">fact</span>)</code> вычисляет факториал с таким же успехом, что и <code><span class="func">fact</span></code>,
 разве что несколько медленнее. Теперь предположим, что мы знаем неподвижную
-точку <span class="math"><span class="var ord">f</span></span> функции <code><span class="func">meta-fact</span></code>: <span class="math"><span class="var ord">f</span><span class="rel">=</span><code class="ord">(<span class="func">meta-fact</span> <span class="math"><span class="var ord">f</span></span>)</code></span>. Эта
+точку <span class="math"><span class="ord var">f</span></span> функции <code><span class="func">meta-fact</span></code>: <span class="math"><span class="ord var">f</span><span class="rel">=</span><code class="ord">(<span class="func">meta-fact</span> <span class="math"><span class="ord var">f</span></span>)</code></span>. Эта
 неподвижная точка по определению является решением следующего функционального
-уравнения относительно <span class="math"><span class="var ord">f</span></span>:</p>
+уравнения относительно <span class="math"><span class="ord var">f</span></span>:</p>
 
-<pre><span class="math"><span class="var ord">f</span></span> = (<span class="special">lambda</span> (<span class="var">n</span>)
+<pre><span class="math"><span class="ord var">f</span></span> = (<span class="special">lambda</span> (<span class="var">n</span>)
       (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="num">1</span>
-          (<span class="func">*</span> <span class="var">n</span> (<span class="math"><span class="var ord">f</span></span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )</pre>
+          (<span class="func">*</span> <span class="var">n</span> (<span class="math"><span class="ord var">f</span></span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))) ) )</pre>
 
-<p>Итак, что же такое <span class="math"><span class="var ord">f</span></span>? Не что иное, как всем известный факториал!</p>
+<p>Итак, что же такое <span class="math"><span class="ord var">f</span></span>? Не что иное, как всем известный факториал!</p>
 
 <p>Вообще-то говоря, нет ни единого основания полагать, что уравнение выше имеет
 решение и что оно единственно. (Конечно, эти термины надо бы определить строго

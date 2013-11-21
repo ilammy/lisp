@@ -286,7 +286,7 @@
 форм естественным языком. И на этом они не заканчиваются, можно придумать ещё
 множество вопросов, на которые будет сложно дать однозначный ответ. Например,
 что делать, если соответствующей <code><span class="special">catch</span></code>-формы нет? Как именно всё же сравнивать метки?
-Что будет, если написать <code>(<span class="special">throw</span> <span class="math"><span class="var ord">α</span></span> (<span class="special">throw</span> <span class="math"><span class="var ord">β</span></span> <span class="math"><span class="var ord">π</span></span>))</code>?
+Что будет, если написать <code>(<span class="special">throw</span> <span class="math"><span class="ord var">α</span></span> (<span class="special">throw</span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">π</span></span>))</code>?
 Мы попытаемся ответить на эти вопросы немного позже.</p>
 
 
@@ -616,7 +616,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 открыло поразительные возможности их использования. Позже, в соответствии
 с догматом о минимальном количестве специальных форм, были предприняты попытки
 выразить захват продолжений и сами продолжения как функции. В <span class="cite">[<a href="z1_bibliography.xhtml#lan65">Lan65</a>]</span>
-Питер Лэндин предложил оператор <span class="math"><span class="var ord">J</span></span>, прямым
+Питер Лэндин предложил оператор <span class="math"><span class="ord var">J</span></span>, прямым
 потомком которого является функция <code><span class="func">call/cc</span></code> в Scheme.</p>
 
 
@@ -778,13 +778,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 аргумент, и продолжение являются унарными функциями. Возможно, в таком случае
 вам поможет понимание <code><span class="func">call/cc</span></code> следующим образом:</p>
 
-<pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="var ord">φ</span></span>) <span class="math"><span class="rel">→</span></span> <sub><i>k</i></sub>(<span class="math"><span class="var ord">φ</span></span> <i>k</i>)</pre>
+<pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="ord var">φ</span></span>) <span class="math"><span class="rel">→</span></span> <sub><i>k</i></sub>(<span class="math"><span class="ord var">φ</span></span> <i>k</i>)</pre>
 
 <p class="noindent">где <i>k</i> является продолжением вызова <code><span class="func">call/cc</span></code>,
-а <span class="math"><span class="var ord">φ</span></span> — какой-то
+а <span class="math"><span class="ord var">φ</span></span> — какой-то
 унарной функцией. Вызов <code><span class="func">call/cc</span></code> лишь превращает <i>k</i>
 в объект языка, который можно передать как аргумент. Заметьте, что продолжением вызова
-<span class="math"><span class="var ord">φ</span></span> является всё так же <i>k</i>, поэтому для
+<span class="math"><span class="ord var">φ</span></span> является всё так же <i>k</i>, поэтому для
 того, чтобы просто вернуть результат, не обязательно пользоваться переданным продолжением:</p>
 
 <pre>(<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) <span class="num">1515</span>)) <span class="math"><span class="rel">→</span></span> <span class="num">1515</span></pre>
@@ -798,7 +798,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <!--\indexR{продолжения (continuations)!терминальное продолжение}-->
 <!--\indexR{терминальное продолжение}-->
-<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="var ord">λ</span><span class="var ord">u</span><span class="punct">.</span><span class="var ord">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
+<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord var">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
 чёрную дыру. Исполнение программы состоит из вызовов функций, а они похожи на дыхание:
 вдох-выдох — вход-выход. Необходимым условием жизни является
 <em>продолжение</em> дыхания. Используя <code><span class="func">call/cc</span></code>, мы вмешиваемся в нормальный
@@ -895,13 +895,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <pre>(<span class="special">block</span> <span class="var">bar</span>
   (<span class="special">unwind-protect</span> (<span class="special">return-from</span> <span class="var">bar</span> <span class="num">1</span>)
-    (<span class="special">block</span> <span class="var">foo</span> <span class="math"><span class="var ord">π</span></span>) ) )</pre>
+    (<span class="special">block</span> <span class="var">foo</span> <span class="math"><span class="ord var">π</span></span>) ) )</pre>
 
 <p><code><span class="special">unwind-protect</span></code> вклинивается в поток исполнения и не даёт завершить переход,
 который выполняется в охраняемой ей форме. Вместо этого данный переход
 становится продолжением формы <code>(<span class="special">block</span> <span class="var">foo</span> ...)</code>. Если она просто вернёт
 результат, то это продолжение активируется и форма <code>(<span class="special">block</span> <span class="var">bar</span> ...)</code>
-передаст <code><span class="num">1</span></code> своему продолжению. Если же внутри <span class="math"><span class="var ord">π</span></span> будет выполнен переход,
+передаст <code><span class="num">1</span></code> своему продолжению. Если же внутри <span class="math"><span class="ord var">π</span></span> будет выполнен переход,
 то данное продолжение должно быть отброшено и заменено продолжением перехода.
 В этом случае из-за <code><span class="special">unwind-protect</span></code> «после вычислений <code>(<span class="special">return-from</span> <span class="var">bar</span> <span class="num">1</span>)</code>» не наступает вообще.
 (Мы обсудим этот феномен позже вместе деталями реализации данной формы.)</p>
@@ -934,19 +934,19 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 динамические переменные реализуются с помощью формы <code><span class="syntax">fluid-let</span></code>:</p>
 
 <table class="nocaption"><tbody><tr>
-<td><pre>(<span class="syntax">fluid-let</span> ((<span class="var">x</span> <span class="math"><span class="var ord">α</span></span>))
-  <span class="math"><span class="var ord">β</span></span>... ) </pre></td>
+<td><pre>(<span class="syntax">fluid-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
+  <span class="math"><span class="ord var">β</span></span>... ) </pre></td>
 <td><span class="math"><span class="rel">≡</span></span></td>
 <td><pre>(<span class="syntax">let</span> ((<i>tmp</i> <span class="var">x</span>))
-  (<span class="special">set!</span> <span class="var">x</span> <span class="math"><span class="var ord">α</span></span>)
+  (<span class="special">set!</span> <span class="var">x</span> <span class="math"><span class="ord var">α</span></span>)
   (<span class="special">unwind-protect</span>
-    (<span class="special">begin</span> <span class="math"><span class="var ord">β</span></span>...)
+    (<span class="special">begin</span> <span class="math"><span class="ord var">β</span></span>...)
     (<span class="special">set!</span> <span class="var">x</span> <i>tmp</i>) ) )</pre></td>
 </tr></tbody></table>
 
-<p>В процессе вычисления <span class="math"><span class="var ord">β</span></span>
+<p>В процессе вычисления <span class="math"><span class="ord var">β</span></span>
 будет видна переменная <code><span class="var">x</span></code> со значением
-<span class="math"><span class="var ord">α</span></span>;
+<span class="math"><span class="ord var">α</span></span>;
 предыдущее значение <code><span class="var">x</span></code> сохраняется на время
 вычислений в локальной переменной <i>tmp</i> и восстанавливается после их
 завершения. Это подразумевает, что есть такая лексическая переменная
@@ -2266,7 +2266,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 отбрасывание всех последующих вычислений ради продолжения других вычислений.
 Таким образом, вызов продолжения внутри <code><span class="func">foo</span></code> приводит к вычислению значения
 <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>
-при <span class="math"><span class="var ord">u</span><span class="rel">=</span><span class="num ord">4</span></span>, которое становится значением всего выражения, и
+при <span class="math"><span class="ord var">u</span><span class="rel">=</span><span class="num ord">4</span></span>, которое становится значением всего выражения, и
 второй вызов <code><span class="func">foo</span></code> вообще не происходит — он не нужен, ведь значение
 выражения уже вычислено и передано продолжению! Именно в этом проблема: мы
 захватили обычное продолжение, а не частичное. Обычные продолжения
