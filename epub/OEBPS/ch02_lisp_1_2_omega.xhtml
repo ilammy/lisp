@@ -7,9 +7,9 @@
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
-<body id="chapter:lisp1-2-omega">
+<body>
 
-<h1><span class="seq">Глава 2.</span> Lisp, 1, 2, …, ω</h1>
+<h1 id="chapter:lisp1-2-omega"><span class="seq">Глава 2.</span> Lisp, 1, 2, …, <i>ω</i></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">Ф</span>ункции занимают</span> центральное место
 в Лиспе, поэтому очевидно, что эффективность их вызовов очень важна.
@@ -518,8 +518,8 @@ Maclisp, заключается в том, что если <code><span class="fu
 <pre>(<span class="func">2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>))  <span class="math"><span class="rel">→</span></span> <span class="var">hux</span>
 (<span class="func">-2</span> '(<span class="var">foo</span> <span class="var">bar</span> <span class="var">hux</span> <span class="var">wok</span>)) <span class="math"><span class="rel">→</span></span> (<span class="var">hux</span> <span class="var">wok</span>)</pre>
 
-<p>Число <span class="math"><span class="ord var">n</span></span> считается синонимом для <code><span class="func">cad<sup><span class="math"><span class="ord var">n</span></span></sup>r</span></code>, если оно неотрицательно,
-или <code><span class="func">cd<span class="math"><span class="ord symb">−</span><span class="ord var">n</span></span>r</span></code>, если оно меньше ноля. Базовым аксессорам <code><span class="func">car</span></code> и
+<p>Число <span class="math"><span class="ord var">n</span></span> считается синонимом для <code><span class="func">cad<span class="math"><sup><span class="ord var">n</span></sup></span>r</span></code>, если оно неотрицательно,
+или <code><span class="func">cd<span class="math"><sup><span class="ord">−</span><span class="ord var">n</span></sup></span>r</span></code>, если оно меньше ноля. Базовым аксессорам <code><span class="func">car</span></code> и
 <code><span class="func">cdr</span></code> соответствуют числа <code><span class="num">0</span></code> и <code><span class="num">-1</span></code>. После этого элементарно
 реализуются чисто алгебраические преобразования <code>(<span class="func">-1</span> (<span class="func">-2</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="rel">≡</span></span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)</code> или
 <code>(<span class="func">2</span> (<span class="func">-3</span> <span class="math"><span class="ord var">π</span></span>)) <span class="math"><span class="rel">≡</span></span> (<span class="func">5</span> <span class="math"><span class="ord var">π</span></span>)</code>.</p>

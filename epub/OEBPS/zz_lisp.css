@@ -60,10 +60,24 @@
 }
 
 @font-face {
+    font-family: 'DejaVu Serif Condensed';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerifCondensed-Bold.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'DejaVu Serif';
     font-style: italic;
     font-weight: bold;
     src: url('fonts/DejaVuSerif-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSans.ttf') format('truetype');
 }
 
 @font-face {
@@ -109,6 +123,7 @@ body {
     font-family: 'DejaVu Serif', serif;
     font-size: 10pt;
     line-height: 1.4;
+    padding: 2em 0;
 }
 
 code, pre {
@@ -241,8 +256,11 @@ p .initial {
 
 p .initial .letter {
     float: left;
-    font-size: 7ex;
-    height: 0.9em;
+    font-size: 5ex;
+    height: 1em;
+    position: relative;
+    top: -0.25ex;
+    vertical-align: top;
 }
 
 p.noindent {
@@ -283,6 +301,14 @@ span.boxed {
     border-top: 1px solid black;
 }
 
+.TeX .E {
+    bottom: -0.5ex;
+    margin-left:-0.1667em;
+    margin-right:-0.125em;
+    position:relative;
+    text-transform:uppercase
+}
+
 /******************************************************************************/
 
 /* Generic */
@@ -314,7 +340,7 @@ sub {
 }
 
 sup {
-    top: -1.5ex;
+    top: -1.25ex;
 }
 
 /******************************************************************************/
@@ -462,6 +488,13 @@ table.numbered-source .lines pre {
     font-style: italic;
 }
 
+.math .big {
+    bottom: -0.1ex;
+    font-size: 120%;
+    line-height: 0.869;
+    position: relative;
+}
+
 .math .normal {
     font-family: 'DejaVu Serif', serif;
     font-size: 10pt;
@@ -516,6 +549,45 @@ div.denotation {
     font-weight: bold;
 }
 
+.math .frac {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.math .frac .numerator {
+    border-bottom: 1px solid black;
+    display: block;
+    padding-bottom: 1pt;
+    text-align: center;
+}
+
+.math .frac .denominator {
+    display: block;
+    padding-top: 3pt;
+    text-align: center;
+}
+
+span.comb {
+    font-family: 'DejaVu Sans', sans-serif;
+    font-size: 11pt;
+    line-height: 0.909;
+}
+
+.math .bf {
+    font-weight: bold;
+}
+
+.math .Vset {
+    font-family: 'DejaVu Serif Condensed', 'STIX', serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+.math sub .Vset {
+    font-size: 8pt;
+    line-height: 0.8;
+}
+
 /* TeX math spacing rules */
 
 .math .ord   + .op    { margin-left: 0.1666em; }
@@ -545,6 +617,26 @@ div.denotation {
 /* Bibliography */
 
 table#bibliography td { padding-bottom: 1em; }
+
+#footnotes h1 {
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+#footnotes h1 .seq {
+    display: inline;
+    font-size: 12pt;
+    font-variant: normal;
+    font-weight: bold;
+    margin: 0;
+}
+
+.footnote + .footnote {
+    padding-top: 0.5em;
+}
 
 /******************************************************************************/
 
@@ -658,12 +750,6 @@ table#ch7-arity-probs td      { text-align: center;
 
 /*
 
-span.comb {
-
-}
-
-
-
 
 
 code span.special,
@@ -731,39 +817,13 @@ pre.shell span.opt { color: #1010BB; }
 
 pre.shell span.arg { color: #307070; }
 
-.math .frac {
-  display: inline-block;
-  font-size: 300%;
-}
-
-.math .frac .numerator {
-  border-bottom: 1px solid black;
-  display: block;
-  padding-bottom: 1px;
-  text-align: center;
-}
-
-.math .frac .denominator {
-  display: block;
-  padding-top: 0px;
-  text-align: center;
-}
-
 .math .sem-brace {
   letter-spacing: -0.125em;
   margin-right: 0.125em;
 }
 
-.math .bf {
-  font-weight: bold;
-}
-
 .math .overline {
   border-top: 1px solid black;
-}
-
-.Vset {
-  font-weight: bolder;
 }
 
 blockquote.equation span.eqno{

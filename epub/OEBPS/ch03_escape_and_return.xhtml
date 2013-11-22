@@ -7,9 +7,9 @@
     <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
 </head>
 
-<body id="chapter:escape">
+<body>
 
-<h1><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
+<h1 id="chapter:escape"><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
 
 <p class="noindent"><span class="initial"><span class="letter">К</span>аждое вычисление</span> в конечном счёте
 приводит к возврату результата сущности, которая называется <em class="term">продолжением</em>.
@@ -2093,7 +2093,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">divide</span>
    <span class="var">n</span> <span class="var">p</span> (<span class="special">lambda</span> (<span class="var">q</span> <span class="var">r</span>)
          (<span class="special">if</span> (<span class="func">=</span> <span class="var">r</span> <span class="num">0</span>)
-             (<span class="func">k</span> <span class="num">0</span> <span class="num">1</span>)    <span class="comment">; т.\,к. <span class="math"><span class="ord num">0</span><span class="binop">⋅</span><span class="ord var">q</span><span class="ord var">p</span><span class="binop">+</span><span class="ord num">1</span><span class="binop">⋅</span><span class="ord var">p</span><span class="rel">=</span><span class="ord var">p</span></span></span>
+             (<span class="func">k</span> <span class="num">0</span> <span class="num">1</span>)    <span class="comment">; т. к. <span class="math"><span class="ord num">0</span><span class="binop">⋅</span><span class="ord var">q</span><span class="ord var">p</span><span class="binop">+</span><span class="ord num">1</span><span class="binop">⋅</span><span class="ord var">p</span><span class="rel">=</span><span class="ord var">p</span></span></span>
              (<span class="func">bezout</span>
               <span class="var">p</span> <span class="var">r</span> (<span class="special">lambda</span> (<span class="var">u</span> <span class="var">v</span>)
                     (<span class="func">k</span> <span class="var">v</span> (<span class="func">-</span> <span class="var">u</span> (<span class="func">*</span> <span class="var">v</span> <span class="var">q</span>))) ) ) ) ) ) )</pre>

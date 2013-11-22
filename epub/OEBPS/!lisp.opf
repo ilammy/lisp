@@ -2,16 +2,12 @@
 <package version="2.0" xmlns="http://www.idpf.org/2007/opf"
          unique-identifier="lisp-in-small-pieces-ru">
   <metadata>
-    <identifier></identifier>
-    <language></language>
-
-    <title></title>
-    <creator></creator>
-
-    <contributor></contributor>
-    <source></source>
-
-    <rights></rights>
+    <identifier id="lisp-in-small-pieces-ru">lisp-in-small-pieces-ru</identifier>
+    <language>ru</language>
+    <title>Интерпретация Лиспа и Scheme</title>
+    <creator role="aut">Кристиан Кеннек</creator>
+    <contributor role="trl">ilammy</contributor>
+    <rights>Распространяется на условиях CC BY-ND v.3.0</rights>
   </metadata>
 
   <manifest>
@@ -30,9 +26,9 @@
     <item id="z0_ans"     href="z0_answers_to_exercises.xhtml"          media-type="application/xhtml+xml"/>
     <item id="z1_bib"     href="z1_bibliography.xhtml"                  media-type="application/xhtml+xml"/>
 
-    <item id="footnotes" href="zz_footnotes" media-type="application/xhtml+xml"/>
-    <item id="style"     href="zz_lisp.css"  media-type="text/css"/>
-    <item id="00_toc"    href="00_toc.ncx"   media-type="application/x-dtbncx+xml"/>
+    <item id="footnotes" href="zz_footnotes.xhtml" media-type="application/xhtml+xml"/>
+    <item id="style"     href="zz_lisp.css"        media-type="text/css"/>
+    <item id="00_toc"    href="00_toc.ncx"         media-type="application/x-dtbncx+xml"/>
 
     <item id="png00" href="images/png00.png" media-type="image/png"/>
     <item id="png01" href="images/png01.png" media-type="image/png"/>
