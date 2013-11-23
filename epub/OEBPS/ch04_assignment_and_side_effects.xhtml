@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:assignment"><span class="seq">Глава 4.</span> Присваивание и побочные эффекты</h1>
+<h1 id="chapter:assignment"><span class="wrap"><span class="seq">Глава 4.</span><span class="title">Присваивание и побочные эффекты</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">П</span>редыдущие главы</span> с их нескончаемыми
 повторениями и вариациями чем-то напоминают «Болеро» Мориса Равеля. Но один
@@ -42,7 +42,7 @@
 определения.</p>
 
 
-<h2 id="assignment/sect:assignment"><span class="seq">4.1.</span> Присваивание</h2>
+<h2 id="assignment/sect:assignment"><span class="wrap"><span class="seq">4.1.</span><span class="title">Присваивание</span></span></h2>
 
 <p>Присваивание, как мы сказали, позволяет изменить значение переменной. Например,
 давайте напишем программу для определения минимального и максимального элемента
@@ -190,7 +190,7 @@
 изменяет не саму привязку, а значение, на которое она указывает.</p>
 
 
-<h3 id="assignment/assignment/ssect:boxes"><span class="seq">4.1.1.</span> Коробки</h3>
+<h3 id="assignment/assignment/ssect:boxes"><span class="wrap"><span class="seq">4.1.1.</span><span class="title">Коробки</span></span></h3>
 
 <!--\indexR{коробки}-->
 <p>Чтобы конкретизировать понятие привязок, давайте обратим внимание на А-списки.
@@ -257,35 +257,35 @@
 <table id="ch4-box-transform">
 <tbody>
 <tr>
-  <td class="left"><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
   <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-ref</span> <span class="math"><span class="ord var">v</span></span>)</code>, иначе <span class="math"><span class="ord var">x</span></span></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
   <td class="right"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
-  <td class="right"><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right"><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
-  <td class="right"><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right"><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
-  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code>,</td>
+  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code>,</td>
 </tr>
 <tr><td/><td/>
-  <td class="right">иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right">иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
   <td class="right">если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
 </tr>
@@ -293,12 +293,12 @@
   <td class="right">то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
 </tr>
 <tr><td/><td/>
-  <td class="right">иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right">иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
-  <td class="left"><span class="boxed"><code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup></td>
+  <td class="left"><span class="boxed"><code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
-  <td class="right"><code>(<span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup>)</code></td>
+  <td class="right"><code>(<span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 </tbody>
 </table>
@@ -306,7 +306,7 @@
 <!--\indexR{преобразование!в коробочный стиль}-->
 <!--\indexR{коробки!преобразование}-->
 <p>В приведённой выше таблице собраны правила перевода программ
-в «коробочный стиль». Запись <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">v</span></span></sup> означает, что переменная <span class="math"><span class="ord var">v</span></span>
+в «коробочный стиль». Запись <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="ord var">v</span></sup></span> означает, что переменная <span class="math"><span class="ord var">v</span></span>
 в программе <span class="math"><span class="ord var">π</span></span> помещается в коробку. Как обычно, за именами переменных важно
 тщательно следить, чтобы не случилось коллизий.</p>
 
@@ -315,7 +315,7 @@
 побочными эффектами:</p>
 
 <pre>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="binop">∧</span></span> (<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> ...)<span class="math"><span class="ord"></span><span class="rel">∈</span><span class="ord var">π</span></span>
-<span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) (<span class="syntax">let</span> ((<span class="math"><span class="ord var">x</span></span> (<span class="func">make-box</span> <span class="math"><span class="ord var">x</span></span>))) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><sup class="box-var"><span class="math"><span class="var">x</span></span></sup>))</pre>
+<span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) (<span class="syntax">let</span> ((<span class="math"><span class="ord var">x</span></span> (<span class="func">make-box</span> <span class="math"><span class="ord var">x</span></span>))) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="ord var">x</span></sup></span>))</pre>
 
 <p class="noindent">В результате, предыдущий пример переписывается следующим образом:</p>
 
@@ -364,7 +364,7 @@
 в памяти значение.</p>
 
 
-<h3 id="assignment/assignment/ssect:free-vars"><span class="seq">4.1.2.</span> Присваивание свободным переменным</h3>
+<h3 id="assignment/assignment/ssect:free-vars"><span class="wrap"><span class="seq">4.1.2.</span><span class="title">Присваивание свободным переменным</span></span></h3>
 
 <p>Следующая проблема с присваиванием касается свободных переменных: какой смысл
 оно имеет для них. Рассмотрим пример:</p>
@@ -387,7 +387,7 @@
 подробнее различные варианты его реализации.</p>
 
 
-<h4 id="assignment/assignment/free-vars/sssect:universal">Всеобъемлющее глобальное окружение</h4>
+<h4 id="assignment/assignment/free-vars/sssect:universal"><span class="wrap"><span class="title">Всеобъемлющее глобальное окружение</span></span></h4>
 
 <!--\indexR{глобальное окружение!всеобъемлющее}-->
 <!--\indexR{окружение!глобальное!всеобъемлющее}-->
@@ -445,7 +445,7 @@
 <pre>(<span class="syntax">let</span> (... <span class="var">a</span> <span class="var">aa</span> ... <span class="var">ab</span> ... <span class="var">ac</span> ...) <i>программа</i>...)</pre>
 
 
-<h4 id="assignment/assignment/free-vars/sssect:frozen">Фиксированное глобальное окружение</h4>
+<h4 id="assignment/assignment/free-vars/sssect:frozen"><span class="wrap"><span class="title">Фиксированное глобальное окружение</span></span></h4>
 
 <!--\indexR{глобальное окружение!фиксированное}-->
 <!--\indexR{окружение!глобальное!фиксированное}-->
@@ -515,10 +515,10 @@
   (<span class="special">set!</span> <span class="var">can-access?</span> (<span class="func">make-can-access?</span> <span class="string">"timhukiTrolrk"</span>))
   (<span class="special">set!</span> <span class="var">gatekeeper</span>
         (<span class="special">lambda</span> () (<span class="syntax">until</span> (<span class="func">can-access?</span> (<span class="func">read</span>)) (<span class="func">gatekeeper</span>))) )
-  (<span class="func">gatekeeper</span>) )<div class="where">
+  (<span class="func">gatekeeper</span>) )<div class="where"><div class="wrap">
 <span class="var">car</span> <span class="math"><span class="rel">≡</span></span> <span class="var">car</span>
 <span class="var">cons</span> <span class="math"><span class="rel">≡</span></span> <span class="var">cons</span>
-...</div></pre>
+...</div></div></pre>
 
 <p>Глобальные определения заменяются локальными переменными, которые остаются
 неинициализированными до соответствующей <code><span class="special">define</span></code>-формы.<a class="footref" href="zz_footnotes.xhtml#foot4.1"><sup>1</sup></a> Конечно, встроенные функции вроде <code><span class="func">read</span></code>,
@@ -531,7 +531,7 @@
 — это динамическое исполнение кода с помощью <code><span class="func">eval</span></code>.</p>
 
 
-<h4 id="assignment/assignment/free-vars/sssect:auto-extended">Автоматически расширяемое глобальное окружение</h4>
+<h4 id="assignment/assignment/free-vars/sssect:auto-extended"><span class="wrap"><span class="title">Автоматически расширяемое глобальное окружение</span></span></h4>
 
 <!--\indexR{глобальное окружение!автоматически расширяемое}-->
 <!--\indexR{окружение!глобальное!автоматически расширяемое}-->
@@ -579,7 +579,7 @@
 с рекурсией.</p>
 
 
-<h4 id="assignment/assignment/free-vars/sssect:hyperstatic">Гиперстатическое глобальное окружение</h4>
+<h4 id="assignment/assignment/free-vars/sssect:hyperstatic"><span class="wrap"><span class="title">Гиперстатическое глобальное окружение</span></span></h4>
 
 <!--\indexR{глобальное окружение!гиперстатическое}-->
 <!--\indexR{окружение!глобальное!гиперстатическое}-->
@@ -646,7 +646,7 @@
 на ML:</p>
 
 <pre><span class="syntax">let</span> <span class="syntax">rec</span> <span class="func">odd</span> <span class="var">n</span> = <span class="syntax">if</span> <span class="var">n</span> <span class="func">=</span> <span class="num">0</span> <span class="syntax">then</span> <span class="hash">false</span> <span class="syntax">else</span> <span class="func">even</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)
-    <span class="syntax">and</span> <span class="func">even</span> <span class="var">n</span> <span class="func">=</span> <span class="syntax">if</span> <span class="var">n</span> = <span class="num">0</span> <span class="syntax">then</span> <span class="hash">true</span> <span class="syntax">else</span> <span class="func">odd</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)</pre>
+    <span class="syntax">and</span> <span class="func">even</span> <span class="var">n</span> = <span class="syntax">if</span> <span class="var">n</span> <span class="func">=</span> <span class="num">0</span> <span class="syntax">then</span> <span class="hash">true</span> <span class="syntax">else</span> <span class="func">odd</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)</pre>
 
 <p class="noindent">легко переводится на Scheme следующим образом:</p>
 
@@ -663,7 +663,7 @@
 использовали исправленное ошибочное.</p>
 
 
-<h3 id="assignment/assignment/ssect:predefined"><span class="seq">4.1.3.</span> Присваивание предопределённым переменным</h3>
+<h3 id="assignment/assignment/ssect:predefined"><span class="wrap"><span class="seq">4.1.3.</span><span class="title">Присваивание предопределённым переменным</span></span></h3>
 
 <!--\indexR{переменные!предопределённые}-->
 <!--\indexR{предопределённые переменные}-->
@@ -706,7 +706,7 @@
 но для отладки более удобным оказывается динамическое.</p>
 
 
-<h2 id="assignment/sect:side-effects"><span class="seq">4.2.</span> Побочные эффекты</h2>
+<h2 id="assignment/sect:side-effects"><span class="wrap"><span class="seq">4.2.</span><span class="title">Побочные эффекты</span></span></h2>
 
 <!--\indexR{вычисления!контекст}-->
 <!--\indexR{контекст вычислений}-->
@@ -772,7 +772,7 @@
 модификацию памяти, — зависит от контекста и желаемых свойств.</p>
 
 
-<h3 id="assignment/side-effects/ssect:equality"><span class="seq">4.2.1.</span> Равенство</h3>
+<h3 id="assignment/side-effects/ssect:equality"><span class="wrap"><span class="seq">4.2.1.</span><span class="title">Равенство</span></span></h3>
 
 <!--\indexR{сравнение!объектов}-->
 <!--\indexR{взаимозаменимость}-->
@@ -932,7 +932,7 @@
 href="zz_footnotes.xhtml#foot4.9"><sup>9</sup></a>).</p>
 
 
-<h3 id="assignment/side-effects/ssect:equality-func"><span class="seq">4.2.2.</span> Равенство функций</h3>
+<h3 id="assignment/side-effects/ssect:equality-func"><span class="wrap"><span class="seq">4.2.2.</span><span class="title">Равенство функций</span></span></h3>
 
 <!--\indexR{сравнение!функций}-->
 <!--\indexR{функции!сравнение}-->
@@ -1075,7 +1075,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 в любом виде.</p>
 
 
-<h2 id="assignment/sect:implementation"><span class="seq">4.3.</span> Реализация</h2>
+<h2 id="assignment/sect:implementation"><span class="wrap"><span class="seq">4.3.</span><span class="title">Реализация</span></span></h2>
 
 <!--\indexR{обмен сообщениями}-->
 <!--\indexR{замыкания (closures)}-->
@@ -1169,7 +1169,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
         (<span class="syntax">else</span>     (<span class="func">evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)) ) ) )</pre>
 
 
-<h3 id="assignment/implementation/ssect:condition"><span class="seq">4.3.1.</span> Ветвление</h3>
+<h3 id="assignment/implementation/ssect:condition"><span class="wrap"><span class="seq">4.3.1.</span><span class="title">Ветвление</span></span></h3>
 
 <p>Условный оператор требует вспомогательного продолжения для выполнения ветвления
 после вычисления условия.</p>
@@ -1218,7 +1218,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">y</span>)</code>.</p>
 
 
-<h3 id="assignment/implementation/ssect:sequence"><span class="seq">4.3.2.</span> Последовательность</h3>
+<h3 id="assignment/implementation/ssect:sequence"><span class="wrap"><span class="seq">4.3.2.</span><span class="title">Последовательность</span></span></h3>
 
 <p>Хотя тут нет ничего интересного или нового, но повторить смысл последовательных
 вычислений будет не лишним. Для простоты мы считаем, что <code><span class="special">begin</span></code> передана
@@ -1237,7 +1237,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 последнего, которое обрабатывается отдельно.</p>
 
 
-<h3 id="assignment/implementation/ssect:environment"><span class="seq">4.3.3.</span> Окружения</h3>
+<h3 id="assignment/implementation/ssect:environment"><span class="wrap"><span class="seq">4.3.3.</span><span class="title">Окружения</span></span></h3>
 
 <p>Окружения представляются функциями, переводящими имена переменных в адреса.
 Аналогично, память — это функция, переводящая адреса в значения. Начальное
@@ -1281,7 +1281,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <code><span class="func">eqv?</span></code>, поэтому в <code><span class="func">update</span></code> используется именно этот предикат.</p>
 
 
-<h3 id="assignment/implementation/ssect:reference"><span class="seq">4.3.4.</span> Обращения к переменным</h3>
+<h3 id="assignment/implementation/ssect:reference"><span class="wrap"><span class="seq">4.3.4.</span><span class="title">Обращения к переменным</span></span></h3>
 
 <p>Благодаря выбранному представлению памяти значение переменной получается
 элементарно:</p>
@@ -1296,7 +1296,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 передаётся в неизменном виде.</p>
 
 
-<h3 id="assignment/implementation/ssect:assignment"><span class="seq">4.3.5.</span> Присваивание</h3>
+<h3 id="assignment/implementation/ssect:assignment"><span class="wrap"><span class="seq">4.3.5.</span><span class="title">Присваивание</span></span></h3>
 
 <p>Для присваивания необходимо промежуточное продолжение.</p>
 
@@ -1324,7 +1324,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 По крайней мере, можно взять эту идею на вооружение хотя бы частично.</p>
 
 
-<h3 id="assignment/implementation/ssect:application"><span class="seq">4.3.6.</span> Аппликация</h3>
+<h3 id="assignment/implementation/ssect:application"><span class="wrap"><span class="seq">4.3.6.</span><span class="title">Аппликация</span></span></h3>
 
 <p>Перед применением функции необходимо вычислить все элементы формы вызова.
 Вычислять их можно, как известно, в произвольном порядке. Пусть это будет
@@ -1360,7 +1360,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 функции: кода, который будет применён к аргументам.</p>
 
 
-<h3 id="assignment/implementation/ssect:abstraction"><span class="seq">4.3.7.</span> Абстракция</h3>
+<h3 id="assignment/implementation/ssect:abstraction"><span class="wrap"><span class="seq">4.3.7.</span><span class="title">Абстракция</span></span></h3>
 
 <!--\indexCS{lambda}{и память}-->
 <p>Для простоты будем считать, что специальная форма <code><span class="special">lambda</span></code> поддерживает
@@ -1423,7 +1423,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 функциональных языков.</p>
 
 
-<h3 id="assignment/implementation/ssect:memory"><span class="seq">4.3.8.</span> Память</h3>
+<h3 id="assignment/implementation/ssect:memory"><span class="wrap"><span class="seq">4.3.8.</span><span class="title">Память</span></span></h3>
 
 <!--\indexR{сборка мусора}-->
 <p>Память представляется функцией, принимающей адреса и возвращающей значения.
@@ -1472,7 +1472,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
   (<span class="func">expand-store</span> <span class="num">0</span> (<span class="special">lambda</span> (<span class="var">a</span>) (<span class="func">wrong</span> <span class="string">"No such address"</span> <span class="var">a</span>))) )</pre>
 
 
-<h3 id="assignment/implementation/ssect:values"><span class="seq">4.3.9.</span> Представление значений</h3>
+<h3 id="assignment/implementation/ssect:values"><span class="wrap"><span class="seq">4.3.9.</span><span class="title">Представление значений</span></span></h3>
 
 <p>Мы решили представлять данные внутри интерпретатора в виде замыканий,
 обменивающихся сообщениями. Для простоты ограничимся пустым списком, булевыми
@@ -1601,7 +1601,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
       ((<span class="var">cdr</span>)     <span class="var">d</span>) ) ) )</pre>
 
 
-<h3 id="assignment/implementation/ssect:cmp-to-oop"><span class="seq">4.3.10.</span> Сравнение с объектным подходом</h3>
+<h3 id="assignment/implementation/ssect:cmp-to-oop"><span class="wrap"><span class="seq">4.3.10.</span><span class="title">Сравнение с объектным подходом</span></span></h3>
 
 <!--\indexR{замыкания (closures)!и объекты}-->
 <!--\indexR{объекты!как замыкания}-->
@@ -1621,7 +1621,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>]</span>.</p>
 
 
-<h3 id="assignment/implementation/ssect:init-env"><span class="seq">4.3.11.</span> Начальное окружение</h3>
+<h3 id="assignment/implementation/ssect:init-env"><span class="wrap"><span class="seq">4.3.11.</span><span class="title">Начальное окружение</span></span></h3>
 
 <p>Как обычно, мы определим два вспомогательных макроса, которые помогут создать
 начальное окружение (а также состояние памяти). Под каждую глобальную переменную
@@ -1690,7 +1690,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
   <span class="num">2</span> )</pre>
 
 
-<h3 id="assignment/implementation/ssect:dotted-pairs"><span class="seq">4.3.12.</span> Точечные пары</h3>
+<h3 id="assignment/implementation/ssect:dotted-pairs"><span class="wrap"><span class="seq">4.3.12.</span><span class="title">Точечные пары</span></span></h3>
 
 <p>Впервые точечные пары внутри нашего интерпретатора Scheme не представляются
 родными точечными парами Scheme, на котором он написан.</p>
@@ -1735,7 +1735,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
   <span class="num">1</span> )</pre>
 
 
-<h3 id="assignment/implementation/ssect:comparisons"><span class="seq">4.3.13.</span> Функция сравнения</h3>
+<h3 id="assignment/implementation/ssect:comparisons"><span class="wrap"><span class="seq">4.3.13.</span><span class="title">Функция сравнения</span></span></h3>
 
 <p>Одной из задач данного интерпретатора является иллюстрация реализации предиката
 эквивалентности — <code><span class="func">eqv?</span></code>. Он проверяет, являются ли два объекта
@@ -1785,7 +1785,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 не повезло).</p>
 
 
-<h3 id="assignment/implementation/ssect:starting"><span class="seq">4.3.14.</span> Запускаем интерпретатор</h3>
+<h3 id="assignment/implementation/ssect:starting"><span class="wrap"><span class="seq">4.3.14.</span><span class="title">Запускаем интерпретатор</span></span></h3>
 
 <p>Наконец, всё готово для запуска нашего интерпретатора. Главный цикл вызывает
 <code><span class="func">evaluate</span></code> с рекурсивным продолжением, которое обеспечивает непрерывность
@@ -1822,7 +1822,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
     (<span class="syntax">else</span>       (<span class="func">wrong</span> <span class="string">"Unknown type"</span> (<span class="func">v</span> '<span class="var">type</span>))) ) )</pre>
 
 
-<h2 id="assignment/sect:io-and-memory"><span class="seq">4.4.</span> Ввод-вывод и память</h2>
+<h2 id="assignment/sect:io-and-memory"><span class="wrap"><span class="seq">4.4.</span><span class="title">Ввод-вывод и память</span></span></h2>
 
 <!--\indexR{потоки ввода-вывода}-->
 <p>Теперь поговорим о вводе-выводе. Если ограничиться одним потоком ввода и одним
@@ -1867,7 +1867,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 память, должны быть доступны отовсюду).</p>
 
 
-<h2 id="assignment/sect:quotation"><span class="seq">4.5.</span> Семантика цитирования</h2>
+<h2 id="assignment/sect:quotation"><span class="wrap"><span class="seq">4.5.</span><span class="title">Семантика цитирования</span></span></h2>
 
 <!--\indexR{семантика!цитирования}-->
 <p>Наверное, вы уже заметили, что в этот раз мы как-то обошли стороной
@@ -1946,14 +1946,14 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 обращения к цитатам ссылками на переменные, хранящие вычисленные ранее значения.
 На предыдущем примере это выглядит так:</p>
 
-<table><tr>
+<table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))))
   (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
-<td><span class="math"><span class="rel">⇝</span></span></td>
+<td><span class="math"><span class="ord"/><span class="rel">⇝</span><span class="ord"/></span></td>
 <td><pre>(<span class="special">define</span> <span class="var">quote35</span> '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))
 (<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () <span class="var">quote35</span>)))
   (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
-</tr></table>
+</tr></tbody></table>
 
 <p>В итоге цитаты обретают должный смысл, а <code><span class="func">evaluate-quote</span></code>
 остаётся такой же простой.</p>
@@ -2181,7 +2181,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 ограничений и вызываемых ими проблем.</p>
 
 
-<h2 id="assignment/sect:conclusions"><span class="seq">4.6.</span> Заключение</h2>
+<h2 id="assignment/sect:conclusions"><span class="wrap"><span class="seq">4.6.</span><span class="title">Заключение</span></span></h2>
 
 <p>Данная глава содержит колоссальное количество советов и описанных подводных ям.
 Глобальные переменные таят множество неоднозначностей, которых становится ещё
@@ -2191,7 +2191,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 воздерживаться.</p>
 
 
-<h2 id="assignment/sect:exercises"><span class="seq">4.7.</span> Упражнения</h2>
+<h2 id="assignment/sect:exercises"><span class="wrap"><span class="seq">4.7.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="assignment/ex:pure-min-max">Упражнение <span class="seq">4.1</span></h5>
 <p>Определите чистую (без побочных эффектов) функцию <code><span class="func">min-max</span></code>.</p>

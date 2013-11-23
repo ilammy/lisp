@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:compilation"><span class="seq">Глава 7.</span> Компиляция</h1>
+<h1 id="chapter:compilation"><span class="wrap"><span class="seq">Глава 7.</span><span class="title">Компиляция</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">В</span> предыдущей главе</span>
 был изложен метод перевода
@@ -138,7 +138,7 @@
 времени на их разбор и в итоге работает быстрее.</p>
 
 
-<h2 id="compilation/sect:bytes"><span class="seq">7.1.</span> Компиляция в байт-код</h2>
+<h2 id="compilation/sect:bytes"><span class="wrap"><span class="seq">7.1.</span><span class="title">Компиляция в байт-код</span></span></h2>
 
 <p>Задача на сейчас: шаг за шагом разработать специализированную машину,
 исполняющую байт-коды. Мы определим эту машину, определив для неё смысл
@@ -160,7 +160,7 @@
 архитектура обрастёт жирком.</p>
 
 
-<h3 id="compilation/bytes/ssect:*val*"><span class="seq">7.1.1.</span> Знакомьтесь, регистр <code><span class="var">*val*</span></code></h3>
+<h3 id="compilation/bytes/ssect:*val*"><span class="wrap"><span class="seq">7.1.1.</span><span class="title">Знакомьтесь, регистр <code><span class="var">*val*</span></code></span></span></h3>
 
 <!--\indexR{инструкции!производители}-->
 <!--\indexR{инструкции!потребители}-->
@@ -220,7 +220,7 @@
     (<span class="special">set!</span> <span class="var">*env*</span> (<span class="func">activation-frame-next</span> <span class="var">*env*</span>)) ) )</pre>
 
 
-<h3 id="compilation/bytes/ssect:stack"><span class="seq">7.1.2.</span> Изобретение стека</h3>
+<h3 id="compilation/bytes/ssect:stack"><span class="wrap"><span class="seq">7.1.2.</span><span class="title">Изобретение стека</span></span></h3>
 
 <p>На данный момент часть инструкций уже линеаризована с помощью регистра
 <code><span class="var">*val*</span></code>, но некоторые из них так просто не поддаются. Например,
@@ -342,7 +342,7 @@
     (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">address</span> <span class="var">*arg1*</span> <span class="var">*arg2*</span> <span class="var">*val*</span>)) ) )</pre>
 
 
-<h3 id="compilation/bytes/ssect:customize"><span class="seq">7.1.3.</span> Дорабатываем инструкции</h3>
+<h3 id="compilation/bytes/ssect:customize"><span class="wrap"><span class="seq">7.1.3.</span><span class="title">Дорабатываем инструкции</span></span></h3>
 
 <!--\indexR{счётчик команд}-->
 <!--\indexR{инструкции!сложность}-->
@@ -358,7 +358,7 @@
 управляющие формы, в том числе и <code><span class="func">call/cc</span></code>.</p>
 
 
-<h4 id="compilation/bytes/customize/sssect:lin-assignment">Линеаризация присваиваний</h4>
+<h4 id="compilation/bytes/customize/sssect:lin-assignment"><span class="wrap"><span class="title">Линеаризация присваиваний</span></span></h4>
 
 <p>Рассмотрим для примера инструкцию <code><span class="func">SHALLOW-ARGUMENT-SET!</span></code>. Определялась она
 вот так:</p>
@@ -383,7 +383,7 @@
 выполняющее простую операцию изменения записи активации.</p>
 
 
-<h4 id="compilation/bytes/customize/sssect:lin-invocation">Линеаризация вызовов функций</h4>
+<h4 id="compilation/bytes/customize/sssect:lin-invocation"><span class="wrap"><span class="title">Линеаризация вызовов функций</span></span></h4>
 
 <p><code><span class="func">REGULAR-CALL</span></code> является весьма показательной инструкцией в этом плане. Для её
 линеаризации потребуются следующие машинные команды: <code><span class="func">PRESERVE-ENV</span></code>,
@@ -439,7 +439,7 @@
 замыканиями вида <code>(<span class="special">lambda</span> () ...)</code>.</p>
 
 
-<h4 id="compilation/bytes/customize/sssect:lin-conditional">Линеаризация ветвлений</h4>
+<h4 id="compilation/bytes/customize/sssect:lin-conditional"><span class="wrap"><span class="title">Линеаризация ветвлений</span></span></h4>
 
 <!--\indexR{линеаризация!ветвлений}-->
 <!--\indexR{переходы (jumps)!машинные инструкции}-->
@@ -482,7 +482,7 @@
 команд, а не по абсолютным адресам.</p>
 
 
-<h4 id="compilation/bytes/customize/sssect:lin-abstraction">Линеаризация абстракций</h4>
+<h4 id="compilation/bytes/customize/sssect:lin-abstraction"><span class="wrap"><span class="title">Линеаризация абстракций</span></span></h4>
 
 <!--\indexR{линеаризация!абстракций}-->
 <!--\indexR{представление!замыканий!в машинном коде}-->
@@ -520,7 +520,7 @@
 программы.</p>
 
 
-<h3 id="compilation/bytes/ssect:call-proto"><span class="seq">7.1.4.</span> Протокол вызова функций</h3>
+<h3 id="compilation/bytes/ssect:call-proto"><span class="wrap"><span class="seq">7.1.4.</span><span class="title">Протокол вызова функций</span></span></h3>
 
 <!--\indexR{протокол вызова функций}-->
 <!--\indexR{функции!протокол вызова}-->
@@ -557,7 +557,7 @@
   (<span class="func">list</span> (<span class="special">lambda</span> () (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">stack-pop</span>)))) )</pre>
 
 
-<h4 id="compilation/bytes/sssect:jumps">О переходах</h4>
+<h4 id="compilation/bytes/sssect:jumps"><span class="wrap"><span class="title">О переходах</span></span></h4>
 
 <!--\indexR{позиционно-независимый код}-->
 <p>Если вы знакомы с программированием на языке ассемблера, то наверняка обратили
@@ -567,7 +567,7 @@
 расположения в памяти, он <em class="term">позиционно-независим</em>.</p>
 
 
-<h2 id="compilation/sect:lang-and-target"><span class="seq">7.2.</span> Язык и целевая машина</h2>
+<h2 id="compilation/sect:lang-and-target"><span class="wrap"><span class="seq">7.2.</span><span class="title">Язык и целевая машина</span></span></h2>
 
 <!--\indexR{виртуальная машина!архитектура}-->
 <p>Пришло время зафиксировать архитектуру целевой виртуальной машины, под которую
@@ -764,7 +764,7 @@
 чем есть сейчас, но пока мы всё же оставим текущий вариант из-за его простоты.</p>
 
 
-<h3 id="compilation/lang-and-target/ssect:disassembly"><span class="seq">7.2.1.</span> Дизассемблирование</h3>
+<h3 id="compilation/lang-and-target/ssect:disassembly"><span class="wrap"><span class="seq">7.2.1.</span><span class="title">Дизассемблирование</span></span></h3>
 
 <p>В <a href="#compilation/par:disasm">начале этой главы</a> была показана промежуточная
 форма следующей небольшой программки:</p>
@@ -862,7 +862,7 @@
 <span class="caption">Таблица 7.3. Результат компиляции.</span>
 
 
-<h2 id="compilation/sect:coding"><span class="seq">7.3.</span> Кодирование инструкций</h2>
+<h2 id="compilation/sect:coding"><span class="wrap"><span class="seq">7.3.</span><span class="title">Кодирование инструкций</span></span></h2>
 
 <!--\indexR{байт-код}-->
 <p>Почти на каждой странице этой главы упоминаются байты, но до сих пор мы
@@ -1024,7 +1024,7 @@
       ... ) ) )</pre>
 
 
-<h2 id="compilation/sect:instructions"><span class="seq">7.4.</span> Инструкции</h2>
+<h2 id="compilation/sect:instructions"><span class="wrap"><span class="seq">7.4.</span><span class="title">Инструкции</span></span></h2>
 
 <!--\indexR{инструкции!распределение арности}-->
 <!--\indexR{арность}-->
@@ -1064,7 +1064,7 @@
 специализированных вариантов.</p>
 
 
-<h3 id="compilation/instructions/ssect:locals"><span class="seq">7.4.1.</span> Локальные переменные</h3>
+<h3 id="compilation/instructions/ssect:locals"><span class="wrap"><span class="seq">7.4.1.</span><span class="title">Локальные переменные</span></span></h3>
 
 <!--\indexC{LAMBDA-PARAMETERS-LIMIT}-->
 <!--\indexC{check-byte}-->
@@ -1135,7 +1135,7 @@
   (<span class="func">deep-update!</span> <span class="var">*env*</span> <span class="var">i</span> <span class="var">j</span> <span class="var">*val*</span>) )</pre>
 
 
-<h3 id="compilation/instructions/ssect:globals"><span class="seq">7.4.2.</span> Глобальные переменные</h3>
+<h3 id="compilation/instructions/ssect:globals"><span class="wrap"><span class="seq">7.4.2.</span><span class="title">Глобальные переменные</span></span></h3>
 
 <!--\indexR{глобальные переменные}-->
 <!--\indexR{переменные!глобальные}-->
@@ -1236,7 +1236,7 @@
   (<span class="special">set!</span> <span class="var">*val*</span> <span class="var">value</span>) )</pre>
 
 
-<h3 id="compilation/instruction/ssect:jumps"><span class="seq">7.4.3.</span> Переходы</h3>
+<h3 id="compilation/instruction/ssect:jumps"><span class="wrap"><span class="seq">7.4.3.</span><span class="title">Переходы</span></span></h3>
 
 <!--\indexR{переходы (jumps)!произвольная дальность}-->
 <p>Если вы думаете, что расставленные то тут, то там ограничения чересчур суровы,
@@ -1277,7 +1277,7 @@
     (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">+</span> <span class="var">*pc*</span> <span class="var">offset</span>)) ) )</pre>
 
 
-<h3 id="compilation/instruction/ssect:invocations"><span class="seq">7.4.4.</span> Вызовы функций</h3>
+<h3 id="compilation/instruction/ssect:invocations"><span class="wrap"><span class="seq">7.4.4.</span><span class="title">Вызовы функций</span></span></h3>
 
 <p>Для начала разберёмся с обычными вызовами, а потом перейдём ко встраиваемым.
 Наблюдение о преимущественно небольшой арности используемых функций будет
@@ -1370,7 +1370,7 @@
 к примеру, ограничивает для <code><span class="func">memq</span></code> максимальную просматриваемую длину списка несколькими
 тысячами элементов.</p>
 
-<h3 id="compilation/instruction/ssect:misc"><span class="seq">7.4.5.</span> Прочее</h3>
+<h3 id="compilation/instruction/ssect:misc"><span class="wrap"><span class="seq">7.4.5.</span><span class="title">Прочее</span></span></h3>
 
 <p>Ещё у нас остаются несколько простых инструкций, не имеющих операндов и
 кодируемых одним-единственным байтом. Генераторы байт-кодов для них одинаковы,
@@ -1477,7 +1477,7 @@
 сводятся к нему.</p>
 
 
-<h2 id="compilation/instruction/ssect:starting"><span class="seq">7.5.</span> Запускаем компилятор-интерпретатор</h2>
+<h2 id="compilation/instruction/ssect:starting"><span class="wrap"><span class="seq">7.5.</span><span class="title">Запускаем компилятор-интерпретатор</span></span></h2>
 
 <!--\indexE{REPL}-->
 <!--\indexR{интерактивная сессия (REPL)}-->
@@ -1563,7 +1563,7 @@
              (<span class="func">run</span>) )) )</pre>
 
 
-<h3 id="compilation/instruction/ssect:catch-breath"><span class="seq">7.5.1.</span> Передышка</h3>
+<h3 id="compilation/instruction/ssect:catch-breath"><span class="wrap"><span class="seq">7.5.1.</span><span class="title">Передышка</span></span></h3>
 
 <p>Напоследок, после тщательного рассмотрения инструкций нашей виртуальной машины,
 давайте ещё раз взглянем на результат компиляции примера с факториалом, теперь
@@ -1654,7 +1654,7 @@
 </tbody></table>
 <span class="caption">Таблица 7.5. Откомпилированная программа.</span>
 
-<h2 id="compilation/sect:continue"><span class="seq">7.6.</span> Продолжения</h2>
+<h2 id="compilation/sect:continue"><span class="wrap"><span class="seq">7.6.</span><span class="title">Продолжения</span></span></h2>
 
 <!--\indexCS{call/cc}{каноническая реализация}-->
 <!--\indexR{полноценные объекты!продолжения}-->
@@ -1764,7 +1764,7 @@
 независимые снимки стека.</p>
 
 
-<h2 id="compilation/sect:escapes"><span class="seq">7.7.</span> Переходы</h2>
+<h2 id="compilation/sect:escapes"><span class="wrap"><span class="seq">7.7.</span><span class="title">Переходы</span></span></h2>
 
 <!--\indexR{переходы (escapes)!реализация}-->
 <!--\indexCS{bind-exit}{машинная реализация}-->
@@ -1947,7 +1947,7 @@
 просто игнорирует.</p>
 
 
-<h2 id="compilation/sect:dynamic"><span class="seq">7.8.</span> Динамические переменные</h2>
+<h2 id="compilation/sect:dynamic"><span class="wrap"><span class="seq">7.8.</span><span class="title">Динамические переменные</span></span></h2>
 
 <!--\indexR{дальнее (deep) связывание}-->
 <!--\indexR{связывание!дальнее (deep)}-->
@@ -2109,7 +2109,7 @@
 сравнения символов, что в свою очередь скажется на динамических переменных.</p>
 
 
-<h2 id="compilation/sect:exception"><span class="seq">7.9.</span> Исключения</h2>
+<h2 id="compilation/sect:exception"><span class="wrap"><span class="seq">7.9.</span><span class="title">Исключения</span></span></h2>
 
 <p>В любом сколь-нибудь развитом языке программирования обязательно присутствует
 система обработки ошибок. Возможность обработки ошибок — это ключ к написанию
@@ -2442,7 +2442,7 @@
 исправлять некоторые недосмотры предобработки на лету.</p>
 
 
-<h2 id="compilation/sect:separate"><span class="seq">7.10.</span> Раздельная компиляция</h2>
+<h2 id="compilation/sect:separate"><span class="wrap"><span class="seq">7.10.</span><span class="title">Раздельная компиляция</span></span></h2>
 
 <!--\indexR{компиляция!раздельная}-->
 <p>Программы на языках вроде Си и Паскаля обычно компилируются и сохраняются
@@ -2451,7 +2451,7 @@
 и загрузчик, запускающий полученные программы.</p>
 
 
-<h3 id="compilation/separate/ssect:files"><span class="seq">7.10.1.</span> Компилируем файлы</h3>
+<h3 id="compilation/separate/ssect:files"><span class="wrap"><span class="seq">7.10.1.</span><span class="title">Компилируем файлы</span></span></h3>
 
 <p>Откомпилировать программу, хранящуюся в файле, проще простого. Этим занимается
 функция <code><span class="func">compile-file</span></code>, показанная ниже. Сначала она инициализирует списки
@@ -2564,7 +2564,7 @@
 <span class="num">5</span></pre></div>
 
 
-<h3 id="compilation/separate/ssect:build"><span class="seq">7.10.2.</span> Собираем приложение</h3>
+<h3 id="compilation/separate/ssect:build"><span class="wrap"><span class="seq">7.10.2.</span><span class="title">Собираем приложение</span></span></h3>
 
 <!--\indexC{ld}-->
 <!--\indexR{компоновка}-->
@@ -2789,7 +2789,7 @@
 следует обрабатывать одним из последних.</p>
 
 
-<h3 id="compilation/separate/ssect:execute"><span class="seq">7.10.3.</span> Запускаем приложение</h3>
+<h3 id="compilation/separate/ssect:execute"><span class="wrap"><span class="seq">7.10.3.</span><span class="title">Запускаем приложение</span></span></h3>
 
 <!--\indexR{загрузчик}-->
 <p>Исполнимый файл создаётся, конечно же, для того, чтобы его исполняли. Благо,
@@ -2875,7 +2875,7 @@
 целью компиляции!</p>
 
 
-<h2 id="compilation/sect:conclusions"><span class="seq">7.11.</span> Заключение</h2>
+<h2 id="compilation/sect:conclusions"><span class="wrap"><span class="seq">7.11.</span><span class="title">Заключение</span></span></h2>
 
 <p>До полной реализации Scheme нашему компилятору не хватает множества функций
 стандартной библиотеки, а также поддержки оставшихся типов данных. С этим
@@ -2916,7 +2916,7 @@
 времени.</p>
 
 
-<h2 id="compilation/sect:exercises"><span class="seq">7.12.</span> Упражнения</h2>
+<h2 id="compilation/sect:exercises"><span class="wrap"><span class="seq">7.12.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="compilation/ex:dynamic">Упражнение <span class="seq">7.1</span></h5>
 <p>Реализуйте поддержку динамических переменных с помощью регистра
@@ -2972,7 +2972,7 @@
 соответствующие виртуальные машины для них.</p>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Литературы на тему основ компиляции весьма немного. Собственно, это одна из
 причин появления данной книги. Как бы то ни было, вам стоит взглянуть на

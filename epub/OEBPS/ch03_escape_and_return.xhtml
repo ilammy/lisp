@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:escape"><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
+<h1 id="chapter:escape"><span class="wrap"><span class="seq">Глава 3.</span><span class="title">Переходы и возвраты: продолжения</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">К</span>аждое вычисление</span> в конечном счёте
 приводит к возврату результата сущности, которая называется <em class="term">продолжением</em>.
@@ -185,7 +185,7 @@
 последние тридцать с лишним лет.</p>
 
 
-<h2 id="escape/sect:handling"><span class="seq">3.1.</span> Формы, манипулирующие продолжениями</h2>
+<h2 id="escape/sect:handling"><span class="wrap"><span class="seq">3.1.</span><span class="title">Формы, манипулирующие продолжениями</span></span></h2>
 
 <p>Явное использование продолжений даёт нам возможность управлять ходом исполнения
 программы. Форма <code><span class="special">prog</span></code> имеет схожие возможности, но при этом обладает
@@ -194,7 +194,7 @@
 <code><span class="special">catch</span></code> и <code><span class="special">throw</span></code>.</p>
 
 
-<h3 id="escape/handling/ssect:catch-throw"><span class="seq">3.1.1.</span> Пара <code><span class="special">catch</span></code>/<code><span class="special">throw</span></code></h3>
+<h3 id="escape/handling/ssect:catch-throw"><span class="wrap"><span class="seq">3.1.1.</span><span class="title">Пара <code><span class="special">catch</span></code>/<code><span class="special">throw</span></code></span></span></h3>
 
 <!--\indexC{catch}-->
 <!--\indexE{catch@\protect<code><span class="func">catch</span></code>|seealso{\protect<code><span class="func">throw</span></code>}}-->
@@ -290,7 +290,7 @@
 Мы попытаемся ответить на эти вопросы немного позже.</p>
 
 
-<h3 id="escape/forms/ssect:block-return"><span class="seq">3.1.2.</span> Пара <code><span class="special">block</span></code>/<code><span class="special">return-from</span></code></h3>
+<h3 id="escape/forms/ssect:block-return"><span class="wrap"><span class="seq">3.1.2.</span><span class="title">Пара <code><span class="special">block</span></code>/<code><span class="special">return-from</span></code></span></span></h3>
 
 <!--\indexR{переходы (escapes)!лексические}-->
 <!--\indexR{специальные формы!block@\protect<code><span class="func">block</span></code>}-->
@@ -406,7 +406,7 @@
 и <code><span class="special">throw</span></code> для обмена информацией о метках.</p>
 
 
-<h3 id="escape/forms/ssect:dynamic"><span class="seq">3.1.3.</span> Метки с динамическим временем жизни</h3>
+<h3 id="escape/forms/ssect:dynamic"><span class="wrap"><span class="seq">3.1.3.</span><span class="title">Метки с динамическим временем жизни</span></span></h3>
 
 <p>Однако, эта эмуляция не совсем хороша, так как если <code><span class="syntax">catch</span></code> окажется внутри
 <code><span class="special">block</span></code>, то значение переменной <code><span class="var">*active-catchers*</span></code> может быть искажено.
@@ -494,7 +494,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 значение <code><span class="num">2</span></code>.</p>
 
 
-<h3 id="escape/forms/ssect:catch-vs-block"><span class="seq">3.1.4.</span> Сравнение <code><span class="special">catch</span></code> и <code><span class="special">block</span></code></h3>
+<h3 id="escape/forms/ssect:catch-vs-block"><span class="wrap"><span class="seq">3.1.4.</span><span class="title">Сравнение <code><span class="special">catch</span></code> и <code><span class="special">block</span></code></span></span></h3>
 
 <!--\indexCS{catch}{в сравнении с <code><span class="func">block</span></code>}-->
 <!--\indexCS{block}{в сравнении с <code><span class="func">catch</span></code>}-->
@@ -606,7 +606,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 достаточно лишь удостовериться, что <code><span class="special">catch</span></code> и <code><span class="special">throw</span></code> используют
 одинаковые метки.</p>
 
-<h3 id="escape/forms/ssect:immortal"><span class="seq">3.1.5.</span> Метки с неограниченным временем жизни</h3>
+<h3 id="escape/forms/ssect:immortal"><span class="wrap"><span class="seq">3.1.5.</span><span class="title">Метки с неограниченным временем жизни</span></span></h3>
 
 <!--\indexR{переходы (escapes)!неограниченные}-->
 <!--\indexR{оператор $J$}-->
@@ -798,7 +798,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <!--\indexR{продолжения (continuations)!терминальное продолжение}-->
 <!--\indexR{терминальное продолжение}-->
-<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="ord">.</span><span class="ord var">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
+<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="ord">.</span><span class="ord">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
 чёрную дыру. Исполнение программы состоит из вызовов функций, а они похожи на дыхание:
 вдох-выдох — вход-выход. Необходимым условием жизни является
 <em>продолжение</em> дыхания. Используя <code><span class="func">call/cc</span></code>, мы вмешиваемся в нормальный
@@ -806,7 +806,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 как дышать, и умереть.</p>
 
 
-<h3 id="escape/forms/ssect:protection"><span class="seq">3.1.6.</span> Защитные формы</h3>
+<h3 id="escape/forms/ssect:protection"><span class="wrap"><span class="seq">3.1.6.</span><span class="title">Защитные формы</span></span></h3>
 
 <!--\indexC{unwind-protect}-->
 <!--\indexC{car}-->
@@ -922,7 +922,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 очевидным после рассмотрения реализации интерпретатора с явными продолжениями.</p>
 
 
-<h4>Защита и динамические переменные</h4>
+<h4><span class="wrap"><span class="title">Защита и динамические переменные</span></span></h4>
 
 <!--\indexC{fluid-let}-->
 <!--\indexCS{unwind-protect}{динамические переменные}-->
@@ -933,10 +933,10 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 лексическую переменную, восстановив впоследствии её значение обратно. Подобные
 динамические переменные реализуются с помощью формы <code><span class="syntax">fluid-let</span></code>:</p>
 
-<table class="nocaption"><tbody><tr>
+<table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="syntax">fluid-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span>... ) </pre></td>
-<td><span class="math"><span class="rel">≡</span></span></td>
+<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
 <td><pre>(<span class="syntax">let</span> ((<i>tmp</i> <span class="var">x</span>))
   (<span class="special">set!</span> <span class="var">x</span> <span class="math"><span class="ord var">α</span></span>)
   (<span class="special">unwind-protect</span>
@@ -960,7 +960,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 обычные динамические переменные <span class="logo">Common Lisp</span>.</p>
 
 
-<h2 id="escape/sect:actors"><span class="seq">3.2.</span> Участники вычислений</h2>
+<h2 id="escape/sect:actors"><span class="wrap"><span class="seq">3.2.</span><span class="title">Участники вычислений</span></span></h2>
 
 <!--\indexR{вычисления!контекст}-->
 <!--\indexR{контекст вычислений}-->
@@ -977,7 +977,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 представления этих сущностей внутри разрабатываемого интерпретатора.</p>
 
 
-<h3 id="escape/actors/ssect:review"><span class="seq">3.2.1.</span> Краткий обзор объектов</h3>
+<h3 id="escape/actors/ssect:review"><span class="wrap"><span class="seq">3.2.1.</span><span class="title">Краткий обзор объектов</span></span></h3>
 
 <!--\indexR{объекты}-->
 <!--\indexE{Meroon@\protect\MeroonMeroonet!вводное описание}-->
@@ -1009,7 +1009,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 по нескольким местам.</p>
 
 
-<h4>Определение классов</h4>
+<h4><span class="wrap"><span class="title">Определение классов</span></span></h4>
 
 <!--\indexC{define-class}-->
 <p>Классы определяется с помощью <code><span class="syntax">define-class</span></code> следующим образом:</p>
@@ -1045,7 +1045,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 (<span class="func">continuation?</span> <span class="var">k</span>)             <span class="comment">; предикат принадлежности</span></pre>
 
 
-<h4>Определение обобщённых функций</h4>
+<h4><span class="wrap"><span class="title">Определение обобщённых функций</span></span></h4>
 
 <!--\indexC{define-generic}-->
 <!--\indexR{обобщённые функции}-->
@@ -1073,7 +1073,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 класса <code><span class="var">f</span></code>), то будет выбран вариант по умолчанию: вызов <code><span class="func">wrong</span></code>.</p>
 
 
-<h4>Определение методов</h4>
+<h4><span class="wrap"><span class="title">Определение методов</span></span></h4>
 
 <!--\indexC{define-method}-->
 <p>Форма <code><span class="syntax">define-method</span></code> используется для специализации обобщённых функций
@@ -1096,7 +1096,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 проблем.</p>
 
 
-<h3 id="escape/actors/ssect:interpreter"><span class="seq">3.2.2.</span> Интерпретатор</h3>
+<h3 id="escape/actors/ssect:interpreter"><span class="wrap"><span class="seq">3.2.2.</span><span class="title">Интерпретатор</span></span></h3>
 
 <!--\indexR{соглашения именования}-->
 <!--\indexE{e @\protect<code><span class="func">e</span></code> (выражения)}-->
@@ -1186,7 +1186,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 наследники <code><span class="class">environment</span></code>, классы продолжений — <code><span class="class">continuation</span></code>.</p>
 
 
-<h3 id="escape/actors/ssect:quoting"><span class="seq">3.2.3.</span> Цитирование</h3>
+<h3 id="escape/actors/ssect:quoting"><span class="wrap"><span class="seq">3.2.3.</span><span class="title">Цитирование</span></span></h3>
 
 <p>Специальная форма цитирования всё так же является наиболее простой, её задача
 сводится к передаче значения в неизменной форме текущему продолжению:</p>
@@ -1197,7 +1197,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">resume</span> <span class="var">k</span> <span class="var">v</span>) )</pre>
 
 
-<h3 id="escape/actors/ssect:alternatives"><span class="seq">3.2.4.</span> Ветвление</h3>
+<h3 id="escape/actors/ssect:alternatives"><span class="wrap"><span class="seq">3.2.4.</span><span class="title">Ветвление</span></span></h3>
 
 <p>Условный оператор использует два продолжения: текущее и продолжение вычисления
 условия, которое выберет и вычислит необходимую ветку. Для этого продолжения мы
@@ -1228,7 +1228,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 условной формы.<a class="footref" href="zz_footnotes.xhtml#foot3.11"><sup>11</sup></a></p>
 
 
-<h3 id="escape/actors/ssect:sequence"><span class="seq">3.2.5.</span> Последовательность</h3>
+<h3 id="escape/actors/ssect:sequence"><span class="wrap"><span class="seq">3.2.5.</span><span class="title">Последовательность</span></span></h3>
 
 <p>Здесь нам тоже потребуются два продолжения: текущее и продолжение вычисления
 оставшихся форм.</p>
@@ -1259,7 +1259,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 в том же окружении и с тем же продолжением.<a class="footref" href="zz_footnotes.xhtml#foot3.12"><sup>12</sup></a></p>
 
 
-<h3 id="escape/actors/ssect:variables"><span class="seq">3.2.6.</span> Окружения</h3>
+<h3 id="escape/actors/ssect:variables"><span class="wrap"><span class="seq">3.2.6.</span><span class="title">Окружения</span></span></h3>
 
 <p>Значения переменных хранятся в окружениях. Они тоже представляются объектами:</p>
 
@@ -1337,7 +1337,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 продолжает дальнейшие вычисления.</p>
 
 
-<h3 id="escape/actors/ssect:functions"><span class="seq">3.2.7.</span> Функции</h3>
+<h3 id="escape/actors/ssect:functions"><span class="wrap"><span class="seq">3.2.7.</span><span class="title">Функции</span></span></h3>
 
 <p>Создать функцию легко, с этим справится
 <code><span class="func">make-function</span></code>:</p>
@@ -1463,7 +1463,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 </table>
 
 
-<h2 id="escape/sect:init"><span class="seq">3.3.</span> Инициализация интерпретатора</h2>
+<h2 id="escape/sect:init"><span class="wrap"><span class="seq">3.3.</span><span class="title">Инициализация интерпретатора</span></span></h2>
 
 <p>Перед погружением в сокровенные тайны устройства управляющих форм, давайте
 сначала подготовим наш интерпретатор к запуску. Этот раздел похож на
@@ -1543,7 +1543,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 окошек с контекстными подсказками.</p>
 
 
-<h2 id="escape/sect:implementation"><span class="seq">3.4.</span> Реализация управляющих форм</h2>
+<h2 id="escape/sect:implementation"><span class="wrap"><span class="seq">3.4.</span><span class="title">Реализация управляющих форм</span></span></h2>
 
 <p>Начнём с самой мощной формы — <code><span class="func">call/cc</span></code>. Парадоксально, но факт: это самая
 простая форма, если смотреть на количество кода. Благодаря используемому нами
@@ -1551,7 +1551,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 преобразование их в полноценные объекты языка становится тривиальным.</p>
 
 
-<h3 id="escape/implementation/ssect:call/cc"><span class="seq">3.4.1.</span> Реализация <code><span class="func">call/cc</span></code></h3>
+<h3 id="escape/implementation/ssect:call/cc"><span class="wrap"><span class="seq">3.4.1.</span><span class="title">Реализация <code><span class="func">call/cc</span></code></span></span></h3>
 
 <!--\indexCS{call/cc}{реализация}-->
 <p>Функция <code><span class="func">call/cc</span></code> берёт текущее продолжение <i>k</i>,
@@ -1586,7 +1586,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
       (<span class="func">wrong</span> <span class="string">"Continuations expect one argument"</span> <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>) ) )</pre>
 
 
-<h3 id="escape/implementation/ssect:catch"><span class="seq">3.4.2.</span> Реализация <code><span class="special">catch</span></code></h3>
+<h3 id="escape/implementation/ssect:catch"><span class="wrap"><span class="seq">3.4.2.</span><span class="title">Реализация <code><span class="special">catch</span></code></span></span></h3>
 
 <!--\indexCS{catch}{реализация}-->
 <!--\indexCS{throw}{реализация}-->
@@ -1689,7 +1689,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 вроде бы как не используется.</p>
 
 
-<h3 id="escape/implementation/ssect:block"><span class="seq">3.4.3.</span> Реализация <code><span class="special">block</span></code></h3>
+<h3 id="escape/implementation/ssect:block"><span class="wrap"><span class="seq">3.4.3.</span><span class="title">Реализация <code><span class="special">block</span></code></span></span></h3>
 
 <!--\indexCS{block}{реализация}-->
 <!--\indexCS{return-from}{реализация}-->
@@ -1792,7 +1792,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 продолжения.</p>
 
 
-<h3 id="escape/implementation/ssect:unwind-protect"><span class="seq">3.4.4.</span> Реализация <code><span class="special">unwind-protect</span></code></h3>
+<h3 id="escape/implementation/ssect:unwind-protect"><span class="wrap"><span class="seq">3.4.4.</span><span class="title">Реализация <code><span class="special">unwind-protect</span></code></span></span></h3>
 
 <!--\indexCS{unwind-protect}{реализация}-->
 <p>Форма <code><span class="special">unwind-protect</span></code> является самой сложной для реализации; нам понадобится
@@ -1905,7 +1905,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
       (<span class="special">throw</span> <span class="num">2</span> '<span class="var">bar</span>) ) ) )         <span class="math"><span class="rel">→</span></span> <i>ошибка!</i></pre>
 
 
-<h2 id="escape/sect:comparing"><span class="seq">3.5.</span> Сравнение <code><span class="func">call/cc</span></code> и <code><span class="special">catch</span></code></h2>
+<h2 id="escape/sect:comparing"><span class="wrap"><span class="seq">3.5.</span><span class="title">Сравнение <code><span class="func">call/cc</span></code> и <code><span class="special">catch</span></code></span></span></h2>
 
 <p>Благодаря объектам, продолжения можно представлять связным списком блоков.
 Некоторые из этих блоков доступны прямо в лексическом окружении; до других
@@ -2022,7 +2022,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <span class="logo">Common Lisp</span>, простые и компилирующиеся в эффективный машинный код.</p>
 
 
-<h2 id="escape/sect:pr-cont"><span class="seq">3.6.</span> Продолжения в программировании</h2>
+<h2 id="escape/sect:pr-cont"><span class="wrap"><span class="seq">3.6.</span><span class="title">Продолжения в программировании</span></span></h2>
 
 <!--\indexE{CPS}-->
 <!--\indexR{стиль передачи продолжений (CPS)}-->
@@ -2037,14 +2037,14 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <code>(<span class="func">new-bar</span> <span class="var">foo</span>)</code>, где <code><span class="func">foo</span></code> и является продолжением, которому
 <code><span class="func">new-bar</span></code> передаст результат вычислений. Давайте рассмотрим
 данное преобразование на примере многострадального факториала. Пусть мы хотим вычислить
-<span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="punct">!</span><span class="close">)</span></span>:</p>
+<span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="ord">!</span><span class="close">)</span></span>:</p>
 
 <!--\indexC{fact}-->
 <pre>(<span class="special">define</span> (<span class="func">fact</span> <span class="var">n</span> <span class="var">k</span>)
   (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) (<span class="func">k</span> <span class="num">1</span>)
       (<span class="func">fact</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>) (<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))) ) )
 
-(<span class="func">fact</span> <span class="var">n</span> (<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))) <span class="math"><span class="rel">→</span></span> <span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="punct">!</span><span class="close">)</span></span></pre>
+(<span class="func">fact</span> <span class="var">n</span> (<span class="special">lambda</span> (<span class="func">r</span>) (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))) <span class="math"><span class="rel">→</span></span> <span class="math"><span class="ord var">n</span><span class="open">(</span><span class="ord var">n</span><span class="ord">!</span><span class="close">)</span></span></pre>
 
 <p>Факториал теперь принимает дополнительный аргумент <code><span class="var">k</span></code>: получателя
 вычисленного факториала. Если результат равен единице, то к ней просто
@@ -2061,7 +2061,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 или что-то более сложное.</p>
 
 
-<h3 id="escape/pr-cont/ssect:multiple"><span class="seq">3.6.1.</span> Составные значения</h3>
+<h3 id="escape/pr-cont/ssect:multiple"><span class="wrap"><span class="seq">3.6.1.</span><span class="title">Составные значения</span></span></h3>
 
 <!--\indexR{возвращаемые значения!множественные}-->
 <!--\indexR{множественные значения}-->
@@ -2109,29 +2109,33 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <pre>(<span class="func">bezout</span> <span class="num">1991</span> <span class="num">1960</span> <span class="var">list</span>) <span class="math"><span class="rel">→</span></span> (<span class="num">-569</span> <span class="num">578</span>)</pre>
 
 
-<h3 id="escape/pr-cont/ssect:tail-recusion"><span class="seq">3.6.2.</span> Хвостовая рекурсия</h3>
+<h3 id="escape/pr-cont/ssect:tail-recusion"><span class="wrap"><span class="seq">3.6.2.</span><span class="title">Хвостовая рекурсия</span></span></h3>
 
 <p>В примере с вычислением факториала с помощью продолжений вызов <code><span class="func">fact</span></code> в конце
 концов приводил к ещё одному вызову <code><span class="func">fact</span></code>. Если мы проследим за вычислением
 <code>(<span class="func">fact</span> <span class="num">3</span> <span class="var">list</span>)</code>, то, отбрасывая очевидные шаги, получим следующую картину:</p>
 
 <pre>(<span class="func">fact</span> <span class="num">3</span> <span class="var">list</span>)
-<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">2</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where">
-<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
-<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">1</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where">
-<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
-<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))<div class="where">
-<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
-<span class="var">k</span><span class="math"> <span class="rel">≡</span></span> <span class="var">list</span></div></div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">1</span>))<div class="where">
-<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
-<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))<div class="where">
+<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">2</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where"><div class="wrap">
 <span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
 <span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div></div>
-<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">2</span>))<div class="where">
+<span class="math"><span class="rel">≡</span></span> (<span class="func">fact</span> <span class="num">1</span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>))))<div class="where"><div class="wrap">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))</div><div class="where">
+
+<div class="wrap">
 <span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
-<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div>
+<span class="var">k</span><span class="math"> <span class="rel">≡</span></span> <span class="var">list</span></div></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">1</span>))<div class="where"><div class="wrap">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">k</span> <span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (<span class="var">r</span>) (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="var">r</span>)))</div><div class="where">
+
+<div class="wrap">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">k</span> (<span class="func">*</span> <span class="var">n</span> <span class="num">2</span>))<div class="where"><div class="wrap">
+<span class="var">n</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">k</span> <span class="math"><span class="rel">≡</span></span> <span class="var">list</span></div></div>
 <span class="math"><span class="rel">→</span></span> (<span class="func">6</span>)</pre>
 
 <!--\indexR{рекурсия!хвостовая}-->
@@ -2227,7 +2231,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 впервые использован Митчеллом Уондом и Дэниелом Фридманом в <span class="cite">[<a href="z1_bibliography.xhtml#wan80b">Wan80b</a>]</span>.</p>
 
 
-<h2 id="escape/sect:partial"><span class="seq">3.7.</span> Частичные продолжения</h2>
+<h2 id="escape/sect:partial"><span class="wrap"><span class="seq">3.7.</span><span class="title">Частичные продолжения</span></span></h2>
 
 <!--\indexR{продолжения (continuations)!частичные продолжения}-->
 <p>Среди прочих вопросов, поднимаемых продолжениями, есть ещё один довольно
@@ -2351,7 +2355,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 и присваивания.</p>
 
 
-<h2 id="escape/sect:conclusions"><span class="seq">3.8.</span> Заключение</h2>
+<h2 id="escape/sect:conclusions"><span class="wrap"><span class="seq">3.8.</span><span class="title">Заключение</span></span></h2>
 
 <p>Продолжения вездесущи. Если вы понимаете продолжения, вы одновременно овладели
 ещё одним стилем программирования, получили широчайшие возможности управления
@@ -2370,7 +2374,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 
 
-<h2 id="escape/sect:exercises"><span class="seq">3.9.</span> Упражнения</h2>
+<h2 id="escape/sect:exercises"><span class="wrap"><span class="seq">3.9.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="escape/ex:cc-cc">Упражнение <span class="seq">3.1</span></h5>
 <p>Что вернёт <code>(<span class="func">call/cc</span> <span class="var">call/cc</span>)</code>? Зависит ли ответ от порядка вычислений?</p>
@@ -2498,7 +2502,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) <span class="var">k</span>)) )</pre>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Годный, нетривиальный пример использования продолжений приведён в
 <span class="cite">[<a href="z1_bibliography.xhtml#wan80a">Wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.xhtml#hfw84">HFW84</a>]</span> об эмуляции сопрограмм.

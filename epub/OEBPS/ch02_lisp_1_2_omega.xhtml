@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:lisp1-2-omega"><span class="seq">Глава 2.</span> Lisp, 1, 2, …, <i>ω</i></h1>
+<h1 id="chapter:lisp1-2-omega"><span class="wrap"><span class="seq">Глава 2.</span><span class="title">Lisp, 1, 2, …, <i>ω</i></span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">Ф</span>ункции занимают</span> центральное место
 в Лиспе, поэтому очевидно, что эффективность их вызовов очень важна.
@@ -65,7 +65,7 @@
 использоваться и здесь.</p>
 
 
-<h2 id="lisp1-2-omega/sect:lisp1"><span class="seq">2.1.</span> Lisp<sub>1</sub></h2>
+<h2 id="lisp1-2-omega/sect:lisp1"><span class="wrap"><span class="seq">2.1.</span><span class="title">Lisp<sub>1</sub></span></span></h2>
 
 <!--\indexE{Lisp1@\protectLisp<sub>1</sub>}-->
 <!--\indexR{Лисп!Lisp1@\protectLisp<sub>1</sub>}-->
@@ -99,7 +99,7 @@
 <p>Благодаря этим двум качествам Scheme является представителем семейства Lisp<sub>1</sub>.</p>
 
 
-<h2 id="lisp1-2-omega/sect:lisp2"><span class="seq">2.2.</span> Lisp<sub>2</sub></h2>
+<h2 id="lisp1-2-omega/sect:lisp2"><span class="wrap"><span class="seq">2.2.</span><span class="title">Lisp<sub>2</sub></span></span></h2>
 
 <!--\indexE{Lisp2@\protectLisp<sub>2</sub>}-->
 <!--\indexR{Лисп!Lisp2@\protectLisp<sub>2</sub>}-->
@@ -247,7 +247,7 @@
 ни <code><span class="special">lambda</span></code>-форма.</p>
 
 
-<h3 id="lisp1-2-omega/lisp2/ssect:eval-func-term"><span class="seq">2.2.1.</span> Вычисляем функции</h3>
+<h3 id="lisp1-2-omega/lisp2/ssect:eval-func-term"><span class="wrap"><span class="seq">2.2.1.</span><span class="title">Вычисляем функции</span></span></h3>
 
 <p>Возможности текущего окружения функций ещё далеки от возможностей окружения
 переменных (окружения параметров). В частности, как вы видели, мы не можем
@@ -312,7 +312,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 необходимо найти другой метод вычисления функционального элемента формы.</p>
 
 
-<h3 id="lisp1-2-omega/lisp2/ssect:duality"><span class="seq">2.2.2.</span> Двойственность миров</h3>
+<h3 id="lisp1-2-omega/lisp2/ssect:duality"><span class="wrap"><span class="seq">2.2.2.</span><span class="title">Двойственность миров</span></span></h3>
 
 <p>Обобщая данные затруднения, можно сказать, что есть некоторые вычисления,
 принадлежащие миру параметров, которые мы хотим перенести в мир функций,
@@ -414,7 +414,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 возможность наделить каждое из них особыми свойствами.</p>
 
 
-<h3 id="lisp1-2-omega/lisp2/ssect:using"><span class="seq">2.2.3.</span> Используем Lisp<sub>2</sub></h3>
+<h3 id="lisp1-2-omega/lisp2/ssect:using"><span class="wrap"><span class="seq">2.2.3.</span><span class="title">Используем Lisp<sub>2</sub></span></span></h3>
 
 <p>Чтобы полностью определить наш Lisp<sub>2</sub>, остаётся указать начальное функциональное
 окружение и запустить в цикле сам интерпретатор, <code><span class="func">f.evaluate</span></code>. Определение
@@ -457,7 +457,7 @@ Maclisp, заключается в том, что если <code><span class="fu
   (<span class="func">toplevel</span>) )</pre>
 
 
-<h3 id="lisp1-2-omega/lisp2/ssect:enriching"><span class="seq">2.2.4.</span> Расширяем функциональное окружение</h3>
+<h3 id="lisp1-2-omega/lisp2/ssect:enriching"><span class="wrap"><span class="seq">2.2.4.</span><span class="title">Расширяем функциональное окружение</span></span></h3>
 
 <!--\indexR{окружение!как тип данных}-->
 <p>Все окружения — это объекты некоторого абстрактного типа данных. Что мы
@@ -509,7 +509,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 функцию <code><span class="func">square</span></code>.</p>
 
 
-<h2 id="lisp1-2-omega/sect:extensions"><span class="seq">2.3.</span> Другие возможности</h2>
+<h2 id="lisp1-2-omega/sect:extensions"><span class="wrap"><span class="seq">2.3.</span><span class="title">Другие возможности</span></span></h2>
 
 <p>Как только мы заставили вычислитель относиться по-особенному к функциям, на ум
 сразу же приходят другие варианты использования этой возможности. Например, мы
@@ -555,7 +555,7 @@ Maclisp, заключается в том, что если <code><span class="fu
 <span class="see">[см. упр. <a href="#lisp1-2-omega/ex:innovations">2.3</a>]</span></p>
 
 
-<h2 id="lisp1-2-omega/sect:comparison"><span class="seq">2.4.</span> Сравнение Lisp<sub>1</sub> и Lisp<sub>2</sub></h2>
+<h2 id="lisp1-2-omega/sect:comparison"><span class="wrap"><span class="seq">2.4.</span><span class="title">Сравнение Lisp<sub>1</sub> и Lisp<sub>2</sub></span></span></h2>
 
 <p>Подходя к окончанию наших исследований Lisp<sub>1</sub> и Lisp<sub>2</sub>, что мы можем сказать
 в итоге об этих двух подходах?</p>
@@ -712,7 +712,7 @@ Lisp<sub>2</sub> состоит в читабельности. Хотя, кон�
 или макрос. Такое правило действительно облегчает жизнь.</p>
 
 
-<h2 id="lisp1-2-omega/sect:namespaces"><span class="seq">2.5.</span> Пространства имён</h2>
+<h2 id="lisp1-2-omega/sect:namespaces"><span class="wrap"><span class="seq">2.5.</span><span class="title">Пространства имён</span></span></h2>
 
 <!--\indexR{пространства имён}-->
 <p><em class="term">Окружения</em> устанавливают соответствия между именами и объектами. На данный
@@ -786,7 +786,7 @@ ILOG Talk, <span class="logo">EuLisp</span>, <span class="logo">ISLisp</span>) �
 </table>
 
 
-<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars"><span class="seq">2.5.1.</span> Динамические переменные</h3>
+<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars"><span class="wrap"><span class="seq">2.5.1.</span><span class="title">Динамические переменные</span></span></h3>
 
 <!--\indexR{динамические переменные}-->
 <!--\indexR{переменные!динамические}-->
@@ -1014,7 +1014,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
     (<span class="func">thunk</span>) ) )</pre>
 
 
-<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars-cl"><span class="seq">2.5.2.</span> Динамические переменные в <span class="logo">Common Lisp</span></h3>
+<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars-cl"><span class="wrap"><span class="seq">2.5.2.</span><span class="title">Динамические переменные в <span class="logo">Common Lisp</span></span></span></h3>
 
 <!--\indexR{динамические переменные!синтаксис}-->
 <!--\indexR{синтаксис!динамических переменных}-->
@@ -1022,14 +1022,14 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 зрения вычислений, но синтаксис их использования отличается слабо. В нём нет
 формы <code><span class="special">dynamic-let</span></code>, но её можно легко сымитировать:</p>
 
-<table class="nocaption"><tr>
+<table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="special">dynamic-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
-<td><span class="math"><span class="rel">≡</span></span></td>
+<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   (<span class="special">declare</span> (<span class="syntax">special</span> <span class="var">x</span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
-</tr></table>
+</tr></tbody></table>
 
 <p>Отличие состоит в том, что для получения значения динамической переменной <code><span class="var">x</span></code>
 внутри <span class="math"><span class="ord var">β</span></span> нет надобности использовать форму <code><span class="special">dynamic</span></code>, достаточно писать
@@ -1138,7 +1138,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 <span class="math"><span class="rel">→</span></span> <span class="num">8</span></pre>
 
 
-<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars-no-special"><span class="seq">2.5.3.</span> Динамические переменные без специальных форм</h3>
+<h3 id="lisp1-2-omega/namespaces/ssect:dyn-vars-no-special"><span class="wrap"><span class="seq">2.5.3.</span><span class="title">Динамические переменные без специальных форм</span></span></h3>
 
 <p>Сейчас для работы с динамическими переменными используются целых три специальные
 формы. Так как Scheme исповедует минимализм по отношению к количеству
@@ -1277,7 +1277,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 реализацию.</p>
 
 
-<h3 id="lisp1-2-omega/namespaces/ssect:conclusions"><span class="seq">2.5.4.</span> В заключение о пространствах имён</h3>
+<h3 id="lisp1-2-omega/namespaces/ssect:conclusions"><span class="wrap"><span class="seq">2.5.4.</span><span class="title">В заключение о пространствах имён</span></span></h3>
 
 <p>После отступления к динамическим переменным, вернёмся к идее пространств имён
 в общем: специализированные окружения для специализированных объектов. Мы уже
@@ -1347,7 +1347,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 прописанные правила разрешения неоднозначностей.</p>
 
 
-<h2 id="lisp1-2-omega/sect:recursion"><span class="seq">2.6.</span> Рекурсия</h2>
+<h2 id="lisp1-2-omega/sect:recursion"><span class="wrap"><span class="seq">2.6.</span><span class="title">Рекурсия</span></span></h2>
 
 <!--\indexR{рекурсия}-->
 <!--\indexR{рекурсия|seealso{рекурсия}}-->
@@ -1358,7 +1358,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 ими проблемы.</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:simple"><span class="seq">2.6.1.</span> Простая рекурсия</h3>
+<h3 id="lisp1-2-omega/recusion/ssect:simple"><span class="wrap"><span class="seq">2.6.1.</span><span class="title">Простая рекурсия</span></span></h3>
 
 <!--\indexR{рекурсия!простая}-->
 <p>Наверное, наиболее известной простой рекурсивной функцией является факториал,
@@ -1463,7 +1463,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 рекурсия требует глобального окружения.</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:mutual"><span class="seq">2.6.2.</span> Взаимная рекурсия</h3>
+<h3 id="lisp1-2-omega/recusion/ssect:mutual"><span class="wrap"><span class="seq">2.6.2.</span><span class="title">Взаимная рекурсия</span></span></h3>
 
 <!--\indexR{рекурсия!взаимная}-->
 <p>Теперь предположим, что мы хотим определить две взаимно рекурсивные функции.
@@ -1506,7 +1506,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 <p>Но что случится, если нам понадобятся локальные рекурсивные функции?</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:local-lisp2"><span class="seq">2.6.3.</span> Локальная рекурсия в Lisp<sub>2</sub></h3>
+<h3 id="lisp1-2-omega/recusion/ssect:local-lisp2"><span class="wrap"><span class="seq">2.6.3.</span><span class="title">Локальная рекурсия в Lisp<sub>2</sub></span></span></h3>
 
 <!--\indexR{рекурсия!локальная}-->
 <p>Некоторые проблемы, с которыми мы столкнулись при попытках определить <code><span class="func">fact</span></code>
@@ -1566,7 +1566,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 окружения: <code><span class="special">flet</span></code> и <code><span class="special">labels</span></code>.</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:local-lisp1"><span class="seq">2.6.4.</span> Локальная рекурсия в Lisp<sub>1</sub></h3>
+<h3 id="lisp1-2-omega/recusion/ssect:local-lisp1"><span class="wrap"><span class="seq">2.6.4.</span><span class="title">Локальная рекурсия в Lisp<sub>1</sub></span></span></h3>
 
 <!--\indexR{рекурсия!локальная}-->
 <p>Проблема определения локальных рекурсивных функций существует и в Lisp<sub>1</sub>;
@@ -1652,7 +1652,7 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
 слева направо.
 <span class="see">[см. упр. <a href="#lisp1-2-omega/ex:orderless-letrec">2.9</a>]</span></p>
 
-<h4>Уравнения и <code><span class="syntax">letrec</span></code></h4>
+<h4><span class="wrap"><span class="title">Уравнения и <code><span class="syntax">letrec</span></code></span></span></h4>
 
 
 <!--\indexCS{letrec}{и уравнения}-->
@@ -1723,7 +1723,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 существуют.</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:uninitialized"><span class="seq">2.6.5.</span> Объявление неинициализированных привязок</h3>
+<h3 id="lisp1-2-omega/recusion/ssect:uninitialized"><span class="wrap"><span class="seq">2.6.5.</span><span class="title">Объявление неинициализированных привязок</span></span></h3>
 
 <!--\indexR{привязки (bindings)!неинициализированные}-->
 <p>Официально семантика Scheme считает <code><span class="syntax">letrec</span></code> производной формой; то есть
@@ -1789,12 +1789,12 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <code><span class="syntax">letrec</span></code> или
 свободными переменными её тела.</p>
 
-<table class="nocaption"><tbody><tr>
+<table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="syntax">letrec</span> ((<i>имя<sub>1</sub></i> <i>выражение<sub>1</sub></i>)
          ...
          (<i>имя<sub>n</sub></i> <i>выражение<sub>n</sub></i>) )
   <i>тело</i> )</pre></td>
-<td><span class="math"><span class="rel">≡</span></span></td>
+<td><span class="math"><span class="rel">≡</span><span class="ord"/></span></td>
 <td><pre>(<span class="special">let</span> (<i>имя<sub>1</sub></i> ... <i>имя<sub>n</sub></i>)
   (<span class="special">let</span> ((<i>temp<sub>1</sub></i> <i>выражение<sub>1</sub></i>)
         ...
@@ -1851,7 +1851,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 форма <code><span class="syntax">letrec</span></code>, позволяющая определять локальные взаимно рекурсивные функции.</p>
 
 
-<h3 id="lisp1-2-omega/recusion/ssect:no-assignment"><span class="seq">2.6.6.</span> Рекурсия без присваивания</h3>
+<h3 id="lisp1-2-omega/recusion/ssect:no-assignment"><span class="wrap"><span class="seq">2.6.6.</span><span class="title">Рекурсия без присваивания</span></span></h3>
 
 <!--\indexR{язык!чисто функциональный}-->
 <!--\indexR{рекурсия!без присваивания}-->
@@ -1895,7 +1895,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 список в любом удобном порядке.<a class="footref" href="zz_footnotes.xhtml#foot2.10"><sup>10</sup></a></p>
 
 
-<h4><code><span class="syntax">letrec</span></code> и полностью лексическое глобальное окружение</h4>
+<h4><span class="wrap"><span class="title"><code><span class="syntax">letrec</span></code> и полностью лексическое глобальное окружение</span></span></h4>
 
 <p>В гиперстатическом глобальном окружении переменную можно использовать только
 после того, как она была определена. С такими ограничениями мы не можем легко
@@ -1912,7 +1912,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 и <code><span class="var">even?</span></code>, так что определения будут работать и в гиперстатическом окружении.</p>
 
 
-<h4>Парадоксальный комбинатор</h4>
+<h4><span class="wrap"><span class="title">Парадоксальный комбинатор</span></span></h4>
 
 <!--\indexR{комбинаторы!неподвижной точки}-->
 <!--\indexR{комбинаторы!Y@\protect\comb{Y}}-->
@@ -2196,7 +2196,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 самого языка.</p>
 
 
-<h2 id="lisp1-2-omega/sect:conclusions"><span class="seq">2.7.</span> Заключение</h2>
+<h2 id="lisp1-2-omega/sect:conclusions"><span class="wrap"><span class="seq">2.7.</span><span class="title">Заключение</span></span></h2>
 
 <p>В этой главе мы прошлись по наиболее заметным из вопросов, на которые сообщество
 Лиспа за последние несколько десятков лет так и не смогло дать однозначного
@@ -2237,7 +2237,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 вопрос подробнее в следующих главах.</p>
 
 
-<h2 id="lisp1-2-omega/sect:exercises"><span class="seq">2.8.</span> Упражнения</h2>
+<h2 id="lisp1-2-omega/sect:exercises"><span class="wrap"><span class="seq">2.8.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="lisp1-2-omega/ex:funcall">Упражнение <span class="seq">2.1</span></h5>
 <p>Следующее выражение записано на <span class="logo">Common Lisp</span>. Как бы вы его перевели на Scheme?</p>
@@ -2349,7 +2349,7 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <p class="noindent">то что вернёт <code>((<span class="func">hyper-fact</span> <span class="var">hyper-fact</span>) <span class="num">5</span>)</code>?</p>
 
 
-<h2 id="lisp1-2-omega/sect:recommended-reading">Рекомендуемая литература</h2>
+<h2 id="lisp1-2-omega/sect:recommended-reading"><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Кроме упомянутой ранее работы по λ-исчислению <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">SS78a</a>]</span> также имеет
 смысл почитать про анализ функций в <span class="cite">[<a href="z1_bibliography.xhtml#mos70">Mos70</a>]</span> и сравнительный анализ Lisp<sub>1</sub>

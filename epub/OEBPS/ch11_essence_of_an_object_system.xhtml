@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:objects"><span class="seq">Глава 11.</span> Квинтэссенция объектной системы</h1>
+<h1 id="chapter:objects"><span class="wrap"><span class="seq">Глава 11.</span><span class="title">Квинтэссенция объектной системы</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">О</span>бъекты!</span>
 Ах, что бы мы без них делали? В этой
@@ -156,7 +156,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
 <span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/actors/ssect:review">3.2.1</a>]</span></p>
 
 
-<h2 id="objects/sect:foundation"><span class="seq">11.1.</span> Основы</h2>
+<h2 id="objects/sect:foundation"><span class="wrap"><span class="seq">11.1.</span><span class="title">Основы</span></span></h2>
 
 <!--\indexR{представление!объектов \protect\Meroonet}-->
 <!--\indexR{классы!идентификаторы}-->
@@ -244,7 +244,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
         <span class="hash">#f</span> ) ) )</pre>
 
 
-<h2 id="objects/sect:repr-obj"><span class="seq">11.2.</span> Представление объектов</h2>
+<h2 id="objects/sect:repr-obj"><span class="wrap"><span class="seq">11.2.</span><span class="title">Представление объектов</span></span></h2>
 
 <!--\indexR{представление!объектов \protect\Meroonet}-->
 <!--\indexR{индексированные поля}-->
@@ -367,7 +367,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
 </table>
 
 
-<h2 id="objects/sect:def-class"><span class="seq">11.3.</span> Определение классов</h2>
+<h2 id="objects/sect:def-class"><span class="wrap"><span class="seq">11.3.</span><span class="title">Определение классов</span></span></h2>
 
 <!--\indexC{define-class}-->
 <p>Классы определяются с помощью формы <code><span class="syntax">define-class</span></code>, принимающей три
@@ -602,7 +602,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
        ,(<span class="func">Class-generate-related-names</span> <span class="var">class</span>) ) ) )</pre>
 
 
-<h4 id="objects/def-class/sssect:other">Прочие затруднения</h4>
+<h4 id="objects/def-class/sssect:other"><span class="wrap"><span class="title">Прочие затруднения</span></span></h4>
 
 <!--\indexCS{define-class}{порядок определений}-->
 <p>Продолжая иллюстрировать трудности использования макросов в реальных проектах
@@ -648,7 +648,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
 неудовлетворённых зависимостей между определениями.</p>
 
 
-<h2 id="objects/sect:repr-class"><span class="seq">11.4.</span> Представление классов</h2>
+<h2 id="objects/sect:repr-class"><span class="wrap"><span class="seq">11.4.</span><span class="title">Представление классов</span></span></h2>
 
 <!--\indexR{представление!классов \protect\Meroonet}-->
 <!--\indexR{классы}-->
@@ -816,7 +816,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
   (<span class="func">vector-ref</span> <span class="var">field</span> <span class="num">2</span>) )</pre>
 
 
-<h2 id="objects/sect:accomp"><span class="seq">11.5.</span> Сопутствующие функции</h2>
+<h2 id="objects/sect:accomp"><span class="wrap"><span class="seq">11.5.</span><span class="title">Сопутствующие функции</span></span></h2>
 
 <p>Формирование имён этих функций значительно облегчит следующее вспомогательное
 определение:</p>
@@ -872,7 +872,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
       ',(<span class="func">Class-name</span> <span class="var">class</span>) ) ) )</pre>
 
 
-<h3 id="objects/accomp/ssect:pred"><span class="seq">11.5.1.</span> Предикаты</h3>
+<h3 id="objects/accomp/ssect:pred"><span class="wrap"><span class="seq">11.5.1.</span><span class="title">Предикаты</span></span></h3>
 
 <!--\indexR{сопутствующие функции!предикаты}-->
 <!--\indexR{предикаты}-->
@@ -939,7 +939,7 @@ CLOS (<span class="logo">Common Lisp</span> Object System) и ΤΕΛΟΣ
 <span class="logo">Meroonet</span>.</p>
 
 
-<h3 id="objects/accomp/ssect:allocator"><span class="seq">11.5.2.</span> Аллокатор без инициализации</h3>
+<h3 id="objects/accomp/ssect:allocator"><span class="wrap"><span class="seq">11.5.2.</span><span class="title">Аллокатор без инициализации</span></span></h3>
 
 <!--\indexR{сопутствующие функции!аллокаторы}-->
 <!--\indexR{аллокаторы}-->
@@ -1113,7 +1113,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
 </ol>
 
 
-<h3 id="objects/accomp/ssect:maker"><span class="seq">11.5.3.</span> Аллокатор с инициализацией</h3>
+<h3 id="objects/accomp/ssect:maker"><span class="wrap"><span class="seq">11.5.3.</span><span class="title">Аллокатор с инициализацией</span></span></h3>
 
 <!--\indexR{сопутствующие функции!конструкторы}-->
 <!--\indexR{конструкторы}-->
@@ -1218,7 +1218,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
 <code>(<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> ...)</code>.</p>
 
 
-<h3 id="objects/accomp/ssect:access"><span class="seq">11.5.4.</span> Аксессоры</h3>
+<h3 id="objects/accomp/ssect:access"><span class="wrap"><span class="seq">11.5.4.</span><span class="title">Аксессоры</span></span></h3>
 
 <!--\indexR{сопутствующие функции!аксессоры}-->
 <!--\indexR{аксессоры}-->
@@ -1264,7 +1264,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
              (<span class="func">search</span> (<span class="func">cdr</span> <span class="var">fields</span>)) ) ) ) )</pre>
 
 
-<h3 id="objects/accomp/ssect:read"><span class="seq">11.5.5.</span> Чтение полей</h3>
+<h3 id="objects/accomp/ssect:read"><span class="wrap"><span class="seq">11.5.5.</span><span class="title">Чтение полей</span></span></h3>
 
 <!--\indexR{специализация!аксессоров}-->
 <p>Так как поля бывают двух видов: индексированные и обычные, то и аксессоры должны
@@ -1355,7 +1355,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
              (<span class="func">vector-ref</span> <span class="var">o</span> (<span class="func">+</span> <span class="var">offset</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">i</span>))) ) ) ) ) )</pre>
 
 
-<h3 id="objects/accomp/ssect:write"><span class="seq">11.5.6.</span> Запись в поля</h3>
+<h3 id="objects/accomp/ssect:write"><span class="wrap"><span class="seq">11.5.6.</span><span class="title">Запись в поля</span></span></h3>
 
 <!--\indexC{putprop}-->
 <!--\indexR{соглашения именования!сеттеров}-->
@@ -1411,7 +1411,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
 читаются имена в этом случае естественнее.</p>
 
 
-<h3 id="objects/accomp/ssect:len"><span class="seq">11.5.7.</span> Длина полей</h3>
+<h3 id="objects/accomp/ssect:len"><span class="wrap"><span class="seq">11.5.7.</span><span class="title">Длина полей</span></span></h3>
 
 <p>Каждое индексированное поле получает особую функцию, позволяющую узнать его
 длину в конкретном объекте. Устроены эти функции так же, как и остальные
@@ -1443,7 +1443,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
     (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>) ) )</pre>
 
 
-<h2 id="objects/sect:create-class"><span class="seq">11.6.</span> Создание классов</h2>
+<h2 id="objects/sect:create-class"><span class="wrap"><span class="seq">11.6.</span><span class="title">Создание классов</span></span></h2>
 
 <p>Форма <code><span class="syntax">define-class</span></code> на самом деле не создаёт объект, представляющий
 определяемый класс. Она перепоручает эту работу функции <code><span class="func">register-class</span></code>.
@@ -1529,7 +1529,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
         <span class="hash">#t</span> ) ) )</pre>
 
 
-<h2 id="objects/sect:predef-accomp"><span class="seq">11.7.</span> Предопределённые сопутствующие функции</h2>
+<h2 id="objects/sect:predef-accomp"><span class="wrap"><span class="seq">11.7.</span><span class="title">Предопределённые сопутствующие функции</span></span></h2>
 
 <!--\indexR{раскрутка (bootstrapping)}-->
 <!--\indexR{сопутствующие функции}-->
@@ -1589,7 +1589,7 @@ error, core dumped"</code>, так и молча выдать какой-ниб�
 неизменными.</p>
 
 
-<h2 id="objects/sect:generics"><span class="seq">11.8.</span> Обобщённые функции</h2>
+<h2 id="objects/sect:generics"><span class="wrap"><span class="seq">11.8.</span><span class="title">Обобщённые функции</span></span></h2>
 
 <!--\indexR{обобщённые функции}-->
 <!--\indexR{обмен сообщениями}-->
@@ -1863,7 +1863,7 @@ table). Алгоритм вызова обобщённых функций теп
       (<span class="special">if</span> (<span class="func">null?</span> <span class="var">variables</span>) <span class="var">variables</span> (<span class="func">list</span> <span class="var">variables</span>)) ) )</pre>
 
 
-<h4 id="objects/generics/sssect:class-def">Ещё немного об определениях классов</h4>
+<h4 id="objects/generics/sssect:class-def"><span class="wrap"><span class="title">Ещё немного об определениях классов</span></span></h4>
 
 <!--\indexR{наследование!методов}-->
 <p>Как вы помните, при определении класса вызывается функция <code><span class="func">update-generics</span></code>.
@@ -1886,7 +1886,7 @@ table). Алгоритм вызова обобщённых функций теп
      <span class="var">*generics*</span> ) ) )</pre>
 
 
-<h2 id="objects/sect:method"><span class="seq">11.9.</span> Методы</h2>
+<h2 id="objects/sect:method"><span class="wrap"><span class="seq">11.9.</span><span class="title">Методы</span></span></h2>
 
 <!--\indexR{методы}-->
 <p>Методы определяются с помощью формы <code><span class="syntax">define-method</span></code>. Её синтаксис схож
@@ -2014,7 +2014,7 @@ table). Алгоритм вызова обобщённых функций теп
     <span class="hash">#t</span> ) )</pre>
 
 
-<h2 id="objects/sect:conclusions"><span class="seq">11.10.</span> Заключение</h2>
+<h2 id="objects/sect:conclusions"><span class="wrap"><span class="seq">11.10.</span><span class="title">Заключение</span></span></h2>
 
 <p>В рассмотренных программах много чего можно улучшить как в плане повышения
 быстродействия, так и для улучшений рефлексивных качеств объектной системы.
@@ -2026,7 +2026,7 @@ table). Алгоритм вызова обобщённых функций теп
 концепцию объектов непосредственно, делая их базовыми понятиями языка.</p>
 
 
-<h2 id="objects/sect:exercises"><span class="seq">11.11.</span> Упражнения</h2>
+<h2 id="objects/sect:exercises"><span class="wrap"><span class="seq">11.11.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="objects/ex:precise-predicate">Упражнение <span class="seq">11.1</span></h5>
 <p>Улучшите определение предиката <code><span class="func">Object?</span></code>, чтобы он чётче различал объекты и
@@ -2068,7 +2068,7 @@ table). Алгоритм вызова обобщённых функций теп
 определять функцию <code><span class="func">next-method?</span></code>.</p>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Диалект T <span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>]</span> предлагает иной подход к объектам в Scheme. Если вам
 понравилась идея метаобъектов, то сперва стоит взглянуть на вот эту статью

@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:fast"><span class="seq">Глава 6.</span> Быстрая интерпретация</h1>
+<h1 id="chapter:fast"><span class="wrap"><span class="seq">Глава 6.</span><span class="title">Быстрая интерпретация</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">Д</span>енотационный</span>
 интерпретатор из предыдущей
@@ -36,7 +36,7 @@
 некоторые их возможности ради удобства и простоты реализации.</p>
 
 
-<h2 id="fast/sect:fast"><span class="seq">6.1.</span> Быстрый интерпретатор</h2>
+<h2 id="fast/sect:fast"><span class="wrap"><span class="seq">6.1.</span><span class="title">Быстрый интерпретатор</span></span></h2>
 
 <!--\indexR{память}-->
 <p>Ради эффективности предположим, что язык реализации содержит некоторый
@@ -54,7 +54,7 @@
 Отныне там будут лежать исключительно привязки, упакованные в записи активаций.</p>
 
 
-<h3 id="fast/fast/ssect:migration"><span class="seq">6.1.1.</span> Миграция денотаций</h3>
+<h3 id="fast/fast/ssect:migration"><span class="wrap"><span class="seq">6.1.1.</span><span class="title">Миграция денотаций</span></span></h3>
 
 <!--\indexR{миграция!кода}-->
 <!--\indexE{lambda@$\lambda$-hoisting}-->
@@ -104,7 +104,7 @@
          <span class="var">s</span> ) ) ) )</pre>
 
 
-<h3 id="fast/fast/ssect:activations"><span class="seq">6.1.2.</span> Записи активаций</h3>
+<h3 id="fast/fast/ssect:activations"><span class="wrap"><span class="seq">6.1.2.</span><span class="title">Записи активаций</span></span></h3>
 
 <p>Очевидно, что оптимизировав потребление памяти, мы сможем существенно повысить
 скорость интерпретации. Одной из наиболее прожорливых частей денотационного
@@ -262,7 +262,7 @@
 при поиске) по окружению, так как окружения представляются цепочками замыканий
 вида <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">u</span> <i>x</i>) <i>y</i> (<i>f</i> <span class="var">u</span>)))</code>.</p>
 
-<h3 id="fast/fast/ssect:begin"><span class="seq">6.1.3.</span> Интерпретатор: начало</h3>
+<h3 id="fast/fast/ssect:begin"><span class="wrap"><span class="seq">6.1.3.</span><span class="title">Интерпретатор: начало</span></span></h3>
 
 <p>Сейчас мы уже знаем достаточно для того, чтобы набросать ядро интерпретатора и
 реализовать несколько специальных форм. Ожидаемо, начнём мы работу с функции
@@ -377,7 +377,7 @@
 вызова функций.</p>
 
 
-<h4 id="fast/fast/begin/ssect:application">Аппликация</h4>
+<h4 id="fast/fast/begin/ssect:application"><span class="wrap"><span class="title">Аппликация</span></span></h4>
 
 <!--\indexR{протокол вызова функций}-->
 <!--\indexR{функции!протокол вызова}-->
@@ -437,9 +437,9 @@
   (<span class="special">set!</span> <span class="var">f</span> (<span class="syntax">let</span> ((<span class="var">g</span> ((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> () <span class="var">a</span>))
                     (<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">nk</span>) (<span class="special">set!</span> <span class="var">k</span> <span class="var">nk</span>) (<span class="func">nk</span> <span class="num">1</span>))) )))
             (<span class="func">cons</span> <span class="var">g</span> <span class="var">f</span>) ))
-  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">1</span>)</code></span></span></span>
+  <span class="comment">;; <span class="math"><span class="ord normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="ord normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">1</span>)</code></span></span></span>
   (<span class="special">if</span> (<span class="func">null?</span> (<span class="func">cdr</span> <span class="var">f</span>)) (<span class="func">k</span> <span class="num">2</span>))
-  <span class="comment">;; <span class="math"><span class="normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">2</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">1</span>)</code></span></span></span>
+  <span class="comment">;; <span class="math"><span class="ord normal"><code><span class="var">f</span></code></span><span class="rel">≈</span><span class="ord normal"><code>(<span class="func">list</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">2</span> <span class="math"><span class="ord var">λ</span><span class="ord">.</span></span><span class="num">1</span>)</code></span></span></span>
   (<span class="func">list</span> ((<span class="func">car</span> <span class="var">f</span>)) ((<span class="func">cadr</span> <span class="var">f</span>))) )</pre>
 
 <p>Дело в том, что <code><span class="func">call/cc</span></code> захватывает
@@ -520,7 +520,7 @@
                (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )) ) ) )</pre>
 
 
-<h3 id="fast/fast/ssest:classify"><span class="seq">6.1.4.</span> Классы переменных</h3>
+<h3 id="fast/fast/ssest:classify"><span class="wrap"><span class="seq">6.1.4.</span><span class="title">Классы переменных</span></span></h3>
 
 <!--\indexR{переменные!классификация}-->
 <p>Предыдущими определениями поддерживаются только локальные переменные, то есть
@@ -698,7 +698,7 @@
         (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )</pre>
 
 
-<h4 id="fast/fast/classify/sssect:static-err">Статические ошибки</h4>
+<h4 id="fast/fast/classify/sssect:static-err"><span class="wrap"><span class="title">Статические ошибки</span></span></h4>
 
 <!--\indexR{ошибки!статические}-->
 <!--\indexR{ошибки!динамические}-->
@@ -762,7 +762,7 @@
 <span class="see">[см. упр. <a href="ch07_compilation.xhtml#compilation/ex:unchecked-ref">7.4</a>]</span></p>
 
 
-<h3 id="fast/fast/ssest:starting"><span class="seq">6.1.5.</span> Запускаем интерпретатор</h3>
+<h3 id="fast/fast/ssest:starting"><span class="wrap"><span class="seq">6.1.5.</span><span class="title">Запускаем интерпретатор</span></span></h3>
 
 <p>Интерпретатор читает выражение, обрабатывает его, затем исполняет и повторяет
 всё сначала. Таким образом, мы получаем компилирующий REPL.</p>
@@ -812,7 +812,7 @@
           (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">call/cc</span>) ) ) ) )</pre>
 
 
-<h3 id="fast/fast/ssest:varargs"><span class="seq">6.1.6.</span> Функции с переменной арностью</h3>
+<h3 id="fast/fast/ssest:varargs"><span class="wrap"><span class="seq">6.1.6.</span><span class="title">Функции с переменной арностью</span></span></h3>
 
 <!--\indexR{функции!с переменной арностью}-->
 <!--\indexR{арность!переменная}-->
@@ -873,7 +873,7 @@
      (<span class="syntax">else</span> (<span class="func">meaning-dotted-abstraction</span> (<span class="func">reverse</span> <span class="var">regular</span>) <span class="var">n*</span> <span class="var">e+</span> <span class="var">r</span>)) ) ) )</pre>
 
 
-<h3 id="fast/fast/ssect:reducible"><span class="seq">6.1.7.</span> Приводимые выражения</h3>
+<h3 id="fast/fast/ssect:reducible"><span class="wrap"><span class="seq">6.1.7.</span><span class="title">Приводимые выражения</span></span></h3>
 
 <!--\indexR{редексы}-->
 <!--\indexR{приводимые!формы}-->
@@ -977,7 +977,7 @@
         (<span class="func">k</span> <span class="var">v*</span>) ) ) ) )</pre>
 
 
-<h3 id="fast/fast/ssect:integrating"><span class="seq">6.1.8.</span> Интеграция примитивов</h3>
+<h3 id="fast/fast/ssect:integrating"><span class="wrap"><span class="seq">6.1.8.</span><span class="title">Интеграция примитивов</span></span></h3>
 
 <!--\indexR{примитивы}-->
 <!--\indexR{функции!примитивы}-->
@@ -1166,7 +1166,7 @@
 с фиксированной арностью, принимающих больше трёх аргументов!</p>
 
 
-<h3 id="fast/fast/ssect:variations"><span class="seq">6.1.9.</span> Вариации на тему окружений</h3>
+<h3 id="fast/fast/ssect:variations"><span class="wrap"><span class="seq">6.1.9.</span><span class="title">Вариации на тему окружений</span></span></h3>
 
 <!--\indexR{свободные переменные!варианты реализации}-->
 <!--\indexR{дисплеи}-->
@@ -1195,7 +1195,7 @@
 </div>
 
 
-<h4 id="fast/fast/variations/ssect:flat">Плоские окружения</h4>
+<h4 id="fast/fast/variations/ssect:flat"><span class="wrap"><span class="title">Плоские окружения</span></span></h4>
 
 <!--\indexR{плоские окружения}-->
 <!--\indexR{окружение!плоское}-->
@@ -1220,7 +1220,7 @@
 интерпретатора с небольшой предобработкой вроде нашего.</p>
 
 
-<h4 id="fast/fast/variations/ssect:global-define">Определение глобальных переменных</h4>
+<h4 id="fast/fast/variations/ssect:global-define"><span class="wrap"><span class="title">Определение глобальных переменных</span></span></h4>
 
 <!--\indexR{переменные!глобальные}-->
 <p>Наш интерпретатор считает, что переменная глобальная, если она находится
@@ -1396,7 +1396,7 @@
 инициализированных переменных.</p>
 
 
-<h3 id="fast/fast/ssect:conclusions"><span class="seq">6.1.10.</span> Выводы: интерпретатор с миграцией вычислений</h3>
+<h3 id="fast/fast/ssect:conclusions"><span class="wrap"><span class="seq">6.1.10.</span><span class="title">Выводы: интерпретатор с миграцией вычислений</span></span></h3>
 
 <p>Довольно сложно точно измерить достигнутое увеличение эффективности, но оно
 составляет порядка 10–50 раз. Предварительная обработка выполняется
@@ -1427,7 +1427,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 уточнить или изменить, не говоря уже о более сложных вещах вроде рефлексии.</p>
 
 
-<h2 id="fast/sect:reject"><span class="seq">6.2.</span> Отказ от окружений</h2>
+<h2 id="fast/sect:reject"><span class="wrap"><span class="seq">6.2.</span><span class="title">Отказ от окружений</span></span></h2>
 
 <!--\indexE{env@\protect<code><span class="func">*env*</span></code>}-->
 <p>Каждое выражение вычисляется в так или иначе уникальном окружении, у нас ему
@@ -1555,7 +1555,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
   (<span class="func">toplevel</span>) )</pre>
 
 
-<h3 id="fast/reject/ssect:ref"><span class="seq">6.2.1.</span> Обращения к переменным</h3>
+<h3 id="fast/reject/ssect:ref"><span class="wrap"><span class="seq">6.2.1.</span><span class="title">Обращения к переменным</span></span></h3>
 
 <p>Для определения значения переменной теперь используется регистр <code><span class="var">*env*</span></code>. Мы
 не будем приводить определение присваивания, так как изменения в нём вполне
@@ -1592,7 +1592,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
         (<span class="func">static-wrong</span> <span class="string">"No such variable"</span> <span class="var">n</span>) ) ) )</pre>
 
 
-<h3 id="fast/reject/ssect:alternatives"><span class="seq">6.2.2.</span> Ветвление</h3>
+<h3 id="fast/reject/ssect:alternatives"><span class="wrap"><span class="seq">6.2.2.</span><span class="title">Ветвление</span></span></h3>
 
 <p>Цитирование мы тоже пропустим, так как ему без разницы, где находиться. Что
 касается условного оператора, то вы помните, что условие должно вычисляться
@@ -1609,7 +1609,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
             ((<span class="special">if</span> <span class="var">v</span> <span class="var">m2</span> <span class="var">m3</span>) <span class="var">k</span>) )) ) ) )</pre>
 
 
-<h3 id="fast/reject/ssect:sequence"><span class="seq">6.2.3.</span> Последовательность</h3>
+<h3 id="fast/reject/ssect:sequence"><span class="wrap"><span class="seq">6.2.3.</span><span class="title">Последовательность</span></span></h3>
 
 <p>Последнее выражение в последовательности должно сохранять окружение, если вся
 последовательность должна это делать. Остальные обязаны его сохранять и
@@ -1637,7 +1637,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
             (<span class="func">m+</span> <span class="var">k</span>) )) ) ) )</pre>
 
 
-<h3 id="fast/reject/ssect:abstraction"><span class="seq">6.2.4.</span> Абстракция</h3>
+<h3 id="fast/reject/ssect:abstraction"><span class="wrap"><span class="seq">6.2.4.</span><span class="title">Абстракция</span></span></h3>
 
 <!--\indexR{абстракция}-->
 <!--\indexR{замыкания (closures)}-->
@@ -1662,7 +1662,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
                  (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) )) ) ) ) )</pre>
 
 
-<h3 id="fast/reject/ssect:application"><span class="seq">6.2.5.</span> Аппликация</h3>
+<h3 id="fast/reject/ssect:application"><span class="wrap"><span class="seq">6.2.5.</span><span class="title">Аппликация</span></span></h3>
 
 <!--\indexR{аппликация}-->
 <p>Единственная хоть сколь-нибудь сложная вещь — это аппликация, так как именно
@@ -1713,7 +1713,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 регистр, и оптимизацией хвостовых вызовов. Начальное состояние глобального
 окружения остаётся неизменным.</p>
 
-<h3 id="fast/reject/ssect:conclusions"><span class="seq">6.2.6.</span> Выводы: интерпретатор с окружением в регистре</h3>
+<h3 id="fast/reject/ssect:conclusions"><span class="wrap"><span class="seq">6.2.6.</span><span class="title">Выводы: интерпретатор с окружением в регистре</span></span></h3>
 
 <p>Такое преобразование не всегда является полезным. Например, если мы захотим
 добавить в язык параллелизм, то возникают соответствующие проблемы
@@ -1728,7 +1728,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 вопросов, которые пригодятся в следующем интерпретаторе.</p>
 
 
-<h2 id="fast/sect:dilute"><span class="seq">6.3.</span> Укрощение продолжений</h2>
+<h2 id="fast/sect:dilute"><span class="wrap"><span class="seq">6.3.</span><span class="title">Укрощение продолжений</span></span></h2>
 
 <!--\indexR{продолжения (continuations)}-->
 <!--\indexC{call/cc}-->
@@ -1762,7 +1762,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 приводимые формы и т. д.) останутся, разве что будут переписаны на новый лад.</p>
 
 
-<h3 id="fast/dilute/ssect:closures"><span class="seq">6.3.1.</span> Замыкания</h3>
+<h3 id="fast/dilute/ssect:closures"><span class="wrap"><span class="seq">6.3.1.</span><span class="title">Замыкания</span></span></h3>
 
 <!--\indexR{представление!замыканий}-->
 <!--\indexR{замыкания (closures)!явное представление}-->
@@ -1788,7 +1788,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 <code><span class="func">invoke</span></code>.</p>
 
 
-<h3 id="fast/dilute/ssect:pretreater"><span class="seq">6.3.2.</span> Предобработчик</h3>
+<h3 id="fast/dilute/ssect:pretreater"><span class="wrap"><span class="seq">6.3.2.</span><span class="title">Предобработчик</span></span></h3>
 
 <!--\indexC{meaning}-->
 <!--\indexR{шитый код}-->
@@ -1805,7 +1805,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 в разделе <a href="#fast/reject/src:meaning">6.2</a>.</p>
 
 
-<h3 id="fast/dilute/ssect:quoting"><span class="seq">6.3.3.</span> Цитирование</h3>
+<h3 id="fast/dilute/ssect:quoting"><span class="wrap"><span class="seq">6.3.3.</span><span class="title">Цитирование</span></span></h3>
 
 <p>Цитаты остаются неизменными, но теперь их определение более читабельно благодаря
 комбинатору <code><span class="func">CONSTANT</span></code>:</p>
@@ -1819,7 +1819,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
   (<span class="special">lambda</span> () <span class="var">value</span>) )</pre>
 
 
-<h3 id="fast/dilute/ssect:refs"><span class="seq">6.3.4.</span> Обращения к переменным</h3>
+<h3 id="fast/dilute/ssect:refs"><span class="wrap"><span class="seq">6.3.4.</span><span class="title">Обращения к переменным</span></span></h3>
 
 <p>Обработка переменных сводится к определению их класса и вызову соответствующих
 функций-аксессоров. Данные аксессоры являются комбинаторами, что повышает
@@ -1884,7 +1884,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 сможем выдать и её имя, а не только непонятный адрес.</p>
 
 
-<h3 id="fast/dilute/ssect:conditional"><span class="seq">6.3.5.</span> Ветвление</h3>
+<h3 id="fast/dilute/ssect:conditional"><span class="wrap"><span class="seq">6.3.5.</span><span class="title">Ветвление</span></span></h3>
 
 <p>Условный оператор тоже становится гораздо яснее благодаря комбинатору
 <code><span class="func">ALTERNATIVE</span></code>, принимающему результаты
@@ -1903,7 +1903,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
     (<span class="special">if</span> (<span class="func">m1</span>) (<span class="func">m2</span>) (<span class="func">m3</span>))) )</pre>
 
 
-<h3 id="fast/dilute/ssect:assignment"><span class="seq">6.3.6.</span> Присваивание</h3>
+<h3 id="fast/dilute/ssect:assignment"><span class="wrap"><span class="seq">6.3.6.</span><span class="title">Присваивание</span></span></h3>
 
 <p>Присваивание нового значения переменной напоминает получение её текущего
 значения, за исключением того, что здесь ещё надо вычислить дополнительную
@@ -1941,7 +1941,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
   (<span class="special">lambda</span> () (<span class="func">global-update!</span> <span class="var">i</span> (<span class="func">m</span>))) )</pre>
 
 
-<h3 id="fast/dilute/ssect:sequence"><span class="seq">6.3.7.</span> Последовательность</h3>
+<h3 id="fast/dilute/ssect:sequence"><span class="wrap"><span class="seq">6.3.7.</span><span class="title">Последовательность</span></span></h3>
 
 <p>Последовательное вычисление форм выражается с помощью комбинатора <code><span class="func">SEQUENCE</span></code>,
 являющегося бинарным аналогом <code><span class="special">begin</span></code>.</p>
@@ -1967,7 +1967,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
   (<span class="special">lambda</span> () (<span class="func">m</span>) (<span class="func">m+</span>)) )</pre>
 
 
-<h3 id="fast/dilute/ssect:abstraction"><span class="seq">6.3.8.</span> Абстракция</h3>
+<h3 id="fast/dilute/ssect:abstraction"><span class="wrap"><span class="seq">6.3.8.</span><span class="title">Абстракция</span></span></h3>
 
 <p>Замыкания создают комбинаторы <code><span class="func">FIX-CLOSURE</span></code> и <code><span class="func">NARY-CLOSURE</span></code>. Различаются
 они предикатами, проверяющими арность, а также подходами к формированию списка
@@ -2022,7 +2022,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
       (<span class="func">make-closure</span> <span class="var">the-function</span> <span class="var">*env*</span>) ) ) )</pre>
 
 
-<h3 id="fast/dilute/ssect:application"><span class="seq">6.3.9.</span> Аппликация</h3>
+<h3 id="fast/dilute/ssect:application"><span class="wrap"><span class="seq">6.3.9.</span><span class="title">Аппликация</span></span></h3>
 
 <p>Осталось разобраться только с вызовами функций. <code><span class="func">meaning-application</span></code>
 анализирует форму аппликации и умеет определять приводимые формы, обращения
@@ -2101,7 +2101,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
     (<span class="special">lambda</span> ()
       (<span class="func">allocate-activation-frame</span> <span class="var">size+1</span>) ) ) )</pre>
 
-<h3 id="fast/dilute/ssect:reducible"><span class="seq">6.3.10.</span> Приводимые формы</h3>
+<h3 id="fast/dilute/ssect:reducible"><span class="wrap"><span class="seq">6.3.10.</span><span class="title">Приводимые формы</span></span></h3>
 
 <p>Для обработки явно указанных в аппликациях <code><span class="special">lambda</span></code>-форм потребуется четыре
 новых комбинатора. <code><span class="func">CONS-ARGUMENT</span></code> собирает избыточные аргументы в список.
@@ -2175,7 +2175,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 предыдущую.</p>
 
 
-<h3 id="fast/dilute/ssect:primitives"><span class="seq">6.3.11.</span> Примитивы</h3>
+<h3 id="fast/dilute/ssect:primitives"><span class="wrap"><span class="seq">6.3.11.</span><span class="title">Примитивы</span></span></h3>
 
 <p>Осталось рассмотреть последний случай (по порядку, отнюдь не по важности): когда
 функциональным термом аппликации является имя глобальной неизменяемой
@@ -2219,7 +2219,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 установленный порядок.</p>
 
 
-<h3 id="fast/dilute/ssect:starting"><span class="seq">6.3.12.</span> Запускаем интерпретатор</h3>
+<h3 id="fast/dilute/ssect:starting"><span class="wrap"><span class="seq">6.3.12.</span><span class="title">Запускаем интерпретатор</span></span></h3>
 
 <p>Так как продолжения теперь присутствуют в интерпретаторе неявно, то структура
 определения примитивов слегка изменилась. Здесь показан только новый вариант
@@ -2250,7 +2250,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
     (<span class="func">toplevel</span>) )
   (<span class="func">toplevel</span>) )</pre>
 
-<h3 id="fast/dilute/ssect:call/cc"><span class="seq">6.3.13.</span> Функция <code><span class="func">call/cc</span></code></h3>
+<h3 id="fast/dilute/ssect:call/cc"><span class="wrap"><span class="seq">6.3.13.</span><span class="title">Функция <code><span class="func">call/cc</span></code></span></span></h3>
 
 <p><code><span class="func">call/cc</span></code> в этом интерпретаторе является магией, так что для её определения
 необходима <code><span class="func">call/cc</span></code> из библиотеки языка реализации. Это возвращает нас
@@ -2282,7 +2282,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
       <span class="var">sr.init</span> ) ) )</pre>
 
 
-<h3 id="fast/dilute/ssect:apply"><span class="seq">6.3.14.</span> Функция <code><span class="func">apply</span></code></h3>
+<h3 id="fast/dilute/ssect:apply"><span class="wrap"><span class="seq">6.3.14.</span><span class="title">Функция <code><span class="func">apply</span></code></span></span></h3>
 
 <p>Выходя за пределы обычного круга обсуждаемых вопросов, давайте определим функцию
 <code><span class="func">apply</span></code>. Её всегда довольно непросто написать, так как она сильно зависит от
@@ -2332,7 +2332,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 в точечном аргументе.</p>
 
 
-<h3 id="fast/dilute/ssect:conclusions"><span class="seq">6.3.15.</span> Выводы: интерпретатор без продолжений</h3>
+<h3 id="fast/dilute/ssect:conclusions"><span class="wrap"><span class="seq">6.3.15.</span><span class="title">Выводы: интерпретатор без продолжений</span></span></h3>
 
 <p>Новый интерпретатор приблизительно от двух до четырёх раз быстрее предыдущего,
 в основном из-за отсутствия постоянно создаваемых замыканий с продолжениями.
@@ -2364,7 +2364,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 <span class="see">[см. упр. <a href="#fast/ex:disassemble">6.3</a>]</span>.</p>
 
 
-<h2 id="fast/sect:conclusions"><span class="seq">6.4.</span> Заключение</h2>
+<h2 id="fast/sect:conclusions"><span class="wrap"><span class="seq">6.4.</span><span class="title">Заключение</span></span></h2>
 
 <p>На первый взгляд, вся эта глава и её три интерпретатора — это огромный шаг
 назад, лишивший нас всего приобретённого в первых четырёх. Действительно, память
@@ -2393,7 +2393,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 фундамент для нашего дальнейшего продвижения.</p>
 
 
-<h2 id="fast/sect:exercises"><span class="seq">6.5.</span> Упражнения</h2>
+<h2 id="fast/sect:exercises"><span class="wrap"><span class="seq">6.5.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="fast/ex:symbol-table">Упражнение <span class="seq">6.1</span></h5>
 <p>Доработайте комбинатор <code><span class="func">CHECKED-GLOBAL-REF</span></code>,
@@ -2453,7 +2453,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 <span class="see">[см. раздел <a href="#fast/dilute/ssect:pretreater">6.3.2</a>]</span></p>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Последний рассмотренный интерпретатор вдохновлён статьёй <span class="cite">[<a href="z1_bibliography.xhtml#fl87">FL87</a>]</span>. Идея
 перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.xhtml#cli84">Cli84</a>]</span>. Если вам

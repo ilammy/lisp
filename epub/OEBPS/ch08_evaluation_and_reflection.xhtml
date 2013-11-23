@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:reflection"><span class="seq">Глава 8.</span> Вычисления и рефлексия</h1>
+<h1 id="chapter:reflection"><span class="wrap"><span class="seq">Глава 8.</span><span class="title">Вычисления и рефлексия</span></span></h1>
 
 <!--\indexC{eval}-->
 <!--\indexR{вычислитель}-->
@@ -53,7 +53,7 @@
 <p>Вскоре мы покажем, что это уравнение далеко от однозначности.</p>
 
 
-<h2 id="reflection/sect:prog-and-val"><span class="seq">8.1.</span> Программы и значения</h2>
+<h2 id="reflection/sect:prog-and-val"><span class="wrap"><span class="seq">8.1.</span><span class="title">Программы и значения</span></span></h2>
 
 <!--\indexR{вычисления!динамические}-->
 <p>Давайте попробуем добавить <code><span class="func">eval</span></code> в самый первый
@@ -376,7 +376,7 @@
 в обозначаемые объекты.</p>
 
 
-<h2 id="reflection/sect:eval-as-spec-form"><span class="seq">8.2.</span> <code><span class="special">eval</span></code> как специальная форма</h2>
+<h2 id="reflection/sect:eval-as-spec-form"><span class="wrap"><span class="seq">8.2.</span><span class="title"><code><span class="special">eval</span></code> как специальная форма</span></span></h2>
 
 <!--\indexR{взаимозаменимость}-->
 <!--\indexCS{eval}{как специальная форма}-->
@@ -517,7 +517,7 @@
 весь исходный код вместе с таблицей символов.</p>
 
 
-<h3 id="reflection/eval-as-spec-form/ssect:global"><span class="seq">8.2.1.</span> Глобальные переменные</h3>
+<h3 id="reflection/eval-as-spec-form/ssect:global"><span class="wrap"><span class="seq">8.2.1.</span><span class="title">Глобальные переменные</span></span></h3>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>}-->
 <p>Согласно контракту (<a href="#reflection/eq:eval-idemp-context">2</a>), выражение
@@ -546,7 +546,7 @@
 <code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code> по поведению.</p>
 
 
-<h2 id="reflection/sect:eval-as-func"><span class="seq">8.3.</span> <code><span class="func">eval</span></code> как функция</h2>
+<h2 id="reflection/sect:eval-as-func"><span class="wrap"><span class="seq">8.3.</span><span class="title"><code><span class="func">eval</span></code> как функция</span></span></h2>
 
 <!--\indexCS{eval}{как примитив}-->
 <p>Специальная форма <code><span class="special">eval</span></code> вычисляет свой
@@ -634,7 +634,7 @@
 
 <p>Чаще всего <code><span class="func">eval</span></code>, реализуемая лисп-системами, является именно <code><span class="func">eval/at</span></code>.</p>
 
-<h2 id="reflection/sect:cost"><span class="seq">8.4.</span> Цена <code><span class="func">eval</span></code></h2>
+<h2 id="reflection/sect:cost"><span class="wrap"><span class="seq">8.4.</span><span class="title">Цена <code><span class="func">eval</span></code></span></span></h2>
 
 <!--\indexCS{eval}{стоимость}-->
 <p>Довольно сложно оценить суммарную стоимость <code><span class="func">eval</span></code>.
@@ -698,7 +698,7 @@
 в стандартной библиотеке — это его серьёзное преимущество.</p>
 
 
-<h2 id="reflection/sect:interpreted-eval"><span class="seq">8.5.</span> Интерпретируемая <code><span class="func">eval</span></code></h2>
+<h2 id="reflection/sect:interpreted-eval"><span class="wrap"><span class="seq">8.5.</span><span class="title">Интерпретируемая <code><span class="func">eval</span></code></span></span></h2>
 
 <!--\indexCS{eval}{интерпретируемая}-->
 <!--\indexR{интерпретатор!встроенный в язык}-->
@@ -713,7 +713,7 @@
 проблемы иного рода.</p>
 
 
-<h3 id="reflection/interpreted-eval/ssect:interchange"><span class="seq">8.5.1.</span> Взаимозаменимость представлений</h3>
+<h3 id="reflection/interpreted-eval/ssect:interchange"><span class="wrap"><span class="seq">8.5.1.</span><span class="title">Взаимозаменимость представлений</span></span></h3>
 
 <!--\indexR{протокол вызова функций!при явных вычислениях}-->
 <!--\indexR{взаимозаменимость}-->
@@ -758,7 +758,7 @@
 мы обойдём стороной.</p>
 
 
-<h3 id="reflection/interpreted-eval/ssect:global"><span class="seq">8.5.2.</span> Глобальное окружение</h3>
+<h3 id="reflection/interpreted-eval/ssect:global"><span class="wrap"><span class="seq">8.5.2.</span><span class="title">Глобальное окружение</span></span></h3>
 
 <!--\indexR{глобальное окружение!динамическое расширение}-->
 <p>Вторая проблема касается различия представлений глобального окружения. Каждый из
@@ -772,7 +772,7 @@
        (<span class="func">eval</span> '(<span class="special">set!</span> <span class="var">bar</span> (<span class="func">+</span> <span class="var">foo</span> <span class="var">foo</span>)))
        <span class="var">bar</span> )                          <span class="math"><span class="rel">→</span></span> <span class="num">256</span></pre>
 
-<h4 id="reflection/interpreted-eval/global/sssect:autonomous">Автономные скомпилированные приложения</h4>
+<h4 id="reflection/interpreted-eval/global/sssect:autonomous"><span class="wrap"><span class="title">Автономные скомпилированные приложения</span></span></h4>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>!в автономных приложениях}-->
 <!--\indexR{автономные приложения}-->
@@ -809,7 +809,7 @@
 переменных, которые существовали в момент компиляции.</p>
 
 
-<h4 id="reflection/interpreted-eval/global/sssect:interactive">Интерактивная система</h4>
+<h4 id="reflection/interpreted-eval/global/sssect:interactive"><span class="wrap"><span class="title">Интерактивная система</span></span></h4>
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>!в интерактивной сессии}-->
 <p>Если же работа с лисп-системой происходит с помощью REPL, то и система,
@@ -828,7 +828,7 @@
 <p>Есть несколько вариантов реализации подобного сотрудничества.</p>
 
 
-<h4 id="reflection/interpreted-eval/global/sssect:symbols">Символы</h4>
+<h4 id="reflection/interpreted-eval/global/sssect:symbols"><span class="wrap"><span class="title">Символы</span></span></h4>
 
 <!--\indexR{символы!связь с переменными}-->
 <p>Традиционное решение заключается в использовании символов. Одним из столпов
@@ -932,7 +932,7 @@ P-списков, но нередко в этой роли можно встре
 неявно вычислить значение формы <code>(<span class="special">global</span> '<span class="var">foo</span>)</code>.</p>
 
 
-<h4 id="reflection/interpreted-eval/global/sssect:first-class">Полноценные окружения</h4>
+<h4 id="reflection/interpreted-eval/global/sssect:first-class"><span class="wrap"><span class="title">Полноценные окружения</span></span></h4>
 
 <p>Другой вариант решения проблемы окружений состоит в определении <code><span class="func">eval</span></code> как
 функции двух переменных: выражения, которое необходимо вычислить, и окружения,
@@ -949,7 +949,7 @@ P-списков, но нередко в этой роли можно встре
 вопросов, которые мы сейчас и рассмотрим.</p>
 
 
-<h2 id="reflection/sect:reify-env"><span class="seq">8.6.</span> Реификация окружений</h2>
+<h2 id="reflection/sect:reify-env"><span class="wrap"><span class="seq">8.6.</span><span class="title">Реификация окружений</span></span></h2>
 
 <!--\indexR{контекст вычислений}-->
 <!--\indexR{окружение!как тип данных}-->
@@ -981,7 +981,7 @@ P-списков, но нередко в этой роли можно встре
 языка.</p>
 
 
-<h3 id="reflection/reify-env/ssect:export"><span class="seq">8.6.1.</span>Специальная форма <code><span class="special">export</span></code></h3>
+<h3 id="reflection/reify-env/ssect:export"><span class="wrap"><span class="seq">8.6.1.</span><span class="title">Специальная форма <code><span class="special">export</span></code></span></span></h3>
 
 <!--\indexR{специальные формы!export@\protect<code><span class="func">export</span></code>}-->
 <!--\indexC{export}-->
@@ -1129,7 +1129,7 @@ P-списков, но нередко в этой роли можно встре
             <span class="hash">'()</span> ) ) ) )</pre>
 
 
-<h3 id="reflection/reify-env/ssect:eval/b"><span class="seq">8.6.2.</span> Функция <code><span class="func">eval/b</span></code></h3>
+<h3 id="reflection/reify-env/ssect:eval/b"><span class="wrap"><span class="seq">8.6.2.</span><span class="title">Функция <code><span class="func">eval/b</span></code></span></span></h3>
 
 <p>На этом сходства <code><span class="func">eval/b</span></code> с <code><span class="special">eval/ce</span></code> не заканчиваются. Они похожи ещё
 в том, как получают параметры и возвращают значения. Будет полезным сравнить
@@ -1166,7 +1166,7 @@ P-списков, но нередко в этой роли можно встре
     (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">compile-on-the-fly</span> <span class="var">v</span> <span class="var">r</span>)) ) )</pre>
 
 
-<h3 id="reflection/reify-env/ssect:enrich"><span class="seq">8.6.3.</span> Расширяем окружения</h3>
+<h3 id="reflection/reify-env/ssect:enrich"><span class="wrap"><span class="seq">8.6.3.</span><span class="title">Расширяем окружения</span></span></h3>
 
 <!--\indexC{letrec}-->
 <!--\indexC{enrich}-->
@@ -1314,7 +1314,7 @@ P-списков, но нередко в этой роли можно встре
     (<span class="func">signal-exception</span> <span class="hash">#t</span> (<span class="func">list</span> <span class="string">"Uninitialized local variable"</span>)) ) )</pre>
 
 
-<h3 id="reflection/reify-env/ssect:closed"><span class="seq">8.6.4.</span> Анатомия замыканий</h3>
+<h3 id="reflection/reify-env/ssect:closed"><span class="wrap"><span class="seq">8.6.4.</span><span class="title">Анатомия замыканий</span></span></h3>
 
 <!--\indexC{procedure->environment}-->
 <!--\indexC{procedure->definition}-->
@@ -1496,7 +1496,7 @@ P-списков, но нередко в этой роли можно встре
 целиком и полностью окружение, используемое при создании замыкания.</p>
 
 
-<h3 id="reflection/reify-env/ssect:import"><span class="seq">8.6.5.</span> Специальная форма <code><span class="special">import</span></code></h3>
+<h3 id="reflection/reify-env/ssect:import"><span class="wrap"><span class="seq">8.6.5.</span><span class="title">Специальная форма <code><span class="special">import</span></code></span></span></h3>
 
 <!--\indexR{динамические вычисления!неизменяемый код}-->
 <p>Часто форма, передаваемая динамическому вычислителю, является по сути
@@ -1772,7 +1772,7 @@ P-списков, но нередко в этой роли можно встре
 нормальной области видимости и изначального имени.</p>
 
 
-<h3 id="reflection/reify-env/ssect:simplified"><span class="seq">8.6.6.</span> Упрощённый доступ к окружениям</h3>
+<h3 id="reflection/reify-env/ssect:simplified"><span class="wrap"><span class="seq">8.6.6.</span><span class="title">Упрощённый доступ к окружениям</span></span></h3>
 
 <!--\indexR{окружение!реификация}-->
 <!--\indexR{окружение!операции!чтение}-->
@@ -1860,7 +1860,7 @@ P-списков, но нередко в этой роли можно встре
 измениться и ответ <code><span class="func">variable-defined?</span></code>.</p>
 
 
-<h2 id="reflection/sect:reflective-interpreter"><span class="seq">8.7</span> Рефлексивный интерпретатор</h2>
+<h2 id="reflection/sect:reflective-interpreter"><span class="wrap"><span class="seq">8.7</span><span class="title">Рефлексивный интерпретатор</span></span></h2>
 
 <!--\indexR{интерпретатор!рефлексивный}-->
 <!--\indexR{рефлексивный интерпретатор}-->
@@ -2203,7 +2203,7 @@ P-списков, но нередко в этой роли можно встре
 искусственного интеллекта.</p>
 
 
-<h4 id="reflection/reflective-interpreter/sssect:define">Форма <code><span class="special">define</span></code></h4>
+<h4 id="reflection/reflective-interpreter/sssect:define"><span class="wrap"><span class="title">Форма <code><span class="special">define</span></code></span></span></h4>
 
 <!--\indexC{define}-->
 <!--\indexR{синтаксис!define@\protect<code><span class="func">define</span></code>}-->
@@ -2237,7 +2237,7 @@ P-списков, но нередко в этой роли можно встре
 рекурсивные определения.</p>
 
 
-<h2 id="reflection/sect:conclusions"><span class="seq">8.8.</span> Заключение</h2>
+<h2 id="reflection/sect:conclusions"><span class="wrap"><span class="seq">8.8.</span><span class="title">Заключение</span></span></h2>
 
 <p>В этой главе были рассмотрены различные аспекты использования явного
 вычислителя, касающиеся как обычных функций, так и специальных форм.
@@ -2253,7 +2253,7 @@ P-списков, но нередко в этой роли можно встре
 открывается широчайшее поле для экспериментов.</p>
 
 
-<h2 id="reflection/sect:exercises"><span class="seq">8.9.</span> Упражнения</h2>
+<h2 id="reflection/sect:exercises"><span class="wrap"><span class="seq">8.9.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="reflection/ex:no-cycles">Упражнение <span class="seq">8.1</span></h5>
 <p>Почему функция <code><span class="func">variables-list?</span></code> ничего не предпринимает во избежание
@@ -2283,7 +2283,7 @@ P-списков, но нередко в этой роли можно встре
 <p>Переведите определение рефлексивного интерпретатора на стандартный Scheme.</p>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Статья <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dR87</a>]</span> отлично показывает, насколько всё же Лисп рефлексивен.
 В <span class="cite">[<a href="z1_bibliography.xhtml#mul92">Mul92</a>]</span> рассматривается алгебраическая семантика его рефлексивных

@@ -213,12 +213,13 @@
 разрешения возможных конфликтов имён.</p>
 
 <!--\indexC{begin}-->
-<table><tr>
+<table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="special">begin</span> <i>выражение</i><sub>1</sub> <i>выражение</i><sub>2</sub>)</pre></td>
-<td><span class="math"><span class="rel">≡</span></span></td>
+<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
 <td><pre>((<span class="special">lambda</span> (<span class="var">void</span> <span class="var">other</span>) (<span class="func">other</span>))
  <i>выражение</i><sub>1</sub>
- (<span class="special">lambda</span> () <i>выражение</i><sub>2</sub>) )</pre></td></tr></table>
+ (<span class="special">lambda</span> () <i>выражение</i><sub>2</sub>) )</pre></td>
+</tr></tbody></table>
 
 
 <h4>Упражнение <a class="seq" href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/ex:funcall">2.1</a></h4>
@@ -507,33 +508,33 @@
 
 
 <!--\indexC{the-current-continuation}-->
-<p>Эту форму можно было назвать <code>(<span class="func">the-current-continuation</span>)</code>, так как она
+<p style="line-height: 1.5em">Эту форму можно было назвать <code>(<span class="func">the-current-continuation</span>)</code>, так как она
 возвращает собственное продолжение. Давайте разберёмся, как у неё это
 получается. Для понятности будем нумеровать используемые продолжения и функции,
 а <code><span class="func">call/cc</span></code> сократим до просто <code><span class="func">cc</span></code>. Итак, вычисляемое выражение:
-<code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code>.
-<i>k</i><sub><span class="normal">0</span></sub> — это продолжение данных вычислений.
+<code><sub><i>k</i><sub>0</sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code>.
+<i>k</i><sub>0</sub> — это продолжение данных вычислений.
 Определение <code><span class="func">call/cc</span></code>:</p>
 
-<pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="ord var">φ</span></span>)  <span class="math"><span class="rel">→</span></span>  <sub><i>k</i></sub>(<span class="math"><span class="ord var">φ</span></span> <i>k</i>)</pre>
+<pre><sub><i>k</i></sub>(<span class="func">call/cc</span> <span class="math"><span class="ord var">φ</span></span>) <span class="math"><span class="rel">→</span></span> <sub><i>k</i></sub>(<span class="math"><span class="ord var">φ</span></span> <i>k</i>)</pre>
 
-<p class="noindent">Следовательно, <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code> становится
-<code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="func">cc</span><sub>2</sub> <i>k</i><sub><span class="normal">0</span></sub>)</code>, которое в свою очередь переходит
-в <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">0</span></sub> <i>k</i><sub><span class="normal">0</span></sub>)</code>, которое, очевидно, возвращает <i>k</i><sub><span class="normal">0</span></sub>.</p>
+<p class="noindent"  style="line-height: 1.5em">Следовательно, <code><sub><i>k</i><sub>0</sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>)</code> становится
+<code><sub><i>k</i><sub>0</sub></sub>(<span class="func">cc</span><sub>2</sub> <i>k</i><sub>0</sub>)</code>, которое в свою очередь переходит
+в <code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>0</sub> <i>k</i><sub>0</sub>)</code>, которое, очевидно, возвращает <i>k</i><sub>0</sub>.</p>
 
 
 <h4>Упражнение <a class="seq" href="ch03_escape_and_return.xhtml#escape/ex:cc-cc-cc-cc">3.2</a></h4>
 
-<p>Используя нотацию предыдущего упражнения, запишем: <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>((<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>) (<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>. Для простоты будем считать, что термы аппликаций
+<p style="line-height: 1.5em">Используя нотацию предыдущего упражнения, запишем: <code><sub><i>k</i><sub>0</sub></sub>((<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>) (<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>. Для простоты будем считать, что термы аппликаций
 вычисляются слева направо. Тогда исходное выражение эквивалентно
-<code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<sub><i>k</i><sub><span class="normal">1</span></sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>) (<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>, где <i>k</i><sub><span class="normal">1</span></sub> равно
-<span class="math"><span class="ord var">λ</span><span class="ord var">φ</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<span class="math"><span class="ord var">φ</span></span> <sub><i>k</i><sub><span class="normal">2</span></sub></sub>(<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code></span></span>, а <i>k</i><sub><span class="normal">2</span></sub> это
-<span class="math"><span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">1</span></sub> <span class="math"><span class="ord var">ε</span></span>)</code></span></span>. Вычисление первого терма
-приводит к <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">1</span></sub> <i>k</i><sub><span class="normal">2</span></sub>)</code>, а вычисление этого —
-к <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">2</span></sub> <sub><i>k</i><sub><span class="normal">2</span></sub><sup>′</sup></sub>(<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>, где <i>k</i><sub><span class="normal">2</span></sub><sup>′</sup> равно
-<span class="math"><span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">2</span></sub> <span class="math"><span class="ord var">ε</span></span>)</code></span></span>. Эта форма вычисляется
-в <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">1</span></sub> <i>k</i><sub><span class="normal">2</span></sub><sup>′</sup>)</code>, что впоследствии приводит
-к <code><sub><i>k</i><sub><span class="normal">0</span></sub></sub>(<i>k</i><sub><span class="normal">1</span></sub> <i>k</i><sub><span class="normal">2</span></sub><sup>″</sup>)</code>, и так далее. Как видите, вычисления
+<code><sub><i>k</i><sub>0</sub></sub>(<sub><i>k</i><sub>1</sub></sub>(<span class="func">cc</span><sub>1</sub> <span class="var">cc</span><sub>2</sub>) (<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>, где <i>k</i><sub>1</sub> равно
+<span class="math"><span class="ord var">λ</span><span class="ord var">φ</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub>0</sub></sub>(<span class="math"><span class="ord var">φ</span></span> <sub><i>k</i><sub>2</sub></sub>(<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code></span></span>, а <i>k</i><sub>2</sub> это
+<span class="math"><span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>1</sub> <span class="math"><span class="ord var">ε</span></span>)</code></span></span>. Вычисление первого терма
+приводит к <code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>1</sub> <i>k</i><sub>2</sub>)</code>, а вычисление этого —
+к <code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>2</sub> <sub><i>k</i><sub>3</sub></sub>(<span class="func">cc</span><sub>3</sub> <span class="var">cc</span><sub>4</sub>))</code>, где <i>k</i><sub>3</sub> равно
+<span class="math"><span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="ord normal"><code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>2</sub> <span class="math"><span class="ord var">ε</span></span>)</code></span></span>. Эта форма вычисляется
+в <code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>1</sub> <i>k</i><sub>3</sub>)</code>, что впоследствии приводит
+к <code><sub><i>k</i><sub>0</sub></sub>(<i>k</i><sub>1</sub> <i>k</i><sub>4</sub>)</code>, и так далее. Как видите, вычисления
 зацикливаются. Можно доказать, что результат не зависит от порядка вычисления
 термов аппликаций. Вполне вероятно, что это самая короткая программа на Лиспе,
 выражающая бесконечный цикл.</p>
@@ -1003,14 +1004,14 @@
 
 <h4>Упражнение <a class="seq" href="ch05_denotational_semantics.xhtml#denotational/ex:label">5.2</a></h4>
 
-<div class="denotation math"><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">label</span> <span class="math"><span class="ord var">ν</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="rel">=</span><span class="open">(</span><span class="ord comb">Y</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="open">(</span><span class="ord cal">L</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span><span class="open">[</span><span class="ord var">ν</span><span class="rel">→</span><span class="ord var">ε</span><span class="close">]</span><span class="close">)</span><span class="close">)</span></div>
+<div class="denotation math"><span class="ord cal">𝓛</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">label</span> <span class="math"><span class="ord var">ν</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="rel">=</span><span class="open">(</span><span class="ord comb">Y</span> <span class="ord var">λ</span><span class="ord var">ε</span><span class="ord">.</span><span class="open">(</span><span class="ord cal">𝓛</span><span class="open sem-brace">[[</span><span class="ord var">π</span><span class="close sem-brace">]]</span> <span class="ord var">ρ</span><span class="open">[</span><span class="ord var">ν</span><span class="rel">→</span><span class="ord var">ε</span><span class="close">]</span><span class="close">)</span><span class="close">)</span></div>
 
 
 <h4>Упражнение <a class="seq" href="ch05_denotational_semantics.xhtml#denotational/ex:dynamic-fallback">5.3</a></h4>
 
-<div class="denotation math"><span class="ord cal">E</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">γ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">let</span><span class="ord var">ε</span><span class="rel">=</span><span class="open">(</span><span class="ord var">δ</span> <span class="ord var">ν</span><span class="close">)</span>
+<div class="denotation math"><span class="ord cal">𝓔</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">γ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">let</span><span class="ord var">ε</span><span class="rel">=</span><span class="open">(</span><span class="ord var">δ</span> <span class="ord var">ν</span><span class="close">)</span>
 <span/><span class="rel syntax">in</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">if</span><span class="ord var">ε</span><span class="rel">=</span><span class="ord var">no-dynamic-binding</span>
-<span/><span class="rel syntax">then</span><div class="valign math"><span class="rel"/><span class="rel syntax">let</span><span class="ord var">α</span><span class="rel">=</span><span class="open">(</span><span class="ord var">γ</span> <span class="ord var">ν</span><span class="close">)</span>
+<span/><span class="rel syntax">then</span><span class="ord"/><div class="valign math"><span class="rel syntax">let</span><span class="ord var">α</span><span class="rel">=</span><span class="open">(</span><span class="ord var">γ</span> <span class="ord var">ν</span><span class="close">)</span>
 <span/><span class="rel syntax">in</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">if</span><span class="ord var">α</span><span class="rel">=</span><span class="ord var">no-global-binding</span>
 <span/><span class="rel syntax">then</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"No such variable"</span></code></span>
 <span/><span class="rel syntax">else</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">σ</span> <span class="ord var">α</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>

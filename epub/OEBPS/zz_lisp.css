@@ -136,6 +136,7 @@ code {
 
 pre {
     font-size: 9pt;
+    white-space: pre-wrap;
 }
 
 /******************************************************************************/
@@ -156,6 +157,25 @@ h1 .seq {
     font-variant: small-caps;
     font-weight: normal;
     margin-bottom: 15pt;
+}
+
+h2 .wrap,
+h3 .wrap,
+h4 .wrap {
+    display: table-row;
+}
+
+h2 .wrap .seq,
+h3 .wrap .seq,
+h4 .wrap .seq {
+    display: table-cell;
+    padding-right: 0.5em;
+}
+
+h2 .wrap .title,
+h3 .wrap .title,
+h4 .wrap .title {
+    display: table-cell;
 }
 
 h2 {
@@ -197,7 +217,7 @@ p {
 }
 
 pre {
-    margin: 0.4em 1.25em;
+    margin: 0.4em 0 0.4em 1.25em;
 }
 
 table {
@@ -298,6 +318,7 @@ pre span.dialect {
     font-family: 'DejaVu Serif', serif;
     font-size: 10pt;
     float: right;
+    margin-right: 1.25em;
 }
 
 pre span.llap {
@@ -317,6 +338,12 @@ span.boxed {
     text-transform:uppercase
 }
 
+code sub sub {
+    display: inline-block;
+    text-indent: 0;
+    width: 0.25em;
+}
+
 /******************************************************************************/
 
 /* Generic */
@@ -328,6 +355,10 @@ a {
 i {
     font-family: 'DejaVu Serif', serif;
     font-style: italic;
+}
+
+b {
+    font-weight: bold;
 }
 
 em {
@@ -435,7 +466,7 @@ div.snippet {
 }
 
 div.snippet.numbered {
-    margin: 0.4em 1.25em 0.4em 0;
+    margin: 0.4em 0;
 }
 
 div.snippet span.title {
@@ -465,13 +496,17 @@ table.numbered-source td.lines {
 }
 
 table.numbered-source span.lineno {
-    color: red;
+    color: gray;
     font-family: 'DejaVu Sans Condensed', sans-serif;
     font-size: 7pt;
 }
 
 table.numbered-source .lines pre {
     border: none;
+}
+
+table.numbered-source pre {
+    white-space: pre;
 }
 
 /******************************************************************************/
@@ -486,6 +521,10 @@ table.numbered-source .lines pre {
 
 .math .ord {
     font-style: normal;
+}
+
+.math .cal {
+font-family: 'DejaVu Serif';
 }
 
 .math .num {
@@ -545,6 +584,11 @@ span.quad-stub {
 .math sub, .math sup {
     font-size: 8pt;
     font-style: normal;
+}
+
+.math sub sub, .math sub sup,
+.math sup sub, .math sup sup {
+    font-size: 6pt;
 }
 
 .math sub {
@@ -632,6 +676,11 @@ blockquote.equation span.eqno {
     margin-right: -0.1em;
 }
 
+/* fuck you cascading */
+.math code > span.var    { font-style: normal; }
+.math code > span.syntax { font-weight: normal; }
+
+
 /* TeX math spacing rules */
 
 .math .ord   + .op    { margin-left: 0.1666em; }
@@ -655,6 +704,24 @@ blockquote.equation span.eqno {
 .math .punct + .open  { margin-left: 0.1666em; }
 .math .punct + .close { margin-left: 0.1666em; }
 .math .punct + .punct { margin-left: 0.1666em; }
+
+.math sub .ord   + .binop, .math sup .ord   + .binop,
+.math sub .ord   + .rel  , .math sup .ord   + .rel  ,
+.math sub .op    + .rel  , .math sup .op    + .rel  ,
+.math sub .binop + .ord  , .math sup .binop + .ord  ,
+.math sub .binop + .op   , .math sup .binop + .op   ,
+.math sub .binop + .open , .math sup .binop + .open ,
+.math sub .rel   + .ord  , .math sup .rel   + .ord  ,
+.math sub .rel   + .op   , .math sup .rel   + .op   ,
+.math sub .rel   + .open , .math sup .rel   + .open ,
+.math sub .close + .binop, .math sup .close + .binop,
+.math sub .close + .rel  , .math sup .close + .rel  ,
+.math sub .punct + .ord  , .math sup .punct + .ord  ,
+.math sub .punct + .op   , .math sup .punct + .op   ,
+.math sub .punct + .rel  , .math sup .punct + .rel  ,
+.math sub .punct + .open , .math sup .punct + .open ,
+.math sub .punct + .close, .math sup .punct + .close,
+.math sub .punct + .punct, .math sup .punct + .punct  { margin-left: 0; }
 
 /******************************************************************************/
 
@@ -686,7 +753,7 @@ table#bibliography td { padding-bottom: 1em; }
     text-indent: 1.25em;
 }
 
-.footnote .num {
+.footnote > p > .num {
     display: inline-block;
     margin-left: 1em;
     text-align: right;
@@ -727,6 +794,14 @@ table.term-def { margin: 0.8em auto; }
 table.term-def td.left { text-align: right; }
 table.term-def td.right { text-align: left;
                           padding-left: 1em; }
+
+table.code {
+    margin: 0.4em auto;
+}
+
+table.code pre {
+    margin: 0;
+}
 
 table#ch3-eval-stack { margin: 0.8em auto; }
 table#ch3-eval-stack td * { font-size: 9pt; }
@@ -804,6 +879,8 @@ table.instruction-list tbody {
 table.disasm td.col1 { padding-right: 1.05em; }
 table.disasm td.col2 { border-left: 1px solid black;
                        padding-left: 0.95em; }
+
+table.disasm code { font-size: 9pt; }
 
 table#ch7-arity-probs thead {
     border-bottom: 1px solid black;

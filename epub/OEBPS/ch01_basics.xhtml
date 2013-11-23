@@ -9,7 +9,7 @@
 
 <body>
 
-<h1 id="chapter:basics"><span class="seq">Глава 1.</span> Основы интерпретации</h1>
+<h1 id="chapter:basics"><span class="wrap"><span class="seq">Глава 1.</span><span class="title">Основы интерпретации</span></span></h1>
 
 <p class="noindent"><span class="initial"><span class="letter">В</span> этой главе</span> описывается базовый интерпретатор, идеи
 которого проходят красной нитью через большую часть этой книги. Он намеренно
@@ -91,7 +91,7 @@
 высокоуровневого Лиспа с помощью одного лишь λ-исчисления.</p>
 
 
-<h2 id="basics/sect:evaluation"><span class="seq">1.1.</span> Вычисления</h2>
+<h2 id="basics/sect:evaluation"><span class="wrap"><span class="seq">1.1.</span><span class="title">Вычисления</span></span></h2>
 
 <!--\indexC{eval}-->
 <!--\indexR{вычислитель}-->
@@ -177,7 +177,7 @@
 </ul>
 
 
-<h2 id="basics/sect:basic-evaluator"><span class="seq">1.2.</span> Базовый вычислитель</h2>
+<h2 id="basics/sect:basic-evaluator"><span class="wrap"><span class="seq">1.2.</span><span class="title">Базовый вычислитель</span></span></h2>
 
 <!--\indexR{переменные!свободные}-->
 <!--\indexR{переменные!связанные}-->
@@ -198,7 +198,7 @@
 <pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>) ... )</pre>
 
 
-<h2 id="basics/sect:evaluating-atoms"><span class="seq">1.3.</span> Вычисляем атомы</h2>
+<h2 id="basics/sect:evaluating-atoms"><span class="wrap"><span class="seq">1.3.</span><span class="title">Вычисляем атомы</span></span></h2>
 
 <p>Одна из ключевых особенностей Лиспа состоит в том, что программы записываются
 теми же конструкциями, что и остальные данные. Но так как любая запись
@@ -339,7 +339,7 @@ error: core dumped"</span></code> и умирают. Другие останав
 что следует делать в случае ошибки.</p>
 
 
-<h2 id="basics/sect:evaluating-forms"><span class="seq">1.4.</span> Вычисляем формы</h2>
+<h2 id="basics/sect:evaluating-forms"><span class="wrap"><span class="seq">1.4.</span><span class="title">Вычисляем формы</span></span></h2>
 
 <!--\indexR{специальные формы}-->
 <!--\indexR{форма!специальная}-->
@@ -405,7 +405,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 интерпретируемые программы синтаксически корректными.</p>
 
 
-<h3 id="basics/evaluating-forms/ssect:quoting"><span class="seq">1.4.1.</span> Цитирование</h3>
+<h3 id="basics/evaluating-forms/ssect:quoting"><span class="wrap"><span class="seq">1.4.1.</span><span class="title">Цитирование</span></span></h3>
 
 <!--\indexC{quote}-->
 <!--\indexE{M-выражения}-->
@@ -446,7 +446,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 определиться, какой именно смысл придавать цитированию.</p>
 
 
-<h3 id="basics/evaluating-forms/ssect:alternatives"><span class="seq">1.4.2.</span> Ветвление</h3>
+<h3 id="basics/evaluating-forms/ssect:alternatives"><span class="wrap"><span class="seq">1.4.2.</span><span class="title">Ветвление</span></span></h3>
 
 <!--\indexC{if}-->
 <p>Вспомним, как работает условный оператор <code><span class="special">if</span></code>: эта форма вычисляет свой
@@ -510,7 +510,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 используется в качестве <em class="term">лжи</em>.</p>
 
 
-<h3 id="basics/evaluating-forms/ssect:sequence"><span class="seq">1.4.3.</span> Последовательность</h3>
+<h3 id="basics/evaluating-forms/ssect:sequence"><span class="wrap"><span class="seq">1.4.3.</span><span class="title">Последовательность</span></span></h3>
 
 
 <!--\indexC{begin}-->
@@ -616,7 +616,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 исполнением тела (передача аргументов <em class="term">по значению</em>).</p>
 
 
-<h3 id="basics/evaluating-forms/ssect:assignment"><span class="seq">1.4.4.</span> Присваивание</h3>
+<h3 id="basics/evaluating-forms/ssect:assignment"><span class="wrap"><span class="seq">1.4.4.</span><span class="title">Присваивание</span></span></h3>
 
 <!--\indexC{set"!}-->
 <!--\indexR{присваивание}-->
@@ -638,7 +638,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 Пока только запомните, что стандартом оно не определено.</p>
 
 
-<h3 id="basics/evaluating-forms/ssect:abstraction"><span class="seq">1.4.5.</span> Абстракция</h3>
+<h3 id="basics/evaluating-forms/ssect:abstraction"><span class="wrap"><span class="seq">1.4.5.</span><span class="title">Абстракция</span></span></h3>
 
 <!--\indexR{абстракция}-->
 <p>Функции (также называемые <em class="term">процедурами</em> в Scheme) являются результатом
@@ -651,7 +651,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
       ((<span class="var">lambda</span>) (<span class="func">make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>)) ... ) ...</pre>
 
 
-<h3 id="basics/evaluating-forms/ssect:application"><span class="seq">1.4.6.</span> Аппликация</h3>
+<h3 id="basics/evaluating-forms/ssect:application"><span class="wrap"><span class="seq">1.4.6.</span><span class="title">Аппликация</span></span></h3>
 
 <!--\indexR{аппликация}-->
 <!--\indexR{комбинация}-->
@@ -685,7 +685,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 взаимоотношения функций и окружений.)</p>
 
 
-<h4>Ещё немного об <code><span class="func">evaluate</span></code></h4>
+<h4><span class="wrap"><span class="title">Ещё немного об <code><span class="func">evaluate</span></code></span></span></h4>
 
 <!--\indexR{порядок вычислений!термов аппликации}-->
 <p>Рассмотренное описание языка является более-менее точным. Мы не разобрали лишь
@@ -712,7 +712,7 @@ href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет бо�
 описания от языка, используемого для определения.</p>
 
 
-<h2 id="basics/sect:repr-the-env"><span class="seq">1.5.</span> Представление окружений</h2>
+<h2 id="basics/sect:repr-the-env"><span class="wrap"><span class="seq">1.5.</span><span class="title">Представление окружений</span></span></h2>
 
 <!--\indexE{A-список}-->
 <!--\indexR{А-список}-->
@@ -859,7 +859,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 или значений больше, чем переменных, или наоборот.</p>
 
 
-<h2 id="basics/sect:representing-functions"><span class="seq">1.6.</span> Представление функций</h2>
+<h2 id="basics/sect:representing-functions"><span class="wrap"><span class="seq">1.6.</span><span class="title">Представление функций</span></span></h2>
 
 <p>Наверное, проще всего представлять функции с помощью функций. Естественно, это
 не тавтология, и читать следует так: «функции определяемого языка проще всего
@@ -937,7 +937,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 отлавливать.</p>
 
 
-<h3>Окружение исполнения функций</h3>
+<h3><span class="wrap"><span class="title">Окружение исполнения функций</span></span></h3>
 
 <!--\indexR{окружение!исполнения тела функции}-->
 <p>Применение функции сводится к вычислению выражений, составляющих её тело,
@@ -948,7 +948,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 в программах они будут набраны <i>курсивом</i>.</p>
 
 
-<h4>Минимальное окружение</h4>
+<h4><span class="wrap"><span class="title">Минимальное окружение</span></span></h4>
 
 <p>Для начала рассмотрим минимально возможное окружение:</p>
 
@@ -972,7 +972,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 <code><span class="func">car</span></code> или <code><span class="func">cons</span></code>.</p>
 
 
-<h4>Улучшенное окружение</h4>
+<h4><span class="wrap"><span class="title">Улучшенное окружение</span></span></h4>
 
 <p>Хорошо, попробуем улучшить наше определение следующим образом:</p>
 
@@ -1017,7 +1017,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 в этом окружении нет необходимой переменной <code><span class="var">a</span></code>!</p>
 
 
-<h4>Улучшенное окружение (вторая попытка)</h4>
+<h4><span class="wrap"><span class="title">Улучшенное окружение (вторая попытка)</span></span></h4>
 
 <p>Так как нам надо видеть переменную <code><span class="var">a</span></code> во внутренней функции, то достаточно
 будет передать <code><span class="func">invoke</span></code> текущее окружение, а она в свою очередь передаст его
@@ -1072,7 +1072,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 оттуда после окончания вычислений.</p>
 
 
-<h4>Исправляем проблему</h4>
+<h4><span class="wrap"><span class="title">Исправляем проблему</span></span></h4>
 
 <p>Но даже при таком определении всё ещё есть проблемы. Рассмотрим следующий
 пример:</p>
@@ -1140,7 +1140,7 @@ href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
 замыкания, а это — характерная черта функциональных языков программирования.</p>
 
 
-<h3 id="basics/representing-functions/ssect:dynamic-and-lexical-binding"><span class="seq">1.6.1.</span> Динамическая и лексическая области видимости</h3>
+<h3 id="basics/representing-functions/ssect:dynamic-and-lexical-binding"><span class="wrap"><span class="seq">1.6.1.</span><span class="title">Динамическая и лексическая области видимости</span></span></h3>
 
 <p>Из этого разговора об окружениях можно сделать два вывода. Во-первых, ясно,
 что с окружениями не всё так просто. Любое вычисление всегда производится
@@ -1382,7 +1382,7 @@ transparency). Ссылочная прозрачность — это свойс
 программирования, а затем и в умах людей.</p>
 
 
-<h3 id="basics/representing-functions/ssect:deep-or-shallow"><span class="seq">1.6.2.</span> Дальнее и ближнее связывание</h3>
+<h3 id="basics/representing-functions/ssect:deep-or-shallow"><span class="wrap"><span class="seq">1.6.2.</span><span class="title">Дальнее и ближнее связывание</span></span></h3>
 
 <!--\indexR{дальнее (deep) связывание}-->
 <!--\indexR{связывание!дальнее (deep)}-->
@@ -1472,7 +1472,7 @@ transparency). Ссылочная прозрачность — это свойс
 реализации, они никак не влияют на само понятие связывания.</p>
 
 
-<h2 id="basics/sect:global-environment"><span class="seq">1.7.</span> Глобальное окружение</h2>
+<h2 id="basics/sect:global-environment"><span class="wrap"><span class="seq">1.7.</span><span class="title">Глобальное окружение</span></span></h2>
 
 <!--\indexR{библиотека!функций}-->
 <!--\indexR{Лисп!примитивы}-->
@@ -1638,7 +1638,7 @@ transparency). Ссылочная прозрачность — это свойс
 (<span class="syntax">defprimitive</span> <span class="var">&lt;</span> <span class="var">&lt;</span> <span class="num">2</span>)</pre>
 
 
-<h2 id="basics/sect:starting-the-interpreter"><span class="seq">1.8.</span> Запускаем интерпретатор</h2>
+<h2 id="basics/sect:starting-the-interpreter"><span class="wrap"><span class="seq">1.8.</span><span class="title">Запускаем интерпретатор</span></span></h2>
 
 <p>Нам осталось показать только одну вещь: дверь в наш новый мир.</p>
 
@@ -1654,7 +1654,7 @@ transparency). Ссылочная прозрачность — это свойс
 выйти.</p>
 
 
-<h2 id="basics/sect:conclusions"><span class="seq">1.9.</span> Заключение</h2>
+<h2 id="basics/sect:conclusions"><span class="wrap"><span class="seq">1.9.</span><span class="title">Заключение</span></span></h2>
 
 <!--\indexR{язык!и смысл программ}-->
 <p>Действительно ли мы сейчас определили язык?</p>
@@ -1694,7 +1694,7 @@ transparency). Ссылочная прозрачность — это свойс
 языков необходимы другие методы, их мы рассмотрим в следующих главах.</p>
 
 
-<h2 id="basics/sect:exercises"><span class="seq">1.10.</span> Упражнения</h2>
+<h2 id="basics/sect:exercises"><span class="wrap"><span class="seq">1.10.</span><span class="title">Упражнения</span></span></h2>
 
 <h5 class="exercise" id="basics/ex:tracer">Упражнение <span class="seq">1.1</span></h5>
 <!--\indexR{трассировка}-->
@@ -1772,7 +1772,7 @@ transparency). Ссылочная прозрачность — это свойс
 <code><span class="func">gensym</span></code>.</p>
 
 
-<h2>Рекомендуемая литература</h2>
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Все работы по интерпретаторам, приведённые в начале этой главы, являются
 довольно интересными, но если вы не можете столько читать, то вот наиболее
