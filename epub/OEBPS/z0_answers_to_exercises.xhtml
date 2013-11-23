@@ -681,7 +681,7 @@
 <p>Вычисление функции заканчивается возвратом значения. Перехватывайте все попытки
 вернуть его.</p>
 
-<pre>(<span class="special">defun</span> <span class="func">eternal-return</span> (<span class="var">thunk</span>)     <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">defun</span> <span class="func">eternal-return</span> (<span class="var">thunk</span>)     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="special">labels</span> ((<span class="func">loop</span> ()
              (<span class="special">unwind-protect</span> (<span class="func">thunk</span>)
                (<span class="func">loop</span>) ) ))
@@ -1585,7 +1585,7 @@
 
 <h4>Упражнение <a class="seq" href="ch09_macros.xhtml#macros/ex:study">9.5</a></h4>
 
-<p>В текущем состоянии <span class="logo">Meroonet</span> действительно существует в двух мирах
+<p>В текущем состоянии <span class="sc">M<span class="c">eroonet</span></span> действительно существует в двух мирах
 одновременно. Например, функция <code><span class="func">register-class</span></code> вызывается
 как во время раскрытия макросов, так и в процессе динамической загрузки файлов.</p>
 
@@ -1707,7 +1707,7 @@
 
 <pre>(<span class="syntax">define-class</span> <span class="class">CountingClass</span> <span class="class">Class</span> (<span class="var">counter</span>))</pre>
 
-<p>К счастью, <span class="logo">Meroonet</span> написана так, что для её расширения не требуется изменять
+<p>К счастью, <span class="sc">M<span class="c">eroonet</span></span> написана так, что для её расширения не требуется изменять
 половину существующих определений. Новый метакласс можно определить как-то так:</p>
 
 <pre>(<span class="syntax">define-meroonet-macro</span> (<span class="syntax">define-CountingClass</span> <span class="var">name</span> <span class="var">super-name</span>

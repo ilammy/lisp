@@ -12,7 +12,7 @@
 <h1 id="chapter:cc"><span class="wrap"><span class="seq">Глава 10.</span><span class="title">Компиляция в Си</span></span></h1>
 
 <!--\indexR{язык!целевой}-->
-<p class="noindent"><span class="initial"><span class="letter">И</span> ещё одна глава</span> о компиляции.
+<p class="noindent"><span class="initial">И</span><span class="sc"><span class="c">ещё одна глава</span></span> о компиляции.
 Но в этот раз мы разберём несколько новых подходов, в частности, плоские окружения, а ещё
 у нас сменился целевой язык: теперь им будет Си. Подобное сочетание языков
 поднимает несколько своеобразных вопросов, стоящих рассмотрения. С одной
@@ -66,7 +66,7 @@
 замкнутый круг.</p>
 
 <p>Как бы то ни было, нельзя сказать, что Си непопулярен в качестве целевого языка
-компиляции Лиспа. Достаточно упомянуть Kyoto <span class="logo">Common Lisp</span>
+компиляции Лиспа. Достаточно упомянуть Kyoto <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>
 <span class="cite">[<a href="z1_bibliography.xhtml#yh85">YH85</a>]</span> (а также
 улучшенный Уильямом Скэлтером AKCL), WCL <span class="cite">[<a href="z1_bibliography.xhtml#hen92b">Hen92b</a>]</span>,
 CLICC <span class="cite">[<a href="z1_bibliography.xhtml#hof93">Hof93</a>]</span>,
@@ -2667,7 +2667,7 @@ text    data    bss     dec     hex
 функции аргументы, оставшиеся в <code class="c"><span class="type">va_list</span></code>. Что ж, придётся с этим смириться
 и разбирать все возможные арности вручную. Печально, конечно, но нам придётся
 ограничить максимальное количество аргументов <code><span class="func">apply</span></code>. Стандартизацией
-<span class="logo">Common Lisp</span> однозначно руководили реалисты, поэтому там определена специальная
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> однозначно руководили реалисты, поэтому там определена специальная
 константа <code><span class="var">CALL-ARGUMENTS-LIMIT</span></code>, хранящая максимально допустимое количество
 аргументов. По стандарту она не может быть меньше 50. Мы ограничимся<a class="footref" href="zz_footnotes.xhtml#foot10.11"><sup>11</sup></a> всего 14, из которых здесь покажем обработку
 лишь первых четырёх.</p>
@@ -3057,7 +3057,7 @@ text    data    bss     dec     hex
 <code><span class="func">letify</span></code>, чтобы гарантированно избежать проблем в будущем, скопирует все дуги
 графа в новое дерево (где разделяемые дуги превратятся в пары одинаковых
 ветвей). Предположим, у нас для этого есть обобщённая функция <code><span class="func">clone</span></code>,
-способная скопировать любой объект <span class="logo">Meroonet</span>.
+способная скопировать любой объект <span class="sc">M<span class="c">eroonet</span></span>.
 <span class="see">[см. упр. <a href="ch11_essence_of_an_object_system.xhtml#objects/ex:clone">11.2</a>]</span>
 Применение её к переменным отчасти напоминает переименование, выполняемое
 <code><span class="func">collect-temporaries!</span></code>.</p>

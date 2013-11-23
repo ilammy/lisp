@@ -11,7 +11,7 @@
 
 <h1 id="chapter:compilation"><span class="wrap"><span class="seq">Глава 7.</span><span class="title">Компиляция</span></span></h1>
 
-<p class="noindent"><span class="initial"><span class="letter">В</span> предыдущей главе</span>
+<p class="noindent"><span class="initial">В</span><span class="sc"><span class="c">предыдущей главе</span></span>
 был изложен метод перевода
 программ со Scheme на древовидный язык, содержащий около двадцати инструкций.
 В этой главе мы покажем, как преобразовать результат данной предварительной
@@ -1775,9 +1775,9 @@
 <code><span class="special">bind-exit</span></code>.
 <span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/comparing/par:bind-exit">3.5</a>]</span>
 Родом она из диалекта Dylan, её аналогами являются
-<code><span class="special">let/cc</span></code> в <span class="logo">EuLisp</span>,
+<code><span class="special">let/cc</span></code> в <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>,
 <code><span class="special">block</span></code>/<code><span class="special">return-from</span></code>
-в <span class="logo">Common Lisp</span>, <code><span class="special">escape</span></code>
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, <code><span class="special">escape</span></code>
 в VLISP <span class="cite">[<a href="z1_bibliography.xhtml#cha80">Cha80</a>]</span>.</p>
 
 <p>Наперекор традициям Scheme, она будет реализована в виде специальной формы, а
@@ -2164,13 +2164,13 @@
 <p>Некоторые модели обработки поддерживают возможность возобновления прерванных
 вычислений. В случае возникновения некоторых ошибок (в частности,
 предусмотренных заранее программистом, вроде вызываемых формой <code><span class="func">cerror</span></code>
-в <span class="logo">Common Lisp</span>) можно попытаться повторить вычисления ещё раз, начиная с того
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>) можно попытаться повторить вычисления ещё раз, начиная с того
 места, где они были прерваны. Во многих других случаях, к сожалению,
 единственным возможным и наиболее адекватным поведением будет переход
 куда-нибудь в безопасное место, дабы не усугублять и так непростую ситуацию.</p>
 
 <!--\indexR{раскрутка стека (unwinding)}-->
-<p>Модель исключений <span class="logo">Common Lisp</span> более чем полна, но её масштабность не особо
+<p>Модель исключений <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> более чем полна, но её масштабность не особо
 сочетается с данной книгой, чьей задачей является рассмотрение сути вещей.
 Модель ML не поддерживает возобновление после ошибок; если где-то возникает
 исключение, то это вызывает необратимую раскрутку стека до ближайшего
@@ -2178,7 +2178,7 @@
 следующего обработчика. В нашем случае подобная модель не подходит, так как при
 возникновении ошибки теряется динамическое окружение переменных, а ведь проблема
 могла быть именно в нём. Поэтому мы пойдём другим путём. (На его выбор сильное
-влияние оказал <span class="logo">EuLisp</span>.) Сначала мы неформально опишем идею,
+влияние оказал <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>.) Сначала мы неформально опишем идею,
 а затем плавно перейдём к её реализации.</p>
 
 <!--\indexC{monitor}-->
@@ -2306,7 +2306,7 @@
 допускается ли возобновление выполнения после успешного завершения обработчика,
 и значение, описывающее исключение. Это значение может быть абсолютно любым:
 например, предопределённые исключения представляются списками из
-человекочитаемой строки и дополнительных данных. <span class="logo">Common Lisp</span> и <span class="logo">EuLisp</span>
+человекочитаемой строки и дополнительных данных. <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> и <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>
 допускают передачу только объектов специальных классов.</p>
 
 <p>Обработка исключения происходит так. Сначала из динамического окружения
@@ -2385,7 +2385,7 @@
 
 <p>Функция <code><span class="func">signal-exception</span></code> легко превращается в доступный пользователям языка
 примитив, что позволяет использовать её (вместе с <code><span class="special">monitor</span></code>) подобно
-<code><span class="func">cerror</span></code>/<code><span class="func">error</span></code> в <span class="logo">Common Lisp</span> и <span class="logo">EuLisp</span> для обработки
+<code><span class="func">cerror</span></code>/<code><span class="func">error</span></code> в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> и <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> для обработки
 пользовательских исключений. Однако, ввиду относительно высокой стоимости
 вызова, стоит ограничить применения данного механизма действительно
 <em>исключительными</em> ситуациями.</p>
@@ -2759,7 +2759,7 @@
 переменные или же дать возможность переименовывать их при экспорте. Можно даже
 представить себе специализированный язык для описания способов сборки модулей,
 управления именованием переменных и т. д. Поясним эту идею на примере языка,
-предлагаемого в <span class="cite">[<a href="z1_bibliography.xhtml#qp91a">QP91a</a>]</span> для <span class="logo">EuLisp</span>. Следующая директива описывает
+предлагаемого в <span class="cite">[<a href="z1_bibliography.xhtml#qp91a">QP91a</a>]</span> для <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>. Следующая директива описывает
 экспортируемые переменные модуля <code><span class="var">mod</span></code>:</p>
 
 <pre>(<span class="syntax">ordered-union</span>

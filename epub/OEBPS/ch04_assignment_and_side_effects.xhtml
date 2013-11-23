@@ -11,7 +11,7 @@
 
 <h1 id="chapter:assignment"><span class="wrap"><span class="seq">Глава 4.</span><span class="title">Присваивание и побочные эффекты</span></span></h1>
 
-<p class="noindent"><span class="initial"><span class="letter">П</span>редыдущие главы</span> с их нескончаемыми
+<p class="noindent"><span class="initial">П</span><span class="sc"><span class="c">редыдущие главы</span></span> с их нескончаемыми
 повторениями и вариациями чем-то напоминают «Болеро» Мориса Равеля. Но один
 мотив, как вы могли заметить, в них отсутствовал: присваивание и побочные
 эффекты. Чистые языки их презирают из-за некоторых скверных особенностей, но
@@ -844,7 +844,7 @@
 <!--\indexC{eqv"?}-->
 <!--\indexC{eql}-->
 <p>Существует улучшенный вариант <code><span class="func">eq?</span></code>, называемый <code><span class="func">eqv?</span></code> в Scheme и <code><span class="func">eql</span></code>
-в <span class="logo">Common Lisp</span>. В целом это тот же <code><span class="func">eq?</span></code>, но он работает немного медленнее,
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. В целом это тот же <code><span class="func">eq?</span></code>, но он работает немного медленнее,
 чтобы точно убедиться в равенстве неизменяемых объектов. Например, при
 сравнении чисел <code><span class="func">eqv?</span></code> проверит, что они равны, даже если они по-разному
 представляются в памяти: с учётом всех форматов, длинной арифметики и т. п.</p>
@@ -855,10 +855,10 @@
 мало в них изменяемых объектов. Практически всё, за исключением привязок,
 неизменяемо. Большая часть и так немногочисленных точечных пар никогда не видела
 в лицо <code><span class="func">set-car!</span></code> или <code><span class="func">set-cdr!</span></code>. В некоторых диалектах ML, а также
-в <span class="logo">Common Lisp</span>, можно явно указывать неизменяемые поля объектов. Вот так,
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, можно явно указывать неизменяемые поля объектов. Вот так,
 например, определяется неизменяемая точечная пара:</p>
 
-<pre>(<span class="syntax">defstruct</span> <span class="var">immutable-pair</span>     <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="syntax">defstruct</span> <span class="var">immutable-pair</span>     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="var">car</span> <span class="hash">’()</span> <span class="syntax">:read-only</span> <span class="var">t</span>)
   (<span class="var">cdr</span> <span class="hash">’()</span> <span class="syntax">:read-only</span> <span class="var">t</span>) )</pre>
 
@@ -1069,7 +1069,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 тождественности функций не представляется возможной. Свойства подобного
 сравнения зависят от выбора авторов реализации языка. Иногда оно и вообще
 оказывается под запретом. Хотя в этой книге сравнение функций всё же
-используется для методов <span class="logo">Meroonet</span>
+используется для методов <span class="sc">M<span class="c">eroonet</span></span>
 <span class="see">[см. раздел <a href="ch11_essence_of_an_object_system.xhtml#objects/method/par:func-eq">11.9</a>]</span>,
 пожалуйста, если это возможно, старайтесь воздержаться от сравнения функций
 в любом виде.</p>
@@ -1607,7 +1607,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <!--\indexR{объекты!как замыкания}-->
 <p>Замыкания, реагирующие на сообщения, с помощью которых мы представляем значения
 внутри интерпретатора, во многом напоминают объекты из предыдущей главы. Тем
-не менее, между подобными объектами-замыканиями и объектами <span class="logo">Meroonet</span> есть
+не менее, между подобными объектами-замыканиями и объектами <span class="sc">M<span class="c">eroonet</span></span> есть
 ряд отличий. Объекты-замыкания хранят поддерживаемые методы внутри; нет
 возможности добавлять однажды созданным объектам новые методы. Понятия классов
 и подклассов здесь присутствуют лишь умозрительно. В то же время, обобщённые
@@ -2070,7 +2070,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <!--\indexR{связывание!неизменяемое}-->
 <p>Такая оптимизация влияет на разделяемые цитаты и ломает <code><span class="func">eq?</span></code>. Есть простой
 способ избежать всех этих проблем: запретить изменять цитаты. Именно так и
-поступают Scheme и <span class="logo">Common Lisp</span>. Но они делают это мягко, в общем случае считая
+поступают Scheme и <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. Но они делают это мягко, в общем случае считая
 результат изменения значения цитаты неопределённым.</p>
 
 <p>Можно поступить более жёстко, запретив изменение цитат синтаксически:</p>
@@ -2120,14 +2120,14 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <!--\indexR{цитаты!циклических объектов}-->
 <!--\indexR{циклические структуры данных}-->
 <p>Подводя итог, лучше воспользоваться мудростью поколений и, как советуют Scheme и
-<span class="logo">Common Lisp</span>, стараться не изменять значения цитат. Но это не последняя из
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, стараться не изменять значения цитат. Но это не последняя из
 проблем, вызываемых цитированием. Мы уже упоминали методику «склеивания»
 цитат, приводящую к физическому наложению данных. А можно ли намеренно создать
 цитату с таким эффектом? Есть как минимум два способа это сделать: макросы и
 программируемый поток ввода.</p>
 
 <!--\indexR{макросимволы}-->
-<p>В <span class="logo">Common Lisp</span> можно вводить специальные макросимволы, при чтении которых
+<p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> можно вводить специальные макросимволы, при чтении которых
 вызываются определённые процедуры. Например, <code>'</code> является именно
 макросимволом, оборачивающим следующее прочитанное выражение в
 <code><span class="special">quote</span></code>. Или
@@ -2135,7 +2135,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 то есть следующее за <code><span class="hash">#.</span></code> выражение считывается, вычисляется<a class="footref" href="zz_footnotes.xhtml#foot4.12"><sup>12</sup></a> и его значение подставляется
 вместо всей конструкции. В итоге, мы можем написать так:</p>
 
-<pre>(<span class="special">define</span> <span class="var">bar</span> (<span class="special">quote</span> <span class="hash">#.</span>(<span class="syntax">let</span> ((<span class="var">list</span> '(<span class="num">0</span> <span class="num">1</span>)))     <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">define</span> <span class="var">bar</span> (<span class="special">quote</span> <span class="hash">#.</span>(<span class="syntax">let</span> ((<span class="var">list</span> '(<span class="num">0</span> <span class="num">1</span>)))     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
                        (<span class="func">set-cdr!</span> (<span class="func">cdr</span> <span class="var">list</span>) <span class="var">list</span>)
                        <span class="var">list</span> )))</pre>
 
@@ -2167,7 +2167,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <p>Таким образом в Scheme определяется циклический список из нулей и единиц,
 подставляемый в цитату, которой инициализируется переменная <code><span class="var">bar</span></code>. Мы
 не можем написать такой список прямым текстом в определении <code><span class="var">bar</span></code>, так как
-<code><span class="func">read</span></code> Scheme не умеет считывать циклические данные. В <span class="logo">Common Lisp</span> это
+<code><span class="func">read</span></code> Scheme не умеет считывать циклические данные. В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> это
 возможно с помощью макросимволов <code><span class="hash">#<i>n</i>=</span></code> и <code><span class="hash">#<i>n</i>#</span></code><a class="footref" href="zz_footnotes.xhtml#foot4.13"><sup>13</sup></a>:</p>
 
 <pre>(<span class="special">define</span> <span class="var">bar</span> <span class="hash">#1=</span>(<span class="num">0</span> <span class="num">1</span> . <span class="hash">#1#</span>))</pre>

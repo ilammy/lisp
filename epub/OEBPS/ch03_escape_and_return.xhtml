@@ -11,7 +11,7 @@
 
 <h1 id="chapter:escape"><span class="wrap"><span class="seq">Глава 3.</span><span class="title">Переходы и возвраты: продолжения</span></span></h1>
 
-<p class="noindent"><span class="initial"><span class="letter">К</span>аждое вычисление</span> в конечном счёте
+<p class="noindent"><span class="initial">К</span><span class="sc"><span class="c">аждое вычисление</span></span> в конечном счёте
 приводит к возврату результата сущности, которая называется <em class="term">продолжением</em>.
 В данной главе разбирается эта идея и её исторические предпосылки. Мы также
 создадим ещё один интерпретатор, призванный явно оперировать продолжениями.
@@ -38,7 +38,7 @@
 
 <!--\indexC{prog}-->
 <!--\indexC{goto}-->
-<p>История переходов в Лиспе восходит ко временам <span class="logo">Lisp 1.5</span> и формы <code><span class="special">prog</span></code>.
+<p>История переходов в Лиспе восходит ко временам <span class="sc">L<span class="c">isp</span> 1.5</span> и формы <code><span class="special">prog</span></code>.
 Сейчас эта форма считается устаревшей, но раньше на неё возлагались большие
 надежды по переманиванию программистов на Алголе в ряды лисперов, так как
 считалось, что для них было более привычным использование <code>goto</code>. Вместо
@@ -48,7 +48,7 @@
 Например, вот так с её помощью записывается факториал:</p>
 
 <!--\indexC{fact}-->
-<pre>(<span class="special">defun</span> <span class="func">fact</span> (<span class="var">n</span>)     <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">defun</span> <span class="func">fact</span> (<span class="var">n</span>)     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="special">prog</span> (<span class="var">r</span>)
             (<span class="special">setq</span> <span class="var">r</span> <span class="num">1</span>)
        <span class="syntax">loop</span> (<span class="syntax">cond</span> ((<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) (<span class="special">return</span> <span class="var">r</span>)))
@@ -63,19 +63,19 @@
 <code><span class="special">prog</span></code> по умолчанию является <code><span class="var">nil</span></code>. Но внутри <code><span class="special">prog</span></code> можно использовать
 специальные инструкции. Безусловные переходы выполняются с помощью <code><span class="special">go</span></code>
 (которая принимает символ — имя метки), а вернуть определённое значение из
-<code><span class="special">prog</span></code> можно с помощью <code><span class="special">return</span></code>. В <span class="logo">Lisp 1.5</span> было лишь одно ограничение:
+<code><span class="special">prog</span></code> можно с помощью <code><span class="special">return</span></code>. В <span class="sc">L<span class="c">isp</span> 1.5</span> было лишь одно ограничение:
 формы <code><span class="special">go</span></code> и <code><span class="special">return</span></code> могли появляться только на первом уровне вложенности
 или внутри <code><span class="syntax">cond</span></code> на том же первом уровне.</p>
 
 <p>Форма <code><span class="special">return</span></code> позволяла выйти из <code><span class="special">prog</span></code>, забрав с собой результат
-вычислений. Ограничение <span class="logo">Lisp 1.5</span> допускало лишь простые переходы, в более
+вычислений. Ограничение <span class="sc">L<span class="c">isp</span> 1.5</span> допускало лишь простые переходы, в более
 поздних версиях оно было снято, что позволило реализовать более изощрённые
 варианты поведения. Переходы стали обычным способом обработки ошибок. Если
 происходила ошибка, то выполнение переходило из ошибочного контекста исполнения
 в безопасный для обработки возникшей ситуации. Теперь можно переписать факториал
 следующим образом, поместив <code><span class="special">return</span></code> глубже:</p>
 
-<pre>(<span class="special">defun</span> <span class="func">fact2</span> (<span class="var">n</span>)     <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">defun</span> <span class="func">fact2</span> (<span class="var">n</span>)     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="special">prog</span> (<span class="var">r</span>)
             (<span class="special">setq</span> <span class="var">r</span> <span class="num">1</span>)
        <span class="syntax">loop</span> (<span class="special">setq</span> <span class="var">r</span> (<span class="func">*</span> (<span class="syntax">cond</span> ((<span class="func">=</span> <span class="var">n</span> <span class="num">1</span>) (<span class="special">return</span> <span class="var">r</span>))
@@ -276,7 +276,7 @@
 
 <!--\indexCS{throw}{варианты реализации}-->
 <p>Форму <code><span class="special">throw</span></code> же можно реализовать и как функцию, и как специальную форму.
-Если это специальная форма, как в <span class="logo">Common Lisp</span>, то она вычисляет метку, затем
+Если это специальная форма, как в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, то она вычисляет метку, затем
 ищет соответствующее продолжение <code><span class="special">catch</span></code>, и, если находит, то вычисляет
 значение для передачи и выполняет переход. Если же <code><span class="func">throw</span></code> реализована как
 функция, то всё происходит немного в другом порядке: сначала вычисляются оба
@@ -298,7 +298,7 @@
 Когда <code><span class="special">throw</span></code> запрашивает переход, она должна во время исполнения программы
 отыскать соответствующую <code><span class="special">catch</span></code>-форму и её продолжение. Естественно, это
 требует времени, которое можно попытаться сократить, использовав
-<em>лексические</em> метки, как их называют в <span class="logo">Common Lisp</span>. Специальные формы
+<em>лексические</em> метки, как их называют в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. Специальные формы
 <code><span class="special">block</span></code> и <code><span class="special">return-from</span></code> слегка напоминают <code><span class="special">catch</span></code> и <code><span class="special">throw</span></code>.</p>
 
 <!--\indexC{block}-->
@@ -452,7 +452,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
         . <span class="var">body</span> ) ) ) ) )</pre>
 
 <!--\indexR{переходы (escapes)!допустимость}-->
-<p>Время жизни метки, создаваемой <code><span class="special">block</span></code> в <span class="logo">Common Lisp</span>, динамическое, так что
+<p>Время жизни метки, создаваемой <code><span class="special">block</span></code> в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, динамическое, так что
 на метку можно перейти только внутри тела <code><span class="special">block</span></code>. Точно такая же ситуация
 и с <code><span class="syntax">catch</span></code>. Однако, лексический характер привязки, создаваемой <code><span class="special">block</span></code>,
 является источником проблемы, которая не возникает с <code><span class="syntax">catch</span></code>: если <code><span class="syntax">throw</span></code>
@@ -822,13 +822,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <p>Сначала вычисляется <i>форма</i>, её значение станет значением всей формы
 <code><span class="special">unwind-protect</span></code>. Как только значение <i>формы</i> получено, вычисляются
 <i>формы-уборщики</i>, и только потом <code><span class="special">unwind-protect</span></code> возвращает ранее
-вычисленное значение. Она похожа на <code><span class="special">prog1</span></code> из <span class="logo">Common Lisp</span> или <code><span class="special">begin0</span></code>
+вычисленное значение. Она похожа на <code><span class="special">prog1</span></code> из <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> или <code><span class="special">begin0</span></code>
 из некоторых версий Scheme, которые последовательно вычисляют формы подобно
 <code><span class="special">begin</span></code>, но возвращают значение первой из них, а не последней. Вот только
 <code><span class="special">unwind-protect</span></code> гарантирует выполнение <i>уборщиков</i> даже в случае, если
 вычисление <i>формы</i> было прервано переходом. Поэтому:</p>
 
-<pre>(<span class="special">let</span> ((<span class="var">a</span> '<span class="var">on</span>))          <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">let</span> ((<span class="var">a</span> '<span class="var">on</span>))          <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="func">cons</span> (<span class="special">unwind-protect</span> (<span class="func">list</span> <span class="var">a</span>)
           (<span class="special">setq</span> <span class="var">a</span> '<span class="var">off</span>) )
         <span class="var">a</span> ) ) <span class="math"><span class="rel">→</span></span> ((<span class="var">on</span>) . <span class="var">off</span>)
@@ -908,7 +908,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <div class="bigskip"/>
 
-<p>Конечно же, есть и другие управляющие формы. Особенно их жалует <span class="logo">Common Lisp</span>,
+<p>Конечно же, есть и другие управляющие формы. Особенно их жалует <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>,
 в котором реализована даже старая <code><span class="special">prog</span></code>, только под названием <code><span class="special">tagbody</span></code>.
 Её можно легко проэмулировать с помощью <code><span class="special">labels</span></code> и <code><span class="special">block</span></code>.
 <span class="see">[см. упр. <a href="#escape/ex:tagbody">3.3</a>]</span>
@@ -953,11 +953,11 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <code><span class="var">x</span></code>,
 которой можно воспользоваться. Обычно она глобальная, чтобы её было видно
 отовсюду. Если она будет локальной, то её поведение будет (значительно)
-отличаться от должного поведения динамической переменной в <span class="logo">Common Lisp</span>: ведь
+отличаться от должного поведения динамической переменной в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>: ведь
 тогда она будет правильно работать внутри <code><span class="syntax">fluid-let</span></code>, но не в связывающих
 формах, вложенных во <code><span class="syntax">fluid-let</span></code>. Далее, очевидно, что такие переменные тоже
 не дружат с <code><span class="func">call/cc</span></code>. В итоге получается нечто ещё более хитрое, нежели
-обычные динамические переменные <span class="logo">Common Lisp</span>.</p>
+обычные динамические переменные <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>.</p>
 
 
 <h2 id="escape/sect:actors"><span class="wrap"><span class="seq">3.2.</span><span class="title">Участники вычислений</span></span></h2>
@@ -1600,7 +1600,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 ...</pre>
 
 <p>Здесь решено сделать <code><span class="special">throw</span></code> специальной формой, а не функцией. В первую
-очередь с целью походить на <span class="logo">Common Lisp</span>. Далее определим правила обработки
+очередь с целью походить на <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. Далее определим правила обработки
 формы <code><span class="special">catch</span></code>:</p>
 
 <!--\indexC{catch-cont}-->
@@ -1889,7 +1889,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <div class="bigskip"/>
 
 <!--\indexCS{unwind-protect}{ограничения \CommonLisp}-->
-<p>В <span class="logo">Common Lisp</span> (CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
+<p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
 ограничение, касающееся переходов из форм-уборщиков. Эти переходы не могут вести
 внутрь той формы, из которой в теле <code><span class="special">unwind-protect</span></code> был вызван выход.
 Введено такое ограничение с целью недопущения бесконечных циклов из переходов,
@@ -1899,7 +1899,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 как форма-уборщик хочет прыгнуть ближе, чем прыжок на <code><span class="num">1</span></code>, который уже
 в процессе.</p>
 
-<pre>(<span class="special">catch</span> <span class="num">1</span>                  <span class="dialect"><span class="logo">Common Lisp</span></span>
+<pre>(<span class="special">catch</span> <span class="num">1</span>                  <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
   (<span class="special">catch</span> <span class="num">2</span>
     (<span class="special">unwind-protect</span> (<span class="special">throw</span> <span class="num">1</span> '<span class="var">foo</span>)
       (<span class="special">throw</span> <span class="num">2</span> '<span class="var">bar</span>) ) ) )         <span class="math"><span class="rel">→</span></span> <i>ошибка!</i></pre>
@@ -1929,10 +1929,10 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <span class="see">[см. раздел <a href="ch10_compiling_into_c.xhtml#cc/sect:call/cc">10.11</a>]</span></p>
 
 <!--\indexC{let/cc}-->
-<p>В диалекте <span class="logo">EuLisp</span> <span class="cite">[<a href="z1_bibliography.xhtml#pe92">PE92</a>]</span> есть специальная форма <code><span class="special">let/cc</span></code> со следующим
+<p>В диалекте <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> <span class="cite">[<a href="z1_bibliography.xhtml#pe92">PE92</a>]</span> есть специальная форма <code><span class="special">let/cc</span></code> со следующим
 синтаксисом:</p>
 
-<pre>(<span class="special">let/cc</span> <i>переменная</i> <i>формы</i>...)  <span class="dialect"><span class="logo">EuLisp</span></span></pre>
+<pre>(<span class="special">let/cc</span> <i>переменная</i> <i>формы</i>...)  <span class="dialect"><span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span></span></pre>
 
 <!--\indexC{bind-exit}-->
 <p id="escape/comparing/par:bind-exit">В диалекте Dylan <span class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span> тоже есть подобная форма:</p>
@@ -1946,8 +1946,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 лишь во время вычисления тела формы <code><span class="special">let/cc</span></code> или <code><span class="special">bind-exit</span></code>. Точнее, само
 продолжение, хранящееся в <i>переменной</i>, имеет неограниченное время жизни, но
 становится бесполезным при выходе из связывающей формы. Это характерная для
-<span class="logo">EuLisp</span> и Dylan черта, но её нет как в Scheme (где продолжения истинно
-неограниченны), так и в <span class="logo">Common Lisp</span> (где они вообще объекты второго класса).
+<span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> и Dylan черта, но её нет как в Scheme (где продолжения истинно
+неограниченны), так и в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (где они вообще объекты второго класса).
 Тем не менее, такое поведение можно проэмулировать в Scheme:</p>
 
 <pre>(<span class="special">define-syntax</span> <span class="var">let/cc</span>
@@ -2019,7 +2019,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 переходы, сопрограммы, частичные продолжения и так далее. Если же вам нужны
 только «нормальные» вещи (а Лисп уже не раз показывал, что можно писать
 удивительные программы и без <code><span class="func">call/cc</span></code>), то используйте управляющие формы
-<span class="logo">Common Lisp</span>, простые и компилирующиеся в эффективный машинный код.</p>
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, простые и компилирующиеся в эффективный машинный код.</p>
 
 
 <h2 id="escape/sect:pr-cont"><span class="wrap"><span class="seq">3.6.</span><span class="title">Продолжения в программировании</span></span></h2>
@@ -2067,7 +2067,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexR{множественные значения}-->
 <p>Продолжения очень удобно использовать для обработки составных величин.
 Существуют вычисления, результатом которых является не одна величина, а
-несколько. Например, в <span class="logo">Common Lisp</span> целочисленное деление (<code><span class="func">truncate</span></code>)
+несколько. Например, в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> целочисленное деление (<code><span class="func">truncate</span></code>)
 одновременно возвращает частное и остаток. Пусть у нас тоже есть подобная
 функция — назовём её <code><span class="func">divide</span></code>, — которая принимает два числа и
 продолжение, вычисляет частное и остаток от деления, а затем применяет
@@ -2388,7 +2388,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexC{tagbody}-->
 <!--\indexC{go}-->
 <p>Реализуйте пару <code><span class="special">tagbody</span></code>/<code><span class="special">go</span></code> с помощью <code><span class="special">block</span></code>, <code><span class="special">catch</span></code> и
-<code><span class="special">labels</span></code>. Напомним синтаксис этой формы из <span class="logo">Common Lisp</span>:</p>
+<code><span class="special">labels</span></code>. Напомним синтаксис этой формы из <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>:</p>
 
 <pre>(<span class="special">tagbody</span>
           <i>выражения<sub>0</sub></i>...
@@ -2434,7 +2434,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <h5 class="exercise" id="escape/ex:eternal">Упражнение <span class="seq">3.9</span></h5>
 <!--\indexR{бесконечный цикл}-->
-<p>Напишите на <span class="logo">Common Lisp</span> функцию <code><span class="func">eternal-return</span></code>, принимающую замыкание и
+<p>Напишите на <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> функцию <code><span class="func">eternal-return</span></code>, принимающую замыкание и
 вызывающую его в бесконечном цикле. Этот цикл должен быть истинно бесконечным:
 перекройте абсолютно все выходы из него.</p>
 

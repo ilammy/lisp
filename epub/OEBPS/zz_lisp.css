@@ -279,16 +279,17 @@ blockquote.equation {
 /* Accidental */
 
 p .initial {
-    font-variant: small-caps;
-}
-
-p .initial .letter {
     float: left;
     font-size: 5ex;
     height: 1em;
     position: relative;
     top: -0.25ex;
     vertical-align: top;
+}
+
+.sc .c {
+    text-transform: uppercase;
+    font-size: 80%;
 }
 
 p.noindent {
