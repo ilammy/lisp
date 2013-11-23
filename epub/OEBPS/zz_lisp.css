@@ -748,6 +748,36 @@ table#ch7-arity-probs td.desc { text-align: left;
 table#ch7-arity-probs td      { text-align: center;
                                 padding-left: 1em; }
 
+/******************************************************************************/
+
+/* Cover page */
+
+#cover {
+    text-align: center;
+}
+
+#cover h1 {
+    font-size: 35pt;
+    font-weight: bold;
+    line-height: 0.87;
+    margin: 0 0 0.8em 0;
+    text-align: center;
+}
+
+#cover img {
+    margin: 0;
+}
+
+#cover h2 {
+    font-size: 22pt;
+    font-style: italic;
+    font-weight: normal;
+    line-height: 1;
+    margin: 0.8em 0 0 0;
+}
+
+/******************************************************************************/
+
 /*
 
 

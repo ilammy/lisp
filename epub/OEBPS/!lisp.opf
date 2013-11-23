@@ -11,6 +11,7 @@
   </metadata>
 
   <manifest>
+    <item id="00_cover"   href="00_cover.xhtml"                         media-type="application/xhtml+xml"/>
     <item id="01_preface" href="01_preface.xhtml"                       media-type="application/xhtml+xml"/>
     <item id="ch_01"      href="ch01_basics.xhtml"                      media-type="application/xhtml+xml"/>
     <item id="ch_02"      href="ch02_lisp_1_2_omega.xhtml"              media-type="application/xhtml+xml"/>
@@ -64,6 +65,7 @@
   </manifest>
 
   <spine toc="00_toc">
+    <itemref idref="00_cover"/>
     <itemref idref="01_preface"/>
     <itemref idref="ch_01"/>
     <itemref idref="ch_02"/>
@@ -81,4 +83,11 @@
     <itemref idref="footnotes" linear="no"/>
   </spine>
 
+  <guide>
+    <reference type="cover"        title="Обложка"      href="00_cover.xhtml"/>
+    <reference type="preface"      title="Вступление"   href="01_preface.xhtml"/>
+    <reference type="text"         title="Первая глава" href="ch01_basics.xhtml"/>
+    <reference type="bibliography" title="Библиография" href="z1_bibliography.xhtml"/>
+    <reference type="notes"        title="Сноски"       href="zz_footnotes.xhtml"/>
+  </guide>
 </package>
