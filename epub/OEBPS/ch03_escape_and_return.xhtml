@@ -798,7 +798,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <!--\indexR{продолжения (continuations)!терминальное продолжение}-->
 <!--\indexR{терминальное продолжение}-->
-<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord var">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
+<p>Если этого не сделать, то продолжением формы <code><span class="func">call/cc</span></code> будет нечто, подобное чёрной дыре: <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="ord">.</span><span class="ord var">⚫</span></span>. Оно поглощает все вычисления вместе с передаваемым значением. Ничто и никогда не возвращается назад, попав в
 чёрную дыру. Исполнение программы состоит из вызовов функций, а они похожи на дыхание:
 вдох-выдох — вход-выход. Необходимым условием жизни является
 <em>продолжение</em> дыхания. Используя <code><span class="func">call/cc</span></code>, мы вмешиваемся в нормальный
@@ -2254,7 +2254,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 (<span class="func">foo</span> <span class="num">3</span>)                                     <span class="math"><span class="rel">→</span></span> <span class="num">4</span></pre>
 
 <p class="noindent">Какое именно продолжение хранится в <code><span class="var">foo</span></code>?
-Казалось бы <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>,
+Казалось бы <span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="ord">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>,
 но чему тогда равно <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code>?</p>
 
 <pre>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))                               <span class="math"><span class="rel">→</span></span> <span class="num">5</span></pre>
@@ -2265,7 +2265,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 правильной композиции функций. Дело в том, что вызов продолжения означает
 отбрасывание всех последующих вычислений ради продолжения других вычислений.
 Таким образом, вызов продолжения внутри <code><span class="func">foo</span></code> приводит к вычислению значения
-<span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="punct">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>
+<span class="math"><span class="ord var">λ</span><span class="ord var">u</span><span class="ord">.</span><span class="ord num">1</span><span class="binop">+</span><span class="ord var">u</span></span>
 при <span class="math"><span class="ord var">u</span><span class="rel">=</span><span class="num ord">4</span></span>, которое становится значением всего выражения, и
 второй вызов <code><span class="func">foo</span></code> вообще не происходит — он не нужен, ведь значение
 выражения уже вычислено и передано продолжению! Именно в этом проблема: мы
