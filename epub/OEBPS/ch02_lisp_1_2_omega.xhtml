@@ -263,8 +263,8 @@ Maclisp, заключается в том, что если <code><span class="fu
          (<span class="func">f.eprogn</span> (<span class="func">cddr</span> <span class="var">fn</span>)
                    (<span class="func">extend</span> <span class="var">env</span> (<span class="func">cadr</span> <span class="var">fn</span>) <span class="var">args</span>)
                    <span class="var">fenv</span> ) )
-        <span class="highlight">(<span class="syntax">else</span> (<span class="func">evaluate-application2</span>
-               (<span class="func">f.evaluate</span> <span class="var">fn</span> <span class="var">env</span> <span class="var">fenv</span>) <span class="var">args</span> <span class="var">env</span> <span class="var">fenv</span>))</span> ) )</pre>
+        <span class="highlight">(<span class="syntax">else</span> (<span class="func">evaluate-application2</span></span>
+               <span class="highlight">(<span class="func">f.evaluate</span> <span class="var">fn</span> <span class="var">env</span> <span class="var">fenv</span>) <span class="var">args</span> <span class="var">env</span> <span class="var">fenv</span>))</span> ) )</pre>
 
 <p>Теперь наша проблема решается следующим образом:</p>
 
@@ -1081,8 +1081,8 @@ href="zz_footnotes.xhtml#foot2.6"><sup>6</sup></a> Мы можем
                   (<span class="func">df.evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>) ) )
         ((<span class="var">dynamic-let</span>)
          (<span class="func">df.eprogn</span> (<span class="func">cddr</span> <span class="var">e</span>)
-                    <span class="highlight">(<span class="func">special-extend</span> <span class="var">env</span>
-                                    (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) )</span>
+                    <span class="highlight">(<span class="func">special-extend</span> <span class="var">env</span></span>
+                                    <span class="highlight">(<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>)) )</span>
                     <span class="var">fenv</span>
                     (<span class="func">extend</span> <span class="var">denv</span>
                             (<span class="func">map</span> <span class="var">car</span> (<span class="func">cadr</span> <span class="var">e</span>))

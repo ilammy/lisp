@@ -964,7 +964,7 @@ CPS-код медленнее обычного, так как он вынужд�
   (evaluate e1 r s (lambda (v ss)
                      (((v 'boolify)
                        (lambda () (k v ss))
-                       (lambda () (evaluate e2 r k [s])) )) )) )
+                       (lambda () (evaluate e2 [r k s])) )) )) )
 \end{code:lisp}
 
 Суть в~том, что вычисление альтернативной ветки~$\beta$ производится в~старой
@@ -1252,15 +1252,15 @@ args `(\ii{k}~. ,args))} и распечатать результат предо
 \begin{code:lisp}
 (define (FROM-RIGHT-STORE-ARGUMENT m m* index)
   (lambda ()
-    (let* [((v* (m*))
-           (v  (m)) )]
+    (let* ([(v* (m*))]
+           [(v  (m))] )
       (set-activation-frame-argument! v* index v)
       v* ) ) )
 
 (define (FROM-RIGHT-CONS-ARGUMENT m m* arity)
   (lambda ()
-    (let* [((v* (m*))
-           (v  (m)) )]
+    (let* ([(v* (m*))]
+           [(v  (m))] )
       (set-activation-frame-argument!
        v* arity (cons v (activation-frame-argument v* arity)) )
       v* ) ) )
@@ -2024,8 +2024,8 @@ args `(\ii{k}~. ,args))} и распечатать результат предо
    (lambda (discriminant variables)
      (let ((g (gensym)) (c (gensym)))
        `(begin
-          [(unless (->Generic ',(car call))
-            (define-generic ,call) )]
+          [(unless (->Generic ',(car call))]
+            [(define-generic ,call) )]
           (register-method
            ',(car call)
            (lambda (,g ,c)

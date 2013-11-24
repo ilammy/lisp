@@ -868,7 +868,7 @@
   (<span class="func">evaluate</span> <span class="var">e1</span> <span class="var">r</span> <span class="var">s</span> (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
                      (((<span class="func">v</span> '<span class="var">boolify</span>)
                        (<span class="special">lambda</span> () (<span class="func">k</span> <span class="var">v</span> <span class="var">ss</span>))
-                       (<span class="special">lambda</span> () (<span class="func">evaluate</span> <span class="var">e2</span> <span class="var">r</span> <span class="var">k</span> <span class="highlight"><span class="var">s</span></span>)) )) )) )</pre>
+                       (<span class="special">lambda</span> () (<span class="func">evaluate</span> <span class="var">e2</span> <span class="highlight"><span class="var">r</span> <span class="var">k</span> <span class="var">s</span></span>)) )) )) )</pre>
 
 <p>Суть в том, что вычисление альтернативной ветки <span class="math"><span class="ord var">β</span></span> производится в старой
 памяти <code><span class="func">s</span></code>, а не в новой <code><span class="func">ss</span></code>.</p>
@@ -1117,15 +1117,15 @@
 
 <pre>(<span class="special">define</span> (<span class="func">FROM-RIGHT-STORE-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">index</span>)
   (<span class="special">lambda</span> ()
-    (<span class="syntax">let*</span> <span class="highlight">((<span class="var">v*</span> (<span class="func">m*</span>))</span>
-           <span class="highlight">(<span class="var">v</span>  (<span class="func">m</span>)) )</span>
+    (<span class="syntax">let*</span> (<span class="highlight">(<span class="var">v*</span> (<span class="func">m*</span>))</span>
+           <span class="highlight">(<span class="var">v</span>  (<span class="func">m</span>))</span> )
       (<span class="func">set-activation-frame-argument!</span> <span class="var">v*</span> <span class="var">index</span> <span class="var">v</span>)
       <span class="var">v*</span> ) ) )
 
 (<span class="special">define</span> (<span class="func">FROM-RIGHT-CONS-ARGUMENT</span> <span class="var">m</span> <span class="var">m*</span> <span class="var">arity</span>)
   (<span class="special">lambda</span> ()
-    (<span class="syntax">let*</span> <span class="highlight">((<span class="var">v*</span> (<span class="func">m*</span>))</span>
-           <span class="highlight">(<span class="var">v</span>  (<span class="func">m</span>)) )</span>
+    (<span class="syntax">let*</span> (<span class="highlight">(<span class="var">v*</span> (<span class="func">m*</span>))</span>
+           <span class="highlight">(<span class="var">v</span>  (<span class="func">m</span>))</span> )
       (<span class="func">set-activation-frame-argument!</span>
        <span class="var">v*</span> <span class="var">arity</span> (<span class="func">cons</span> <span class="var">v</span> (<span class="func">activation-frame-argument</span> <span class="var">v*</span> <span class="var">arity</span>)) )
       <span class="var">v*</span> ) ) )</pre>
@@ -1807,8 +1807,8 @@
    (<span class="special">lambda</span> (<span class="var">discriminant</span> <span class="var">variables</span>)
      (<span class="syntax">let</span> ((<span class="var">g</span> (<span class="func">gensym</span>)) (<span class="var">c</span> (<span class="func">gensym</span>)))
        `(<span class="special">begin</span>
-          <span class="highlight">(<span class="syntax">unless</span> (<span class="func">-&gt;Generic</span> ',(<span class="func">car</span> <span class="var">call</span>))
-            (<span class="syntax">define-generic</span> ,<span class="var">call</span>) )</span>
+          <span class="highlight">(<span class="syntax">unless</span> (<span class="func">-&gt;Generic</span> ',(<span class="func">car</span> <span class="var">call</span>))</span>
+            <span class="highlight">(<span class="syntax">define-generic</span> ,<span class="var">call</span>) )</span>
           (<span class="func">register-method</span>
            ',(<span class="func">car</span> <span class="var">call</span>)
            (<span class="special">lambda</span> (,<span class="var">g</span> ,<span class="var">c</span>)

@@ -935,6 +935,70 @@ pre .comment code {
     font-size: 9pt;
 }
 
+code span.special,
+pre span.special { color: #B40808; }
+
+code span.syntax,
+pre span.syntax { color: #040475; }
+
+code span.class,
+pre span.class { color: #1D70A0; }
+
+code span.func,
+pre span.func { color: #057905; }
+
+code span.var,
+pre span.var { color: #6E0885; }
+
+code span.hash,
+pre span.hash { color: #087777; }
+
+code span.num,
+pre span.num { color: #769207; }
+
+code span.string,
+pre span.string { color: #915C0D; }
+
+code span.string .pp,
+pre span.string .pp { color: #1070C0; }
+
+code span.string .esc,
+pre span.string .esc { color: #B80A57; }
+
+code span.comment,
+pre span.comment { color: #424242; }
+
+
+code.c span.pre,
+pre.c span.pre { color: #31770E; }
+
+code.c span.macro,
+pre.c span.macro { color: #1F1F7A; }
+
+code.c span.var,
+pre.c span.var { color: #8B8607; }
+
+code.c span.num,
+pre.c span.num { color: #6B098A; }
+
+code.c span.string,
+pre.c span.string { color: #853159; }
+
+code.c span.keyword,
+pre.c span.keyword { color: #B40808; }
+
+code.c span.type,
+pre.c span.type { color: #0C888D; }
+
+pre.shell             { color: #2C2C2C; }
+pre.shell span.prompt { color: #3E8F39; }
+pre.shell span.cmd    { color: #970B0B; }
+pre.shell span.opt    { color: #0E318B; }
+pre.shell span.arg    { color: #482055; }
+
+code span.highlight,
+pre span.highlight { background: #DDDDDD; }
+
 /******************************************************************************/
 
 /* Cover page */
@@ -962,76 +1026,3 @@ pre .comment code {
     line-height: 1;
     margin: 0.8em 0 0 0;
 }
-
-/******************************************************************************/
-
-/*
-
-
-
-code span.special,
-pre span.special { color: #CC1212; font-size: 100%; }
-
-code span.syntax,
-pre span.syntax { color: #1212CC; font-size: 100%; }
-
-code span.class,
-pre span.class { color: #1488CC; font-size: 100%; }
-
-code span.func,
-pre span.func { color: #128812; font-size: 100%; }
-
-code span.var,
-pre span.var { color: #AA10CC; font-size: 100%; }
-
-code span.hash,
-pre span.hash { color: #10AAAA; font-size: 100%; }
-
-code span.num,
-pre span.num { color: #AAAA10; font-size: 100%; }
-
-code span.string,
-pre span.string { color: #70C070; font-size: 100%; }
-
-code span.string span.pp,
-pre span.string span.pp { color: #1070C0; font-size: 100%; }
-
-code span.string span.esc,
-pre span.string span.esc { color: #C07010; font-size: 100%; }
-
-code span.comment,
-pre span.comment { color: #555555; font-size: 100%; }
-
-code span.highlight,
-pre span.highlight { background: #CDCDCD; font-size: 100%; }
-
-code span.fbox,
-pre span.fbox { border: 1px solid black; padding: 3px; font-size: 100%; }
-
-code span,
-pre span { font-size: 100%; }
-
-pre span.dialect { font-size: 100%; float: right; }
-pre span.dialect span.logo { font-size: 100%; }
-
-code.c span.pre,
-pre.c span.pre { color: #327710; }
-
-code.c span.macro,
-pre.c span.macro { color: #3322CC; }
-
-code.c span.keyword,
-pre.c span.keyword { color: #CC2233; }
-
-code.c span.type,
-pre.c span.type { color: #A79577; }
-
-pre.shell span.prompt { color: #10BB10; }
-
-pre.shell span.cmd { color: #B88B10; }
-
-pre.shell span.opt { color: #1010BB; }
-
-pre.shell span.arg { color: #307070; }
-
-*/
