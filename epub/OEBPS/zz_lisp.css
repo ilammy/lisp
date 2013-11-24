@@ -667,6 +667,10 @@ blockquote.equation span.eqno {
     width: 0;
 }
 
+.math .rel .ontop code {
+    font-size: 6pt;
+}
+
 .math .overline {
     display: inline-block;
     border-top: 1px solid black;
@@ -677,7 +681,7 @@ blockquote.equation span.eqno {
     margin-right: -0.1em;
 }
 
-/* fuck you cascading */
+/* fuck you, cascading */
 .math code > span.var    { font-style: normal; }
 .math code > span.syntax { font-weight: normal; }
 
@@ -858,12 +862,25 @@ table#ch5-boolify-eq tr.second td {
     padding-top: 0.4em;
 }
 
+/* fuck you Unicode for not providing scalable horizontal
+   braces like the vertical ones */
+table .low-brace {
+    border-top: 1px dashed black;
+    text-align: center;
+}
+
 table#ch5-dynamic-denotation-transform code {
     font-size: 9pt;
 }
 
 table#ch5-dynamic-denotation-transform td.arrow {
     padding: 0 0.5em;
+}
+
+table.ch6-meaning.left  { margin-left:  1.25em; margin-bottom: 0.3em; }
+table.ch6-meaning.right { margin-right: 1.25em; margin-top:    0.3em; }
+table.ch6-meaning .low-brace {
+    font-size: 8pt;
 }
 
 table.instruction-list td {
@@ -892,6 +909,13 @@ table#ch7-arity-probs td.desc { text-align: left;
                                 padding: 0; }
 table#ch7-arity-probs td      { text-align: center;
                                 padding-left: 1em; }
+
+table#ch9-table-prepare .left  { text-align: center; }
+table#ch9-table-prepare .arrow { padding: 0 0.75em; }
+table#ch9-table-prepare .right { text-align: left;
+                                 vertical-align: middle; }
+table#ch9-table-prepare .giant { font-size: 5em; }
+
 /******************************************************************************/
 
 /* Code hightlight */

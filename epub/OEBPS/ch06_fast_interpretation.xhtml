@@ -268,13 +268,15 @@
 реализовать несколько специальных форм. Ожидаемо, начнём мы работу с функции
 <code><span class="func">meaning</span></code>, имеющей следующий тип:</p>
 
-<blockquote class="equation math">
-<span class="ord normal"><code><span class="func">meaning</span></code></span><span class="ord">:</span><span class="quad-stub" style="width: 1em"/>
-
-<span class="gather"><div class="base math"><span class="prd Vset">Программа</span><span class="binop">×</span><span class="prd Vset">Окружение</span></div><div class="note">статическая часть</div></span><span class="rel">→</span><br/>
-
-<span class="quad-stub" style="width: 9em"/><span class="rel">→</span><span class="gather"><div class="base math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>∗</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></div><div class="note">динамическая часть</div></span>
-</blockquote>
+<!-- fuck you, html tables rendering, and Unicode too -->
+<table class="nocaption ch6-meaning left"><tbody>
+<tr><td><code><span class="func">meaning</span></code>:<span class="quad-stub" style="width: 1em"/></td><td><span class="math"><span class="ord Vset">Программа</span><span class="binop">×</span><span class="ord Vset">Окружение</span></span></td><td><span class="math"><span class="ord"/><span class="rel">→</span></span></td></tr>
+<tr><td/><td class="low-brace">статическая часть</td><td/></tr>
+</tbody></table>
+<table class="nocaption ch6-meaning right"><tbody>
+<tr><td><span class="math"><span class="quad-stub" style="width: 2em"/><span class="rel">→</span><span class="ord"/></span></td><td><span class="math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>∗</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></span></td></tr>
+<tr><td/><td class="low-brace">динамическая часть</td></tr>
+</tbody></table>
 
 <!--\indexR{предобработка программ}-->
 <p>Здесь чётко видно, как именно лексические окружения разделяются на две части:

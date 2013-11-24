@@ -153,19 +153,22 @@
 Исходные коды программ и исполняемые программы живут в отдельных мирах, которые
 лишены возможности влиять друг на друга.</p>
 
-<p>
-%
-{\def\expr#1{\text{<i>выражение</i>}_#1}%
-\def\prep#1{\text{<i>подготовленное-выражение</i>}_#1}%
-\def\ARR{\xrightarrow{\:\text{<code><span class="func">prepare</span></code>}\:}}%
-\[
-    \left.\begin{array}{ccc}
-        \expr 0 &amp; \ARR &amp; \prep 0 \\
-        \expr 1 &amp; \ARR &amp; \prep 1 \\
-        \cdots  &amp; \ARR &amp; \cdots  \\
-        \expr n &amp; \ARR &amp; \prep n
-    \end{array}\right\}<code><span class="func">run</span></code>
-\]}</p>
+<table id="ch9-table-prepare" class="nocaption"><tbody>
+<tr><td class="left"><i>выражение</i><sub>1</sub></td>
+    <td class="left arrow"><span class="math"><span class="rel">⟶<span class="ontop" style="right: 2.75em"><code><span class="func">prepare</span></code></span></span></span></td>
+    <td class="left"><i>подготовленное-выражение</i><sub>1</sub></td>
+    <td class="right" rowspan="4"><span class="math"><span class="close giant">}</span></span></td>
+    <td class="right" rowspan="4"><code><span class="func">run</span></code></td></tr>
+<tr><td class="left"><i>выражение</i><sub>2</sub></td>
+    <td class="left arrow"><span class="math"><span class="rel">⟶<span class="ontop" style="right: 2.75em"><code><span class="func">prepare</span></code></span></span></span></td>
+    <td class="left"><i>подготовленное-выражение</i><sub>2</sub></td></tr>
+<tr><td class="left">…</td>
+    <td class="left arrow"><span class="math"><span class="rel">⟶<span class="ontop" style="right: 2.75em"><code><span class="func">prepare</span></code></span></span></span></td>
+    <td class="left">…</td></tr>
+<tr><td class="left"><i>выражение</i><sub><i>n</i></sub></td>
+    <td class="left arrow"><span class="math"><span class="rel">⟶<span class="ontop" style="right: 2.75em"><code><span class="func">prepare</span></code></span></span></span></td>
+    <td class="left"><i>подготовленное-выражение</i><sub><i>n</i></sub></td></tr>
+</tbody></table>
 
 
 <h3 id="macros/preparation/ssect:unique"><span class="wrap"><span class="seq">9.1.2.</span><span class="title">Единый мир</span></span></h3>
