@@ -267,7 +267,7 @@
 В таком случае вызов «<code>compile file.scm expand.so</code>» соответствует
 следующей командной строке UNIX-shell:</p>
 
-<pre>run expand.so &lt; file.scm | run compile.so &gt; file.so</pre>
+<pre class="shell"><span class="cmd">run</span> <span class="arg">expand.so</span> &lt; <span class="arg">file.scm</span> | <span class="cmd">run</span> <span class="arg">compile.so</span> &gt; <span class="arg">file.so</span></pre>
 
 <div class="image" id="macros/expand/exo/pic:subj">
 <img src="images/png17.png" alt="Иллюстрация процесса компиляции исполнимых файлов" style="width: 5.28in"/>
@@ -281,8 +281,8 @@
 рисунка <a href="#macros/expand/exo/pic:subj">9.1</a>. Тогда команде «<code>compile file.scm
 expand.so</code>» соответствует</p>
 
-<pre>build-application compile.so expand.so -o tmp.so;
-run tmp.so &lt; file.scm &gt; file.so</pre>
+<pre class="shell"><span class="cmd">build-application</span> <span class="arg">compile.so</span> <span class="arg">expand.so</span> <span class="opt">-o</span> <span class="arg">tmp.so</span>;
+<span class="cmd">run</span> <span class="arg">tmp.so</span> &lt; <span class="arg">file.scm</span> &gt; <span class="arg">file.so</span></pre>
 
 <!--\indexR{подготовка программ!обмен информацией}-->
 <p>Среди нерешённых проблем остаётся ещё протокол обмена информацией между

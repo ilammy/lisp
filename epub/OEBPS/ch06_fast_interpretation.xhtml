@@ -66,9 +66,9 @@
 точности, так что можно перенести вычисления немного вперёд, чтобы выполнять их
 раньше <span class="cite">[<a href="z1_bibliography.xhtml#deu89">Deu89</a>]</span>.
 Такой перенос называется <em class="term">миграцией</em> кода, также
-известной под именами <em class="term">λ-hoisting</em>
+известной под именами <em class="term"><span class="math"><span class="ord var">λ</span></span>-hoisting</em>
 <span class="cite">[<a href="z1_bibliography.xhtml#tak88">Tak88</a>]</span> и
-<em class="term">λ-drifting</em>
+<em class="term"><span class="math"><span class="ord var">λ</span></span>-drifting</em>
 <span class="cite">[<a href="z1_bibliography.xhtml#roz92">Roz92</a>]</span>.
 Конечно, в Scheme его надо применять
 осторожно, чтобы не вызвать какие-либо побочные эффекты в неправильное время, а
@@ -79,7 +79,7 @@
 не закончится, не является эквивалентом <code>(<span class="syntax">let</span>
 ((<span class="var">tmp</span> (<i>ω</i> <i>ω</i>)))
 (<span class="special">lambda</span> (<span class="var">x</span>) <span class="var">tmp</span>))</code>. Однако, обе эти проблемы принципиально отсутствуют
-в денотационном интерпретаторе, так как в λ-исчислении нет побочных
+в денотационном интерпретаторе, так как в <span class="math"><span class="ord var">λ</span></span>-исчислении нет побочных
 эффектов, а те денотации, которые имеет смысл переносить, являются
 композициональными и получаются из программ конечных размеров, так что они
 гарантированно вычислимы за конечное время.</p>

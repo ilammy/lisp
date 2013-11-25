@@ -1919,8 +1919,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <!--\indexE{Y@\protect\comb{Y}, комбинатор}-->
 <!--\indexR{теорема о неподвижной точке}-->
 <!--\indexR{неподвижная точка}-->
-<!--\indexR{лямбда-исчисление@λ-исчисление!комбинаторы}-->
-<p>Если вы имели дело с λ-исчислением, то вы наверняка помните, что
+<!--\indexR{лямбда-исчисление@<span class="math"><span class="ord var">λ</span></span>-исчисление!комбинаторы}-->
+<p>Если вы имели дело с <span class="math"><span class="ord var">λ</span></span>-исчислением, то вы наверняка помните, что
 такое <em>комбинаторы неподвижной точки</em> и как записывается самый известный
 из них — <em>парадоксальный</em> или Y-комбинатор. Функция
 <span class="math"><span class="ord var">f</span></span> имеет
@@ -1928,8 +1928,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <span class="math"><span class="ord var">x</span></span> такой,
 что <span class="math"><span class="ord var">f</span><span class="open">(</span><span class="ord var">x</span><span class="close">)</span><span class="rel">=</span><span class="ord var">x</span></span>.
 Комбинатор <span class="comb">Y</span> принимает любую функцию
-λ-исчисления и возвращает её неподвижную точку. Эта идея выражена
-в одной из наиболее прекрасных и содержательных теорем λ-исчисления:</p>
+<span class="math"><span class="ord var">λ</span></span>-исчисления и возвращает её неподвижную точку. Эта идея выражена
+в одной из наиболее прекрасных и содержательных теорем <span class="math"><span class="ord var">λ</span></span>-исчисления:</p>
 
 <blockquote class="theorem"><span class="title">Теорема о неподвижной точке:</span>
 <span class="math"><span class="ord">∃</span><span class="ord comb">Y</span><span class="ord">: </span><span class="ord">∀</span><span class="ord var">F</span><span class="ord">: </span><span class="ord comb">Y</span><span class="ord var">F</span><span class="rel">=</span><span class="open">(</span><span class="ord comb">Y</span><span class="ord var">F</span><span class="close">)</span></span></blockquote>
@@ -1950,8 +1950,8 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <!--\indexR{эта-конверсия@$\eta$-конверсия}-->
 <p>Правда, здесь возникает небольшое затруднений из-за принятой в Scheme передачи
 аргументов по значению. Терм <code>((<span class="func">w</span> <span class="var">w</span>) <span class="var">f</span>)</code> не следует вычислять слишком рано,
-поэтому мы вынуждены добавить излишнюю (в λ-исчислении) η-конверсию, чтобы избежать проблем.
-В итоге мы приходим к так называемому Z-комбинатору, где <code>(<span class="special">lambda</span> (<span class="var">x</span>) (... <span class="var">x</span>))</code> означает η-конверсию:</p>
+поэтому мы вынуждены добавить излишнюю (в <span class="math"><span class="ord var">λ</span></span>-исчислении) <span class="math"><span class="ord var">η</span></span>-конверсию, чтобы избежать проблем.
+В итоге мы приходим к так называемому Z-комбинатору, где <code>(<span class="special">lambda</span> (<span class="var">x</span>) (... <span class="var">x</span>))</code> означает <span class="math"><span class="ord var">η</span></span>-конверсию:</p>
 
 <!--\indexC{fix}-->
 <pre>(<span class="special">define</span> <span class="var">fix</span>
@@ -2351,11 +2351,11 @@ href="zz_footnotes.xhtml#foot2.9"><sup>9</sup></a> вроде такой:</p>
 
 <h2 id="lisp1-2-omega/sect:recommended-reading"><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
-<p>Кроме упомянутой ранее работы по λ-исчислению <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">SS78a</a>]</span> также имеет
+<p>Кроме упомянутой ранее работы по <span class="math"><span class="ord var">λ</span></span>-исчислению <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">SS78a</a>]</span> также имеет
 смысл почитать про анализ функций в <span class="cite">[<a href="z1_bibliography.xhtml#mos70">Mos70</a>]</span> и сравнительный анализ Lisp<sub>1</sub>
 и Lisp<sub>2</sub> в <span class="cite">[<a href="z1_bibliography.xhtml#gp88">GP88</a>]</span>.</p>
 
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#gor88">Gor88</a>]</span> есть интересное введение в λ-исчисление.</p>
+<p>В <span class="cite">[<a href="z1_bibliography.xhtml#gor88">Gor88</a>]</span> есть интересное введение в <span class="math"><span class="ord var">λ</span></span>-исчисление.</p>
 
 <p>Комбинатор <span class="comb">Y</span> разбирается подробнее в <span class="cite">[<a href="z1_bibliography.xhtml#gab88">Gab88</a>]</span>.</p>
 

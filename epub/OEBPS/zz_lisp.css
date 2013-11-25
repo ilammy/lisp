@@ -113,10 +113,6 @@ body {
     width: 140mm;
 }
 
-span { color: red; }
-
-.math, .math * { color: green !important; }
-
 /******************************************************************************/
 
 body {
@@ -147,8 +143,8 @@ h1 {
     font-size: 25pt;
     font-weight: bold;
     text-align: right;
-    margin-bottom: 50pt;
-    margin-top: 20pt;
+    margin-bottom: 2em;
+    margin-top: 0.8em;
 }
 
 h1 .seq {
@@ -156,7 +152,7 @@ h1 .seq {
     font-size: 14pt;
     font-variant: small-caps;
     font-weight: normal;
-    margin-bottom: 15pt;
+    margin-bottom: 1.0715em;
 }
 
 h2 .wrap,
@@ -189,6 +185,10 @@ h2 code {
     font-size: 14pt;
 }
 
+h2 .math {
+    font-size: 16pt;
+}
+
 h3 {
     font-size: 12pt;
     font-weight: bold;
@@ -198,6 +198,10 @@ h3 {
 
 h3 code {
     font-size: 12pt;
+}
+
+h3 .math {
+    font-size: 14pt;
 }
 
 h4 {
@@ -302,7 +306,7 @@ span.logo {
 
 span.fbox {
     border: 1px solid black;
-    padding: 2pt;
+    padding: 0.2222em;
 }
 
 span.see {
@@ -417,15 +421,6 @@ ol li {
     position: relative;
 }
 
-ol li:before {
-    background-color: white;
-    content: ')';
-    display: inline-block;
-    left: -12px;
-    position: absolute;
-    text-align: center;
-    width: 7px; }
-
 ul {
     list-style-type: disc;
 }
@@ -442,7 +437,7 @@ div.where {
     display: inline-block;
     vertical-align: top;
     padding-left: 0.1em;
-    margin: 3px 0;
+    margin: 0.277em 0;
     white-space: pre;
 }
 
@@ -521,18 +516,22 @@ table.numbered-source pre {
 }
 
 .math .ord {
+    color: black;
     font-style: normal;
 }
 
 .math .cal {
-font-family: 'DejaVu Serif';
+    color: black;
+    font-family: 'DejaVu Serif';
 }
 
 .math .num {
+    color: black;
     font-style: normal;
 }
 
 .math .var {
+    color: black;
     font-style: italic;
 }
 
@@ -541,6 +540,10 @@ font-family: 'DejaVu Serif';
     font-size: 120%;
     line-height: 1;
     position: relative;
+}
+
+.math .string {
+    color: black;
 }
 
 .math .normal {
@@ -618,13 +621,13 @@ span.quad-stub {
 .math .frac .numerator {
     border-bottom: 1px solid black;
     display: block;
-    padding-bottom: 1pt;
+    padding-bottom: 0.08333em;
     text-align: center;
 }
 
 .math .frac .denominator {
     display: block;
-    padding-top: 3pt;
+    padding-top: 0.25em;
     text-align: center;
 }
 

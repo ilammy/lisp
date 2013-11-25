@@ -17,7 +17,7 @@
     <item id="ch_02"      href="ch02_lisp_1_2_omega.xhtml"              media-type="application/xhtml+xml"/>
     <item id="ch_03"      href="ch03_escape_and_return.xhtml"           media-type="application/xhtml+xml"/>
     <item id="ch_04"      href="ch04_assignment_and_side_effects.xhtml" media-type="application/xhtml+xml"/>
-    <item id="ch_05"      href="ch05_denotational_sematics.xhtml"       media-type="application/xhtml+xml"/>
+    <item id="ch_05"      href="ch05_denotational_semantics.xhtml"      media-type="application/xhtml+xml"/>
     <item id="ch_06"      href="ch06_fast_interpretation.xhtml"         media-type="application/xhtml+xml"/>
     <item id="ch_07"      href="ch07_compilation.xhtml"                 media-type="application/xhtml+xml"/>
     <item id="ch_08"      href="ch08_evaluation_and_reflection.xhtml"   media-type="application/xhtml+xml"/>

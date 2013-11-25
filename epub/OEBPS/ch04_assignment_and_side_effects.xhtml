@@ -28,7 +28,7 @@
 к необходимости сохранять состояние программы (в том или ином виде), где будет
 записано, что такая-то переменная отныне имеет следующее значение. Для свободно
 владеющих императивными языками смысл присваивания кажется простым и очевидным.
-В этой главе мы покажем, как замыкания, а также наследие λ-исчисления,
+В этой главе мы покажем, как замыкания, а также наследие <span class="math"><span class="ord var">λ</span></span>-исчисления,
 усложняют понятия связывания и переменных.</p>
 
 <p>Главная проблема с присваиванием (и побочными эффектами) состоит в том, чтобы
@@ -93,9 +93,9 @@
 <p>Каждый вызов <code><span class="func">enumerate</span></code> возвращает новое натуральное число. Функция
 <code><span class="func">enumerate</span></code> имеет внутреннее состояние, представляемое переменной <code><span class="var">n</span></code>,
 которая изменяется с каждым следующим вызовом функции. Но то, что <code><span class="var">n</span></code>
-принадлежит замыканию, является проблемой. В λ-исчислении нет ни слова
+принадлежит замыканию, является проблемой. В <span class="math"><span class="ord var">λ</span></span>-исчислении нет ни слова
 о присваивании. Ведь когда мы применяем функцию в математике (и, соответственно,
-в λ-исчислении), то просто заменяем в её теле все переменные
+в <span class="math"><span class="ord var">λ</span></span>-исчислении), то просто заменяем в её теле все переменные
 соответствующими значениями аргументов. Из-за присваивания данная семантика
 подстановки становится неверной, а программы теряют ссылочную прозрачность.</p>
 
@@ -123,7 +123,7 @@
 влияет ли присваивание внутри <code><span class="func">set-winner!</span></code> на значение, возвращаемое
 <code><span class="func">winner</span></code>?</p>
 
-<p>И снова λ-исчисление хранит молчание. У него есть причины быть
+<p>И снова <span class="math"><span class="ord var">λ</span></span>-исчисление хранит молчание. У него есть причины быть
 немногословным: ведь присваивание чуждо ему. Ладно, мы вроде бы говорили, что
 создание функции захватывает окружение определения; значит, функции <code><span class="func">winner</span></code>
 и <code><span class="func">set!-winner</span></code> по крайней мере знают, что в момент их создания переменная
@@ -159,7 +159,7 @@
 функция. В результате вызов <code>(<span class="special">closure</span> (<span class="var">x</span>) (<span class="special">lambda</span> (<span class="var">y</span>) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code> раскрывался
 в <code>(<span class="special">lambda</span> (<span class="var">y</span>) (<span class="syntax">let</span> ((<span class="var">x</span> '<i>значение-<code><span class="var">x</span></code></i>)) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code>.
 С одной стороны, значение действительно захватывается, а с другой — всё укладывается
-в парадигму подстановки, унаследованную от λ-исчисления.</p>
+в парадигму подстановки, унаследованную от <span class="math"><span class="ord var">λ</span></span>-исчисления.</p>
 
 <p>Но данная модель вычислений значительно усложняет как присваивание, так
 и совместное использование переменных. Возможны и другие варианты решения этой
@@ -1214,7 +1214,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 к логическому типу (ведь любой объект в Scheme, кроме <code><span class="hash">#f</span></code>, считается
 логической истиной). Будем считать, что все объекты отвечают на сообщение
 <code><span class="var">boolify</span></code>, возвращая своё логическое представление в виде одного из
-комбинаторов λ-исчисления: <code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)</code> или
+комбинаторов <span class="math"><span class="ord var">λ</span></span>-исчисления: <code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)</code> или
 <code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">y</span>)</code>.</p>
 
 
