@@ -103,21 +103,8 @@
 
 /******************************************************************************/
 
-/* Layout debugging */
-
-body {
-    border-left: 1px solid black;
-    border-right: 1px solid black;
-    padding: 0 3pt;
-    margin: 0 auto;
-    width: 140mm;
-}
-
-/******************************************************************************/
-
 body {
     font-family: 'DejaVu Serif', serif;
-    font-size: 10pt;
     line-height: 1.4;
     padding: 2em 0;
 }
@@ -126,12 +113,7 @@ code, pre {
     font-family: 'DejaVu Sans Mono', monospace;
 }
 
-code {
-    font-size: 10pt;
-}
-
 pre {
-    font-size: 9pt;
     white-space: pre-wrap;
 }
 
@@ -140,7 +122,6 @@ pre {
 /* Basic layout */
 
 h1 {
-    font-size: 25pt;
     font-weight: bold;
     text-align: right;
     margin-bottom: 2em;
@@ -149,7 +130,6 @@ h1 {
 
 h1 .seq {
     display: block;
-    font-size: 14pt;
     font-variant: small-caps;
     font-weight: normal;
     margin-bottom: 1.0715em;
@@ -175,33 +155,15 @@ h4 .wrap .title {
 }
 
 h2 {
-    font-size: 14pt;
     font-weight: bold;
     margin-bottom: 2.3ex;
     margin-top: 3.5ex;
 }
 
-h2 code {
-    font-size: 14pt;
-}
-
-h2 .math {
-    font-size: 16pt;
-}
-
 h3 {
-    font-size: 12pt;
     font-weight: bold;
     margin-bottom: 1.5ex;
     margin-top: 3.25ex;
-}
-
-h3 code {
-    font-size: 12pt;
-}
-
-h3 .math {
-    font-size: 14pt;
 }
 
 h4 {
@@ -231,14 +193,9 @@ table {
 
 table + .caption {
     display: table;
-    font-size: 9pt;
     margin: 0.6em auto 1.2em;
     max-width: 95%;
     text-align: center;
-}
-
-table + .caption code {
-    font-size: 9pt;
 }
 
 table.nocaption {
@@ -263,13 +220,8 @@ table .underlined
 
 .image .caption {
     display: table;
-    font-size: 9pt;
     margin: 0.6em auto 0;
     text-align: center;
-}
-
-.image .caption code {
-    font-size: 9pt;
 }
 
 blockquote.equation {
@@ -284,7 +236,6 @@ blockquote.equation {
 
 p .initial {
     float: left;
-    font-size: 5ex;
     height: 1em;
     position: relative;
     top: -0.25ex;
@@ -321,7 +272,6 @@ div.bigskip { height: 1.25em; }
 
 pre span.dialect {
     font-family: 'DejaVu Serif', serif;
-    font-size: 10pt;
     float: right;
     margin-right: 1.25em;
 }
@@ -375,7 +325,6 @@ em em {
 }
 
 sub, sup {
-    font-size: 7pt;
     position: relative;
 }
 
@@ -494,7 +443,6 @@ table.numbered-source td.lines {
 table.numbered-source span.lineno {
     color: gray;
     font-family: 'DejaVu Sans Condensed', sans-serif;
-    font-size: 7pt;
 }
 
 table.numbered-source .lines pre {
@@ -511,7 +459,6 @@ table.numbered-source pre {
 
 .math {
     font-family: STIX, serif;
-    font-size: 12pt;
     line-height: 0.8333;
 }
 
@@ -548,7 +495,6 @@ table.numbered-source pre {
 
 .math .normal {
     font-family: 'DejaVu Serif', serif;
-    font-size: 10pt;
 }
 
 .math .sem-brace {
@@ -586,13 +532,7 @@ span.quad-stub {
 }
 
 .math sub, .math sup {
-    font-size: 8pt;
     font-style: normal;
-}
-
-.math sub sub, .math sub sup,
-.math sup sub, .math sup sup {
-    font-size: 6pt;
 }
 
 .math sub {
@@ -633,7 +573,6 @@ span.quad-stub {
 
 span.comb {
     font-family: 'DejaVu Sans', sans-serif;
-    font-size: 11pt;
     line-height: 0.909;
 }
 
@@ -643,35 +582,27 @@ span.comb {
 
 .math .Vset {
     font-family: 'DejaVu Serif Condensed', serif;
-    font-size: 10pt;
     font-weight: bold;
 }
 
 .math sub .Vset {
-    font-size: 8pt;
     line-height: 0.8;
 }
 
 blockquote.equation span.eqno {
     float: right;
     font-family: 'DejaVu Serif', serif;
-    font-size: 10pt;
     line-height: 1.3;
 }
 
 .math .rel .ontop {
     bottom: 1.15em;
     display: inline-block;
-    font-size: 8pt;
     height: 0;
     line-height: 0;
     position: relative;
     right: 0.95em;
     width: 0;
-}
-
-.math .rel .ontop code {
-    font-size: 6pt;
 }
 
 .math .overline {
@@ -740,7 +671,6 @@ table#bibliography td { padding-bottom: 1em; }
 table#bibliography td.label { padding-right: 0.5em; }
 
 #footnotes h1 {
-    font-size: 12pt;
     font-weight: bold;
     text-align: left;
     margin-bottom: 1.5ex;
@@ -749,7 +679,6 @@ table#bibliography td.label { padding-right: 0.5em; }
 
 #footnotes h1 .seq {
     display: inline;
-    font-size: 12pt;
     font-variant: normal;
     font-weight: bold;
     margin: 0;
@@ -814,7 +743,6 @@ table.code pre {
 }
 
 table#ch3-eval-stack { margin: 0.8em auto; }
-table#ch3-eval-stack td * { font-size: 9pt; }
 table#ch3-eval-stack td.left { float: left; padding-right: 0.75em; }
 table#ch3-eval-stack td.right { float: right; }
 
@@ -874,19 +802,13 @@ table .low-brace {
     text-align: center;
 }
 
-table#ch5-dynamic-denotation-transform code {
-    font-size: 9pt;
-}
-
 table#ch5-dynamic-denotation-transform td.arrow {
     padding: 0 0.5em;
 }
 
 table.ch6-meaning.left  { margin-left:  1.25em; margin-bottom: 0.3em; }
 table.ch6-meaning.right { margin-right: 1.25em; margin-top:    0.3em; }
-table.ch6-meaning .low-brace {
-    font-size: 8pt;
-}
+
 
 table.instruction-list td {
     border-left:  1px solid black;
@@ -903,8 +825,6 @@ table.disasm td.col1 { padding-right: 1.05em; }
 table.disasm td.col2 { border-left: 1px solid black;
                        padding-left: 0.95em; }
 
-table.disasm code { font-size: 9pt; }
-
 table#ch7-arity-probs thead {
     border-bottom: 1px solid black;
     border-top:    1px solid black;
@@ -919,7 +839,6 @@ table#ch9-table-prepare .left  { text-align: center; }
 table#ch9-table-prepare .arrow { padding: 0 0.75em; }
 table#ch9-table-prepare .right { text-align: left;
                                  vertical-align: middle; }
-table#ch9-table-prepare .giant { font-size: 5em; }
 
 /******************************************************************************/
 
@@ -933,11 +852,6 @@ pre .comment {
 code.c .comment,
 pre.c .comment {
     font-family: 'DejaVu Sans Mono', monospace;
-}
-
-code .comment code,
-pre .comment code {
-    font-size: 9pt;
 }
 
 code span.special,
@@ -972,7 +886,6 @@ pre span.string .esc { color: #B80A57; }
 
 code span.comment,
 pre span.comment { color: #424242; }
-
 
 code.c span.pre,
 pre.c span.pre { color: #31770E; }
@@ -1013,7 +926,6 @@ pre span.highlight { background: #DDDDDD; }
 }
 
 #cover h1 {
-    font-size: 35pt;
     font-weight: bold;
     line-height: 0.87;
     margin: 0 0 0.8em 0;
@@ -1025,7 +937,6 @@ pre span.highlight { background: #DDDDDD; }
 }
 
 #cover h2 {
-    font-size: 22pt;
     font-style: italic;
     font-weight: normal;
     line-height: 1;

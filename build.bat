@@ -51,11 +51,16 @@ goto:eof
     echo == Packaging EPUB ==
     cd %ROOT%\epub
 
-    zip --quiet --recurse-paths --compression-method deflate --unicode UTF8 ^
-        %JOBNAME%.epub mimetype META-INF OEBPS
+    for /f %%a in ('dir /B %ROOT%\epub\fontconfig') do (
+        echo  - %%~na
+        copy /y %ROOT%\epub\fontconfig\%%a %ROOT%\epub\OEBPS\zz_fontsize.css
+        zip --quiet --recurse-paths --compression-method deflate ^
+            --unicode UTF8 %JOBNAME%-%%~na.epub mimetype META-INF OEBPS
+    )
 
     echo == Done ==
-    move %JOBNAME%.epub %ROOT%
-    del /Q %ROOT%\epub\OEBPS\images
+    move *.epub %ROOT%
+    del /q %ROOT%\epub\OEBPS\images
+    del /q %ROOT%\epub\OEBPS\zz_fontsize.css
     rmdir %ROOT%\epub\OEBPS\images
 goto:eof

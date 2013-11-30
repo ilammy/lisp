@@ -43,12 +43,18 @@ function prepare_epub {
     echo "== Packaging EPUB =="
     cd $ROOT/epub
 
-    zip --quiet --recurse-paths --compression-method deflate --unicode UTF8 \
-        $JOBNAME.epub mimetype META-INF OEBPS
+    for size in `ls $ROOT/epub/fontconfig`
+    do
+        echo " - ${size%.css}"
+        cp $ROOT/epub/fontconfig/$size $ROOT/epub/OEBPS/zz_fontsize.css
+        zip --quiet --recurse-paths --compression-method deflate \
+            --unicode UTF8 $JOBNAME-${size%.css}.epub mimetype META-INF OEBPS
+    done
 
     echo "== Done =="
-    mv $JOBNAME.epub $ROOT
+    mv *.epub $ROOT
     rm -rf $ROOT/epub/OEBPS/images
+    rm -f $ROOT/epub/OEBPS/zz_fontsize.css
 }
 
 function print_usage {

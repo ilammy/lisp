@@ -29,6 +29,7 @@
 
     <item id="footnotes" href="zz_footnotes.xhtml" media-type="application/xhtml+xml"/>
     <item id="style"     href="zz_lisp.css"        media-type="text/css"/>
+    <item id="style"     href="zz_fontsize.css"    media-type="text/css"/>
     <item id="00_toc"    href="00_toc.ncx"         media-type="application/x-dtbncx+xml"/>
 
     <item id="png00" href="images/png00.png" media-type="image/png"/>
