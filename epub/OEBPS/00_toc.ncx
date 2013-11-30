@@ -1,0 +1,1469 @@
+<?xml version="1.0"?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN"
+"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="ru-RU">
+
+<head>
+    <meta name="dtb:uid" content="lisp-in-small-pieces-ru"/>
+    <meta name="dtb:depth" content="3"/>
+    <meta name="dtb:totalPageCount" content="0"/>
+    <meta name="dtb:maxPageNumber" content="0"/>
+</head>
+
+<docTitle>
+    <text>Интерпретация Лиспа и Scheme</text>
+</docTitle>
+
+<docAuthor>
+    <text>Кристиан Кеннек</text>
+</docAuthor>
+
+<navMap>
+    <navPoint class="chapter" id="chapter:to_the_reader">
+        <navLabel><text>К читателю</text></navLabel>
+        <content src="01_preface.xhtml#chapter:to_the_reader"/>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:basics">
+        <navLabel><text>Глава 1. Основы интерпретации</text></navLabel>
+        <content src="ch01_basics.xhtml#chapter:basics"/>
+
+        <navPoint class="section" id="basics/sect:evaluation">
+            <navLabel><text>1.1. Вычисления</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:evaluation"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:basic-evaluator">
+            <navLabel><text>1.2. Базовый вычислитель</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:basic-evaluator"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:evaluating-atoms">
+            <navLabel><text>1.3. Вычисляем атомы</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:evaluating-atoms"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:evaluating-forms">
+            <navLabel><text>1.4. Вычисляем формы</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:evaluating-forms"/>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:quoting">
+                <navLabel><text>1.4.1. Цитирование</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:quoting"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:alternatives">
+                <navLabel><text>1.4.2. Ветвление</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:alternatives"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:sequence">
+                <navLabel><text>1.4.3. Последовательность</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:assignment">
+                <navLabel><text>1.4.4. Присваивание</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:assignment"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:abstraction">
+                <navLabel><text>1.4.5. Абстракция</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:abstraction"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/evaluating-forms/ssect:application">
+                <navLabel><text>1.4.6. Аппликация</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/evaluating-forms/ssect:application"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:repr-the-env">
+            <navLabel><text>1.5. Представление окружений</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:repr-the-env"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:representing-functions">
+            <navLabel><text>1.6. Представление функций</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:representing-functions"/>
+
+            <navPoint class="subsection" id="basics/representing-functions/ssect:dynamic-and-lexical-binding">
+                <navLabel><text>1.6.1. Динамическая и лексическая области видимости</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/representing-functions/ssect:dynamic-and-lexical-binding"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="basics/representing-functions/ssect:deep-or-shallow">
+                <navLabel><text>1.6.2. Дальнее и ближнее связывание</text></navLabel>
+                <content src="ch01_basics.xhtml#basics/representing-functions/ssect:deep-or-shallow"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:global-environment">
+            <navLabel><text>1.7. Глобальное окружение</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:global-environment"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:starting-the-interpreter">
+            <navLabel><text>1.8. Запускаем интерпретатор</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:starting-the-interpreter"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:conclusions">
+            <navLabel><text>1.9. Заключение</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="basics/sect:exercises">
+            <navLabel><text>1.10. Упражнения</text></navLabel>
+            <content src="ch01_basics.xhtml#basics/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:lisp1-2-omega">
+        <navLabel><text>Глава 2. Lisp, 1, 2, …, ω</text></navLabel>
+        <content src="ch02_lisp_1_2_omega.xhtml#chapter:lisp1-2-omega"/>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:lisp1">
+            <navLabel><text>2.1. Lisp₁</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:lisp1"/>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:lisp2">
+            <navLabel><text>2.2. Lisp₂</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:lisp2"/>
+
+            <navPoint class="subsection" id="lisp1-2-omega/lisp2/ssect:eval-func-term">
+                <navLabel><text>2.2.1. Вычисляем функции</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/lisp2/ssect:eval-func-term"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/lisp2/ssect:duality">
+                <navLabel><text>2.2.2. Двойственность миров</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/lisp2/ssect:duality"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/lisp2/ssect:using">
+                <navLabel><text>2.2.3. Используем Lisp₂</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/lisp2/ssect:using"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/lisp2/ssect:enriching">
+                <navLabel><text>2.2.4. Расширяем функциональное окружение</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/lisp2/ssect:enriching"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:extensions">
+            <navLabel><text>2.3. Другие возможности</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:extensions"/>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:comparison">
+            <navLabel><text>2.4. Сравнение Lisp₁ и Lisp₂</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:comparison"/>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:namespaces">
+            <navLabel><text>2.5. Пространства имён</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:namespaces"/>
+
+            <navPoint class="subsection" id="lisp1-2-omega/namespaces/ssect:dyn-vars">
+                <navLabel><text>2.5.1. Динамические переменные</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/namespaces/ssect:dyn-vars"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/namespaces/ssect:dyn-vars-cl">
+                <navLabel><text>2.5.2. Динамические переменные в Common Lisp</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/namespaces/ssect:dyn-vars-cl"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/namespaces/ssect:dyn-vars-no-special">
+                <navLabel><text>2.5.3. Динамические переменные без специальных форм</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/namespaces/ssect:dyn-vars-no-special"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/namespaces/ssect:conclusions">
+                <navLabel><text>2.5.4. В заключение о пространствах имён</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/namespaces/ssect:conclusions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:recursion">
+            <navLabel><text>2.6. Рекурсия</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:recursion"/>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:simple">
+                <navLabel><text>2.6.1. Простая рекурсия</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:simple"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:mutual">
+                <navLabel><text>2.6.2. Взаимная рекурсия</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:mutual"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:local-lisp2">
+                <navLabel><text>2.6.3. Локальная рекурсия в Lisp₂</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:local-lisp2"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:local-lisp1">
+                <navLabel><text>2.6.4. Локальная рекурсия в Lisp₁</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:local-lisp1"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:uninitialized">
+                <navLabel><text>2.6.5. Объявление неинициализированных привязок</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="lisp1-2-omega/recusion/ssect:no-assignment">
+                <navLabel><text>2.6.6. Рекурсия без присваивания</text></navLabel>
+                <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:no-assignment"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:conclusions">
+            <navLabel><text>2.7. Заключение</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="lisp1-2-omega/sect:exercises">
+            <navLabel><text>2.8. Упражнения</text></navLabel>
+            <content src="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:escape">
+        <navLabel><text>Глава 3. Переходы и возвраты: продолжения</text></navLabel>
+        <content src="ch03_escape_and_return.xhtml#chapter:escape"/>
+
+        <navPoint class="section" id="escape/sect:handling">
+            <navLabel><text>3.1. Формы, манипулирующие продолжениями</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:handling"/>
+
+            <navPoint class="subsection" id="escape/handling/ssect:catch-throw">
+                <navLabel><text>3.1.1. Пара catch/throw</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/handling/ssect:catch-throw"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/forms/ssect:block-return">
+                <navLabel><text>3.1.2. Пара block/return-from</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/forms/ssect:block-return"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/forms/ssect:dynamic">
+                <navLabel><text>3.1.3. Метки с динамическим временем жизни</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/forms/ssect:dynamic"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/forms/ssect:catch-vs-block">
+                <navLabel><text>3.1.4. Сравнение catch и block</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/forms/ssect:catch-vs-block"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/forms/ssect:immortal">
+                <navLabel><text>3.1.5. Метки с неограниченным временем жизни</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/forms/ssect:immortal"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/forms/ssect:protection">
+                <navLabel><text>3.1.6. Защитные формы</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/forms/ssect:protection"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:actors">
+            <navLabel><text>3.2. Участники вычислений</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:actors"/>
+
+            <navPoint class="subsection" id="escape/actors/ssect:review">
+                <navLabel><text>3.2.1. Краткий обзор объектов</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:review"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:interpreter">
+                <navLabel><text>3.2.2. Интерпретатор</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:interpreter"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:quoting">
+                <navLabel><text>3.2.3. Цитирование</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:quoting"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:alternatives">
+                <navLabel><text>3.2.4. Ветвление</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:alternatives"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:sequence">
+                <navLabel><text>3.2.5. Последовательность</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:variables">
+                <navLabel><text>3.2.6. Окружения</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:variables"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/actors/ssect:functions">
+                <navLabel><text>3.2.7. Функции</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/actors/ssect:functions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:init">
+            <navLabel><text>3.3. Инициализация интерпретатора</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:init"/>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:implementation">
+            <navLabel><text>3.4. Реализация управляющих форм</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:implementation"/>
+
+            <navPoint class="subsection" id="escape/implementation/ssect:call/cc">
+                <navLabel><text>3.4.1. Реализация call/cc</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/implementation/ssect:call/cc"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/implementation/ssect:catch">
+                <navLabel><text>3.4.2. Реализация catch</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/implementation/ssect:catch"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/implementation/ssect:block">
+                <navLabel><text>3.4.3. Реализация block</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/implementation/ssect:block"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/implementation/ssect:unwind-protect">
+                <navLabel><text>3.4.4. Реализация unwind-protect</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/implementation/ssect:unwind-protect"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:comparing">
+            <navLabel><text>3.5. Сравнение call/cc и catch</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:comparing"/>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:pr-cont">
+            <navLabel><text>3.6. Продолжения в программировании</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:pr-cont"/>
+
+            <navPoint class="subsection" id="escape/pr-cont/ssect:multiple">
+                <navLabel><text>3.6.1. Составные значения</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/pr-cont/ssect:multiple"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="escape/pr-cont/ssect:tail-recusion">
+                <navLabel><text>3.6.2. Хвостовая рекурсия</text></navLabel>
+                <content src="ch03_escape_and_return.xhtml#escape/pr-cont/ssect:tail-recusion"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:partial">
+            <navLabel><text>3.7. Частичные продолжения</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:partial"/>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:conclusions">
+            <navLabel><text>3.8. Заключение</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="escape/sect:exercises">
+            <navLabel><text>3.9. Упражнения</text></navLabel>
+            <content src="ch03_escape_and_return.xhtml#escape/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:assignment">
+        <navLabel><text>Глава 4. Присваивание и побочные эффекты</text></navLabel>
+        <content src="ch04_assignment_and_side_effects.xhtml#chapter:assignment"/>
+
+        <navPoint class="section" id="assignment/sect:assignment">
+            <navLabel><text>4.1. Присваивание</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:assignment"/>
+
+            <navPoint class="subsection" id="assignment/assignment/ssect:boxes">
+                <navLabel><text>4.1.1. Коробки</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/assignment/ssect:boxes"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/assignment/ssect:free-vars">
+                <navLabel><text>4.1.2. Присваивание свободным переменным</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/assignment/ssect:free-vars"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/assignment/ssect:predefined">
+                <navLabel><text>4.1.3. Присваивание предопределённым переменным</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/assignment/ssect:predefined"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:side-effects">
+            <navLabel><text>4.2. Побочные эффекты</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:side-effects"/>
+
+            <navPoint class="subsection" id="assignment/side-effects/ssect:equality">
+                <navLabel><text>4.2.1. Равенство</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/side-effects/ssect:equality"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/side-effects/ssect:equality-func">
+                <navLabel><text>4.2.2. Равенство функций</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/side-effects/ssect:equality-func"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:implementation">
+            <navLabel><text>4.3. Реализация</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:implementation"/>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:condition">
+                <navLabel><text>4.3.1. Ветвление</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:condition"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:sequence">
+                <navLabel><text>4.3.2. Последовательность</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:environment">
+                <navLabel><text>4.3.3. Окружения</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:environment"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:reference">
+                <navLabel><text>4.3.4. Обращения к переменным</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:reference"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:assignment">
+                <navLabel><text>4.3.5. Присваивание</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:assignment"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:application">
+                <navLabel><text>4.3.6. Аппликация</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:application"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:abstraction">
+                <navLabel><text>4.3.7. Абстракция</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:abstraction"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:memory">
+                <navLabel><text>4.3.8. Память</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:memory"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:values">
+                <navLabel><text>4.3.9. Представление значений</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:values"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:cmp-to-oop">
+                <navLabel><text>4.3.10. Сравнение с объектным подходом</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:cmp-to-oop"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:init-env">
+                <navLabel><text>4.3.11. Начальное окружение</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:init-env"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:dotted-pairs">
+                <navLabel><text>4.3.12. Точечные пары</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:dotted-pairs"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:comparisons">
+                <navLabel><text>4.3.13. Функция сравнения</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:comparisons"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="assignment/implementation/ssect:starting">
+                <navLabel><text>4.3.14. Запускаем интерпретатор</text></navLabel>
+                <content src="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:starting"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:io-and-memory">
+            <navLabel><text>4.4. Ввод-вывод и память</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:io-and-memory"/>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:quotation">
+            <navLabel><text>4.5. Семантика цитирования</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:quotation"/>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:conclusions">
+            <navLabel><text>4.6. Заключение</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="assignment/sect:exercises">
+            <navLabel><text>4.7. Упражнения</text></navLabel>
+            <content src="ch04_assignment_and_side_effects.xhtml#assignment/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:denotational">
+        <navLabel><text>Глава 5. Денотационная семантика</text></navLabel>
+        <content src="ch05_denotational_semantics.xhtml#chapter:denotational"/>
+
+        <navPoint class="section" id="denotational/sect:lambda-review">
+            <navLabel><text>5.1. Краткий обзор λ-исчисления</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:lambda-review"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:semantics">
+            <navLabel><text>5.2. Семантика Scheme</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:semantics"/>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:var-ref">
+                <navLabel><text>5.2.1. Обращения к переменным</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:var-ref"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:sequence">
+                <navLabel><text>5.2.2. Последовательность</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:conditional">
+                <navLabel><text>5.2.3. Ветвление</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:conditional"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:assign">
+                <navLabel><text>5.2.4. Присваивание</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:assign"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:abstraction">
+                <navLabel><text>5.2.5. Абстракция</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:abstraction"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:application">
+                <navLabel><text>5.2.6. Аппликация</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:application"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/semantics/ssect:call/cc">
+                <navLabel><text>5.2.7. call/cc</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/semantics/ssect:call/cc"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/sematics/ssect:conclusions">
+                <navLabel><text>5.2.8. Предварительные выводы</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/sematics/ssect:conclusions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:lambda">
+            <navLabel><text>5.3. Семантика λ-исчисления</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:lambda"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:varargs">
+            <navLabel><text>5.4. Функции с переменной арностью</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:varargs"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:eval-order">
+            <navLabel><text>5.5. Порядок вычисления аргументов</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:eval-order"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:dynamic">
+            <navLabel><text>5.6. Динамическое связывание</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:dynamic"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:global">
+            <navLabel><text>5.7. Глобальное окружение</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:global"/>
+
+            <navPoint class="subsection" id="denotational/global/ssect:in-scheme">
+                <navLabel><text>5.7.1. Глобальное окружение в Scheme</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/global/ssect:in-scheme"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/global/ssect:autoexpand">
+                <navLabel><text>5.7.2. Автоматически расширяемое окружение</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/global/ssect:autoexpand"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/global/ssect:hyperstatic">
+                <navLabel><text>5.7.3. Гиперстатическое окружение</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/global/ssect:hyperstatic"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:beneath">
+            <navLabel><text>5.8. Под капотом у денотаций</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:beneath"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:lambdify">
+            <navLabel><text>5.9. λ-исчисление и Scheme</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:lambdify"/>
+
+            <navPoint class="subsection" id="denotational/lambdify/ssect:cps">
+                <navLabel><text>5.9.1. Круговорот продолжений в природе</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/lambdify/ssect:cps"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="denotational/lambdify/ssect:dynamic">
+                <navLabel><text>5.9.2. Динамическое окружение</text></navLabel>
+                <content src="ch05_denotational_semantics.xhtml#denotational/lambdify/ssect:dynamic"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:conclusions">
+            <navLabel><text>5.10. Заключение</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="denotational/sect:exercises">
+            <navLabel><text>5.11. Упражнения</text></navLabel>
+            <content src="ch05_denotational_semantics.xhtml#denotational/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:fast">
+        <navLabel><text>Глава 6. Быстрая интерпретация</text></navLabel>
+        <content src="ch06_fast_interpretation.xhtml#chapter:fast"/>
+
+        <navPoint class="section" id="fast/sect:fast">
+            <navLabel><text>6.1. Быстрый интерпретатор</text></navLabel>
+            <content src="ch06_fast_interpretation.xhtml#fast/sect:fast"/>
+
+            <navPoint class="subsection" id="fast/fast/ssect:migration">
+                <navLabel><text>6.1.1. Миграция денотаций</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:migration"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:activations">
+                <navLabel><text>6.1.2. Записи активаций</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:activations"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:begin">
+                <navLabel><text>6.1.3. Интерпретатор: начало</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:begin"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssest:classify">
+                <navLabel><text>6.1.4. Классы переменных</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssest:classify"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssest:starting">
+                <navLabel><text>6.1.5. Запускаем интерпретатор</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssest:starting"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssest:varargs">
+                <navLabel><text>6.1.6. Функции с переменной арностью</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssest:varargs"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:reducible">
+                <navLabel><text>6.1.7. Приводимые выражения</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:reducible"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:integrating">
+                <navLabel><text>6.1.8. Интеграция примитивов</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:integrating"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:variations">
+                <navLabel><text>6.1.9. Вариации на тему окружений</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:variations"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/fast/ssect:conclusions">
+                <navLabel><text>6.1.10. Выводы: интерпретатор с миграцией вычислений</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/fast/ssect:conclusions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="fast/sect:reject">
+            <navLabel><text>6.2. Отказ от окружений</text></navLabel>
+            <content src="ch06_fast_interpretation.xhtml#fast/sect:reject"/>
+
+            <navPoint class="subsection" id="fast/reject/ssect:ref">
+                <navLabel><text>6.2.1. Обращения к переменным</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:ref"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/reject/ssect:alternatives">
+                <navLabel><text>6.2.2. Ветвление</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:alternatives"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/reject/ssect:sequence">
+                <navLabel><text>6.2.3. Последовательность</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/reject/ssect:abstraction">
+                <navLabel><text>6.2.4. Абстракция</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:abstraction"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/reject/ssect:application">
+                <navLabel><text>6.2.5. Аппликация</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:application"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/reject/ssect:conclusions">
+                <navLabel><text>6.2.6. Выводы: интерпретатор с окружением в регистре</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/reject/ssect:conclusions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="fast/sect:dilute">
+            <navLabel><text>6.3. Укрощение продолжений</text></navLabel>
+            <content src="ch06_fast_interpretation.xhtml#fast/sect:dilute"/>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:closures">
+                <navLabel><text>6.3.1. Замыкания</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:closures"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:pretreater">
+                <navLabel><text>6.3.2. Предобработчик</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:pretreater"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:quoting">
+                <navLabel><text>6.3.3. Цитирование</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:quoting"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:refs">
+                <navLabel><text>6.3.4. Обращения к переменным</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:refs"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:conditional">
+                <navLabel><text>6.3.5. Ветвление</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:conditional"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:assignment">
+                <navLabel><text>6.3.6. Присваивание</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:assignment"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:sequence">
+                <navLabel><text>6.3.7. Последовательность</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:sequence"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:abstraction">
+                <navLabel><text>6.3.8. Абстракция</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:abstraction"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:application">
+                <navLabel><text>6.3.9. Аппликация</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:application"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:reducible">
+                <navLabel><text>6.3.10. Приводимые формы</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:reducible"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:primitives">
+                <navLabel><text>6.3.11. Примитивы</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:primitives"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:starting">
+                <navLabel><text>6.3.12. Запускаем интерпретатор</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:starting"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:call/cc">
+                <navLabel><text>6.3.13. Функция call/cc</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:call/cc"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:apply">
+                <navLabel><text>6.3.14. Функция apply</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:apply"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="fast/dilute/ssect:conclusions">
+                <navLabel><text>6.3.15. Выводы: интерпретатор без продолжений</text></navLabel>
+                <content src="ch06_fast_interpretation.xhtml#fast/dilute/ssect:conclusions"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="fast/sect:conclusions">
+            <navLabel><text>6.4. Заключение</text></navLabel>
+            <content src="ch06_fast_interpretation.xhtml#fast/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="fast/sect:exercises">
+            <navLabel><text>6.5. Упражнения</text></navLabel>
+            <content src="ch06_fast_interpretation.xhtml#fast/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:compilation">
+        <navLabel><text>Глава 7. Компиляция</text></navLabel>
+        <content src="ch07_compilation.xhtml#chapter:compilation"/>
+
+        <navPoint class="section" id="compilation/sect:bytes">
+            <navLabel><text>7.1. Компиляция в байт-код</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:bytes"/>
+
+            <navPoint class="subsection" id="compilation/bytes/ssect:*val*">
+                <navLabel><text>7.1.1. Знакомьтесь, регистр *val*</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/bytes/ssect:*val*"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/bytes/ssect:stack">
+                <navLabel><text>7.1.2. Изобретение стека</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/bytes/ssect:stack"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/bytes/ssect:customize">
+                <navLabel><text>7.1.3. Дорабатываем инструкции</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/bytes/ssect:customize"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/bytes/ssect:call-proto">
+                <navLabel><text>7.1.4. Протокол вызова функций</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/bytes/ssect:call-proto"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:lang-and-target">
+            <navLabel><text>7.2. Язык и целевая машина</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:lang-and-target"/>
+
+            <navPoint class="subsection" id="compilation/lang-and-target/ssect:disassembly">
+                <navLabel><text>7.2.1. Дизассемблирование</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/lang-and-target/ssect:disassembly"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:coding">
+            <navLabel><text>7.3. Кодирование инструкций</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:coding"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:instructions">
+            <navLabel><text>7.4. Инструкции</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:instructions"/>
+
+            <navPoint class="subsection" id="compilation/instructions/ssect:locals">
+                <navLabel><text>7.4.1. Локальные переменные</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instructions/ssect:locals"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/instructions/ssect:globals">
+                <navLabel><text>7.4.2. Глобальные переменные</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instructions/ssect:globals"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/instruction/ssect:jumps">
+                <navLabel><text>7.4.3. Переходы</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instruction/ssect:jumps"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/instruction/ssect:invocations">
+                <navLabel><text>7.4.4. Вызовы функций</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instruction/ssect:invocations"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/instruction/ssect:misc">
+                <navLabel><text>7.4.5. Прочее</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instruction/ssect:misc"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/instruction/ssect:starting">
+            <navLabel><text>7.5. Запускаем компилятор-интерпретатор</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/instruction/ssect:starting"/>
+
+            <navPoint class="subsection" id="compilation/instruction/ssect:catch-breath">
+                <navLabel><text>7.5.1. Передышка</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/instruction/ssect:catch-breath"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:continue">
+            <navLabel><text>7.6. Продолжения</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:continue"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:escapes">
+            <navLabel><text>7.7. Переходы</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:escapes"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:dynamic">
+            <navLabel><text>7.8. Динамические переменные</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:dynamic"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:exception">
+            <navLabel><text>7.9. Исключения</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:exception"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:separate">
+            <navLabel><text>7.10. Раздельная компиляция</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:separate"/>
+
+            <navPoint class="subsection" id="compilation/separate/ssect:files">
+                <navLabel><text>7.10.1. Компилируем файлы</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/separate/ssect:files"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/separate/ssect:build">
+                <navLabel><text>7.10.2. Собираем приложение</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/separate/ssect:build"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="compilation/separate/ssect:execute">
+                <navLabel><text>7.10.3. Запускаем приложение</text></navLabel>
+                <content src="ch07_compilation.xhtml#compilation/separate/ssect:execute"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:conclusions">
+            <navLabel><text>7.11. Заключение</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="compilation/sect:exercises">
+            <navLabel><text>7.12. Упражнения</text></navLabel>
+            <content src="ch07_compilation.xhtml#compilation/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:reflection">
+        <navLabel><text>Глава 8. Вычисления и рефлексия</text></navLabel>
+        <content src="ch08_evaluation_and_reflection.xhtml#chapter:reflection"/>
+
+        <navPoint class="section" id="reflection/sect:prog-and-val">
+            <navLabel><text>8.1. Программы и значения</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:prog-and-val"/>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:eval-as-spec-form">
+            <navLabel><text>8.2. eval как специальная форма</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:eval-as-spec-form"/>
+
+            <navPoint class="subsection" id="reflection/eval-as-spec-form/ssect:global">
+                <navLabel><text>8.2.1. Глобальные переменные</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/eval-as-spec-form/ssect:global"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:eval-as-func">
+            <navLabel><text>8.3. eval как функция</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:eval-as-func"/>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:cost">
+            <navLabel><text>8.4. Цена eval</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:cost"/>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:interpreted-eval">
+            <navLabel><text>8.5. Интерпретируемая eval</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:interpreted-eval"/>
+
+            <navPoint class="subsection" id="reflection/interpreted-eval/ssect:interchange">
+                <navLabel><text>8.5.1. Взаимозаменимость представлений</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/interpreted-eval/ssect:interchange"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/interpreted-eval/ssect:global">
+                <navLabel><text>8.5.2. Глобальное окружение</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/interpreted-eval/ssect:global"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:reify-env">
+            <navLabel><text>8.6. Реификация окружений</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:reify-env"/>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:export">
+                <navLabel><text>8.6.1.Специальная форма export</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:export"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:eval/b">
+                <navLabel><text>8.6.2. Функция eval/b</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:eval/b"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:enrich">
+                <navLabel><text>8.6.3. Расширяем окружения</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:enrich"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:closed">
+                <navLabel><text>8.6.4. Анатомия замыканий</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:closed"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:import">
+                <navLabel><text>8.6.5. Специальная форма import</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:import"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="reflection/reify-env/ssect:simplified">
+                <navLabel><text>8.6.6. Упрощённый доступ к окружениям</text></navLabel>
+                <content src="ch08_evaluation_and_reflection.xhtml#reflection/reify-env/ssect:simplified"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:reflective-interpreter">
+            <navLabel><text>8.7 Рефлексивный интерпретатор</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:reflective-interpreter"/>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:conclusions">
+            <navLabel><text>8.8. Заключение</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="reflection/sect:exercises">
+            <navLabel><text>8.9. Упражнения</text></navLabel>
+            <content src="ch08_evaluation_and_reflection.xhtml#reflection/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:macros">
+        <navLabel><text>Глава 9. Макросы: употребление и злоупотребление</text></navLabel>
+        <content src="ch09_macros.xhtml#chapter:macros"/>
+
+        <navPoint class="section" id="macros/sect:preparation">
+            <navLabel><text>9.1. Подготовка</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:preparation"/>
+
+            <navPoint class="subsection" id="macros/preparation/ssect:multiple">
+                <navLabel><text>9.1.1. Множественные миры</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/preparation/ssect:multiple"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/preparation/ssect:unique">
+                <navLabel><text>9.1.2. Единый мир</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/preparation/ssect:unique"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:expand">
+            <navLabel><text>9.2. Раскрытие макросов</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:expand"/>
+
+            <navPoint class="subsection" id="macros/expand/ssect:exo">
+                <navLabel><text>9.2.1. Экзогенный подход</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/expand/ssect:exo"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/expand/ssect:endo">
+                <navLabel><text>9.2.2. Эндогенный подход</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/expand/ssect:endo"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:calling">
+            <navLabel><text>9.3. Макровызовы</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:calling"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:expandes">
+            <navLabel><text>9.4. Экспандеры</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:expandes"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:accept">
+            <navLabel><text>9.5. Приемлемость результатов раскрытия</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:accept"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:define">
+            <navLabel><text>9.6. Определение макросов</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:define"/>
+
+            <navPoint class="subsection" id="macros/define/ssect:multiple">
+                <navLabel><text>9.6.1. Множественные миры</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/define/ssect:multiple"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/define/ssect:unique">
+                <navLabel><text>9.6.2. Единый мир</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/define/ssect:unique"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/define/ssect:simult">
+                <navLabel><text>9.6.3. Совместные вычисления</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/define/ssect:simult"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/define/ssect:redefinition">
+                <navLabel><text>9.6.4. Переопределение макросов</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/define/ssect:redefinition"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/define/ssect:comparison">
+                <navLabel><text>9.6.5. Итоговое сравнение</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/define/ssect:comparison"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:scope">
+            <navLabel><text>9.7. Область видимости макросов</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:scope"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:eval-and-expand">
+            <navLabel><text>9.8. Вычисления и макрораскрытие</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:eval-and-expand"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:usage">
+            <navLabel><text>9.9. Применения макросов</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:usage"/>
+
+            <navPoint class="subsection" id="macros/usage/ssect:other">
+                <navLabel><text>9.9.1. Иные качества</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/usage/ssect:other"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/usage/ssect:code-walk">
+                <navLabel><text>9.9.2. Обход кода</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/usage/ssect:code-walk"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:hygiene">
+            <navLabel><text>9.10. Непредвиденные захваты</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:hygiene"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:macrosystem">
+            <navLabel><text>9.11. Макросистема</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:macrosystem"/>
+
+            <navPoint class="subsection" id="macros/macrosystem/ssect:object">
+                <navLabel><text>9.11.1. Объектификация</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/macrosystem/ssect:object"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/macrosystem/ssect:special">
+                <navLabel><text>9.11.2. Специальные формы</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/macrosystem/ssect:special"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/macrosystem/ssect:eval-level">
+                <navLabel><text>9.11.3. Уровни интерпретации</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/macrosystem/ssect:eval-level"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/macrosystem/ssect:macros">
+                <navLabel><text>9.11.4. Макросы</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/macrosystem/ssect:macros"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="macros/macrosystem/ssect:limits">
+                <navLabel><text>9.11.5. Ограничения</text></navLabel>
+                <content src="ch09_macros.xhtml#macros/macrosystem/ssect:limits"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:conclusions">
+            <navLabel><text>9.12. Заключение</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="macros/sect:exercises">
+            <navLabel><text>9.13. Упражнения</text></navLabel>
+            <content src="ch09_macros.xhtml#macros/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:cc">
+        <navLabel><text>Глава 10. Компиляция в Си</text></navLabel>
+        <content src="ch10_compiling_into_c.xhtml#chapter:cc"/>
+
+        <navPoint class="section" id="cc/sect:objectification">
+            <navLabel><text>10.1. Объектификация</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:objectification"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:code-walk">
+            <navLabel><text>10.2. Обход кода</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:code-walk"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:boxes">
+            <navLabel><text>10.3. Пакуем коробки</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:boxes"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:no-nest">
+            <navLabel><text>10.4. Избавляемся от вложенных функций</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:no-nest"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:collecting">
+            <navLabel><text>10.5. Собираем цитаты и функции</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:collecting"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:tmp">
+            <navLabel><text>10.6. Собираем временные переменные</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:tmp"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:pause">
+            <navLabel><text>10.7. Передышка</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:pause"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:gen">
+            <navLabel><text>10.8. Генерируем Си</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:gen"/>
+
+            <navPoint class="subsection" id="cc/gen/ssect:global">
+                <navLabel><text>10.8.1. Глобальное окружение</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:global"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:quote">
+                <navLabel><text>10.8.2. Цитаты</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:quote"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:decl">
+                <navLabel><text>10.8.3. Объявление данных</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:decl"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:exprs">
+                <navLabel><text>10.8.4. Компиляция выражений</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:exprs"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:apply">
+                <navLabel><text>10.8.5. Компиляция аппликаций</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:apply"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:predef-env">
+                <navLabel><text>10.8.6. Предопределённое окружение</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:predef-env"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:func">
+                <navLabel><text>10.8.7. Компиляция функций</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:func"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/gen/ssect:init">
+                <navLabel><text>10.8.8. Последний штрих</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/gen/ssect:init"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:data">
+            <navLabel><text>10.9. Представление данных</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:data"/>
+
+            <navPoint class="subsection" id="cc/data/ssect:values">
+                <navLabel><text>10.9.1. Объявления значений</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/data/ssect:values"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/data/ssect:global">
+                <navLabel><text>10.9.2. Глобальные переменные</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/data/ssect:global"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/data/ssect:func">
+                <navLabel><text>10.9.3. Определения функций</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/data/ssect:func"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:runtime">
+            <navLabel><text>10.10. Библиотека времени исполнения</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:runtime"/>
+
+            <navPoint class="subsection" id="cc/runtime/ssect:alloc">
+                <navLabel><text>10.10.1. Выделение памяти</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/runtime/ssect:alloc"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/runtime/ssect:pairs">
+                <navLabel><text>10.10.2. Функции над парами</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/runtime/ssect:pairs"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/runtime/ssect:invoke">
+                <navLabel><text>10.10.3. Вызовы функций</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/runtime/ssect:invoke"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:call/cc">
+            <navLabel><text>10.11. call/cc: быть или не быть</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:call/cc"/>
+
+            <navPoint class="subsection" id="cc/call/cc/ssect:ep">
+                <navLabel><text>10.11.1. Функция call/ep</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/call/cc/ssect:ep"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="cc/call/cc/ssect:cc">
+                <navLabel><text>10.11.2. Функция call/cc</text></navLabel>
+                <content src="ch10_compiling_into_c.xhtml#cc/call/cc/ssect:cc"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:ffi">
+            <navLabel><text>10.12. Взаимодействие с Си</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:ffi"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:conclusions">
+            <navLabel><text>10.13. Заключение</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="cc/sect:exercises">
+            <navLabel><text>10.14. Упражнения</text></navLabel>
+            <content src="ch10_compiling_into_c.xhtml#cc/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:objects">
+        <navLabel><text>Глава 11. Квинтэссенция объектной системы</text></navLabel>
+        <content src="ch11_essence_of_an_object_system.xhtml#chapter:objects"/>
+
+        <navPoint class="section" id="objects/sect:foundation">
+            <navLabel><text>11.1. Основы</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:foundation"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:repr-obj">
+            <navLabel><text>11.2. Представление объектов</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:repr-obj"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:def-class">
+            <navLabel><text>11.3. Определение классов</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:def-class"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:repr-class">
+            <navLabel><text>11.4. Представление классов</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:repr-class"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:accomp">
+            <navLabel><text>11.5. Сопутствующие функции</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:accomp"/>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:pred">
+                <navLabel><text>11.5.1. Предикаты</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:pred"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:allocator">
+                <navLabel><text>11.5.2. Аллокатор без инициализации</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:allocator"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:maker">
+                <navLabel><text>11.5.3. Аллокатор с инициализацией</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:maker"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:access">
+                <navLabel><text>11.5.4. Аксессоры</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:access"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:read">
+                <navLabel><text>11.5.5. Чтение полей</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:read"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:write">
+                <navLabel><text>11.5.6. Запись в поля</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:write"/>
+            </navPoint>
+
+            <navPoint class="subsection" id="objects/accomp/ssect:len">
+                <navLabel><text>11.5.7. Длина полей</text></navLabel>
+                <content src="ch11_essence_of_an_object_system.xhtml#objects/accomp/ssect:len"/>
+            </navPoint>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:create-class">
+            <navLabel><text>11.6. Создание классов</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:create-class"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:predef-accomp">
+            <navLabel><text>11.7. Предопределённые сопутствующие функции</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:predef-accomp"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:generics">
+            <navLabel><text>11.8. Обобщённые функции</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:generics"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:method">
+            <navLabel><text>11.9. Методы</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:method"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:conclusions">
+            <navLabel><text>11.10. Заключение</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:conclusions"/>
+        </navPoint>
+
+        <navPoint class="section" id="objects/sect:exercises">
+            <navLabel><text>11.11. Упражнения</text></navLabel>
+            <content src="ch11_essence_of_an_object_system.xhtml#objects/sect:exercises"/>
+        </navPoint>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:ex-answers">
+        <navLabel><text>Ответы к упражнениям</text></navLabel>
+        <content src="z0_answers_to_exercises.xhtml#chapter:ex-answers"/>
+    </navPoint>
+
+    <navPoint class="chapter" id="chapter:bibliography">
+        <navLabel><text>Библиография</text></navLabel>
+        <content src="z1_bibliography.xhtml#chapter:bibliography"/>
+    </navPoint>
+</navMap>
+
+</ncx>

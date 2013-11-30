@@ -1,0 +1,51 @@
+/* 8pt */
+
+p .initial,
+table#ch9-table-prepare .giant
+                                            { font-size: 4ex; }
+.math .rel .ontop code,
+.math sub sub, .math sub sup,
+.math sup sub, .math sup sup
+                                            { font-size: 4.8pt; }
+sub, sup,
+table.numbered-source span.lineno
+                                            { font-size: 5.6pt; }
+.math .rel .ontop,
+.math sub, .math sup,
+.math sub .Vset,
+table.ch6-meaning .low-brace
+                                            { font-size: 6.4pt; }
+pre,
+table#ch3-eval-stack td *,
+table + .caption,
+table + .caption code,
+.image .caption,
+.image .caption code,
+table#ch5-dynamic-denotation-transform,
+table.disasm code,
+code .comment code,
+pre .comment code
+                                            { font-size: 7.2pt; }
+blockquote.equation span.eqno,
+.math .Vset,
+body, code,
+pre span.dialect,
+.math .normal
+                                            { font-size: 8pt; }
+span.comb
+                                            { font-size: 8.8pt; }
+#footnotes h1,
+#footnotes h1 .seq,
+h3, h3 code, .math
+                                            { font-size: 9.6pt; }
+h1 .seq, h2,
+h2 code, h3 .math
+                                            { font-size: 11.2pt; }
+h2 .math
+                                            { font-size: 12.8pt; }
+#cover h2
+                                            { font-size: 17.6pt; }
+h1
+                                            { font-size: 20pt; }
+#cover h1
+                                            { font-size: 28pt; }

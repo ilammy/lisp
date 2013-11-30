@@ -269,8 +269,8 @@ Maclisp, заключается в~том, что если \ic{evaluate-applicat
          (f.eprogn (cddr fn)
                    (extend env (cadr fn) args)
                    fenv ) )
-        [(else (evaluate-application2
-               (f.evaluate fn env fenv) args env fenv))] ) )
+        [(else (evaluate-application2]
+               [(f.evaluate fn env fenv) args env fenv))] ) )
 \end{code:lisp}
 
 Теперь наша проблема решается следующим образом:
@@ -1149,8 +1149,8 @@ Scheme использует похожий механизм для указан�
                   (df.evaluate (caddr e) env fenv denv) ) )
         ((dynamic-let)
          (df.eprogn (cddr e)
-                    [(special-extend env
-                                    (map car (cadr e)) )]
+                    [(special-extend env]
+                                    [(map car (cadr e)) )]
                     fenv
                     (extend denv
                             (map car (cadr e))

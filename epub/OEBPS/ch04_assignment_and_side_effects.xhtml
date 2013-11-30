@@ -1,0 +1,2237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+
+<head>
+    <title>4 – Присваивание и побочные эффекты</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+</head>
+
+<body>
+
+<h1 id="chapter:assignment"><span class="wrap"><span class="seq">Глава 4.</span><span class="title">Присваивание и побочные эффекты</span></span></h1>
+
+<p class="noindent"><span class="initial">П</span><span class="sc"><span class="c">редыдущие главы</span></span> с их нескончаемыми
+повторениями и вариациями чем-то напоминают «Болеро» Мориса Равеля. Но один
+мотив, как вы могли заметить, в них отсутствовал: присваивание и побочные
+эффекты. Чистые языки их презирают из-за некоторых скверных особенностей, но
+поскольку в диалектах Лиспа их существование допускается, нам следует их
+изучить. В этой главе подробно рассматривается присваивание, а также прочие
+побочные эффекты. По мере нашего продвижения мы также будем вынуждены
+отвлекаться на смежные темы вроде равенства и семантики цитирования.</p>
+
+<div class="bigskip"/>
+
+<!--\indexR{присваивание}-->
+<p>Присваивание, пришедшее из традиционных алгоритмических языков, позволяет
+в той или иной мере изменить значение, связанное с переменной. Это приводит
+к необходимости сохранять состояние программы (в том или ином виде), где будет
+записано, что такая-то переменная отныне имеет следующее значение. Для свободно
+владеющих императивными языками смысл присваивания кажется простым и очевидным.
+В этой главе мы покажем, как замыкания, а также наследие <span class="math"><span class="ord var">λ</span></span>-исчисления,
+усложняют понятия связывания и переменных.</p>
+
+<p>Главная проблема с присваиванием (и побочными эффектами) состоит в том, чтобы
+выбрать для их описания формальную теорию, которая не зависит от описываемых
+свойств. То есть определить язык с присваиванием и побочными эффектами,
+не используя для этого присваивание и побочные эффекты. Не то, чтобы мы их до
+этого использовали повсюду; единственные побочные эффекты в наших предыдущих
+интерпретаторах были сосредоточены в функции <code><span class="func">update!</span></code> (естественно, для
+определения присваивания) и в определениях «хирургических инструментов» вроде
+<code><span class="func">set-car!</span></code>, которые являлись лишь обёртками для родных функций языка
+определения.</p>
+
+
+<h2 id="assignment/sect:assignment"><span class="wrap"><span class="seq">4.1.</span><span class="title">Присваивание</span></span></h2>
+
+<p>Присваивание, как мы сказали, позволяет изменить значение переменной. Например,
+давайте напишем программу для определения минимального и максимального элемента
+в двоичном дереве, используя две переменные для хранения наименьшего и
+наибольшего элемента из уже просмотренных. Мы получим что-то вроде следующего:</p>
+
+<!--\indexC{min-max}-->
+<pre>(<span class="special">define</span> (<span class="func">min-max</span> <span class="var">tree</span>)
+  (<span class="special">define</span> (<span class="func">first-number</span> <span class="var">tree</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">tree</span>)
+        (<span class="func">first-number</span> (<span class="func">car</span> <span class="var">tree</span>))
+        <span class="var">tree</span> ) )
+  (<span class="syntax">let*</span> ((<span class="var">min</span> (<span class="func">first-number</span> <span class="var">tree</span>))
+         (<span class="var">max</span> <span class="var">min</span>) )
+    (<span class="special">define</span> (<span class="func">scan!</span> <span class="var">tree</span>)
+      (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">tree</span>)
+             (<span class="func">scan!</span> (<span class="func">car</span> <span class="var">tree</span>))
+             (<span class="func">scan!</span> (<span class="func">cdr</span> <span class="var">tree</span>)) )
+            (<span class="syntax">else</span> (<span class="special">if</span> (<span class="func">&gt;</span> <span class="var">tree</span> <span class="var">max</span>) (<span class="special">set!</span> <span class="var">max</span> <span class="var">tree</span>)
+                      (<span class="special">if</span> (<span class="func">&lt;</span> <span class="var">tree</span> <span class="var">min</span>) (<span class="special">set!</span> <span class="var">min</span> <span class="var">tree</span>)) )) ) )
+    (<span class="func">scan!</span> <span class="var">tree</span>)
+    (<span class="func">list</span> <span class="var">min</span> <span class="var">max</span>) ) )</pre>
+
+<!--\indexR{побочные эффекты!доброкачественные}-->
+<p>Функция <code><span class="func">min-max</span></code> проста для понимания и требует лишь два числа и две
+точечные пары для работы. Алгоритм не особо отличается от того, который бы
+получился на Паскале, и использует переменные точно так же, как они используются
+в императивных языках. Но, что важно, побочные эффекты изменения значений этих
+локальных переменных не видны снаружи функции <code><span class="func">min-max</span></code>, то есть не влияют
+на остальные части программы. Это пример доброкачественных побочных эффектов:
+программа становится более понятной и эффективной, чем написанная в чисто
+функциональном стиле.
+<span class="see">[см. упр. <a href="#assignment/ex:pure-min-max">4.1</a>]</span></p>
+
+<p>Присваивание локальным переменным, которые не используются совместно несколькими
+функциями, не вызывает существенных проблем. Например, следующая функция
+последовательно возвращает натуральные числа, начиная с нуля. Очевидно, что
+значением переменной <code><span class="var">n</span></code> сразу после присваивания является только что
+присвоенное значение.</p>
+
+<pre>(<span class="special">define</span> <span class="var">enumerate</span>
+  (<span class="syntax">let</span> ((<span class="var">n</span> <span class="num">-1</span>))
+    (<span class="special">lambda</span> () (<span class="special">set!</span> <span class="var">n</span> (<span class="func">+</span> <span class="var">n</span> <span class="num">1</span>))
+               <span class="var">n</span> ) ) )</pre>
+
+<!--\indexR{присваивание!и семантика подстановки}-->
+<!--\indexR{семантика!подстановки}-->
+<p>Каждый вызов <code><span class="func">enumerate</span></code> возвращает новое натуральное число. Функция
+<code><span class="func">enumerate</span></code> имеет внутреннее состояние, представляемое переменной <code><span class="var">n</span></code>,
+которая изменяется с каждым следующим вызовом функции. Но то, что <code><span class="var">n</span></code>
+принадлежит замыканию, является проблемой. В <span class="math"><span class="ord var">λ</span></span>-исчислении нет ни слова
+о присваивании. Ведь когда мы применяем функцию в математике (и, соответственно,
+в <span class="math"><span class="ord var">λ</span></span>-исчислении), то просто заменяем в её теле все переменные
+соответствующими значениями аргументов. Из-за присваивания данная семантика
+подстановки становится неверной, а программы теряют ссылочную прозрачность.</p>
+
+<p>Если подставить вместе переменной <code><span class="var">n</span></code> её начальное значение в <code><span class="func">enumerate</span></code>,
+то эта функция возвращала бы не натуральные числа, а исключительно <code><span class="num">-1</span></code>.
+Таким образом, присваивание вынуждает нас отказаться от модели вычислений
+с мгновенной подстановкой значений. Теперь подстановка является отложенной и
+выполняется только тогда, когда мы явно потребуем значение. Соответственно,
+определённым образом расставленные присваивания могут изменить это значение до
+подстановки.</p>
+
+<p>Но с расположением присваиваний есть свои проблемы. Рассмотрим следующую
+программу:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () <span class="var">name</span>))
+  (<span class="special">set!</span> <span class="var">set-winner!</span> (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="special">set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                                       <span class="var">name</span> ))
+  (<span class="func">set!-winner</span> <span class="string">"Me"</span>)
+  (<span class="func">winner</span>) )</pre>
+
+
+<!--\indexR{присваивание!и замыкания}-->
+<p>Что же вернёт <code>(<span class="func">winner</span>)</code>: <code><span class="string">"Nemo"</span></code> или <code><span class="string">"Me"</span></code>? Другими словами,
+влияет ли присваивание внутри <code><span class="func">set-winner!</span></code> на значение, возвращаемое
+<code><span class="func">winner</span></code>?</p>
+
+<p>И снова <span class="math"><span class="ord var">λ</span></span>-исчисление хранит молчание. У него есть причины быть
+немногословным: ведь присваивание чуждо ему. Ладно, мы вроде бы говорили, что
+создание функции захватывает окружение определения; значит, функции <code><span class="func">winner</span></code>
+и <code><span class="func">set!-winner</span></code> по крайней мере знают, что в момент их создания переменная
+<code><span class="var">name</span></code> имела значение <code><span class="string">"Nemo"</span></code>. Также кажется очевидным, что
+<code>(<span class="func">set-winner!</span> <span class="string">"Me"</span>)</code> вернёт <code><span class="string">"Me"</span></code>, так как там чёрным по белому написано,
+что мы изменяем значение переменной <code><span class="var">name</span></code> на другое и возвращаем её текущее
+значение. Проблема в том, а видит ли <code><span class="func">winner</span></code> это значение? Ведь мы изменяем
+значение той же переменной <code><span class="var">name</span></code>, правда?</p>
+
+<p>Буквальное понимание идеи замыкания приводит к мысли, что у каждого замыкания
+хранятся личные копии свободных переменных со значениями, которые они имели на
+момент создания замыкания. В таком случае предыдущая программа эквивалентна
+следующей:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () <span class="var">name</span>))
+  (<span class="func">winner</span>) )</pre>
+
+<p>В <span class="cite">[<a href="z1_bibliography.xhtml#sam79">Sam79</a>]</span> предлагается считать эффекты присваиваний видимыми только тем,
+кто это присваивание совершил. Тогда действительно <code><span class="func">set-winner!</span></code> вернёт новое
+значение, а <code><span class="func">winner</span></code> всегда будет возвращать <code><span class="string">"Nemo"</span></code>. В таком мире
+не существует привязок. Нет, конечно у переменных есть значения, но они намертво
+установлены окружением. Если кому-то нужно значение переменной, то он может
+запросить его у окружения. Если же это значение надо изменить, то просто взамен
+старого окружения создаётся новое, где переменная имеет нужное значение.</p>
+
+<!--\indexC{closure}-->
+<!--\indexR{специальные формы!closure@\protect<code><span class="func">closure</span></code>}-->
+<p id="assignement/assignement/para:closure">Такая точка зрения напоминает способ реализации
+замыканий в старых, исключительно динамических диалектах Лиспа. Там замыкания создавались явным
+использованием специальной формы <code><span class="special">closure</span></code>; она принимала
+первым аргументом список переменных, которые надо сохранить, а вторым аргументом следовала
+функция. В результате вызов <code>(<span class="special">closure</span> (<span class="var">x</span>) (<span class="special">lambda</span> (<span class="var">y</span>) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code> раскрывался
+в <code>(<span class="special">lambda</span> (<span class="var">y</span>) (<span class="syntax">let</span> ((<span class="var">x</span> '<i>значение-<code><span class="var">x</span></code></i>)) (<span class="func">+</span> <span class="var">x</span> <span class="var">y</span>)))</code>.
+С одной стороны, значение действительно захватывается, а с другой — всё укладывается
+в парадигму подстановки, унаследованную от <span class="math"><span class="ord var">λ</span></span>-исчисления.</p>
+
+<p>Но данная модель вычислений значительно усложняет как присваивание, так
+и совместное использование переменных. Возможны и другие варианты решения этой
+проблемы; в <span class="cite">[<a href="z1_bibliography.xhtml#sj87">SJ87</a>]</span>
+предлагается научить форму <code><span class="special">closure</span></code> самостоятельно
+искать выделять свободные переменные в функции. Также, как предлагается
+в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>,
+<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>, она может определённым образом
+модифицировать найденные присваивания, чтобы избежать неудобств с присваиванием свободным
+переменным.</p>
+
+
+<!--\indexR{привязки (bindings)}-->
+<!--\indexR{объекты!второго класса}-->
+<p>Scheme решает проблему иным путём, вводя понятие <em class="term">привязок</em>, что также
+приводит к интересным <em>побочным эффектам</em>. Форма
+<code><span class="syntax">let</span></code> привязывает к переменной
+<code><span class="var">name</span></code> значение
+<code><span class="string">"Nemo"</span></code>. Замыкания, создаваемые в теле
+<code><span class="syntax">let</span></code>, захватывают не значение переменной
+<code><span class="var">name</span></code>, а её привязку. Таким
+образом, ссылка на переменную <code><span class="var">name</span></code> вызывает поиск
+соответствующей привязки с последующим извлечением значения из неё.</p>
+
+<p>Присваивание действует аналогично: сначала ищется привязка, затем изменяется
+хранимое значение. В таком случае привязки являются объектами второго класса,
+которые не существуют отдельно от своих переменных. Присваивание переменной
+изменяет не саму привязку, а значение, на которое она указывает.</p>
+
+
+<h3 id="assignment/assignment/ssect:boxes"><span class="wrap"><span class="seq">4.1.1.</span><span class="title">Коробки</span></span></h3>
+
+<!--\indexR{коробки}-->
+<p>Чтобы конкретизировать понятие привязок, давайте обратим внимание на А-списки.
+В предыдущих интерпретаторах А-списки использовались для представления
+окружений, их задачей было организовать для нас множество пар «переменная —
+значение». Они представляются точечными парами. Когда нам требуется переменная,
+мы ищем соответствующую точечную пару. В случае присваивания эта пара (точнее,
+её <code><span class="func">cdr</span></code>) изменяет своё значение. Поэтому в данном случае именно точечные
+пары являются воплощением привязок. Но это не единственный способ их
+представления; например, привязки можно представлять с помощью <em class="term">коробок</em>
+(boxes, также известны как cells). Новый уровень абстракции имеет большое
+значение, так как мы полностью избавляемся от присваивания переменным, заменяя
+его побочными эффектами операций над привязками.</p>
+
+<p>Значение упаковывается в коробку с помощью функции <code><span class="func">make-box</span></code>. Можно
+взглянуть на то, что в коробке, с помощью <code><span class="func">box-ref</span></code> и положить в неё
+что-то другое с помощью <code><span class="func">box-set!</span></code>. Набросаем реализацию коробок в стиле
+передачи сообщений:</p>
+
+<!--\indexC{make-box}-->
+<!--\indexC{box-ref}-->
+<!--\indexC{box-set"!}-->
+<pre>(<span class="special">define</span> (<span class="func">make-box</span> <span class="var">value</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">get</span>) <span class="var">value</span>)
+      ((<span class="var">set</span>) (<span class="special">lambda</span> (<span class="var">new-value</span>) (<span class="special">set!</span> <span class="var">value</span> <span class="var">new-value</span>))) ) ) )
+
+(<span class="special">define</span> (<span class="func">box-ref</span> <span class="var">box</span>)
+  (<span class="func">box</span> '<span class="var">get</span>) )
+
+(<span class="special">define</span> (<span class="func">box-set!</span> <span class="var">box</span> <span class="var">new-value</span>)
+  ((<span class="func">box</span> '<span class="var">set</span>) <span class="var">new-value</span>) )</pre>
+
+<p>Можно было бы реализовать их и без замыкания, используя точечные пары напрямую:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">other-make-box</span> <span class="var">value</span>)
+  (<span class="func">cons</span> '<span class="var">box</span> <span class="var">value</span>) )
+
+(<span class="special">define</span> (<span class="func">other-box-ref</span> <span class="var">box</span>)
+  (<span class="func">cdr</span> <span class="var">box</span>) )
+
+(<span class="special">define</span> (<span class="func">other-box-set!</span> <span class="var">box</span> <span class="var">new-value</span>)
+  (<span class="func">set-cdr!</span> <span class="var">box</span> <span class="var">new-value</span>) )</pre>
+
+<p>Или вообще создать класс:</p>
+
+<pre>(<span class="syntax">define-class</span> <span class="class">box</span> <span class="class">Object</span> (<span class="var">content</span>))</pre>
+
+<!--\indexR{коробки!и изменяемость переменных}-->
+<p>Во всех трёх случаях (даже четырёх, если считать упражнение
+<a href="ch03_escape_and_return.xhtml#escape/ex:crazy-cc">3.10</a>)
+мы явно указываем на неопределённость
+возвращаемого значения вызова <code><span class="func">set-box!</span></code>.
+Каждую переменную, значение которой
+способно изменяться в процессе вычислений, можно представить как абстрактную
+коробку, сосредотачивая таким образом все побочные эффекты в реализации этих
+коробок. Заодно мы приобретаем возможность определить, изменяема ли переменная;
+для этого достаточно посмотреть на определяющую её связывающую форму и
+убедиться, что переменная упакована в коробку. (Это одна из заманчивых
+возможностей лексических окружений: чёткое определение области видимости
+переменных.)</p>
+
+<table id="ch4-box-transform">
+<tbody>
+<tr>
+  <td class="left"><span class="boxed"><span class="math"><span class="ord var">x</span></span></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-ref</span> <span class="math"><span class="ord var">v</span></span>)</code>, иначе <span class="math"><span class="ord var">x</span></span></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">quote</span> <span class="math"><span class="ord var">ε</span></span>)</code></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="special">if</span> <span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">if</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">c</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">t</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">f</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="special">begin</span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="special">begin</span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="math"><span class="ord var">π</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code>,</td>
+</tr>
+<tr><td/><td/>
+  <td class="right">иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right">если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
+</tr>
+<tr><td/><td/>
+  <td class="right">то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
+</tr>
+<tr><td/><td/>
+  <td class="right">иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
+</tr>
+<tr>
+  <td class="left"><span class="boxed"><code>(<span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span> <span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span> ... <span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>)</code></span><span class="math"><sup><span class="var">v</span></sup></span></td>
+  <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
+  <td class="right"><code>(<span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord num">1</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span> ... <span class="boxed"><span class="math"><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
+</tr>
+</tbody>
+</table>
+
+<!--\indexR{преобразование!в коробочный стиль}-->
+<!--\indexR{коробки!преобразование}-->
+<p>В приведённой выше таблице собраны правила перевода программ
+в «коробочный стиль». Запись <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="ord var">v</span></sup></span> означает, что переменная <span class="math"><span class="ord var">v</span></span>
+в программе <span class="math"><span class="ord var">π</span></span> помещается в коробку. Как обычно, за именами переменных важно
+тщательно следить, чтобы не случилось коллизий.</p>
+
+<p>Остаётся ввести ещё одно правило для собственно раскладывания по коробкам
+изменяемых переменных, чтобы полностью избавиться от присваиваний, заменив их
+побочными эффектами:</p>
+
+<pre>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>) <span class="math"><span class="binop">∧</span></span> (<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> ...)<span class="math"><span class="ord"></span><span class="rel">∈</span><span class="ord var">π</span></span>
+<span class="math"><span class="rel">→</span></span> (<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) (<span class="syntax">let</span> ((<span class="math"><span class="ord var">x</span></span> (<span class="func">make-box</span> <span class="math"><span class="ord var">x</span></span>))) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="ord var">x</span></sup></span>))</pre>
+
+<p class="noindent">В результате, предыдущий пример переписывается следующим образом:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> (<span class="func">make-box</span> <span class="var">"Nemo"</span>)))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () (<span class="func">box-ref</span> <span class="var">name</span>)))
+  (<span class="special">set!</span> <span class="var">set-winner!</span> (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="func">box-set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                                       (<span class="func">box-ref</span> <span class="var">name</span>) ))
+  (<span class="func">set-winner!</span> <span class="string">"Me"</span>)
+  (<span class="func">winner</span>) )</pre>
+
+<!--\indexR{коробки!аналогии}-->
+<!--\indexR{присваивание!семантика коробок}-->
+<!--\indexR{коробки!недостатки}-->
+<!--\indexR{ссылочная прозрачность}-->
+<p>Именно коробки обычно используются, когда в функцию надо передать изменяемую
+переменную; они фактически соответствуют ссылкам и указателям из иных языков.
+Коробки убирают из языка присваивания переменным и сопутствующие неоднозначности
+трактовки имени переменной: считать его ссылкой на переменную или же подставить
+вместо него значение. Благодаря коробкам не требуется введение специальных
+случаев при поиске значений переменных, так как <em>переменные</em> не могут быть
+изменены — если надо, то изменяется содержимое коробок, на которые эти
+переменные ссылаются. Конечно, изменение значения коробок требует побочных
+эффектов, так что ссылочная прозрачность всё так же остаётся утерянной. Тем
+не менее, это не мешает ввести систему типов содержимого коробок. С другой
+стороны, их использование вызывает свои специфичные проблемы.</p>
+
+<!--\indexR{привязки (bindings)!как полноценные объекты}-->
+<!--\indexR{полноценные объекты!привязки}-->
+<p>Во-первых, привязки теперь становятся полноценными объектами, а значит, их
+можно передавать не только в <code><span class="func">box-ref</span></code> и <code><span class="func">box-set!</span></code>. Например, можно
+скопировать привязку и дать ей альтернативное имя; это может быть и полезным,
+например, при создании модулей.</p>
+
+<p>Во-вторых, мы никак не можем контролировать использование коробок. Переменные
+теперь можно изменять в общем случае где угодно, передав копию коробки под
+другим именем. С лексическим присваиванием такой трюк не работает: для изменения
+значения переменной необходимо статически указать её правильное имя. Это,
+естественно, очень удобно для компилятора, так как он сразу же может понять,
+существует ли эта переменная вообще, является ли она свободной, известно ли
+о ней где-либо ещё; все это позволяет компилятору генерировать более эффективный
+код.</p>
+
+<p>Также не стоит забывать, что в физическом компьютере каждая переменная связана
+со своим положением в памяти (адресом), где хранится её значение. При
+присваивании изменяется не сама переменная (не её адрес), а именно расположенное
+в памяти значение.</p>
+
+
+<h3 id="assignment/assignment/ssect:free-vars"><span class="wrap"><span class="seq">4.1.2.</span><span class="title">Присваивание свободным переменным</span></span></h3>
+
+<p>Следующая проблема с присваиванием касается свободных переменных: какой смысл
+оно имеет для них. Рассмотрим пример:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">passwd</span> <span class="string">"timhukiTrolrk"</span>))  <span class="comment">; Это реальный пароль!</span>
+  (<span class="special">set!</span> <span class="var">can-access?</span> (<span class="special">lambda</span> (<span class="var">pw</span>) (<span class="func">string=?</span> <span class="var">password</span> (<span class="func">crypt</span> <span class="var">pw</span>)))) )</pre>
+
+<p>Переменная <code><span class="var">can-access?</span></code> является свободной для этой формы. Более того, ей
+присваивается значение. По правилам Scheme <code><span class="var">can-access?</span></code> должна быть
+глобальной, так как её нет в локальных связывающих формах. Но ведь то, что она
+<em>должна</em> быть где-то в глобальном окружении, вовсе не означает, что она
+там есть! Что делать в таком случае? Мы уже разговаривали на эту тему
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/simple/code:redefine">2.6.1</a>]</span>, рассмотрев при этом
+несколько вариантов поведения.</p>
+
+<p>Что ещё можно делать с глобальной переменной, кроме присваивания? То же, что и
+с любой другой: ссылаться на неё, захватывать в замыканиях, получать её
+значение, определять перед использованием. Глобальное окружение переменных тоже
+является пространством имён со своими правилами, так что давайте рассмотрим
+подробнее различные варианты его реализации.</p>
+
+
+<h4 id="assignment/assignment/free-vars/sssect:universal"><span class="wrap"><span class="title">Всеобъемлющее глобальное окружение</span></span></h4>
+
+<!--\indexR{глобальное окружение!всеобъемлющее}-->
+<!--\indexR{окружение!глобальное!всеобъемлющее}-->
+<!--\indexR{всеобъемлющее окружение}-->
+<p>Можно определить глобальное окружение как место, где все переменные
+предварительно объявлены. Естественно, в действительности они объявляются
+непосредственно перед первым использованием, но делается это незаметно и
+автоматически <span class="cite">[<a href="z1_bibliography.xhtml#que95">Que95</a>]</span>. В таком мире с каждым именем связана одна и только
+одна переменная. Определение переменной здесь не имеет смысла, они все уже
+определены. Изменение переменной тоже не вызывает проблем: мы уверены, что
+изменяемая переменная существует. Соответственно, форма <code><span class="special">define</span></code> фактически
+эквивалентна <code><span class="special">set!</span></code> и, как следствие, можно безболезненно «определять»
+переменную несколько раз.</p>
+
+<p>Единственная проблема возникает тогда, когда мы хотим получить значение
+переменной, но этой переменной никогда не присваивали значения. Переменная есть,
+но у неё нет значения. Часто результатом такой операции является сообщение
+о «неопределённой переменной», но в данном случае формально она определена,
+так что будет правильнее отвечать про «неинициализированную переменную».</p>
+
+<p>Свойства данного окружения можно компактно представить следующей таблицей:</p>
+
+<table class="envtable">
+<tr><td>Ссылка</td>      <td><i>x</i></td></tr>
+<tr><td>Значение</td>    <td><i>x</i></td></tr>
+<tr><td>Изменение</td>   <td><code>(<span class="special">set</span>! <i>x</i> ...)</code></td></tr>
+<tr><td>Расширение</td>  <td>запрещено</td></tr>
+<tr><td>Определение</td> <td>отсутствует, <code><span class="special">define</span></code> <span class="math"><span class="rel">≡</span></span> <code><span class="special">set!</span></code></td></tr>
+</table>
+
+<p>Такой вариант окружения по-своему интересен: из-за того, что всё определено,
+уходят многие проблемы. Взаимно рекурсивные функции всегда смогут добраться друг
+до друга. Переопределить можно всё, что угодно. Но именно эти свойства являются
+источником других потенциальных проблем; с глобальными переменными надо быть
+осторожным, так как 1) они могут быть ещё не определены (но отобрать однажды
+данное значение уже нельзя); 2) их значение может меняться, а это значит, что на
+их текущее значение можно полагаться только в текущий момент. В частности, это
+отбирает у нас инлайн-функции, ведь в случае изменения значений переменных
+<code><span class="func">car</span></code> или <code><span class="func">cons</span></code> по идее придётся перекомпилировать всё, что их
+использовало до этого, что ставит под вопрос оправданность такого рода
+«оптимизаций».</p>
+
+<p>Наконец, рассмотрим пример поведения переменных в данном окружении:</p>
+
+<pre><span class="var">g</span>                      <span class="comment">; ошибка: <code><span class="var">g</span></code> не инициализирована</span>
+(<span class="special">define</span> (<span class="func">P</span> <span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>))
+(<span class="special">define</span> <span class="var">g</span> <span class="num">10</span>)
+(<span class="special">define</span> <span class="var">g</span> <span class="num">9.81</span>)        <span class="comment">; <span class="math"><span class="rel">≡</span></span> <code>(<span class="special">set!</span> g <span class="num">9.81</span>)</code></span>
+(<span class="func">P</span> <span class="num">10</span>)       <span class="math"><span class="rel">→</span></span> <span class="num">98.1</span>
+(<span class="special">set!</span> <span class="var">e</span> <span class="num">2.78</span>)          <span class="comment">; определение <code><span class="var">e</span></code></span></pre>
+
+<p>Короче говоря, такое глобальное окружение можно рассматривать как гигантскую
+форму <code><span class="syntax">let</span></code>, определяющую все возможные переменные:</p>
+
+<pre>(<span class="syntax">let</span> (... <span class="var">a</span> <span class="var">aa</span> ... <span class="var">ab</span> ... <span class="var">ac</span> ...) <i>программа</i>...)</pre>
+
+
+<h4 id="assignment/assignment/free-vars/sssect:frozen"><span class="wrap"><span class="title">Фиксированное глобальное окружение</span></span></h4>
+
+<!--\indexR{глобальное окружение!фиксированное}-->
+<!--\indexR{окружение!глобальное!фиксированное}-->
+<!--\indexR{фиксированное окружение}-->
+<p>Теперь представим, что с каждым именем связано не более одной глобальной
+переменной и перечень определённых переменных является неизменяемым. Такая
+ситуация возникает в скомпилированной программе без динамически генерируемого
+кода (без вызовов <code><span class="func">eval</span></code>). Также, именно такое поведение было у всех наших
+предыдущих интерпретаторов: мы не можем создавать глобальные переменные
+в определяемом языке, все необходимые переменные создавались заранее с помощью
+формы <code><span class="syntax">definitial</span></code> языка определения.</p>
+
+<p>В таком окружении переменная существует только после явного создания с помощью
+<code><span class="special">define</span></code>. Её значение можно считывать и изменять только после того, как
+переменная была определена. Тем не менее, существование не более одной
+переменной с уникальным именем всё же позволяет ссылаться на ещё не определённую
+переменную. (Это необходимое условие для взаимной рекурсии.) Естественно, больше
+одного раза определить глобальную переменную нельзя. В итоге, подобное окружение
+обладает следующими свойствами:</p>
+
+<table class="envtable">
+<tr><td>Ссылка</td>      <td><i>x</i></td></tr>
+<tr><td>Значение</td>    <td><i>x</i>, но <i>x</i> должна существовать</td></tr>
+<tr><td>Изменение</td>   <td><code>(<span class="special">set!</span> <i>x</i> ...)</code>, но <i>x</i> должна существовать</td></tr>
+<tr><td>Расширение</td>  <td><code><span class="special">define</span></code> (единожды)</td></tr>
+<tr><td>Определение</td> <td>запрещено</td></tr>
+</table>
+
+<p>Теперь попробуем запустить предыдущий пример в новом окружении:</p>
+
+<pre><span class="var">g</span>                      <span class="comment">; ошибка: неизвестная переменная <code><span class="var">g</span></code></span>
+(<span class="special">define</span> (<span class="func">P</span> <span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>)) <span class="comment">; опережающая ссылка на <code><span class="var">g</span></code></span>
+(<span class="special">define</span> <span class="var">g</span> <span class="num">10</span>)
+(<span class="special">define</span> <span class="var">g</span> <span class="num">9.81</span>)        <span class="comment">; ошибка: переопределение <code><span class="var">g</span></code></span>
+(<span class="special">set!</span> <span class="var">g</span> <span class="num">9.81</span>)          <span class="comment">; изменение <code><span class="var">g</span></code></span>
+(<span class="func">P</span> <span class="num">10</span>)       <span class="math"><span class="rel">→</span></span> <span class="num">98.1</span>
+(<span class="special">set!</span> <span class="var">e</span> <span class="num">2.78</span>)          <span class="comment">; ошибка: неизвестная переменная <code><span class="var">e</span></code></span></pre>
+
+<p>После этого легко сообразить, как перенести обычные программы в такое окружение.
+Вся программа представляется последовательностью выражений <span class="math"><span class="ord var">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span>.
+Она преобразуется в одно большое выражение следующим образом: проводится анализ
+выражений <span class="math"><span class="ord var">π<sub><span class="num ord">1</span></sub></span><span class="ord">…</span><span class="ord var">π<sub><span class="ord var">n</span></sub></span></span> для выделения всех свободных переменных; сами
+выражения помещаются в тело <code><span class="syntax">let</span></code>-формы, которая определяет все свободные
+переменные как неинициализированные локальные переменные; наконец, все
+<code><span class="special">define</span></code>-формы заменяются эквивалентными <code><span class="special">set!</span></code>-формами.</p>
+
+<p>Для пояснения рассмотрим следующую программу на Scheme:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">crypt</span> <span class="var">pw</span>) ...)
+
+(<span class="syntax">let</span> ((<span class="var">passwd</span> <span class="string">"timhukiTrolrk"</span>))
+  (<span class="special">set!</span> <span class="var">can-access?</span> (<span class="special">lambda</span> (<span class="var">pw</span>) (<span class="func">string=?</span> <span class="var">passwd</span> (<span class="func">crypt</span> <span class="var">pw</span>)))) )
+
+(<span class="special">define</span> (<span class="func">gatekeeper</span>)
+  (<span class="syntax">until</span> (<span class="func">can-access?</span> (<span class="func">read</span>))
+         (<span class="func">gatekeeper</span>) ) )</pre>
+
+<p>Эта небольшая программка спрашивает у пользователя пароль и не отпускает его,
+пока он не ответит правильно. Этот кибер-Цербер в новом окружении выглядит
+вот так:</p>
+
+<pre>(<span class="syntax">let</span> (<span class="var">crypt</span> <span class="var">make-can-access?</span> <span class="var">can-access?</span> <span class="var">gatekeeper</span>)
+  (<span class="special">set!</span> <span class="var">crypt</span> (<span class="special">lambda</span> (<span class="var">pw</span>) <span class="var">...</span>))
+  (<span class="special">set!</span> <span class="var">make-can-acceess?</span>
+        (<span class="special">lambda</span> (<span class="var">passwd</span>)
+          (<span class="special">lambda</span> (<span class="var">pw</span>) (<span class="func">string?=</span> <span class="var">passwd</span> (<span class="func">crypt</span> <span class="var">pw</span>))) ) )
+  (<span class="special">set!</span> <span class="var">can-access?</span> (<span class="func">make-can-access?</span> <span class="string">"timhukiTrolrk"</span>))
+  (<span class="special">set!</span> <span class="var">gatekeeper</span>
+        (<span class="special">lambda</span> () (<span class="syntax">until</span> (<span class="func">can-access?</span> (<span class="func">read</span>)) (<span class="func">gatekeeper</span>))) )
+  (<span class="func">gatekeeper</span>) )<div class="where"><div class="wrap">
+<span class="var">car</span> <span class="math"><span class="rel">≡</span></span> <span class="var">car</span>
+<span class="var">cons</span> <span class="math"><span class="rel">≡</span></span> <span class="var">cons</span>
+...</div></div></pre>
+
+<p>Глобальные определения заменяются локальными переменными, которые остаются
+неинициализированными до соответствующей <code><span class="special">define</span></code>-формы.<a class="footref" href="zz_footnotes.xhtml#foot4.1"><sup>1</sup></a> Конечно, встроенные функции вроде <code><span class="func">read</span></code>,
+<code><span class="func">string=?</span></code> или <code><span class="func">string-append</span></code> всё так же остаются видимыми. В этом мире
+глобальное окружение конечно и ограничено предопределёнными функциями (вроде
+<code><span class="func">car</span></code> и <code><span class="func">cons</span></code>), а также свободными переменными наших программ.
+Присваивания глобальным переменным, не являющимся свободными, запрещены —
+свободных переменных, не присутствующих в глобальном окружении, быть не может
+по определению нашего преобразования. Единственный способ вызвать данную ошибку
+— это динамическое исполнение кода с помощью <code><span class="func">eval</span></code>.</p>
+
+
+<h4 id="assignment/assignment/free-vars/sssect:auto-extended"><span class="wrap"><span class="title">Автоматически расширяемое глобальное окружение</span></span></h4>
+
+<!--\indexR{глобальное окружение!автоматически расширяемое}-->
+<!--\indexR{окружение!глобальное!автоматически расширяемое}-->
+<!--\indexR{автоматически расширяемое окружение}-->
+<p>Если мы хотим создать REPL для своего языка, то нам необходима возможность
+динамического добавления переменных в глобальное окружение. Обычно это делается
+с помощью специальной формы <code><span class="special">define</span></code>. Но можно сделать всё проще, используя
+лишь присваивание: если переменная не существует, то присваивание ей определяет
+её. В таком случае можно было бы писать просто:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">set!</span> <span class="var">winner</span> (<span class="func">lambda</span> () <span class="var">name</span>))
+  (<span class="special">set!</span> <span class="var">set-winner!</span> (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="special">set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                                       <span class="var">name</span> )) )</pre>
+
+<p>В предыдущих случаях нам бы пришлось перед этим написать два бессмысленных
+утверждения вроде</p>
+
+<pre>(<span class="special">define</span> <span class="var">winner</span>      '<span class="var">жили-у-бабуси</span>)
+(<span class="special">define</span> <span class="var">set-winner!</span> '<span class="var">два-весёлых-гуся</span>)</pre>
+
+<!--\indexC{static}-->
+<p>Это бы определило две переменные и дало им начальные значения (потому что
+<code><span class="special">define</span></code> не умеет определять переменные без значений), которые тут же
+изменяются на правильные соответствующими <code><span class="special">set!</span></code>. Как видим, с таким
+окружением есть одна явная проблема: все переменные обязаны быть изменяемыми.
+В ранних версиях Scheme <span class="cite">[<a href="z1_bibliography.xhtml#ss78b">SS78b</a>]</span> существовало специальное приспособление
+— форма <code><span class="syntax">static</span></code>, — с помощью которой можно было<a class="footref" href="zz_footnotes.xhtml#foot4.2"><sup>2</sup></a> писать вот так:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
+  (<span class="special">define</span> (<span class="syntax">static</span> <span class="var">winner</span>) (<span class="special">lambda</span> () <span class="var">name</span>))
+  (<span class="special">define</span> (<span class="syntax">static</span> <span class="var">set-winner!</span>)
+    (<span class="special">lambda</span> (<span class="var">new-name</span>) (<span class="special">set!</span> <span class="var">name</span> <span class="var">new-name</span>)
+                       <span class="var">name</span> ) ) )</pre>
+
+<p>Таким образом можно было определять глобальные переменные, имея доступ
+к локальным, но при этом не пользуясь присваиваниями.</p>
+
+<p>Хотя, несомненно, создавать глобальные переменные одним присваиванием удобно,
+мы рискуем нечаянно загрязнить глобальное окружение переменными, которые должны
+были быть локальными. Как вариант, можно разрешить создавать лишь локальные
+переменные; например, только лексические с помощью <code><span class="syntax">let</span></code>, или, как
+в <span class="cite">[<a href="z1_bibliography.xhtml#nor72">Nor72</a>]</span>, только динамические переменные внутри <code><span class="special">prog</span></code>.<a clas="footref" href="zz_footnotes.xhtml#foot4.3"><sup>3</sup></a> К сожалению, это
+не вернёт ссылочную прозрачность, а кроме того, вызовет известные сложности
+с рекурсией.</p>
+
+
+<h4 id="assignment/assignment/free-vars/sssect:hyperstatic"><span class="wrap"><span class="title">Гиперстатическое глобальное окружение</span></span></h4>
+
+<!--\indexR{глобальное окружение!гиперстатическое}-->
+<!--\indexR{окружение!глобальное!гиперстатическое}-->
+<!--\indexR{гиперстатическое окружение}-->
+<p>Есть ещё один вариант глобального окружения: в нём с одним именем может быть
+связано несколько переменных, но новые переменные видны лишь тем формам, что
+следуют за их определением. Вернёмся к нашему любимому примеру:</p>
+
+<pre><span class="var">g</span>                      <span class="comment">; ошибка: неизвестная переменная <code><span class="var">g</span></code></span>
+(<span class="special">define</span> (<span class="func">P</span> <span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>)) <span class="comment">; ошибка: неизвестная переменная <code><span class="var">g</span></code></span>
+(<span class="special">define</span> <span class="var">g</span> <span class="num">10</span>)
+(<span class="special">define</span> (<span class="func">P</span> <span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>))
+(<span class="func">P</span> <span class="num">10</span>)       <span class="math"><span class="rel">→</span></span> <span class="num">100</span>
+(<span class="special">define</span> <span class="var">g</span> <span class="num">9.81</span>)
+(<span class="func">P</span> <span class="num">10</span>)       <span class="math"><span class="rel">→</span></span> <span class="num">100</span>    <span class="comment">; <code><span class="func">P</span></code> использует старое значение <code><span class="var">g</span></code></span>
+(<span class="special">define</span> (<span class="func">P</span> <span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>))
+(<span class="func">P</span> <span class="num">10</span>)       <span class="math"><span class="rel">→</span></span> <span class="num">98.1</span>
+(<span class="special">set!</span> <span class="var">e</span> <span class="num">2.78</span>)          <span class="comment">; ошибка: неизвестная переменная <code><span class="var">e</span></code></span></pre>
+
+<!--\indexR{замыкания (closures)}-->
+<p>Здесь фраза «замыкание сохраняет свободные переменные из окружения
+определения» понимается буквально. При первом определении <code><span class="func">P</span></code> в окружении
+нет переменной <code><span class="var">g</span></code> — значит, это ошибка. Можно было бы допустить такое
+определение и вызывать ошибку при вызове <code><span class="func">P</span></code>, но не стоит так делать, потому
+что <code><span class="var">g</span></code> не динамическая переменная: если её не было при создании функции, то
+она не появится и при вызове. Незачем откладывать сообщение об ошибочном
+определении на потом.</p>
+
+<p>Вторая версия <code><span class="func">P</span></code> запоминает тот факт, что <code><span class="var">g</span></code> равна 10 в окружении
+определения. В замыкании сохраняется именно этот факт: «свободная
+переменная <code><span class="var">g</span></code> имеет значение <code><span class="num">10</span></code>». Не важно, что случится с этой
+переменной в дальнейшем, для <code><span class="func">P</span></code> она всегда равна десяти. Если мы хотим,
+чтобы <code><span class="func">P</span></code> использовала новое значение, то <code><span class="func">P</span></code> надо переопределить.
+Глобальное окружение является полностью лексическим; именно такое
+<em class="term">гиперстатическое</em> окружение использует ML. Запишем его свойства в виде
+привычной таблицы:</p>
+
+<table class="envtable">
+<tr><td>Ссылка</td>      <td><i>x</i>, но <i>x</i> должна существовать</td></tr>
+<tr><td>Значение</td>    <td><i>x</i>, но <i>x</i> должна существовать</td></tr>
+<tr><td>Изменение</td>   <td><code>(<span class="special">set!</span> <i>x</i> ...)</code>, но <i>x</i> должна существовать</td></tr>
+<tr><td>Расширение</td>  <td><code><span class="special">define</span></code></td></tr>
+<tr><td>Определение</td> <td>запрещено</td></tr>
+</table>
+
+<!--\indexR{рекурсия!взаимная}-->
+<p>Но, как говорилось ранее, в таком случае возникают проблемы с рекурсивными
+определениями. Для Лиспа необходима возможность определения как простых
+рекурсивных функций, так и групп взаимно рекурсивных. В ML эта проблема решается
+ключевым словом <code><span class="syntax">rec</span></code> для простой рекурсии и <code><span class="syntax">and</span></code> для одновременных
+определений. В Scheme же есть <code><span class="syntax">let</span></code> и <code><span class="syntax">letrec</span></code> для аналогичных целей.</p>
+
+<p>Наш пример в гиперстатическом окружении можно понимать следующим образом:</p>
+
+<pre><span class="var">g</span>                                <span class="comment">; ошибка: неизвестная переменная <code><span class="var">g</span></code></span>
+(<span class="syntax">let</span> ((<span class="var">P</span> (<span class="special">lambda</span> (<span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>))))  <span class="comment">; ошибка: неизвестная переменная <code><span class="var">g</span></code></span>
+  (<span class="syntax">let</span> ((<span class="var">g</span> <span class="num">10</span>))
+    (<span class="syntax">let</span> ((<span class="var">P</span> (<span class="special">lambda</span> (<span class="var">m</span>) (<span class="func">*</span> <span class="var">m</span> <span class="var">g</span>))))
+      (<span class="func">P</span> <span class="num">10</span>)
+      (<span class="syntax">let</span> ((<span class="var">g</span> <span class="num">9.81</span>))
+        ... ) ) ) )</pre>
+
+<p>Для полноты картины рассмотрим пример со взаимной рекурсией. Следующая программа
+на ML:</p>
+
+<pre><span class="syntax">let</span> <span class="syntax">rec</span> <span class="func">odd</span> <span class="var">n</span> = <span class="syntax">if</span> <span class="var">n</span> <span class="func">=</span> <span class="num">0</span> <span class="syntax">then</span> <span class="hash">false</span> <span class="syntax">else</span> <span class="func">even</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)
+    <span class="syntax">and</span> <span class="func">even</span> <span class="var">n</span> = <span class="syntax">if</span> <span class="var">n</span> <span class="func">=</span> <span class="num">0</span> <span class="syntax">then</span> <span class="hash">true</span> <span class="syntax">else</span> <span class="func">odd</span> (<span class="var">n</span> <span class="func">-</span> <span class="num">1</span>)</pre>
+
+<p class="noindent">легко переводится на Scheme следующим образом:</p>
+
+<pre>(<span class="syntax">letrec</span> ((<span class="var">odd?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#f</span> (<span class="func">even?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)))))
+         (<span class="var">even?</span> (<span class="special">lambda</span> (<span class="var">n</span>) (<span class="special">if</span> (<span class="func">=</span> <span class="var">n</span> <span class="num">0</span>) <span class="hash">#t</span> (<span class="func">odd?</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>))))) )
+  ... )</pre>
+
+<p>Гиперстатическое окружение обладает очевидным преимуществом: возможностью
+выявлять неопределённые переменные статически. Кроме того, компилятору легко
+обнаружить фактически неизменяемые переменные, что позволяет ему применять
+некоторые оптимизации, основанные на статическом знании значения переменной.
+Тем не менее, у такого окружения есть и недостатки: например, в случае ошибки
+в определении приходится повторять все последующие определения, которые
+использовали исправленное ошибочное.</p>
+
+
+<h3 id="assignment/assignment/ssect:predefined"><span class="wrap"><span class="seq">4.1.3.</span><span class="title">Присваивание предопределённым переменным</span></span></h3>
+
+<!--\indexR{переменные!предопределённые}-->
+<!--\indexR{предопределённые переменные}-->
+<!--\indexR{присваивание!предопределённым переменным}-->
+<p>Кроме обычных свободных переменных программы на Scheme ссылаются также на
+предопределённые встроенные переменные вроде <code><span class="var">car</span></code> и <code><span class="var">read</span></code>. Естественно,
+у нас есть неотъемлемое право присваивать им значения, но какой смысл несут
+такие присваивания? Ведь часто интерпретатор опирается на неявные предположения
+о программах, чтобы выполнять их быстрее. Например, в Лиспе почти никогда
+не требуется переопределять <code><span class="func">car</span></code> и <code><span class="func">cdr</span></code>, поэтому они практически всегда
+реализуются как инлайн-функции и подставляются напрямую в код как своеобразные
+макросы. Переопределение любой из них сломает эту стройную систему, так как
+новые обращения к <code><span class="func">car</span></code> должны будут использовать текущее значение, а
+не встроенное; также неясно, что делать с предыдущими ссылками на подобные
+переменные, которые были (вероятно) заменены инлайн-кодом.</p>
+
+<p>В гиперстатическом окружении последняя проблема, к счастью, отпадает: предыдущие
+ссылки будут видеть предыдущее значение. Но в динамическом глобальном окружении
+нам придётся отыскать все вхождения <code><span class="func">car</span></code> и заменить их. Далее, по-видимому,
+потребуется заменить ещё и все вхождения <code><span class="func">cadr</span></code>, которая является композицией
+<code><span class="func">car</span></code> и <code><span class="func">cdr</span></code>. В действительности, никто не занимается этим безнадёжным
+делом, так как это сложно, да и не похоже, что именно такой беспорядок ожидается
+пользователем в результате переопределения.</p>
+
+<!--\indexE{Scheme!неизменяемость примитивов}-->
+<!--\indexR{примитивы!неизменяемость}-->
+<p>Между прочим, Scheme запрещает изменять значения глобальных примитивных функций.
+То есть создать свою глобальную переменную <code><span class="var">car</span></code> нам-то ничто не помешает,
+но это никак не повлияет на <code><span class="func">cadr</span></code>. Аналогично, функция <code><span class="func">map</span></code> является
+встроенной, так что новая <code><span class="func">car</span></code> не изменит её поведения, но, возможно, она
+затронет поведение какой-нибудь <code><span class="func">mapc</span></code>, которая не входит в стандарт.</p>
+
+<p>Часто глобальные примитивы изменяют для того, чтобы на скорую руку залатать
+ошибку в интерпретаторе, или, например, с целью подменить глобальную функцию её
+отладочным вариантом, который выводит на экран сообщения при каждом вызове. Тем
+не менее, я дам вам дружеский совет: «Ради бога, не трогайте примитивы, если
+у вас есть хоть капля сомнения в том, что именно получится в результате».</p>
+
+<p>Подводя итог, гиперстатическое окружение ведёт себя просто, понятно и логично,
+но для отладки более удобным оказывается динамическое.</p>
+
+
+<h2 id="assignment/sect:side-effects"><span class="wrap"><span class="seq">4.2.</span><span class="title">Побочные эффекты</span></span></h2>
+
+<!--\indexR{вычисления!контекст}-->
+<!--\indexR{контекст вычислений}-->
+<!--\indexR{побочные эффекты}-->
+<!--\indexR{память}-->
+<p>До сих пор мы представляли вычисления упорядоченной тройкой выражения, окружения
+и продолжения. Как бы красиво она не выглядела, но с её помощью нельзя выразить
+присваивания, ввод-вывод и многое другое. Все эти глобальные изменения состояния
+мира объединяются в понятие <em class="term">побочных эффектов</em> и для компьютера в конечном
+итоге сводятся к определённым изменениям в его памяти, изменениям её состояния.</p>
+
+<p>Рассмотрим на знакомых примерах, почему это так. Если мы читаем что-то из
+потока, то где-то там изменяется положение метки, которая указывает на
+последний считанный байт. (А это не что иное, как побочный эффект, который мы
+получаем вдобавок к считанным данным.) Если мы уже вывели что-то на экран, то
+компьютер успеет провести миллионы операций за десять миллисекунд до следующего
+обновления экрана; а стереть напечатанное принтером он вообще не в состоянии.
+Попросить пользователя ввести что-то с клавиатуры — это тоже необратимо. Как
+видим, побочные эффекты вездесущи. На них основаны регистры, используемые для
+вычислений; без них мы бы не смогли сохранять наши драгоценные программы. Нет,
+конечно, можно представить себе идеальный мир, где компьютеры работают без
+побочных эффектов, но кому нужен компьютер-аутист, которому ни объяснить, что от
+него требуется, ни получить от него ответ. Благо, этот кошмар не застанет нас
+наяву.</p>
+
+<!--\indexR{присваивание!и побочные эффекты}-->
+<!--\indexR{побочные эффекты!и присваивание}-->
+<p>Мы уже видели, что присваивания можно заменить использованием коробок, но сами
+коробки используют точечные пары. Вопрос: можно ли реализовать точечные пары без
+точечных пар? Ответ: да, но для этого нам понадобится присваивание! Их можно
+представить в виде замыкания, реагирующего на сообщения<a class="footref" href="zz_footnotes.xhtml#foot4.4"><sup>4</sup></a> <code><span class="var">car</span></code>,
+<code><span class="var">cdr</span></code>,
+<code><span class="var">set-car!</span></code> и
+<code><span class="var">set-cdr!</span></code>:</p>
+
+<!--\indexC{kons}-->
+<!--\indexC{kar}-->
+<!--\indexC{kdr}-->
+<pre>(<span class="special">define</span> (<span class="func">kons</span> <span class="var">a</span> <span class="var">d</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">car</span>) <span class="var">a</span>)
+      ((<span class="var">cdr</span>) <span class="var">d</span>)
+      ((<span class="var">set-car!</span>) (<span class="special">lambda</span> (<span class="var">new</span>) (<span class="special">set!</span> <span class="var">a</span> <span class="var">new</span>)))
+      ((<span class="var">set-cdr!</span>) (<span class="special">lambda</span> (<span class="var">new</span>) (<span class="special">set!</span> <span class="var">d</span> <span class="var">new</span>))) ) ) )
+
+(<span class="special">define</span> (<span class="func">kar</span> <span class="var">pair</span>)
+  (<span class="func">pair</span> '<span class="var">car</span>) )
+
+(<span class="special">define</span> (<span class="func">set-kdr!</span> <span class="var">pair</span> <span class="var">value</span>)
+  ((<span class="func">pair</span> '<span class="var">set-cdr!</span>) <span class="var">value</span>) )</pre>
+
+<!--\indexE{Scheme!проблемы типизации}-->
+<p>И вновь определение оказывается не вполне точным, как справедливо замечено
+в <span class="cite">[<a href="z1_bibliography.xhtml#fel90">Fel90</a>]</span>, потому что теперь мы не можем различать точечные пары и
+замыкания. При таком определении нельзя написать предикат <code><span class="func">pair?</span></code>, который
+будет работать верно в любых условиях. Если не обращать внимания на эту проблему
+(которую можно считать платой за возможность создавать свои типы данных), то
+чётко видно, что присваивание и побочные эффекты тесно связаны и легко
+выражаются друг через друга. Поэтому мы вынуждены или запретить использование
+их обоих, или же признать их существование и научиться контролировать возможные
+последствия. Какую именно форму использовать: присваивание переменным или прямую
+модификацию памяти, — зависит от контекста и желаемых свойств.</p>
+
+
+<h3 id="assignment/side-effects/ssect:equality"><span class="wrap"><span class="seq">4.2.1.</span><span class="title">Равенство</span></span></h3>
+
+<!--\indexR{сравнение!объектов}-->
+<!--\indexR{взаимозаменимость}-->
+<!--\indexR{эквивалентность}-->
+<!--\indexR{равенство}-->
+<!--%\indexR{упячка}-->
+<p>Одним из главных неприятных последствий существования побочных эффектов является
+усложнение сравнения объектов. Когда можно считать два объекта равными?
+По мнению Лейбница, объекты эквивалентны, если они взаимозаменимы. С точки
+зрения программирования они взаимозаменимы, если мы не можем их различить.
+Эквивалентность обладает свойством рефлексивности: любой объект эквивалентен
+самому себе, так как очевидно, что он может заменить самого себя. Рефлексивность
+можно считать слабой эквивалентностью, если понимать её буквально; ведь мы
+именно так отличаем целые числа: каждое из них эквивалентно только самому себе.
+Но всё усложняется, когда кроме самих объектов нам доступны ещё и преобразования
+между ними. Например, пусть у нас есть два совершенно разных вычисления, вроде
+<code>(<span class="func">*</span> <span class="num">2</span> <span class="num">2</span>)</code> и <code>(<span class="func">+</span> <span class="num">2</span> <span class="num">2</span>)</code>, и мы интересуемся, одно и то же ли они,
+взаимозаменимы ли они.</p>
+
+<p>Если объекты можно изменять, то два объекта различны, если изменение одного
+не влияет на другой. Заметьте, что мы говорим о <em>различии</em>, а не о
+равенстве; но всё равно это достаточно важные классы объектов для понятия
+равенства: изменяемые и неизменяемые.</p>
+
+<!--\indexR{эквивалентность!атомов}-->
+<!--\indexR{значения!атомарные}-->
+<p>Кронекер говорил, что целые числа созданы Богом, поэтому логично считать, что
+других чисел быть не может, и число 3 будет оставаться тем же самым числом 3
+в любом выражении. Аналогично можно причислить к неизменяемым все другие
+атомарные объекты (то есть те, которые не имеют составляющих частей), так что
+к числам отправляются также знаки, булевы значения и пустой список. Все
+остальные объекты являются составными, а значит, не первозданными и,
+следовательно, не обязательно неизменными.</p>
+
+
+<!--\indexR{идентичность}-->
+<!--\indexR{значения!составные}-->
+<!--\indexC{equal"?}-->
+<!--\indexC{eq"?}-->
+<p>Составные объекты вроде списков, строк и векторов логично считать равными, если
+они состоят из равных частей. Именно такой смысл равенства олицетворяют
+всевозможные варианты<a class="footref" href="zz_footnotes.xhtml#foot4.5"><sup>5</sup></a>
+предиката <code><span class="func">equal?</span></code>. К сожалению, если состав объектов можно
+изменять, то равенство их в один момент времени не гарантирует сохранение
+равенства в любой другой. Поэтому мы введём предикат <code><span class="func">eq?</span></code>, проверяющий
+идентичность: два объекта равны в смысле <code><span class="func">eq?</span></code>, если они —
+это один и тот же объект. Такую проверку можно очень эффективно реализовать, сравнив адреса
+этих объектов: если они указывают на одно и то же место в памяти, то очевидно,
+что это один и тот же объект.</p>
+
+<div class="bigskip"/>
+
+<!--\indexR{тождественность}-->
+<p>Итак, сейчас у нас есть два предиката: <code><span class="func">eq?</span></code> для проверки идентичности и
+<code><span class="func">equal?</span></code> для проверки структурного равенства. Но они оба впадают в крайности,
+когда дело касается изменяемых объектов. Равенство тождественно идентичности для
+неизменяемых объектов — два равных неизменяемых объекта такими и останутся
+навсегда. Но изменяемые объекты тождественны (всегда равны) только тогда, когда
+они идентичны (то есть суть один и тот же объект). Именно поэтому разумно
+понимать эквивалентность как взаимозаменимость: объекты эквивалентны, если
+ни одна программа не сможет их различить.</p>
+
+<p>Предикат <code><span class="func">eq?</span></code> работает на самом низком уровне: он может сравнивать только
+адреса ячеек памяти<a class="footref" href="zz_footnotes.xhtml#foot4.6"><sup>6</sup></a>
+и непосредственные константы. Некоторые объекты могут представляться в памяти
+по-разному, но быть при этом эквивалентными<a class="footref" href="zz_footnotes.xhtml#foot4.7"><sup>7</sup></a>, поэтому выходит, что <code><span class="func">eq?</span></code> не обладает критичной для
+отношения эквивалентности рефлексивностью.</p>
+
+<!--\indexC{eqv"?}-->
+<!--\indexC{eql}-->
+<p>Существует улучшенный вариант <code><span class="func">eq?</span></code>, называемый <code><span class="func">eqv?</span></code> в Scheme и <code><span class="func">eql</span></code>
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. В целом это тот же <code><span class="func">eq?</span></code>, но он работает немного медленнее,
+чтобы точно убедиться в равенстве неизменяемых объектов. Например, при
+сравнении чисел <code><span class="func">eqv?</span></code> проверит, что они равны, даже если они по-разному
+представляются в памяти: с учётом всех форматов, длинной арифметики и т. п.</p>
+
+<!--\indexR{точечные пары!неизменяемые}-->
+<!--\indexR{связывание!неизменяемое}-->
+<p>Если мы критически рассмотрим наши предыдущие интерпретаторы, то заметим, как
+мало в них изменяемых объектов. Практически всё, за исключением привязок,
+неизменяемо. Большая часть и так немногочисленных точечных пар никогда не видела
+в лицо <code><span class="func">set-car!</span></code> или <code><span class="func">set-cdr!</span></code>. В некоторых диалектах ML, а также
+в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, можно явно указывать неизменяемые поля объектов. Вот так,
+например, определяется неизменяемая точечная пара:</p>
+
+<pre>(<span class="syntax">defstruct</span> <span class="var">immutable-pair</span>     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
+  (<span class="var">car</span> <span class="hash">’()</span> <span class="syntax">:read-only</span> <span class="var">t</span>)
+  (<span class="var">cdr</span> <span class="hash">’()</span> <span class="syntax">:read-only</span> <span class="var">t</span>) )</pre>
+
+<p>Такой способ, к примеру, удобен для представления цитированных точечных пар: их
+можно один раз создать, разместить в отдельной области памяти и, давая на них
+ссылку, можно быть уверенным, что их никто никогда не поменяет.</p>
+
+<!--\indexC{egal}-->
+<p>Генри Бейкер в <span class="cite">[<a href="z1_bibliography.xhtml#bak93">Bak93</a>]</span> предложил унифицировать предикаты равенства,
+объединив их в один — <code><span class="func">egal</span></code><a class="footref" href="zz_footnotes.xhtml#foot4.tr-1"><sup>*</sup></a>, определяемый следующим образом: если
+сравниваемые объекты изменяемы, то он ведёт себя как <code><span class="func">eq?</span></code>, в противном
+случае — как <code><span class="func">equal?</span></code>. Истинность данного предиката гарантирует
+взаимозаменимость объектов. Это очень удобная функция, например, как показано
+в <span class="cite">[<a href="z1_bibliography.xhtml#qd93">QD93</a>, <a href="z1_bibliography.xhtml#que94">Que94</a>]</span>, для параллельного программирования.</p>
+
+<!--\indexR{сравнение!циклических объектов}-->
+<!--\indexR{циклические структуры данных}-->
+<!--\indexCS{equal"?}{стоимость}-->
+<p>Ещё одной проблемой являются циклические структуры данных. Их возможно
+сравнивать, но это обходится дорого. Если <code><span class="func">equal?</span></code> не знает, как обращаться
+с такими структурами, то она просто застрянет в бесконечном цикле. Но даже если
+мы каким-то образом сможем определить наличие цикла, то всё ещё неясно, как
+проводить сравнение. Допустим, у нас есть вот такие объекты:</p>
+
+<div id="ch4-annotated-src">
+<pre>(<span class="special">define</span> <span class="var">o1</span> (<span class="syntax">let</span> ((<span class="var">pair</span> (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>)))
+             (<span class="func">set-car!</span> <span class="var">pair</span> <span class="var">pair</span>)
+             (<span class="func">set-cdr!</span> <span class="var">pair</span> <span class="var">pair</span>)
+             <span class="var">pair</span> ))
+(<span class="special">define</span> <span class="var">o2</span> (<span class="syntax">let</span> ((<span class="var">pair</span> (<span class="func">cons</span> (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>))))
+             (<span class="func">set-car!</span> (<span class="func">car</span> <span class="var">pair</span>) <span class="var">pair</span>)
+             (<span class="func">set-cdr!</span> (<span class="func">car</span> <span class="var">pair</span>) <span class="var">pair</span>)
+             (<span class="func">set-cdr!</span> <span class="var">pair</span> <span class="var">pair</span>)
+             <span class="var">pair</span> ))</pre>
+<img src="images/png02.png" alt="Графическое отображение циклических структур данных o1 и o2" style="width: 1.5in"/>
+</div>
+
+<p>Предположим, мы хотим вычислить <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o1</span>)</code>. Пусть <code><span class="func">equal?</span></code>
+реализована так, что сначала вызывает <code><span class="func">eq?</span></code>, и только потом — если ей
+переданы объекты, которые действительно могут быть не эквивалентны, — она
+выполняет долгую структурную проверку. В таком случае мы сразу же получаем
+ответ <code><span class="hash">#t</span></code>. Иначе <code><span class="func">equal?</span></code> попадает в бесконечный цикл.<a class="footref" href="zz_footnotes.xhtml#foot4.8"><sup>8</sup></a></p>
+
+<p>Ладно, пусть результат <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o1</span>)</code> зависит от реализации; что насчёт
+<code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o2</span>)</code>? И опять ответ зависит от того, изменяемы ли или нет
+точечные пары, из которых состоят <code><span class="var">o1</span></code> и <code><span class="var">o2</span></code>. Если они неизменяемы, то
+без <code><span class="func">eq?</span></code> нельзя написать программу, которая бы смогла отличить <code><span class="var">o1</span></code>
+от <code><span class="var">o2</span></code>. Таким образом, лучше воздержаться от сравнения циклических структур
+данных с помощью <code><span class="func">equal?</span></code>.</p>
+
+<div class="bigskip"/>
+
+<!--\indexR{сравнение!символов}-->
+<p>Рассмотренные предикаты поддерживают большую часть используемых типов данных, за
+исключением символов и функций. Символы часто являются не совсем атомарными,
+так как они могут содержать списки свойств. Но с точки зрения сравнения их можно
+считать такими же неизменяемыми, как и числа, потому что символ однозначно
+определяется своим именем; вся суть символов как раз в том, что не может быть
+двух различных символов с одинаковыми именами.</p>
+
+<!--\indexR{списки свойств}-->
+<!--\indexR{символы!списки свойств}-->
+<!--\indexR{хеш-таблицы}-->
+<p>Что касается списков свойств, которые часто хранятся вместе с символами, то они
+являются удобным дополнением, например, для хранения всевозможных метаданных
+о глобальных переменных. В то же время, необходимо понимать ответственность за
+введение данной возможности: для её поддержки требуются побочные эффекты;
+свойства символа доступны глобально; для хранения каждого свойства требуются две
+точечные пары; желательно организовать эффективный поиск значения по имени
+свойства (например, на основе <em class="term">хеш-таблиц</em><a class="footref"
+href="zz_footnotes.xhtml#foot4.9"><sup>9</sup></a>).</p>
+
+
+<h3 id="assignment/side-effects/ssect:equality-func"><span class="wrap"><span class="seq">4.2.2.</span><span class="title">Равенство функций</span></span></h3>
+
+<!--\indexR{сравнение!функций}-->
+<!--\indexR{функции!сравнение}-->
+<!--\indexR{функции!тождественность}-->
+<p>Случай сравнения функций может показаться безнадёжным. Легко догадаться, что
+функции эквивалентны, если они дают равные результаты для равных аргументов;
+в таком случае очевидно, что они взаимозаменимы. Более формально
+тождественность функций записывается так:</p>
+
+<blockquote class="math equation"><span class="ord var">f</span><span class="rel">≡</span><span class="ord var">g</span><span class="rel"> ⇔ </span><span class="ord">∀</span><span class="ord var">x</span><span class="ord">: </span><span class="ord var">f</span><span class="open">(</span><span class="ord var">x</span><span class="close">)</span><span class="rel">=</span><span class="ord var">g</span><span class="open">(</span><span class="ord var">x</span><span class="close">)</span></blockquote>
+
+<p>К сожалению, если бы всё было так просто запрограммировать… Мы ведь
+не можем всерьёз проверять все возможные значения аргументов. Поэтому придётся
+или отказаться от идеи сравнимости функций, или же принять менее строгое
+определение эквивалентности для них. Сложно сказать, эквивалентны ли
+произвольные функции, но очень часто бывает легко выяснить, когда они
+не эквивалентны (например, если они принимают разное количество аргументов).</p>
+
+<p>Поэтому для функций можно определить приближённое сравнение, понимая при этом,
+что оно может ошибаться, порой значительно. Естественно, пользоваться им можно
+только в том случае, если мы точно знаем, когда и насколько его результат будет
+ошибочным.</p>
+
+<!--\indexCS{eqv"?}{для функций}-->
+<p>Scheme определяет <code><span class="func">eqv?</span></code> для функций следующим образом: если есть хотя бы
+один набор аргументов, который приводит к различным результатам применения
+функций <code><span class="func">f</span></code> и <code><span class="func">g</span></code>, то данные функции не эквивалентны. И снова, здесь речь
+идёт о различии, а не о равенстве.</p>
+
+<p>Давайте рассмотрим ещё несколько примеров. Выражение <code>(<span class="func">eqv?</span> <span class="var">car</span> <span class="var">cdr</span>)</code> должно
+возвращать ложь, так как результаты применения этих функций значительно
+отличаются, например, для <code>(<span class="var">a</span> . <span class="var">b</span>)</code>.</p>
+
+
+<!--\indexR{тождественность!функций}-->
+<p>Также очевидно, что <code>(<span class="func">eqv?</span> <span class="var">car</span> <span class="var">car</span>)</code> должна возвращать истину, так как
+эквивалентность обязана быть рефлексивной. Но в некоторых реализациях данная
+форма возвращает ложь, так как <code><span class="func">car</span></code> является инлайн-функцией и эта форма
+фактически читается как <code>(<span class="func">eqv?</span> (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">car</span> <span class="var">x</span>)) (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">car</span> <span class="var">x</span>)))</code>.
+R<sup>5</sup>RS оставляет результат <code><span class="func">eqv?</span></code> при подобном сравнении на усмотрение
+реализации.</p>
+
+<p>А как сравнить <code><span class="func">cons</span></code> и <code><span class="func">cons</span></code>, не прибегая к спасительной рефлексивности?
+Ведь функция <code><span class="func">cons</span></code> создаёт изменяемые структуры данных, так что даже если её
+аргументы можно сравнить, то результаты вовсе не обязаны быть эквивалентными,
+так как они размещаются в разных участках памяти. Таким образом, <code><span class="func">cons</span></code>
+не тождественна <code><span class="func">cons</span></code>, и <code>(<span class="func">eqv?</span> <span class="var">cons</span> <span class="var">cons</span>)</code> должна вернуть ложь, так как
+<code>(<span class="func">eqv?</span> (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>) (<span class="func">cons</span> <span class="num">1</span> <span class="num">2</span>))</code> возвращает ложь!</p>
+
+
+<!--\indexR{частичные функции}-->
+<!--\indexR{функции!частичные}-->
+<p>Вы всё ещё уверены, что <code><span class="func">car</span></code> должна быть равна <code><span class="func">car</span></code>? Есть и другие
+проблемы. Например, в языке без проверки типов <code>(<span class="func">car</span> '<span class="var">foo</span>)</code> вызовет ошибку и
+выброс исключения, но результаты его перехвата и обработки слабо предсказуемы и
+зависят отнюдь не только от аргументов. Поэтому не все функции вообще могут
+вернуть что-то сравнимое. Это касается всех частичных функций<a class="footref" href="zz_footnotes.xhtml#foot4.tr-2"><sup>**</sup></a>, которые используются вне своей фактической области
+определения.</p>
+
+<!--\indexR{замыкания (closures)!сравнение}-->
+<p>Так что же делать? В различных языках применяются различные меры. Некоторые
+языки имеют мощную систему типов, поэтому они в состоянии определить, когда
+аргументы сравнения являются функциями; часть диалектов ML, например, этим
+пользуется, запрещая сравнивать функции вообще. В Scheme форма <code><span class="special">lambda</span></code>
+создаёт замыкания. Каждый вызов <code><span class="special">lambda</span></code> сохраняет в памяти замыкание,
+которое имеет определённый адрес, так что функции можно сравнивать хотя бы по
+этому адресу. Именно так и делает <code><span class="func">eqv?</span></code>, считая функции с одинаковым адресом
+эквивалентными.</p>
+
+<p>Однако, такое поведение может мешать некоторым оптимизациям. Рассмотрим функцию
+с говорящим именем <code><span class="func">make-named-box</span></code>. Она принимает один аргумент (сообщение),
+анализирует его и реагирует соответствующим образом. Это один из возможных
+способов реализации объектов, именно его мы будем использовать для написания
+интерпретатора в этой главе.</p>
+
+<!--\indexC{make-named-box}-->
+<pre>(<span class="special">define</span> (<span class="func">make-named-box</span> <span class="var">name</span> <span class="var">value</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>) (<span class="special">lambda</span> () '<span class="var">named-box</span>))
+      ((<span class="var">name</span>) (<span class="special">lambda</span> () <span class="var">name</span>))
+      ((<span class="var">ref</span>)  (<span class="special">lambda</span> () <span class="var">value</span>))
+      ((<span class="var">set!</span>) (<span class="special">lambda</span> (<span class="var">new-value</span>) (<span class="special">set!</span> <span class="var">value</span> <span class="var">new-value</span>))) ) ) )</pre>
+
+<p>Замечательно, мы научились привязывать к коробкам бирку с именем. Теперь
+рассмотрим функцию внимательнее: замыкание, возвращаемое в ответ на сообщение
+<code><span class="var">type</span></code>, не зависит от локальных переменных. Поэтому его можно вынести за
+скобки:</p>
+
+<pre>(<span class="special">define</span> <span class="var">other-make-named-box</span>
+  (<span class="syntax">let</span> ((<span class="var">type-closure</span> (<span class="special">lambda</span> () '<span class="var">named-box</span>)))
+    (<span class="special">lambda</span> (<span class="var">name</span> <span class="var">value</span>)
+      (<span class="syntax">let</span> ((<span class="var">name-closure</span>  (<span class="special">lambda</span> () <span class="var">name</span>))
+            (<span class="var">value-closure</span> (<span class="special">lambda</span> () <span class="var">value</span>))
+            (<span class="var">set!-closure</span>  (<span class="special">lambda</span> (<span class="var">new-value</span>)
+                             (<span class="special">set!</span> <span class="var">value</span> <span class="var">new-value</span>) )) )
+        (<span class="special">lambda</span> (<span class="var">msg</span>)
+          (<span class="syntax">case</span> <span class="var">msg</span>
+            ((<span class="var">type</span>) <span class="var">type-closure</span>)
+            ((<span class="var">name</span>) <span class="var">name-closure</span>)
+            ((<span class="var">ref</span>)  <span class="var">value-closure</span>)
+            ((<span class="var">set!</span>) <span class="var">set!-closure</span>) ) ) ) ) ) )</pre>
+
+<p class="noindent">Отлично, <code><span class="var">type-closure</span></code> теперь создаётся только один раз для всех коробок, а
+не при каждом разборе <code><span class="var">msg</span></code>.</p>
+
+<p>Но что мы получим в результате следующего сравнения?</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">box</span> (<span class="func">make-named-box</span> '<span class="var">foo</span> <span class="num">33</span>)))
+  (<i>равны</i>? (<span class="func">box</span> '<span class="var">type</span>) (<span class="func">box</span> '<span class="var">type</span>)) )</pre>
+
+<p>Это не совсем корректный вопрос, потому что здесь не указан предикат. Если это
+<code><span class="func">eq?</span></code>, то ответ зависит от количества созданных копий
+<code>(<span class="special">lambda</span> () '<span class="var">named-box</span>)</code>, если же это <code><span class="func">egal</span></code>, то расположение замыканий не играет роли и
+ответом будет истина. Таким образом, семантика языка неявно зависит от
+предоставляемых им предикатов сравнения.</p>
+
+<p>Если <code><span class="special">lambda</span></code> создаёт замыкания в памяти, то у них всегда есть какой-то
+адрес. Два замыкания с одинаковым адресом, очевидно, являются одним и тем же
+замыканием, а потому эквивалентны. Соответственно, в Scheme следующая программа
+ведёт себя верно:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) (<span class="func">cons</span> <span class="var">x</span> <span class="var">y</span>))))
+  (<span class="func">eqv?</span> <span class="var">f</span> <span class="var">f</span>) ) <span class="math"><span class="rel">→</span></span> <span class="hash">#t</span></pre>
+
+<p class="noindent">Так как <code><span class="func">eqv?</span></code> передан один и тот же объект, она
+вправе вернуть истину; даже если <code>(<span class="func">eqv?</span> (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>) (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>))</code> возвращает ложь.</p>
+
+<div class="bigskip"/>
+
+<p>Как мы видим, при сравнении функций возникает множество вопросов, на которые
+нельзя дать однозначный ответ. Предпочтения зависят от свойств эквивалентности,
+которые желательно сохранить в языке, так как проверка математической
+тождественности функций не представляется возможной. Свойства подобного
+сравнения зависят от выбора авторов реализации языка. Иногда оно и вообще
+оказывается под запретом. Хотя в этой книге сравнение функций всё же
+используется для методов <span class="sc">M<span class="c">eroonet</span></span>
+<span class="see">[см. раздел <a href="ch11_essence_of_an_object_system.xhtml#objects/method/par:func-eq">11.9</a>]</span>,
+пожалуйста, если это возможно, старайтесь воздержаться от сравнения функций
+в любом виде.</p>
+
+
+<h2 id="assignment/sect:implementation"><span class="wrap"><span class="seq">4.3.</span><span class="title">Реализация</span></span></h2>
+
+<!--\indexR{обмен сообщениями}-->
+<!--\indexR{замыкания (closures)}-->
+<!--\indexR{сообщения}-->
+<p>В этот раз мы напишем интерпретатор, основанный на замыканиях. Все его объекты
+будут <code><span class="special">lambda</span></code>-формами, которые отправляют сообщения другим формам и
+разбирают входящие сообщения с помощью уже знакомой вам идиомы <code>(<span class="special">lambda</span> (<span class="var">msg</span>)
+(<span class="syntax">case</span> <span class="var">msg</span> ...))</code>. Некоторые сообщения будут универсальными для всех объектов.
+Сообщение <code><span class="var">boolify</span></code> запрашивает у объекта его булев эквивалент (то есть
+<code><span class="hash">#t</span></code> или <code><span class="hash">#f</span></code> для нужд <code><span class="special">if</span></code>-форм), а сообщение <code><span class="var">type</span></code>, конечно же,
+вернёт его тип.</p>
+
+<p>Главной проблемой является способ реализации побочных эффектов. Формально,
+переменная ссылается на привязку, которая указывает на значение этой переменной.
+Говоря простым языком, переменная указывает на коробку (адрес), где лежит
+её значение. Память — это функция, достающая из нужной коробки значение.
+Окружение — это функция, достающая из кучи нужную коробку. Всё это просто и
+понятно, но ровно до того момента, как мы попытаемся это запрограммировать.</p>
+
+<!--\indexR{вычисления!контекст}-->
+<!--\indexR{контекст вычислений}-->
+<p>Память должна быть видна отовсюду. Можно было бы сделать её глобальной
+переменной, но это не совсем элегантное решение, ведь вы знаете, сколько проблем
+и неоднозначностей таит в себе глобальное окружение. Есть и другой способ
+обеспечить видимость памяти для всех функций интерпретатора: передавать её как
+аргумент в каждую функцию, а она будет передавать её в следующую (возможно,
+изменив перед этим). Так и поступим; теперь вычисление описывается четвёркой из
+<em class="term">выражения</em>, <em class="term">окружения</em>,
+<em class="term">продолжения</em> и <em class="term">памяти</em>.
+В программе будем их коротко называть <code><span class="var">e</span></code>, <code><span class="var">r</span></code>, <code><span class="var">k</span></code> и <code><span class="var">s</span></code>.</p>
+
+<!--\indexR{соглашения именования}-->
+<!--\indexE{e @\protect<code><span class="func">e</span></code> (выражения)}-->
+<!--\indexE{r @\protect<code><span class="func">r</span></code> (лексическое окружение)}-->
+<!--\indexE{k @\protect<code><span class="func">k</span></code> (продолжения)}-->
+<!--\indexE{v @\protect<code><span class="func">v</span></code> (значения)}-->
+<!--\indexE{f @\protect<code><span class="func">f</span></code> (функции)}-->
+<!--\indexE{n @\protect<code><span class="func">n</span></code> (идентификаторы)}-->
+<!--\indexE{s @\protect<code><span class="func">s</span></code> (память)}-->
+<!--\indexE{a @\protect<code><span class="func">a</span></code> (адреса)}-->
+<p>Как обычно, функция <code><span class="func">evaluate</span></code> проводит синтаксический анализ своего
+аргумента и вызывает соответствующую функцию-вычислитель. Не будем нарушать
+установленную в предыдущих главах традицию именования сущностей, лишь расширим
+список новыми типами:</p>
+
+<table class="term-def">
+<tbody>
+<tr><td class="left"><code><span class="var">e</span></code>,
+                     <code><span class="var">et</span></code>,
+                     <code><span class="var">ec</span></code>,
+                     <code><span class="var">ef</span></code></td>
+    <td class="right">выражения, формы</td></tr>
+<tr><td class="left"><code><span class="var">r</span></code></td>
+    <td class="right">окружения</td></tr>
+<tr><td class="left"><code><span class="var">k</span></code>,
+                     <code><span class="var">kk</span></code></td>
+    <td class="right">продолжения</td></tr>
+<tr><td class="left"><code><span class="var">v</span></code>,
+                     <code><span class="var">void</span></code></td>
+    <td class="right">значения</td></tr>
+<tr><td class="left"><code><span class="var">f</span></code></td>
+    <td class="right">функции</td></tr>
+<tr><td class="left"><code><span class="var">n</span></code></td>
+    <td class="right">идентификаторы</td></tr>
+<tr><td class="left"><code><span class="var">s</span></code>,
+                     <code><span class="var">ss</span></code>,
+                     <code><span class="var">sss</span></code></td>
+    <td class="right">память</td></tr>
+<tr><td class="left"><code><span class="var">a</span></code>,
+                     <code><span class="var">aa</span></code></td>
+    <td class="right">адреса (коробки)</td></tr>
+</tbody>
+</table>
+
+<p>Так как у нас увеличилось количество аргументов функций, то отныне будем всегда
+их перечислять в определённом порядке: <code><span class="var">e</span></code>, <code><span class="var">r</span></code>, <code><span class="var">s</span></code>, затем <code><span class="var">k</span></code>.</p>
+
+<p>Итак, ядро интерпретатора:</p>
+
+<!--\indexC{evaluate}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">evaluate-variable</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+          (<span class="func">evaluate-quote</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">evaluate-quote</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">if</span>)     (<span class="func">evaluate-if</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">begin</span>)  (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">set!</span>)   (<span class="func">evaluate-set!</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        ((<span class="var">lambda</span>) (<span class="func">evaluate-lambda</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>))
+        (<span class="syntax">else</span>     (<span class="func">evaluate-application</span> (<span class="func">car</span> <span class="var">e</span>) (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)) ) ) )</pre>
+
+
+<h3 id="assignment/implementation/ssect:condition"><span class="wrap"><span class="seq">4.3.1.</span><span class="title">Ветвление</span></span></h3>
+
+<p>Условный оператор требует вспомогательного продолжения для выполнения ветвления
+после вычисления условия.</p>
+
+<!--\indexC{evaluate-if}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-if</span> <span class="var">ec</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">ec</span> <span class="var">r</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+      (<span class="func">evaluate</span> ((<span class="func">v</span> '<span class="var">boolify</span>) <span class="var">et</span> <span class="var">ef</span>) <span class="var">r</span> <span class="var">ss</span> <span class="var">k</span>) ) ) )</pre>
+
+<p>Вспомогательное продолжение принимает не только вычисленное условие <code><span class="var">v</span></code>, но и
+состояние памяти после вычисления. Следовательно, мы допускаем побочные эффекты
+при вычислении условия:</p>
+
+<pre>(<span class="special">if</span> (<span class="special">begin</span> (<span class="func">set-car!</span> <span class="var">pair</span> '<span class="var">foo</span>)
+           (<span class="func">cdr</span> <span class="var">pair</span>) )
+    (<span class="func">car</span> <span class="var">pair</span>) <span class="num">2</span> ) <span class="math"><span class="rel">→</span></span> '<span class="var">foo</span> <span class="normal">или</span> <span class="num">2</span></pre>
+
+<!--\indexR{поиск с возвратом}-->
+<p>Сейчас любые изменения памяти, выполненные в условии, видны в обеих ветках.
+Но можно поступить иначе:</p>
+
+<!--\indexCS{evaluate-if}{поиск с возвратом}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-amnesic-if</span> <span class="var">ec</span> <span class="var">et</span> <span class="var">ef</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">ec</span> <span class="var">r</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+      (<span class="func">evaluate</span> ((<span class="func">v</span> '<span class="var">boolify</span>) <span class="var">et</span> <span class="var">ef</span>) <span class="var">r</span> <span class="var">s</span>     <span class="comment">; <span class="math"><code class="ord"><span class="var">s</span></code><span class="rel">≠</span><code class="ord"><span class="var">ss</span></code></span>!</span>
+                <span class="var">k</span>) ) ) )</pre>
+
+<p>В этом случае при вычислении веток мы пользуемся старым состоянием памяти,
+которое было при вызове самой формы <code><span class="special">if</span></code>.
+Это необходимое свойство для языков со встроенной поддержкой поиска с возвратом вроде Пролога.
+<span class="see">[см. упр. <a href="#assignment/ex:form-or">4.4</a>]</span></p>
+
+
+<!--\indexE{boolify@\protect<code><span class="func">'boolify</span></code>}-->
+<!--\indexR{комбинаторы!T@\protect\comb{T}}-->
+<!--\indexR{комбинаторы!F@\protect\comb{F}}-->
+<p>Так как мы решили все объекты интерпретатора представлять функциями, то
+в качестве логических значений нельзя использовать <code><span class="hash">#t</span></code> и <code><span class="hash">#f</span></code> языка
+реализации. Кроме этого нам необходим способ приведения любых объектов
+к логическому типу (ведь любой объект в Scheme, кроме <code><span class="hash">#f</span></code>, считается
+логической истиной). Будем считать, что все объекты отвечают на сообщение
+<code><span class="var">boolify</span></code>, возвращая своё логическое представление в виде одного из
+комбинаторов <span class="math"><span class="ord var">λ</span></span>-исчисления: <code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)</code> или
+<code>(<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">y</span>)</code>.</p>
+
+
+<h3 id="assignment/implementation/ssect:sequence"><span class="wrap"><span class="seq">4.3.2.</span><span class="title">Последовательность</span></span></h3>
+
+<p>Хотя тут нет ничего интересного или нового, но повторить смысл последовательных
+вычислений будет не лишним. Для простоты мы считаем, что <code><span class="special">begin</span></code> передана
+как минимум одна форма.</p>
+
+<!--\indexC{evaluate-begin}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-begin</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">e*</span>))
+      (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">s</span>
+        (<span class="special">lambda</span> (<span class="var">void</span> <span class="var">ss</span>)
+          (<span class="func">evaluate-begin</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">ss</span> <span class="var">k</span>) ) )
+      (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>) ) )</pre>
+
+<p>Здесь чётко видно, как мы последовательно вычисляем тело <code><span class="special">begin</span></code>, передаём
+новое состояние памяти, но игнорируем значения всех вычисляемых выражений, кроме
+последнего, которое обрабатывается отдельно.</p>
+
+
+<h3 id="assignment/implementation/ssect:environment"><span class="wrap"><span class="seq">4.3.3.</span><span class="title">Окружения</span></span></h3>
+
+<p>Окружения представляются функциями, переводящими имена переменных в адреса.
+Аналогично, память — это функция, переводящая адреса в значения. Начальное
+окружение должно быть пустым:</p>
+
+<!--\indexC{r.init}-->
+<pre>(<span class="special">define</span> (<span class="func">r.init</span> <span class="var">id</span>)
+  (<span class="func">wrong</span> <span class="string">"No binding for"</span> <span class="var">id)</span> )</pre>
+
+<!--\indexR{память!чисто функциональная}-->
+<!--\indexR{чисто функциональные структуры данных}-->
+<!--\indexR{побочные эффекты}-->
+<p>Итак, как же нам выразить изменение окружения (или памяти), не используя
+побочные эффекты или присваивание? В нашем случае это значит, что функция-память
+должна после изменения по-другому реагировать на определённое значение, но
+по-старому — на все остальные. Функция <code><span class="func">update</span></code> создаёт новую память
+именно с таким поведением:</p>
+
+<!--\indexC{update}-->
+<pre>(<span class="special">define</span> (<span class="func">update</span> <span class="var">s</span> <span class="var">a</span> <span class="var">v</span>)
+  (<span class="special">lambda</span> (<span class="var">aa</span>)
+    (<span class="special">if</span> (<span class="func">eqv?</span> <span class="var">a</span> <span class="var">aa</span>) <span class="var">v</span> (<span class="func">s</span> <span class="var">aa</span>)) ) )</pre>
+
+<p>Здесь буквально записана эта идея. Вызов <code>(<span class="func">update</span> <span class="var">s</span> <span class="var">a</span> <span class="var">v</span>)</code> вернёт новое,
+изменённое состояние памяти, которое мы передадим следующей функции как текущее.
+Также можно обобщить <code><span class="func">update</span></code> для изменения сразу нескольких значений:</p>
+
+<!--\indexC{update*}-->
+<pre>(<span class="special">define</span> (<span class="func">update*</span> <span class="var">s</span> <span class="var">a*</span> <span class="var">v*</span>)
+  <span class="comment">;; <code>(<span class="syntax">assume</span> (<span class="func">=</span> (<span class="func">length</span> <span class="var">a*</span>) (<span class="func">length</span> <span class="var">v*</span>)))</code></span>
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">a*</span>)
+      (<span class="func">update*</span> (<span class="func">update</span> <span class="var">s</span> (<span class="func">car</span> <span class="var">a*</span>) (<span class="func">car</span> <span class="var">v*</span>)) (<span class="func">cdr</span> <span class="var">a*</span>) (<span class="func">cdr</span> <span class="var">v*</span>))
+      <span class="var">s</span> ) )</pre>
+
+<p>Функция <code><span class="func">update</span></code> одинаково хорошо работает как с памятью, так и
+с окружениями. В ML это была бы полиморфная функция, так как окружения и память
+имеют разные типы. Также необходимо учитывать, что <code><span class="func">update</span></code> требуется некий
+критерий сравнения адресов, поэтому для их представления стоит выбрать
+гарантированно сравнимые объекты: например, целые числа. Имена переменных мы
+будем представлять символами. Оба типа данных прекрасно поддерживаются
+<code><span class="func">eqv?</span></code>, поэтому в <code><span class="func">update</span></code> используется именно этот предикат.</p>
+
+
+<h3 id="assignment/implementation/ssect:reference"><span class="wrap"><span class="seq">4.3.4.</span><span class="title">Обращения к переменным</span></span></h3>
+
+<p>Благодаря выбранному представлению памяти значение переменной получается
+элементарно:</p>
+
+<!--\indexC{evaluate-variable}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-variable</span> <span class="var">n</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">k</span> (<span class="func">s</span> (<span class="func">r</span> <span class="var">n</span>)) <span class="var">s</span>) )</pre>
+
+<p>Сначала мы извлекаем адрес переменной <code>(<span class="func">r</span> <span class="var">n</span>)</code> из окружения, затем ищем
+соответствующее значение в памяти <code><span class="var">s</span></code> и передаём его продолжению <code><span class="var">k</span></code>. Так
+как чтение памяти не вызывает побочных эффектов, то продолжению память
+передаётся в неизменном виде.</p>
+
+
+<h3 id="assignment/implementation/ssect:assignment"><span class="wrap"><span class="seq">4.3.5.</span><span class="title">Присваивание</span></span></h3>
+
+<p>Для присваивания необходимо промежуточное продолжение.</p>
+
+<!--\indexC{evaluate-set"!}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-set!</span> <span class="var">n</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+      (<span class="func">k</span> <span class="var">v</span> (<span class="func">update</span> <span class="var">ss</span> (<span class="func">r</span> <span class="var">n</span>) <span class="var">v</span>)) ) ) )</pre>
+
+<p>Новое значение переменной после вычисления передаётся продолжению, которое
+записывает его в память по адресу переменной. Дальше промежуточное продолжение
+передаёт обновлённое состояние памяти изначальному продолжению формы
+<code><span class="special">set!</span></code>.
+Между прочим, возвращаемое значение этого варианта присваивания вполне
+определено: это текущее значение переменной после присваивания.</p>
+
+<p>Принцип работы памяти без побочных эффектов и причины представления её как
+функции теперь должны быть окончательно понятны: фактически, память
+представляется историей изменений своего состояния. Мы никогда не изменяем
+записи в этом списке и не удаляем их — только добавляем новые, переопределяя
+таким образом функцию-память. Конечно, если сравнивать его с реальной памятью,
+данный вариант является жутко неэффективным и избыточным, но ведение истории
+изменений имеет свои плюсы.
+<span class="see">[см. упр. <a href="#assignment/ex:previous-value">4.5</a>]</span>
+По крайней мере, можно взять эту идею на вооружение хотя бы частично.</p>
+
+
+<h3 id="assignment/implementation/ssect:application"><span class="wrap"><span class="seq">4.3.6.</span><span class="title">Аппликация</span></span></h3>
+
+<p>Перед применением функции необходимо вычислить все элементы формы вызова.
+Вычислять их можно, как известно, в произвольном порядке. Пусть это будет
+порядок слева направо.</p>
+
+<!--\indexC{evaluate-application}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">define</span> (<span class="func">evaluate-arguments</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">e*</span>)
+        (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">s</span>
+          (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+            (<span class="func">evaluate-arguments</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span> <span class="var">ss</span>
+              (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">sss</span>)
+                (<span class="func">k</span> (<span class="func">cons</span> <span class="var">v</span> <span class="var">v*</span>) <span class="var">sss</span>) ) ) ) )
+        (<span class="func">k</span> <span class="hash">'()</span> <span class="var">s</span>) ) )
+  (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">f</span> <span class="var">ss</span>)
+      (<span class="func">evaluate-arguments</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">ss</span>
+        (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">sss</span>)
+          (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">f</span> '<span class="var">type</span>) '<span class="var">function</span>)
+              ((<span class="func">f</span> '<span class="var">behavior</span>) <span class="var">v*</span> <span class="var">sss</span> <span class="var">k</span>)
+              (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span>) ) ) ) ) ) )</pre>
+
+<!--\indexE{behavior@\protect<code><span class="func">'behavior</span></code>}-->
+<p>Здесь функция, которая обычно называлась <code><span class="func">evlis</span></code>, является локальной и
+называется <code><span class="func">evaluate-arguments</span></code>. Она вычисляет аргументы слева направо и
+собирает их в список. Затем функция (первый элемент формы) применяется
+к аргументам вместе с памятью после их вычисления и продолжением вызова функции.
+Обратите внимание на то, как лаконично и точно записаны эти идеи.</p>
+
+<p>Функции представляются специальными замыканиями, так что напрямую их применять
+нельзя. Поэтому вводится сообщение <code><span class="var">behavior</span></code> для извлечения поведения
+функции: кода, который будет применён к аргументам.</p>
+
+
+<h3 id="assignment/implementation/ssect:abstraction"><span class="wrap"><span class="seq">4.3.7.</span><span class="title">Абстракция</span></span></h3>
+
+<!--\indexCS{lambda}{и память}-->
+<p>Для простоты будем считать, что специальная форма <code><span class="special">lambda</span></code> поддерживает
+только функции с фиксированным количеством аргументов. При создании функции
+происходит две вещи: в памяти выделяется ячейка, затем создаётся особый объект
+— замыкание, — которое и размещается в только что выделенной ячейке
+памяти. Очевидно, что созданную функцию надо где-то хранить для дальнейшего
+использования, поэтому форма <code><span class="special">lambda</span></code> вынуждена изменять состояние памяти.
+Работа по созданию и сохранению замыканий перекладывается на функцию
+<code><span class="func">create-function</span></code>, которой передаётся адрес выделенного участка памяти и код
+функции — именно тот, который должно вернуть замыкание в ответ на сообщение
+<code><span class="var">behavior</span></code>.</p>
+
+<!--\indexC{evaluate-lambda}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-lambda</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">allocate</span> <span class="num">1</span> <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+      (<span class="func">k</span> (<span class="func">create-function</span>
+          (<span class="func">car</span> <span class="var">a*</span>)
+          (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+            (<span class="special">if</span> (<span class="func">=</span> (<span class="func">length</span> <span class="var">n*</span>) (<span class="func">length</span> <span class="var">v*</span>))
+                (<span class="func">allocate</span> (<span class="func">length</span> <span class="var">n*</span>) <span class="var">s</span>
+                  (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+                    (<span class="func">evaluate-begin</span> <span class="var">e*</span>
+                                    (<span class="func">update*</span> <span class="var">r</span>  <span class="var">n*</span> <span class="var">a*</span>)
+                                    (<span class="func">update*</span> <span class="var">ss</span> <span class="var">a*</span> <span class="var">v*</span>)
+                                    <span class="var">k</span> ) ) )
+                (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) ) )
+          <span class="var">ss</span> ) ) ) )</pre>
+
+<p>При вызове функции, созданной <code><span class="special">lambda</span></code>, сначала проверяется количество
+переданных аргументов, затем в памяти в момент вызова выделяется место для
+аргументов функции, после чего они инициализируются переданными значениями и,
+наконец, управление передаётся собственно функции.</p>
+
+<!--\indexR{функции!в Фортране}-->
+<p>Возможен и другой вариант реализации:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate-ftn-lambda</span> <span class="var">n*</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">allocate</span> (<span class="func">+</span> <span class="num">1</span> (<span class="func">length</span> <span class="var">n*</span>)) <span class="var">s</span>
+    (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+      (<span class="func">k</span> (<span class="func">create-function</span>
+          (<span class="func">car</span> <span class="var">a*</span>)
+          (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+            (<span class="special">if</span> (<span class="func">=</span> (<span class="func">length</span> <span class="var">n*</span>) (<span class="func">length</span> <span class="var">v*</span>))
+                (<span class="func">evaluate-begin</span> <span class="var">e*</span>
+                                (<span class="func">update*</span> <span class="var">r</span> <span class="var">n*</span> (<span class="func">cdr</span> <span class="var">a*</span>))
+                                (<span class="func">update*</span> <span class="var">s</span> (<span class="func">cdr</span> <span class="var">a*</span>) <span class="var">v*</span>)
+                                <span class="var">k</span> )
+                (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span>) ) ) )
+      <span class="var">ss</span> ) ) ) )</pre>
+
+<p class="noindent">В этом случае место в памяти под аргументы выделяется один раз при создании
+замыкания; так поступает, например, Фортран. Но, к сожалению, такой подход
+лишает нас рекурсии, ведь теперь нет возможности хранить несколько отдельных
+наборов аргументов для каждого вызова функции. В Фортране подобное решение
+принято по той причине, что раз там нет динамического создания функций, то
+память для аргументов можно выделить ещё при компиляции, что приводит к росту
+производительности. Правда, ценой рекурсии и замыканий — главных достоинств
+функциональных языков.</p>
+
+
+<h3 id="assignment/implementation/ssect:memory"><span class="wrap"><span class="seq">4.3.8.</span><span class="title">Память</span></span></h3>
+
+<!--\indexR{сборка мусора}-->
+<p>Память представляется функцией, принимающей адреса и возвращающей значения.
+Кроме этого нам нужна возможность выделять в памяти новые адреса, гарантированно
+свободные для использования; этим будет заниматься функция <code><span class="func">allocate</span></code>. Она
+принимает три аргумента: необходимое количество адресов, память и продолжение,
+которому она передаст список выделенных адресов и новое состояние памяти, где по
+соответствующим адресам хранятся значения «не инициализировано». Именно на эту
+функцию возложена вся работа по управлению памятью, в частности, сборка мусора.
+Это отдельная сложная тема<a class="footref" href="zz_footnotes.xhtml#foot4.tr-3"><sup>***</sup></a>, которой мы
+не будем здесь касаться и предположим, что память у нас бесконечная —
+то есть мы всегда можем найти необходимое количество свободных адресов.</p>
+
+<!--\indexC{allocate}-->
+<pre>(<span class="special">define</span> (<span class="func">allocate</span> <span class="var">n</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">></span> <span class="var">n</span> <span class="num">0</span>)
+      (<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">new-location</span> <span class="var">s</span>)))
+        (<span class="func">allocate</span> (<span class="func">-</span> <span class="var">n</span> <span class="num">1</span>)
+                  (<span class="func">expand-store</span> <span class="var">a</span> <span class="var">s</span>)
+                  (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+                    (<span class="func">k</span> (<span class="func">cons</span> <span class="var">a</span> <span class="var">a*</span>) <span class="var">ss</span>) ) ) )
+      (<span class="func">k</span> <span class="hash">'()</span> <span class="var">s</span>) ) )</pre>
+
+<p>Функция <code><span class="func">new-location</span></code> ищет первый свободный адрес в
+памяти. Это настоящая чистая функция в том смысле, что <code>(<span class="func">eqv?</span> (<span class="func">new-location</span> <span class="var">s</span>) (<span class="func">new-location</span> <span class="var">s</span>))</code>
+всегда возвращает истину. Если выделять ячейки в памяти последовательно, то
+достаточно будет хранить последний выделенный адрес для определения следующего
+свободного. Резервируется ячейка памяти с помощью функции <code><span class="func">expand-store</span></code>.</p>
+
+<!--\indexC{expand-store}-->
+<!--\indexC{new-location}-->
+<pre>(<span class="special">define</span> (<span class="func">expand-store</span> <span class="var">high-location</span> <span class="var">s</span>)
+  (<span class="func">update</span> <span class="var">s</span> <span class="num">0</span> <span class="var">high-location</span>) )
+
+(<span class="special">define</span> (<span class="func">new-location</span> <span class="var">s</span>)
+  (<span class="func">+</span> <span class="num">1</span> (<span class="func">s</span> <span class="num">0</span>) ) )</pre>
+
+<p>Как видим, адрес последней выделенной ячейки сам хранится в памяти по адресу 0.
+Память отзывается на два типа сообщений: запрос адреса свободной ячейки (при
+передаче нуля) и запрос значения по адресу (при передаче иных адресов). Это
+просто и удобно для реализации. Естественно, также необходимо определить
+изначальное состояние памяти, где не выделено ни одной ячейки:</p>
+
+<!--\indexC{s.init}-->
+<pre>(<span class="special">define</span> <span class="var">s.init</span>
+  (<span class="func">expand-store</span> <span class="num">0</span> (<span class="special">lambda</span> (<span class="var">a</span>) (<span class="func">wrong</span> <span class="string">"No such address"</span> <span class="var">a</span>))) )</pre>
+
+
+<h3 id="assignment/implementation/ssect:values"><span class="wrap"><span class="seq">4.3.9.</span><span class="title">Представление значений</span></span></h3>
+
+<p>Мы решили представлять данные внутри интерпретатора в виде замыканий,
+обменивающихся сообщениями. Для простоты ограничимся пустым списком, булевыми
+значениями, символами, числами, точечными парами и функциями. Рассмотрим эти
+типы данных по очереди.</p>
+
+
+<!--\indexE{type@\protect<code><span class="var">'type</span></code>}-->
+<!--\indexE{boolify@\protect<code><span class="var">'boolify</span></code>}-->
+<p>Все значения будут основываться на функции, которая отвечает как минимум на два
+сообщения: 1) запрос типа (<code><span class="var">type</span></code>); 2) приведение к логическому типу
+(<code><span class="var">boolify</span></code>). Значения конкретных типов данных будут реагировать на свои
+специфичные сообщения. Таким образом, все определения значений имеют следующий
+скелет:</p>
+
+<pre>(<span class="special">lambda</span> (<span class="var">msg</span>)
+  (<span class="syntax">case</span> <span class="var">msg</span>
+    ((<span class="var">type</span>)    ...)
+    ((<span class="var">boolify</span>) ...)
+    ... ) )</pre>
+
+<p>Существует только один пустой список и, в соответствии с R<sup>5</sup>RS,
+для <code><span class="special">if</span></code> он является истиной.</p>
+
+<!--\indexC{the-empty-list}-->
+<pre>(<span class="special">define</span> <span class="var">the-empty-list</span>
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)    '<span class="var">null</span>)
+      ((<span class="var">boolify</span>) (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)) ) ) )</pre>
+
+<p>Булевы значения создаются функцией <code><span class="func">create-boolean</span></code>:</p>
+
+<!--\indexC{create-boolean}-->
+<pre>(<span class="special">define</span> (<span class="func">create-boolean</span> <span class="var">value</span>)
+  (<span class="syntax">let</span> ((<span class="var">combinator</span> (<span class="special">if</span> <span class="var">value</span> (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)
+                              (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">y</span>) )))
+    (<span class="special">lambda</span> (<span class="var">msg</span>)
+      (<span class="syntax">case</span> <span class="var">msg</span>
+        ((<span class="var">type</span>)    '<span class="var">boolean</span>)
+        ((<span class="var">boolify</span>) <span class="var">combinator</span>) ) ) ) )</pre>
+
+<!--\indexE{name@\protect<code><span class="var">'name</span></code>}-->
+<p>Символы имеют имя, которое они назовут, если их вежливо попросить с помощью
+<code><span class="var">name</span></code>. Мы будем представлять их имена родными символами Scheme.</p>
+
+<!--\indexC{create-symbol}-->
+<pre>(<span class="special">define</span> (<span class="func">create-symbol</span> <span class="var">v</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)    '<span class="var">symbol</span>)
+      ((<span class="var">name</span>)    <span class="var">v</span>)
+      ((<span class="var">boolify</span>) (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)) ) ) )</pre>
+
+<!--\indexE{value@\protect<code><span class="var">'value</span></code>}-->
+<p>Числа же будут отвечать на сообщение <code><span class="var">value</span></code>:</p>
+
+<!--\indexC{create-number}-->
+<pre>(<span class="special">define</span> (<span class="func">create-number</span> <span class="var">v</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)    '<span class="var">number</span>)
+      ((<span class="var">value</span>)    <span class="var">v</span>)
+      ((<span class="var">boolify</span>) (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>)) ) ) )</pre>
+
+<!--\indexE{behavior@\protect<code><span class="var">'behavior</span></code>}-->
+<!--\indexE{tag@\protect<code><span class="var">'tag</span></code>}-->
+<p>Функции имеют более развитый словарный запас из двух сообщений: <code><span class="var">tag</span></code>
+и <code><span class="var">behavior</span></code>. Сообщение <code><span class="var">behavior</span></code>, конечно же, вернёт код функции;
+<code><span class="var">tag</span></code> хранит адрес, по которому эта функция расположена в памяти.</p>
+
+<!--\indexC{create-function}-->
+<pre>(<span class="special">define</span> (<span class="func">create-function</span> <span class="var">tag</span> <span class="var">behavior</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)     '<span class="var">function</span>)
+      ((<span class="var">boolify</span>)  (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>))
+      ((<span class="var">tag</span>)      <span class="var">tag</span>)
+      ((<span class="var">behavior</span>) <span class="var">behavior</span>) ) ) )</pre>
+
+<!--\indexR{точечные пары!представление}-->
+<!--\indexR{представление!точечных пар}-->
+<!--\indexC{cdr}-->
+<p>Остались только точечные пары. Точечная пара — это объект, состоящий из
+двух значений, каждое из которых можно изменять независимо. Поэтому мы будем их
+представлять в виде двух адресов: один будет ссылаться на <code><span class="var">car</span></code>, второй —
+на <code><span class="var">cdr</span></code>. Это может показаться необычным, так как традиционно точечные пары
+представляются не двумя отдельными коробками, а одной коробкой с двумя
+отделениями<a class="footref" href="zz_footnotes.xhtml#foot4.10"><sup>10</sup></a>.
+Это бы позволило чуть быстрее обращаться к её компонентам, а
+также применить известную технику размещения точечных пар в параллельных
+массивах: хранить <code><span class="var">car</span></code> и <code><span class="var">cdr</span></code> пар в двух отдельных массивах, но по
+одинаковым индексам; тогда адресом пары будет именно этот индекс. Но мы
+останемся верны идее привязок и будем хранить пары в виде двух адресов.</p>
+
+<p>Для удобства мы также введём функцию, выделяющую в памяти целые списки. Она
+принимает список значений, которые необходимо разместить в памяти, собственно
+память и продолжение, которому эта функция передаст созданный список и новое
+состояние памяти.</p>
+
+<!--\indexC{allocate-list}-->
+<!--\indexC{allocate-pair}-->
+<!--\indexC{create-pair}-->
+<pre>(<span class="special">define</span> (<span class="func">allocate-list</span> <span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="special">define</span> (<span class="func">consify</span> <span class="var">v*</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">v*</span>)
+        (<span class="func">consify</span> (<span class="func">cdr</span> <span class="var">v*</span>) (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+                            (<span class="func">allocate-pair</span> (<span class="func">car</span> <span class="var">v*</span>) <span class="var">v</span> <span class="var">ss</span> <span class="var">k</span>) ))
+        (<span class="func">k</span> <span class="var">the-empty-list</span> <span class="var">s</span>) ) )
+  (<span class="func">consify</span> <span class="var">v*</span> <span class="var">k</span>) )
+
+(<span class="special">define</span> (<span class="func">allocate-pair</span> <span class="var">a</span> <span class="var">d</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">allocate</span> <span class="num">2</span> <span class="var">s</span>
+   (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+     (<span class="func">k</span> (<span class="func">create-pair</span> (<span class="func">car</span> <span class="var">a*</span>) (<span class="func">cadr</span> <span class="var">a*</span>))
+        (<span class="func">update</span> (<span class="func">update</span> <span class="var">ss</span> (<span class="func">car</span> <span class="var">a*</span>) <span class="var">a</span>) (<span class="func">cadr</span> <span class="var">a*</span>) <span class="var">d</span>) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">create-pair</span> <span class="var">a</span> <span class="var">d</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)    '<span class="var">pair</span>)
+      ((<span class="var">boolify</span>) (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>))
+      ((<span class="var">set-car</span>) (<span class="special">lambda</span> (<span class="var">s</span> <span class="var">v</span>) (<span class="func">update</span> <span class="var">s</span> <span class="var">a</span> <span class="var">v</span>)))
+      ((<span class="var">set-cdr</span>) (<span class="special">lambda</span> (<span class="var">s</span> <span class="var">v</span>) (<span class="func">update</span> <span class="var">s</span> <span class="var">d</span> <span class="var">v</span>)))
+      ((<span class="var">car</span>)     <span class="var">a</span>)
+      ((<span class="var">cdr</span>)     <span class="var">d</span>) ) ) )</pre>
+
+
+<h3 id="assignment/implementation/ssect:cmp-to-oop"><span class="wrap"><span class="seq">4.3.10.</span><span class="title">Сравнение с объектным подходом</span></span></h3>
+
+<!--\indexR{замыкания (closures)!и объекты}-->
+<!--\indexR{объекты!как замыкания}-->
+<p>Замыкания, реагирующие на сообщения, с помощью которых мы представляем значения
+внутри интерпретатора, во многом напоминают объекты из предыдущей главы. Тем
+не менее, между подобными объектами-замыканиями и объектами <span class="sc">M<span class="c">eroonet</span></span> есть
+ряд отличий. Объекты-замыкания хранят поддерживаемые методы внутри; нет
+возможности добавлять однажды созданным объектам новые методы. Понятия классов
+и подклассов здесь присутствуют лишь умозрительно. В то же время, обобщённые
+функции позволяют расширять поведение объектов в любое время и в любом месте.
+С помощью обобщённых функций можно реализовать как методы, так и мультиметоды.
+Объекты из предыдущей главы поддерживают наследование, что позволяет выносить
+общие свойства в базовые классы, избегая дублирования кода. Поэтому не стоит
+думать об объектах как о «замыканиях для бедных», как считают некоторые
+фанатики Scheme, ведь даже объекты из предыдущей главы оказались значительно
+выразительнее. Хотя это не значит, что замыкания ни на что не способны
+<span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>]</span>.</p>
+
+
+<h3 id="assignment/implementation/ssect:init-env"><span class="wrap"><span class="seq">4.3.11.</span><span class="title">Начальное окружение</span></span></h3>
+
+<p>Как обычно, мы определим два вспомогательных макроса, которые помогут создать
+начальное окружение (а также состояние памяти). Под каждую глобальную переменную
+необходимо выделить ячейку памяти, адрес которой будет храниться в глобальном
+окружении. Макрос <code><span class="syntax">definitial</span></code> выделяет память и кладёт туда указанное
+значение.</p>
+
+<!--\indexC{s.global}-->
+<!--\indexC{r.global}-->
+<!--\indexC{definitial}-->
+<pre>(<span class="special">define</span> <span class="var">s.global</span> <span class="var">s.init</span>)
+(<span class="special">define</span> <span class="var">r.global</span> <span class="var">r.init</span>)
+
+(<span class="special">define-syntax</span> <span class="var">definitial</span>
+  (<span class="syntax">syntax-rules</span> ()
+   ((<span class="syntax">definitial</span> <span class="var">name</span> <span class="var">value</span>)
+    (<span class="func">allocate</span> <span class="num">1</span> <span class="var">s.global</span>
+     (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+       (<span class="special">set!</span> <span class="var">r.global</span> (<span class="func">update</span> <span class="var">r.global</span> '<span class="var">name</span> (<span class="func">car</span> <span class="var">a*</span>)))
+       (<span class="special">set!</span> <span class="var">s.global</span> (<span class="func">update</span> <span class="var">ss</span> (<span class="func">car</span> <span class="var">a*</span>) <span class="var">value</span>)) ) ) ) ) )</pre>
+
+<p class="noindent">Макрос <code><span class="syntax">defprimitive</span></code> определяет глобальные функции.</p>
+
+<!--\indexC{defprimitive}-->
+<pre>(<span class="special">define-syntax</span> <span class="var">defprimitive</span>
+  (<span class="syntax">syntax-rules</span> ()
+   ((<span class="syntax">defprimitive</span> <span class="var">name</span> <span class="var">value</span> <span class="var">arity</span>)
+    (<span class="syntax">definitial</span> <span class="var">name</span>
+     (<span class="func">allocate</span> <span class="num">1</span>
+      <span class="var">s.global</span>
+      (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+        (<span class="special">set!</span> <span class="var">s.global</span> (<span class="func">expand-store</span> (<span class="func">car</span> <span class="var">a*</span>) <span class="var">ss</span>))
+        (<span class="func">create-function</span> (<span class="func">car</span> <span class="var">a*</span>)
+         (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+           (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity</span> (<span class="func">length</span> <span class="var">v*</span>))
+               (<span class="func">value</span> <span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+               (<span class="func">wrong</span> <span class="string">"Incorrect arity"</span> '<span class="var">name</span> ) )) ) ) ) ) ) ) )</pre>
+
+<p>По уже сложившейся традиции, определим глобальные переменные для истины, лжи
+и пустого списка:</p>
+
+<pre>(<span class="syntax">definitial</span> <span class="var">t</span> (<span class="func">create-boolean</span> <span class="hash">#t</span>))
+(<span class="syntax">definitial</span> <span class="var">f</span> (<span class="func">create-boolean</span> <span class="hash">#f</span>))
+(<span class="syntax">definitial</span> <span class="var">nil</span> <span class="var">the-empty-list</span>)</pre>
+
+<p>В качестве примера определения примитивов покажем предикат и арифметическую
+операцию. Они проверяют типы аргументов, извлекают значения, выполняют
+соответствующие действия и упаковывают результат во внутреннее представление.</p>
+
+<pre>(<span class="syntax">defprimitive</span> <span class="var">&lt;=</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="syntax">and</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>)  '<span class="var">type</span>) '<span class="var">number</span>)
+             (<span class="func">eq?</span> ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">type</span>) '<span class="var">number</span>) )
+        (<span class="func">k</span> (<span class="func">create-boolean</span> (<span class="func">&lt;=</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">value</span>)
+                               ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">value</span>) )) <span class="var">s</span>)
+        (<span class="func">wrong</span> <span class="string">"Numbers required"</span> '<span class="var">&lt;=</span>) ) )
+  <span class="num">2</span> )
+
+(<span class="syntax">defprimitive</span> <span class="var">*</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="syntax">and</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>)  '<span class="var">type</span>) '<span class="var">number</span>)
+             (<span class="func">eq?</span> ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">type</span>) '<span class="var">number</span>) )
+        (<span class="func">k</span> (<span class="func">create-number</span> (<span class="func">*</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">value</span>)
+                             ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">value</span>) )) <span class="var">s</span>)
+        (<span class="func">wrong</span> <span class="string">"Numbers required"</span> '<span class="var">*</span>) ) )
+  <span class="num">2</span> )</pre>
+
+
+<h3 id="assignment/implementation/ssect:dotted-pairs"><span class="wrap"><span class="seq">4.3.12.</span><span class="title">Точечные пары</span></span></h3>
+
+<p>Впервые точечные пары внутри нашего интерпретатора Scheme не представляются
+родными точечными парами Scheme, на котором он написан.</p>
+
+<p>Так как у нас есть функция <code><span class="func">allocate-pair</span></code>, то определить <code><span class="func">cons</span></code>
+легко:</p>
+
+<!--\indexC{cons}-->
+<pre>(<span class="syntax">defprimitive</span> <span class="var">cons</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="func">allocate-pair</span> (<span class="func">car</span> <span class="var">v*</span>) (<span class="func">cadr</span> <span class="var">v*</span>) <span class="var">s</span> <span class="var">k</span>) )
+  <span class="num">2</span> )</pre>
+
+<p class="noindent">С чтением и модификацией тоже нет проблем:</p>
+
+<!--\indexC{car}-->
+<!--\indexC{set-cdr"!}-->
+<pre>(<span class="syntax">defprimitive</span> <span class="var">car</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">type</span>) '<span class="var">pair</span>)
+        (<span class="func">k</span> (<span class="func">s</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">car</span>)) <span class="var">s</span>)
+        (<span class="func">wrong</span> <span class="string">"Not a pair"</span> (<span class="func">car</span> <span class="var">v*</span>)) ) )
+  <span class="num">1</span> )
+
+(<span class="syntax">defprimitive</span> <span class="var">set-cdr!</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="special">if</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">type</span>) '<span class="var">pair</span>)
+        (<span class="syntax">let</span> ((<span class="var">pair</span> (<span class="func">car</span> <span class="var">v*</span>)))
+          (<span class="func">k</span> <span class="var">pair</span> ((<span class="func">pair</span> '<span class="var">set-cdr</span>) <span class="var">s</span> (<span class="func">cadr</span> <span class="var">v*</span>))) )
+        (<span class="func">wrong</span> <span class="string">"Not a pair"</span> (<span class="func">car</span> <span class="var">v*</span>)) ) )
+  <span class="num">2</span> )</pre>
+
+<p>Все значения представляются таким образом, что узнать их тип не составляет труда
+— достаточно передать объекту сообщение <code><span class="var">type</span></code>. Поэтому написать предикат
+<code><span class="func">pair?</span></code> тоже просто, надо только не забыть перевести результат сравнения
+во внутреннее представление.</p>
+
+<!--\indexC{pair"?}-->
+<pre>(<span class="syntax">defprimitive</span> <span class="var">pair?</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="func">k</span> (<span class="func">create-boolean</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">type</span>) '<span class="var">pair</span>)) <span class="var">s</span>) )
+  <span class="num">1</span> )</pre>
+
+
+<h3 id="assignment/implementation/ssect:comparisons"><span class="wrap"><span class="seq">4.3.13.</span><span class="title">Функция сравнения</span></span></h3>
+
+<p>Одной из задач данного интерпретатора является иллюстрация реализации предиката
+эквивалентности — <code><span class="func">eqv?</span></code>. Он проверяет, являются ли два объекта
+взаимозаменимыми. Сначала он сравнивает типы объектов, затем, если они
+совпадают, он проводит собственно сравнение. Символы должны иметь одинаковое
+имя. Логические значения и числа должны быть одинаковыми. Точечные пары и
+функции должны иметь одинаковые адреса.</p>
+
+<!--\indexCS{eqv"?}{реализация}-->
+<pre>(<span class="syntax">defprimitive</span> <span class="var">eqv?</span>
+  (<span class="special">lambda</span> (<span class="var">v*</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="func">k</span> (<span class="func">create-boolean</span>
+        (<span class="special">if</span> (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">type</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">type</span>))
+            (<span class="syntax">case</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">type</span>)
+              ((<span class="var">null</span>) <span class="hash">#t</span>)
+              ((<span class="var">boolean</span>)
+               (((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">boolify</span>)
+                (((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">boolify</span>) <span class="hash">#t</span> <span class="hash">#f</span>)
+                (((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">boolify</span>) <span class="hash">#f</span> <span class="hash">#t</span>) ) )
+              ((<span class="var">pair</span>)
+               (<span class="syntax">and</span> (<span class="func">=</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">car</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">car</span>))
+                    (<span class="func">=</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">cdr</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">cdr</span>)) ) )
+              ((<span class="var">symbol</span>)
+               (<span class="func">eq?</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">name</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">name</span>)) )
+              ((<span class="var">number</span>)
+               (<span class="func">=</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">value</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">value</span>)) )
+              ((<span class="var">function</span>)
+               (<span class="func">=</span> ((<span class="func">car</span> <span class="var">v*</span>) '<span class="var">tag</span>) ((<span class="func">cadr</span> <span class="var">v*</span>) '<span class="var">tag</span>)) )
+              (<span class="syntax">else</span> <span class="hash">#f</span>) )
+            <span class="hash">#f</span> ) )
+       <span class="var">s</span> ) )
+  <span class="num">2</span> )</pre>
+
+<p>Собственно, единственная причина, по которой мы сохраняем адреса функций
+(а точнее, замыканий) внутри объектов — это сравнение функций с помощью
+<code><span class="func">eqv?</span></code>. Таким образом, вместо решения сложной проблемы эквивалентности
+функций достаточно ответить на простой вопрос о равенстве адресов, которые суть
+просто числа. Заметьте, что при сравнении точечных пар мы тоже сравниваем лишь
+адреса компонент, а не их содержимое. Итого, <code><span class="func">eqv?</span></code> выполняется за
+предсказуемое постоянное время, в отличие от <code><span class="func">equal?</span></code>.</p>
+
+<p>Функция <code><span class="func">eqv?</span></code> похожа на обобщённую, только она содержит все методы внутри,
+а в остальном — всё та же диспетчеризация по типу аргумента. Благодаря
+выбранному представлению данных мы можем быстро провести проверку на
+согласованность типов и перейти непосредственно к сравнению значений или
+адресов, которое чаще всего тоже выполняется быстро (длинной арифметике
+не повезло).</p>
+
+
+<h3 id="assignment/implementation/ssect:starting"><span class="wrap"><span class="seq">4.3.14.</span><span class="title">Запускаем интерпретатор</span></span></h3>
+
+<p>Наконец, всё готово для запуска нашего интерпретатора. Главный цикл вызывает
+<code><span class="func">evaluate</span></code> с рекурсивным продолжением, которое обеспечивает непрерывность
+сознания интерпретатора, передавая следующему вызову память предыдущего.</p>
+
+<!--\indexC{chapter4-interpreter}-->
+<pre>(<span class="special">define</span> (<span class="func">chapter4-interpreter</span>)
+  (<span class="special">define</span> (<span class="func">toplevel</span> <span class="var">s</span>)
+    (<span class="func">evaluate</span> (<span class="func">read</span>) <span class="var">r.global</span> <span class="var">s</span>
+              (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+                (<span class="func">display</span> (<span class="func">transcode-back</span> <span class="var">v</span> <span class="var">ss</span>))
+                (<span class="func">toplevel</span> <span class="var">ss</span>) ) ) )
+  (<span class="func">toplevel</span> <span class="var">s.global</span>) )</pre>
+
+<!--\indexR{представление!значений}-->
+<p>Главной особенностью данного интерпретатора является отличие представления
+данных интерпретируемого языка от представления данных в языке реализации.
+Особенно разительно отличаются точечные пары и, следовательно, списки, поэтому
+мы вынуждены воспользоваться функцией <code><span class="func">transcode-back</span></code> для преобразования
+результата вычислений в нечто понятное <code><span class="func">display</span></code>, чтобы его можно было
+вывести на экран. Эту вспомогательную функцию вполне можно сразу объединить
+с примитивом <code><span class="func">display</span></code>.</p>
+
+<!--\indexC{transcode-back}-->
+<pre>(<span class="special">define</span> (<span class="func">transcode-back</span> <span class="var">v</span> <span class="var">s</span>)
+  (<span class="syntax">case</span> (<span class="func">v</span> '<span class="var">type</span>)
+    ((<span class="var">null</span>)     <span class="hash">'()</span>)
+    ((<span class="var">boolean</span>)  ((<span class="func">v</span> '<span class="var">boolify</span>) <span class="hash">#t</span> <span class="hash">#f</span>))
+    ((<span class="var">symbol</span>)   (<span class="func">v</span> '<span class="var">name</span>))
+    ((<span class="var">number</span>)   (<span class="func">v</span> '<span class="var">value</span>))
+    ((<span class="var">pair</span>)     (<span class="func">cons</span> (<span class="func">transcode-back</span> (<span class="func">s</span> (<span class="func">v</span> '<span class="var">car</span>)) <span class="var">s</span>)
+                      (<span class="func">transcode-back</span> (<span class="func">s</span> (<span class="func">v</span> '<span class="var">cdr</span>)) <span class="var">s</span>) ))
+    ((<span class="var">function</span>) <span class="var">v</span>)  <span class="comment">; почему бы и нет?</span>
+    (<span class="syntax">else</span>       (<span class="func">wrong</span> <span class="string">"Unknown type"</span> (<span class="func">v</span> '<span class="var">type</span>))) ) )</pre>
+
+
+<h2 id="assignment/sect:io-and-memory"><span class="wrap"><span class="seq">4.4.</span><span class="title">Ввод-вывод и память</span></span></h2>
+
+<!--\indexR{потоки ввода-вывода}-->
+<p>Теперь поговорим о вводе-выводе. Если ограничиться одним потоком ввода и одним
+потоком вывода (то есть функциями <code><span class="func">display</span></code> и <code><span class="func">read</span></code>), то достаточно
+добавить каждой функции интерпретатора ещё два аргумента и передавать через них
+эти потоки. Поток ввода содержит всё, что программа может прочитать, а поток
+вывода содержит всё, что она туда написала. Можно даже предположить, что эти
+потоки являются единственным средством связи программы с внешним миром.</p>
+
+<p>Поток вывода можно легко представить списком пар (<i>память</i>, <i>значение</i>),
+которые передаются функции <code><span class="func">transcode-back</span></code>. Но как представить поток ввода?
+Хитрость здесь в том, что мы можем вводить и точечные пары со списками, а они
+не могут существовать отдельно от памяти. Поэтому очевидно, что в случае чтения
+точечных пар необходимо сохранять в памяти их компоненты. Переводчиком будет
+служить функция <code><span class="func">transcode</span></code>, которая принимает значение языка реализации
+(обозначим его <code><span class="var">c</span></code>), память и продолжение. Она переводит это значение
+в представление реализуемого языка и передаёт его продолжению вместе с новым
+состоянием памяти.</p>
+
+<!--\indexC{transcode}-->
+<pre>(<span class="special">define</span> (<span class="func">transcode</span> <span class="var">c</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="syntax">cond</span>
+    ((<span class="func">null?</span> <span class="var">c</span>)    (<span class="func">k</span> <span class="var">the-empty-list</span> <span class="var">s</span>))
+    ((<span class="func">boolean?</span> <span class="var">c</span>) (<span class="func">k</span> (<span class="func">create-boolean</span> <span class="var">c</span>) <span class="var">s</span>))
+    ((<span class="func">symbol?</span> <span class="var">c</span>)  (<span class="func">k</span> (<span class="func">create-symbol</span> <span class="var">c</span>) <span class="var">s</span>))
+    ((<span class="func">number?</span> <span class="var">c</span>)  (<span class="func">k</span> (<span class="func">create-number</span> <span class="var">c</span>) <span class="var">s</span>))
+    ((<span class="func">pair?</span> <span class="var">c</span>)
+     (<span class="func">transcode</span> (<span class="func">car</span> <span class="var">c</span>)
+                <span class="var">s</span>
+                (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">ss</span>)
+                  (<span class="func">transcode</span> (<span class="func">cdr</span> <span class="var">c</span>)
+                             <span class="var">ss</span>
+                             (<span class="special">lambda</span> (<span class="var">d</span> <span class="var">sss</span>)
+                               (<span class="func">allocate-pair</span> <span class="var">a</span> <span class="var">d</span> <span class="var">sss</span> <span class="var">k</span>) ) ) ) ) )
+    (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Not supported"</span> <span class="var">c</span>)) ) )</pre>
+
+<p>На этом мы остановимся, так как дальнейшая реализация слишком объёмна, чтобы
+приводить её здесь полностью: помимо примитивов <code><span class="func">read</span></code> и <code><span class="func">display</span></code>,
+необходимо в каждой функции, которую мы написали до этого, расширить набор
+аргументов <code><span class="var">e</span></code>, <code><span class="var">r</span></code>, <code><span class="var">s</span></code>, <code><span class="var">k</span></code> ещё двумя: <code><span class="var">i</span></code> и <code><span class="var">o</span></code>, через
+которые и передавать потоки ввода-вывода подобно памяти (потому что они, как и
+память, должны быть доступны отовсюду).</p>
+
+
+<h2 id="assignment/sect:quotation"><span class="wrap"><span class="seq">4.5.</span><span class="title">Семантика цитирования</span></span></h2>
+
+<!--\indexR{семантика!цитирования}-->
+<p>Наверное, вы уже заметили, что в этот раз мы как-то обошли стороной
+цитирование. Форма <code><span class="special">quote</span></code> раньше всегда записывалась элементарно, но только
+потому, что представление значений в интерпретируемом языке совпадало
+с представлением значений в самом интерпретаторе. Теперь это не так, поэтому
+определять <code><span class="special">quote</span></code> следующим образом нельзя:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate-quote</span> <span class="var">v</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)  <span class="dialect">Ошибка!</span>
+  (<span class="func">k</span> <span class="var">v</span> <span class="var">s</span>) )</pre>
+
+<p>Здесь ошибочно считается, что <code><span class="var">v</span></code> — это именно то значение, которое
+необходимо вернуть. В смысле, конечно, это именно то, что надо, но это значение
+записано на языке, которого наш интерпретатор не понимает. В предыдущих главах
+интерпретатор пользовался языком реализации, но теперь ему необходим переводчик
+— <code><span class="func">transcode</span></code>. Поэтому (более-менее) правильное определение цитирования
+выглядит так:</p>
+
+<!--\indexC{evaluate-quote}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-quote</span> <span class="var">c</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">transcode</span> <span class="var">c</span> <span class="var">s</span> <span class="var">k</span>) )</pre>
+
+<!--\indexR{цитаты!композициональность}-->
+<!--\indexR{композициональность!цитат}-->
+<p>Такое определение цитирования <em class="term">композиционально</em> — его смысл зависит
+только от аргумента <code><span class="var">c</span></code>, оно не учитывает контекст (значения других
+переменных). Но, к сожалению, точный смысл таких цитат немного отличается от
+того, который обычно подразумевается в Лиспе и Scheme. Рассмотрим выражение
+<code>(<span class="special">quote</span> (<span class="var">a</span> . <span class="var">b</span>))</code>. По определению оно <em>в точности</em> эквивалентно
+<code>(<span class="func">cons</span> '<span class="var">a</span> '<span class="var">b</span>)</code><a class="footref" href="zz_footnotes.xhtml#foot4.11"><sup>11</sup></a>.
+Когда мы цитируем составной объект вроде точечной пары <code>(<span class="var">a</span> . <span class="var">b</span>)</code>, мы создаём
+новую пару в памяти. Таким образом, такое цитирование — это лишь краткая
+запись для наших <code><span class="func">create-</span></code>функций. Поэтому ничуть не удивительно, что
+следующее выражение возвращает ложь:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))))
+  (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre>
+
+<!--\indexR{эквивалентность!цитат}-->
+<!--\indexR{цитаты!эквивалентность}-->
+<!--\indexR{мемоизация!цитат}-->
+<p>Функция <code><span class="func">foo</span></code> каждый раз создаёт новый список; все создаваемые значения
+независимы, различны в смысле <code><span class="func">eq?</span></code>. Если мы хотим, чтобы данное выражение
+всегда возвращало истину, нам необходимо доработать <code><span class="func">evaluate-quote</span></code> так,
+чтобы она возвращала идентичные значения, а не эквивалентные; для этого она
+должна запоминать всё, что возвращала ранее. Это называется <em class="term">мемоизация</em>.
+Одной из причин желательности такого поведения является то, что если в языке нет
+побочных эффектов и <code><span class="func">eq?</span></code>, то нельзя отличить идентичные объекты от просто
+эквивалентных, поэтому нет никакого смысла тратить память на бесполезные копии
+эквивалентных объектов, когда можно обойтись одним экземпляром.</p>
+
+<p>Конечно, если допускать побочные эффекты, то дело меняется, но всё же обычно
+считается, что цитаты уникальны — как числа, символы и логические значения.</p>
+
+
+<!--\indexC{evaluate-memo-quote}-->
+<!--\indexC*{shared-memo-quotations}{*shared-memo-quotations*}-->
+<pre>(<span class="special">define</span> <span class="var">*shared-memo-quotations*</span> <span class="hash">'()</span>)
+
+(<span class="special">define</span> <span class="var">evaluate-memo-quote</span>
+  (<span class="special">lambda</span> (<span class="var">c</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+    (<span class="syntax">let</span> ((<span class="var">couple</span> (<span class="func">assoc</span> <span class="var">c</span> <span class="var">*shared-memo-quotations*</span>)))
+      (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">couple</span>)
+          (<span class="func">k</span> (<span class="func">cdr</span> <span class="var">couple</span>) <span class="var">s</span>)
+          (<span class="func">transcode</span> <span class="var">c</span> <span class="var">s</span> (<span class="special">lambda</span> (<span class="var">v</span> <span class="var">ss</span>)
+                           (<span class="special">set!</span> <span class="var">*shared-memo-quotations*</span>
+                                 (<span class="func">cons</span> (<span class="func">cons</span> <span class="var">c</span> <span class="var">v</span>)
+                                       <span class="var">*shared-memo-quotations*</span> ) )
+                           (<span class="func">k</span> <span class="var">v</span> <span class="var">ss</span>) )) ) ) ) )</pre>
+
+<!--\indexR{преобразование!перенос цитат}-->
+<p id="assignment/quotation/par:transform">Однако, такой вариант, во-первых, требует побочных
+эффектов и глобальной переменной, чего хотелось бы избежать, а во-вторых, учёт используемых цитат
+вполне можно выполнить и заранее, за что компилятор скажет нам спасибо: сначала
+мы переносим вычисление цитат в самое начало программы, затем заменяем все
+обращения к цитатам ссылками на переменные, хранящие вычисленные ранее значения.
+На предыдущем примере это выглядит так:</p>
+
+<table class="nocaption code"><tbody><tr>
+<td><pre>(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))))
+  (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
+<td><span class="math"><span class="ord"/><span class="rel">⇝</span><span class="ord"/></span></td>
+<td><pre>(<span class="special">define</span> <span class="var">quote35</span> '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))
+(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () <span class="var">quote35</span>)))
+  (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
+</tr></tbody></table>
+
+<p>В итоге цитаты обретают должный смысл, а <code><span class="func">evaluate-quote</span></code>
+остаётся такой же простой.</p>
+
+<p>Можно было бы пойти и дальше, полностью избавившись от неоднозначностей,
+связанных с цитированием составных объектов, сделав их создание явным:</p>
+
+<pre>(<span class="special">define</span> <span class="var">quote36</span> (<span class="func">cons</span> '<span class="var">o</span> <span class="hash">'()</span>)
+(<span class="special">define</span> <span class="var">quote37</span> (<span class="func">cons</span> '<span class="var">o</span> <span class="var">quote36</span>)
+(<span class="special">define</span> <span class="var">quote38</span> (<span class="func">cons</span> '<span class="var">f</span> <span class="var">quote37</span>)
+
+(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () <span class="var">quote38</span>)))
+  (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre>
+
+<p>И ещё дальше, на всякий случай гарантируя правильное цитирование символов
+вручную:</p>
+
+<pre>(<span class="special">define</span> <span class="var">symbol39</span> (<span class="func">string-&gt;symbol</span> <span class="string">"o"</span>))
+(<span class="special">define</span> <span class="var">symbol40</span> (<span class="func">string-&gt;symbol</span> <span class="string">"f"</span>))
+
+(<span class="special">define</span> <span class="var">quote36</span> (<span class="func">cons</span> <span class="var">symbol39</span> <span class="hash">'()</span>)
+(<span class="special">define</span> <span class="var">quote37</span> (<span class="func">cons</span> <span class="var">symbol39</span> <span class="var">quote36</span>)
+(<span class="special">define</span> <span class="var">quote38</span> (<span class="func">cons</span> <span class="var">symbol40</span> <span class="var">quote37</span>)
+
+(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () <span class="var">quote38</span>)))
+  (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre>
+
+<p>Пожалуй, на этом остановимся. На языке ассемблера или Си строки можно
+представлять непосредственно, так что было бы глупо разбивать их на отдельные
+символы — а то так ведь можно и до элементарных частиц дойти!</p>
+
+<p>В конце концов, композициональное определение цитирования оказывается
+приемлемым, так как имеет простую формулировку, которая хоть и отличается по
+смыслу от традиционного понимания цитирования, но это легко поправимо простым
+дополнительным преобразованием программ.</p>
+
+<!--\indexR{гомоиконичность}-->
+<p>Однако, унифицированное представление кода и данных может сыграть с нами злую
+шутку. С одной стороны это удобно: читать и данные, и программы с помощью одной
+функции <code><span class="func">read</span></code>. Для того, чтобы она могла отличить формы-данные от
+форм-программ, как раз и существует специальная форма <code><span class="special">quote</span></code>. Но в том-то
+и дело, что после <code><span class="special">quote</span></code> данные становятся частью программы. Рассмотрим
+пример:</p>
+
+<!--\indexC{vowel<=}-->
+<pre>(<span class="special">define</span> <span class="var">vowel&lt;=</span>
+  (<span class="syntax">let</span> ((<span class="var">vowels</span> '(<span class="hash">#\a</span> <span class="hash">#\e</span> <span class="hash">#\i</span> <span class="hash">#\o</span> <span class="hash">#\u</span>)))
+    (<span class="special">lambda</span> (<span class="var">c1</span> <span class="var">c2</span>)
+      (<span class="func">memq</span> <span class="var">c2</span> (<span class="func">memq</span> <span class="var">c1</span> <span class="var">vowels</span>)) ) ) )
+
+(<span class="func">set-cdr!</span> (<span class="func">vowel&lt;=</span> <span class="hash">#\a</span> <span class="hash">#\e</span>) <span class="hash">'()</span>)
+(<span class="func">vowel&lt;=</span> <span class="hash">#\o</span> <span class="hash">#\u</span>) <span class="math"><span class="rel">→</span></span> <i>?</i></pre>
+
+<p>При интерпретации этой программы есть высокая вероятность получить не <code><span class="hash">#t</span></code>,
+а ошибку. И если после этого мы распечатаем определение <code><span class="func">vowel&lt;=</span></code> (или
+если бы <code><span class="var">vowels</span></code> была глобальной), то увидим следующее:</p>
+
+<pre>(<span class="special">define</span> <span class="var">vowel1&lt;=</span>
+  (<span class="syntax">let</span> ((<span class="var">vowels</span> '(<span class="hash">#\a</span> <span class="hash">#\e</span>)))
+    (<span class="special">lambda</span> (<span class="var">c1</span> <span class="var">c2</span>)
+      (<span class="func">memq</span> <span class="var">c2</span> (<span class="func">memq</span> <span class="var">c1</span> <span class="var">vowels</span>)) ) ) )</pre>
+
+<!--\indexR{свёртка констант}-->
+<!--\indexR{константы}-->
+<p>Ой, мы нечаянно кусок программы! Аналогично можно добавлять элементы в список
+<code><span class="var">vowels</span></code> или изменять их. Правда, такие трюки можно проделывать только
+в интерпретаторе; в случае компилятора мы скорее всего получим ошибку. Дело
+в том, что если глобальная переменная <code><span class="var">vowel&lt;=</span></code> неизменяема, то все формы
+вроде <code>(<span class="func">vowel&lt;=</span> <span class="hash">#\a</span> <span class="hash">#\e</span>)</code> могут быть вычислены ещё на
+этапе компиляции, чем компилятор и пользуется, подставляя вместо них сразу
+готовый результат. Такая оптимизация называется <em class="term">свёрткой констант</em>
+(constant folding), её обобщением является техника частичных вычислений
+<span class="cite">[<a href="z1_bibliography.xhtml#jgs93">JGS93</a>]</span>.</p>
+
+<p>Компилятор также может решить подставить константы и в само определение функции
+<code><span class="func">vowel&lt;=</span></code> ради небольшого ускорения:</p>
+
+<pre>(<span class="special">define</span> <span class="var">vowel2&lt;=</span>
+  (<span class="special">lambda</span> (<span class="var">c1</span> <span class="var">c2</span>)
+    (<span class="syntax">case</span> <span class="var">c1</span>
+      ((<span class="hash">#\a</span>) (<span class="func">memq</span> <span class="var">c2</span> '(<span class="hash">#\a</span> <span class="hash">#\e</span> <span class="hash">#\i</span> <span class="hash">#\o</span> <span class="hash">#\u</span>)))
+      ((<span class="hash">#\e</span>) (<span class="func">memq</span> <span class="var">c2</span> '(<span class="hash">#\e</span> <span class="hash">#\i</span> <span class="hash">#\o</span> <span class="hash">#\u</span>)))
+      ((<span class="hash">#\i</span>) (<span class="func">memq</span> <span class="var">c2</span> '(<span class="hash">#\i</span> <span class="hash">#\o</span> <span class="hash">#\u</span>)))
+      ((<span class="hash">#\o</span>) (<span class="func">memq</span> <span class="var">c2</span> '(<span class="hash">#\o</span> <span class="hash">#\u</span>)))
+      ((<span class="hash">#\u</span>) (<span class="func">eq?</span> <span class="var">c2</span> <span class="hash">#\u</span>))
+      (<span class="syntax">else</span>  <span class="hash">#f</span>) ) ) )</pre>
+
+<!--\indexR{склеивание цитат}-->
+<!--\indexR{цитаты!склеивание}-->
+<p>Теперь выражение <code>(<span class="func">eq?</span> (<span class="func">cdr</span> (<span class="func">vowel&lt;=</span> <span class="hash">#\a</span> <span class="hash">#\e</span>)) (<span class="func">vowel&lt;=</span>
+<span class="hash">#\e</span> <span class="hash">#\i</span>))</code> имеет неопределённое значение. С одной стороны,
+оно не должно быть истиной, так как сравниваемые значения принадлежат явно
+различным цитатам. С другой стороны, иногда оно всё же истинно: компиляторы
+часто оставляют за собой право оптимизировать расположение констант в памяти,
+накладывая их друг на друга и превращая исходную программу в следующую:</p>
+
+<pre>(<span class="special">define</span> <span class="var">quote82</span> (<span class="func">cons</span> <span class="hash">#\u</span> <span class="hash">'()</span>))
+(<span class="special">define</span> <span class="var">quote81</span> (<span class="func">cons</span> <span class="hash">#\o</span> <span class="var">quote82</span>))
+(<span class="special">define</span> <span class="var">quote80</span> (<span class="func">cons</span> <span class="hash">#\i</span> <span class="var">quote81</span>)
+(<span class="special">define</span> <span class="var">quote79</span> (<span class="func">cons</span> <span class="hash">#\e</span> <span class="var">quote80</span>)
+(<span class="special">define</span> <span class="var">quote78</span> (<span class="func">cons</span> <span class="hash">#\a</span> <span class="var">quote79</span>)
+
+(<span class="special">define</span> <span class="var">vowel3&lt;=</span>
+  (<span class="special">lambda</span> (<span class="func">c1</span> <span class="var">c2</span>)
+    (<span class="syntax">case</span> <span class="var">c1</span>
+      ((<span class="hash">#\a</span>) (<span class="func">memq</span> <span class="var">c2</span> <span class="var">quote78</span>))
+      ((<span class="hash">#\e</span>) (<span class="func">memq</span> <span class="var">c2</span> <span class="var">quote79</span>))
+      ((<span class="hash">#\i</span>) (<span class="func">memq</span> <span class="var">c2</span> <span class="var">quote80</span>))
+      ((<span class="hash">#\o</span>) (<span class="func">memq</span> <span class="var">c2</span> <span class="var">quote81</span>))
+      ((<span class="hash">#\u</span>) (<span class="func">eq?</span> <span class="var">c2</span> <span class="hash">#\u</span>))
+      (<span class="syntax">else</span>  <span class="hash">#f</span>) ) ) )</pre>
+
+<!--\indexR{константы}-->
+<!--\indexR{связывание!неизменяемое}-->
+<p>Такая оптимизация влияет на разделяемые цитаты и ломает <code><span class="func">eq?</span></code>. Есть простой
+способ избежать всех этих проблем: запретить изменять цитаты. Именно так и
+поступают Scheme и <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. Но они делают это мягко, в общем случае считая
+результат изменения значения цитаты неопределённым.</p>
+
+<p>Можно поступить более жёстко, запретив изменение цитат синтаксически:</p>
+
+<!--\indexC{evaluate-immutable-quote}-->
+<!--\indexC{immutable-transcode}-->
+<!--\indexC{allocate-immutable-pair}-->
+<!--\indexC{create-immutable-pair}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate-immutable-quote</span> <span class="var">c</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">immutable-transcode</span> <span class="var">c</span> <span class="var">s</span> <span class="var">k</span>) )
+
+(<span class="special">define</span> (<span class="func">immutable-transcode</span> <span class="var">c</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="syntax">cond</span>
+    ((<span class="func">null?</span> <span class="var">c</span>)    (<span class="func">k</span> <span class="var">the-empty-list</span> <span class="var">s</span>))
+    ((<span class="func">pair?</span> <span class="var">c</span>)
+     (<span class="func">immutable-transcode</span>
+      (<span class="func">car</span> <span class="var">c</span>) <span class="var">s</span> (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">ss</span>)
+                  (<span class="func">immutable-transcode</span>
+                   (<span class="func">cdr</span> <span class="var">c</span>) <span class="var">ss</span> (<span class="special">lambda</span> (<span class="var">d</span> <span class="var">sss</span>)
+                                (<span class="func">allocate-immutable-pair</span>
+                                 <span class="var">a</span> <span class="var">d</span> <span class="var">sss</span> <span class="var">k</span> ) ) ) ) ) )
+    ((<span class="func">boolean?</span> <span class="var">c</span>) (<span class="func">k</span> (<span class="func">create-boolean</span> <span class="var">c</span>) <span class="var">s</span>))
+    ((<span class="func">symbol?</span> <span class="var">c</span>)  (<span class="func">k</span> (<span class="func">create-symbol</span> <span class="var">c</span>) <span class="var">s</span>))
+    ((<span class="func">number?</span> <span class="var">c</span>)  (<span class="func">k</span> (<span class="func">create-number</span> <span class="var">c</span>) <span class="var">s</span>))
+    (<span class="syntax">else</span> (<span class="func">wrong</span> <span class="string">"Not supported"</span> <span class="var">c</span>)) ) )
+
+(<span class="special">define</span> (<span class="func">allocate-immutable-pair</span> <span class="var">a</span> <span class="var">d</span> <span class="var">s</span> <span class="var">k</span>)
+  (<span class="func">allocate</span> <span class="num">2</span> <span class="var">s</span>
+   (<span class="special">lambda</span> (<span class="var">a*</span> <span class="var">ss</span>)
+     (<span class="func">k</span> (<span class="func">create-immutable-pair</span> (<span class="func">car</span> <span class="var">a*</span>) (<span class="func">cadr</span> <span class="var">a*</span>))
+        (<span class="func">update</span> (<span class="func">update</span> <span class="var">ss</span> (<span class="func">car</span> <span class="var">a*</span>) <span class="var">a</span>) (<span class="func">cadr</span> <span class="var">a*</span>) <span class="var">d</span>) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">create-immutable-pair</span> <span class="var">a</span> <span class="var">d</span>)
+  (<span class="special">lambda</span> (<span class="var">msg</span>)
+    (<span class="syntax">case</span> <span class="var">msg</span>
+      ((<span class="var">type</span>)    '<span class="var">pair</span>)
+      ((<span class="var">boolify</span>) (<span class="special">lambda</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">x</span>))
+      ((<span class="var">set-car</span>) (<span class="special">lambda</span> (<span class="var">s</span> <span class="var">v</span>) (<span class="func">wrong</span> <span class="string">"Immutable pair"</span>)))
+      ((<span class="var">set-cdr</span>) (<span class="special">lambda</span> (<span class="var">s</span> <span class="var">v</span>) (<span class="func">wrong</span> <span class="string">"Immutable pair"</span>)))
+      ((<span class="var">car</span>)     <span class="var">a</span>)
+      ((<span class="var">cdr</span>)     <span class="var">d</span>) ) ) )</pre>
+
+<p>В таком случае любая попытка модифицировать цитату обречена на провал. Подобным
+образом можно ввести неизменяемые строки (как это сделано, например, в Mesa),
+неизменяемые векторы и т. д.</p>
+
+<!--\indexR{цитаты!циклических объектов}-->
+<!--\indexR{циклические структуры данных}-->
+<p>Подводя итог, лучше воспользоваться мудростью поколений и, как советуют Scheme и
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, стараться не изменять значения цитат. Но это не последняя из
+проблем, вызываемых цитированием. Мы уже упоминали методику «склеивания»
+цитат, приводящую к физическому наложению данных. А можно ли намеренно создать
+цитату с таким эффектом? Есть как минимум два способа это сделать: макросы и
+программируемый поток ввода.</p>
+
+<!--\indexR{макросимволы}-->
+<p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> можно вводить специальные макросимволы, при чтении которых
+вызываются определённые процедуры. Например, <code>'</code> является именно
+макросимволом, оборачивающим следующее прочитанное выражение в
+<code><span class="special">quote</span></code>. Или
+<code><span class="hash">#.</span><i>выражение</i></code>, вместо которого подставляется значение <i>выражения</i>;
+то есть следующее за <code><span class="hash">#.</span></code> выражение считывается, вычисляется<a class="footref" href="zz_footnotes.xhtml#foot4.12"><sup>12</sup></a> и его значение подставляется
+вместо всей конструкции. В итоге, мы можем написать так:</p>
+
+<pre>(<span class="special">define</span> <span class="var">bar</span> (<span class="special">quote</span> <span class="hash">#.</span>(<span class="syntax">let</span> ((<span class="var">list</span> '(<span class="num">0</span> <span class="num">1</span>)))     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
+                       (<span class="func">set-cdr!</span> (<span class="func">cdr</span> <span class="var">list</span>) <span class="var">list</span>)
+                       <span class="var">list</span> )))</pre>
+
+<p class="noindent">После этого переменная <code><span class="func">bar</span></code> будет содержать бесконечный
+список из чередующихся нулей и единиц. С помощью <code><span class="hash">#.</span></code> мы
+процитировали пару, чей
+<code><span class="var">cddr</span></code> равен ей самой. В CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span> прямым текстом написано, что
+<code><span class="hash">#.</span></code> и существует для ввода таких неудобных значений. Если мы захотим
+реализовать такое поведение у себя, то это немного усложнит трансформацию
+программ (которая выносит вычисление цитат в начало), так как она должна будет
+учитывать возможность циклов.</p>
+
+<p>Хорошая новость: в Scheme так писать нельзя, так как <code><span class="func">read</span></code>
+не программируется и макросимволы не поддерживаются. Плохая новость: в Scheme
+есть просто макросы, с помощью которых можно добиться того же результата. Форма
+<code><span class="special">define-syntax</span></code>, правда, такого не позволяет, поэтому мы используем
+<code><span class="syntax">define-abbreviation</span></code> — макрос для определения макросов, который детально
+рассматривается в <a href="ch09_macros.xhtml">девятой главе</a>.</p>
+
+<!--\indexC{cycle}-->
+<pre>(<span class="syntax">define-abbreviation</span> (<span class="syntax">cycle</span> <span class="var">n</span>)
+  (<span class="syntax">let</span> ((<span class="var">c</span> (<span class="func">iota</span> <span class="var">n</span>)))           <span class="comment">; <code>(<span class="func">iota</span> <span class="num">3</span>)</code> <span class="math"><span class="rel">→</span></span> <code>(<span class="num">0</span> <span class="num">1</span> <span class="num">2</span> <span class="num">3</span>)</code></span>
+    (<span class="func">set-cdr!</span> (<span class="func">last-pair</span> <span class="var">c</span>) <span class="var">c</span>)  <span class="comment">; <code>(<span class="func">last-pair</span> '(<span class="num">1</span> <span class="num">2</span> <span class="num">3</span>))</code> <span class="math"><span class="rel">→</span></span> <code>(<span class="num">3</span>)</code></span>
+    <span class="var">`</span>(<span class="special">quote</span> <span class="var">,c</span>) ) )
+
+(<span class="special">define</span> <span class="var">bar</span> (<span class="syntax">cycle</span> <span class="num">2</span>))</pre>
+
+<!--\indexE{##n##@\ic{\#<i>n</i>\#}, \ic{\#<i>n</i>=}}-->
+<p>Таким образом в Scheme определяется циклический список из нулей и единиц,
+подставляемый в цитату, которой инициализируется переменная <code><span class="var">bar</span></code>. Мы
+не можем написать такой список прямым текстом в определении <code><span class="var">bar</span></code>, так как
+<code><span class="func">read</span></code> Scheme не умеет считывать циклические данные. В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> это
+возможно с помощью макросимволов <code><span class="hash">#<i>n</i>=</span></code> и <code><span class="hash">#<i>n</i>#</span></code><a class="footref" href="zz_footnotes.xhtml#foot4.13"><sup>13</sup></a>:</p>
+
+<pre>(<span class="special">define</span> <span class="var">bar</span> <span class="hash">#1=</span>(<span class="num">0</span> <span class="num">1</span> . <span class="hash">#1#</span>))</pre>
+
+<p>В настоящее время в Scheme подобные списки нельзя записывать непосредственно
+в виде <em class="term">литералов</em>, только создавать вручную за несколько шагов. Поэтому и
+цитировать подобные структуры можно только лишь с помощью ухищрений вроде
+макросов.</p>
+
+<p><a href="ch09_macros.xhtml">Девятая глава</a> будет посвящена подробному рассмотрению макросов, их возможностей,
+ограничений и вызываемых ими проблем.</p>
+
+
+<h2 id="assignment/sect:conclusions"><span class="wrap"><span class="seq">4.6.</span><span class="title">Заключение</span></span></h2>
+
+<p>Данная глава содержит колоссальное количество советов и описанных подводных ям.
+Глобальные переменные таят множество неоднозначностей, которых становится ещё
+больше с появлением модулей. Универсального определения равенства нет даже
+в математике, что уж говорить о программировании. Наконец, цитирование также
+отнюдь не такое простое, каким кажется; от витиеватых цитат стоит
+воздерживаться.</p>
+
+
+<h2 id="assignment/sect:exercises"><span class="wrap"><span class="seq">4.7.</span><span class="title">Упражнения</span></span></h2>
+
+<h5 class="exercise" id="assignment/ex:pure-min-max">Упражнение <span class="seq">4.1</span></h5>
+<p>Определите чистую (без побочных эффектов) функцию <code><span class="func">min-max</span></code>.</p>
+
+
+<h5 class="exercise" id="assignment/ex:lambda-cons">Упражнение <span class="seq">4.2</span></h5>
+<!--\indexR{чисто функциональные структуры данных}-->
+<!--\indexR{точечные пары!чисто функциональные}-->
+<p>Точечные пары, которые мы реализовали с помощью замыканий, реагируют на
+сообщения-символы. Запретите модификацию пар (<code><span class="func">set-car!</span></code> и <code><span class="func">set-cdr!</span></code>)
+и реализуйте их, используя исключительно <code><span class="special">lambda</span></code>-формы.</p>
+
+
+<h5 class="exercise" id="assignment/ex:destructive-eq">Упражнение <span class="seq">4.3</span></h5>
+<p>Определите <code><span class="func">eq?</span></code> для точечных пар с помощью <code><span class="func">set-car!</span></code> или <code><span class="func">set-cdr!</span></code>.</p>
+
+
+<h5 class="exercise" id="assignment/ex:form-or">Упражнение <span class="seq">4.4</span></h5>
+<!--\indexR{поиск с возвратом}-->
+<!--\indexC{or}-->
+<p>Определите новую специальную форму <code>(<span class="special">or</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</code>, которая
+возвращает значение <span class="math"><span class="ord var">α</span></span>, если оно приводится к истине; иначе <code><span class="special">or</span></code>
+откатывает все побочные эффекты вычисления <span class="math"><span class="ord var">α</span></span> и возвращает
+значение <span class="math"><span class="ord var">β</span></span>.</p>
+
+
+<h5 class="exercise" id="assignment/ex:previous-value">Упражнение <span class="seq">4.5</span></h5>
+<p>Присваивание в текущем варианте возвращает только что присвоенное значение.
+Перепишите <code><span class="special">set!</span></code> так, чтобы она возвращала значение переменной до
+присваивания.</p>
+
+
+<h5 class="exercise" id="assignment/ex:apply/cc">Упражнение <span class="seq">4.6</span></h5>
+<p>Определите функции <code><span class="func">apply</span></code> и <code><span class="func">call/cc</span></code> для интерпретатора из этой главы.</p>
+
+
+<h5 class="exercise" id="assignment/ex:dotted">Упражнение <span class="seq">4.7</span></h5>
+<p>Встройте в интерпретатор поддержку функций переменной арности (с точечным
+аргументом).</p>
+
+</body>
+</html>
