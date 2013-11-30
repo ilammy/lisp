@@ -737,6 +737,8 @@ blockquote.equation span.eqno {
 
 table#bibliography td { padding-bottom: 1em; }
 
+table#bibliography td.label { padding-right: 0.5em; }
+
 #footnotes h1 {
     font-size: 12pt;
     font-weight: bold;

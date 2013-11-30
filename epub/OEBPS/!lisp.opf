@@ -62,6 +62,20 @@
     <item id="png28" href="images/png28.png" media-type="image/png"/>
     <item id="png29" href="images/png29.png" media-type="image/png"/>
     <item id="png30" href="images/png30.png" media-type="image/png"/>
+
+    <item id="djv-sc" href="fonts/DejaVuSansCondensed.ttf"       media-type="application/x-font-ttf"/>
+    <item id="djv-mb" href="fonts/DejaVuSansMono-Bold.ttf"       media-type="application/x-font-ttf"/>
+    <item id="djv-m"  href="fonts/DejaVuSansMono.ttf"            media-type="application/x-font-ttf"/>
+    <item id="djv-s"  href="fonts/DejaVuSans.ttf"                media-type="application/x-font-ttf"/>
+    <item id="djv-bi" href="fonts/DejaVuSerif-BoldItalic.ttf"    media-type="application/x-font-ttf"/>
+    <item id="djv-b"  href="fonts/DejaVuSerif-Bold.ttf"          media-type="application/x-font-ttf"/>
+    <item id="djv-bc" href="fonts/DejaVuSerifCondensed-Bold.ttf" media-type="application/x-font-ttf"/>
+    <item id="djv-i"  href="fonts/DejaVuSerif-Italic.ttf"        media-type="application/x-font-ttf"/>
+    <item id="djv-r"  href="fonts/DejaVuSerif.ttf"               media-type="application/x-font-ttf"/>
+    <item id="stx-bi" href="fonts/stix-bolditalic.ttf"           media-type="application/x-font-ttf"/>
+    <item id="stx-b"  href="fonts/stix-bold.ttf"                 media-type="application/x-font-ttf"/>
+    <item id="stx-i"  href="fonts/stix-italic.ttf"               media-type="application/x-font-ttf"/>
+    <item id="stx-r"  href="fonts/stix-regular.ttf"              media-type="application/x-font-ttf"/>
   </manifest>
 
   <spine toc="00_toc">
