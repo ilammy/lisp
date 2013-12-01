@@ -10,95 +10,150 @@
               ''; content: none; } ol, ul { list-style: none; }
 /******************************************************************************/
 
+/* Thanks to Fontsquirrel for conversion */
+
 @font-face {
     font-family: STIX;
     font-style: normal;
     font-weight: bold;
-    src: url('fonts/stix-bold.ttf') format('truetype');
+    src: url('../fonts/stix-bold.eot');
+    src: url('../fonts/stix-bold.eot?#iefix')   format('embedded-opentype'),
+         url('../fonts/stix-bold.woff')         format('woff'),
+         url('../fonts/stix-bold.ttf')          format('truetype'),
+         url('../fonts/stix-bold.svg#stixbold') format('svg');
 }
 
 @font-face {
     font-family: STIX;
     font-style: italic;
     font-weight: bold;
-    src: url('fonts/stix-bolditalic.ttf') format('truetype');
+    src: url('../fonts/stix-bold-italic.eot');
+    src: url('../fonts/stix-bold-italic.eot?#iefix')          format('embedded-opentype'),
+         url('../fonts/stix-bold-italic.woff')                format('woff'),
+         url('../fonts/stix-bold-italic.ttf')                 format('truetype'),
+         url('../fonts/stix-bold-italic.svg#stixbold_italic') format('svg');
 }
 
 @font-face {
     font-family: STIX;
     font-style: italic;
     font-weight: normal;
-    src: url('fonts/stix-italic.ttf') format('truetype');
+    src: url('../fonts/stix-italic.eot');
+    src: url('../fonts/stix-italic.eot?#iefix')     format('embedded-opentype'),
+         url('../fonts/stix-italic.woff')           format('woff'),
+         url('../fonts/stix-italic.ttf')            format('truetype'),
+         url('../fonts/stix-italic.svg#stixitalic') format('svg');
 }
 
 @font-face {
     font-family: STIX;
     font-style: normal;
     font-weight: normal;
-    src: url('fonts/stix-regular.ttf') format('truetype');
+    src: url('../fonts/stix-regular.eot');
+    src: url('../fonts/stix-regular.eot?#iefix')      format('embedded-opentype'),
+         url('../fonts/stix-regular.woff')            format('woff'),
+         url('../fonts/stix-regular.ttf')             format('truetype'),
+         url('../fonts/stix-regular.svg#stixregular') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: normal;
-    src: url('fonts/DejaVuSerif.ttf') format('truetype');
+    src: url('../fonts/dejavu-serif.eot');
+    src: url('../fonts/dejavu-serif.eot?#iefix')           format('embedded-opentype'),
+         url('../fonts/dejavu-serif.woff')                 format('woff'),
+         url('../fonts/dejavu-serif.ttf')                  format('truetype'),
+         url('../fonts/dejavu-serif.svg#dejavu_serifbook') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Serif';
     font-style: italic;
     font-weight: normal;
-    src: url('fonts/DejaVuSerif-Italic.ttf') format('truetype');
+    src: url('../fonts/dejavu-serif-italic.eot');
+    src: url('../fonts/dejavu-serif-italic.eot?#iefix')             format('embedded-opentype'),
+         url('../fonts/dejavu-serif-italic.woff')                   format('woff'),
+         url('../fonts/dejavu-serif-italic.ttf')                    format('truetype'),
+         url('../fonts/dejavu-serif-italic.svg#dejavu_serifitalic') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: bold;
-    src: url('fonts/DejaVuSerif-Bold.ttf') format('truetype');
+    src: url('../fonts/dejavu-serif-bold.eot');
+    src: url('../fonts/dejavu-serif-bold.eot?#iefix')           format('embedded-opentype'),
+         url('../fonts/dejavu-serif-bold.woff')                 format('woff'),
+         url('../fonts/dejavu-serif-bold.ttf')                  format('truetype'),
+         url('../fonts/dejavu-serif-bold.svg#dejavu_serifbold') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Serif Condensed';
     font-style: normal;
     font-weight: bold;
-    src: url('fonts/DejaVuSerifCondensed-Bold.ttf') format('truetype');
+    src: url('../fonts/dejavu-serif-condensed-bold.eot');
+    src: url('../fonts/dejavu-serif-condensed-bold.eot?#iefix')                     format('embedded-opentype'),
+         url('../fonts/dejavu-serif-condensed-bold.woff')                           format('woff'),
+         url('../fonts/dejavu-serif-condensed-bold.ttf')                            format('truetype'),
+         url('../fonts/dejavu-serif-condensed-bold.svg#dejavu_serifcondensed_bold') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Serif';
     font-style: italic;
     font-weight: bold;
-    src: url('fonts/DejaVuSerif-BoldItalic.ttf') format('truetype');
+    src: url('../fonts/dejavu-serif-bold-italic.eot');
+    src: url('../fonts/dejavu-serif-bold-italic.eot?#iefix')                  format('embedded-opentype'),
+         url('../fonts/dejavu-serif-bold-italic.woff')                        format('woff'),
+         url('../fonts/dejavu-serif-bold-italic.ttf')                         format('truetype'),
+         url('../fonts/dejavu-serif-bold-italic.svg#dejavu_serifbold_italic') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Sans';
     font-style: normal;
     font-weight: normal;
-    src: url('fonts/DejaVuSans.ttf') format('truetype');
+    src: url('../fonts/dejavu-sans.eot');
+    src: url('../fonts/dejavu-sans.eot?#iefix')          format('embedded-opentype'),
+         url('../fonts/dejavu-sans.woff')                format('woff'),
+         url('../fonts/dejavu-sans.ttf')                 format('truetype'),
+         url('../fonts/dejavu-sans.svg#dejavu_sansbook') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Sans Condensed';
     font-style: normal;
     font-weight: normal;
-    src: url('fonts/DejaVuSansCondensed.ttf') format('truetype');
+    src: url('../fonts/dejavu-sans-condensed.eot');
+    src: url('../fonts/dejavu-sans-condensed.eot?#iefix')               format('embedded-opentype'),
+         url('../fonts/dejavu-sans-condensed.woff')                     format('woff'),
+         url('../fonts/dejavu-sans-condensed.ttf')                      format('truetype'),
+         url('../fonts/dejavu-sans-condensed.svg#dejavu_sanscondensed') format('svg');
 }
 
 @font-face {
     font-family: 'DejaVu Sans Mono';
     font-style: normal;
     font-weight: normal;
-    src: url('fonts/DejaVuSansMono.ttf') format('truetype');
+    src: url('../fonts/dejavu-sans-mono.eot');
+    src: url('../fonts/dejavu-sans-mono.eot?#iefix')               format('embedded-opentype'),
+         url('../fonts/dejavu-sans-mono.woff')                     format('woff'),
+         url('../fonts/dejavu-sans-mono.ttf')                      format('truetype'),
+         url('../fonts/dejavu-sans-mono.svg#dejavu_sans_monobook') format('svg');
+
 }
 
 @font-face {
     font-family: 'DejaVu Sans Mono';
     font-style: normal;
     font-weight: bold;
-    src: url('fonts/DejaVuSansMono-Bold.ttf') format('truetype');
+    src: url('../fonts/dejavu-sans-mono-bold.eot');
+    src: url('../fonts/dejavu-sans-mono-bold.eot?#iefix')               format('embedded-opentype'),
+         url('../fonts/dejavu-sans-mono-bold.woff')                     format('woff'),
+         url('../fonts/dejavu-sans-mono-bold.ttf')                      format('truetype'),
+         url('../fonts/dejavu-sans-mono-bold.svg#dejavu_sans_monobold') format('svg');
 }
 
 /******************************************************************************/
@@ -121,9 +176,6 @@ pre {
 
 /* Font sizes */
 
-p .initial,
-table#ch9-table-prepare .giant
-                                            { font-size: 5ex; }
 .math .rel .ontop code,
 .math sub sub, .math sub sup,
 .math sup sub, .math sup sup
@@ -168,9 +220,12 @@ h2 .math
                                             { font-size: 2.2rem; }
 h1
                                             { font-size: 2.5rem; }
+p .initial
+                                            { font-size: 2.65rem; }
 #cover h1
                                             { font-size: 3.5rem; }
-
+table#ch9-table-prepare .giant
+                                            { font-size: 5.4rem; }
 
 /******************************************************************************/
 
@@ -316,6 +371,7 @@ span.fbox {
 }
 
 span.see {
+    font-family: 'DejaVu Serif Condensed';
     font-weight: bold;
 }
 
@@ -433,8 +489,21 @@ ul ul {
     list-style-type: circle;
 }
 
+ul.toc {
+    padding-left: 1.25em;
+}
+
 ul.toc, ul.toc ul {
     list-style: none;
+}
+
+ul.toc li ul {
+    font-weight: normal;
+}
+
+ul.toc > li {
+    font-weight: bold;
+    padding-top: 0.5em;
 }
 
 /******************************************************************************/
@@ -1015,9 +1084,10 @@ body {
     border: 1px solid #666;
     border-radius: 4px;
     margin: 0 auto;
-    max-width: 47.5rem;
+    max-width: 47rem;
 }
 
 .body {
-    margin: 1rem;
+    padding: 2rem 0;
+    margin: 0 1rem;
 }
