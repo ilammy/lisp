@@ -3,10 +3,13 @@
 
 <head>
     <title>2 – Lisp, 1, 2, …, ω</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:lisp1-2-omega"><span class="wrap"><span class="seq">Глава 2.</span><span class="title">Lisp, 1, 2, …, <i>ω</i></span></span></h1>
 
@@ -19,7 +22,7 @@
 концепцией отдельных пространств имён. Заканчивается глава рассмотрением
 рекурсии и способов её реализации с учётом изученных вопросов.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Среди всевозможных объектов, используемых интерпретатором, функции требуют
 особого подхода. Этот базовый тип объектов имеет личный конструктор:
@@ -725,7 +728,7 @@ ILOG Talk, <span class="sc">E<span class="c">u</span>L<span class="c">isp</span>
 пространство имён. Сейчас мы подробнее рассмотрим это решение. Занимаясь этим,
 мы проиллюстрируем саму идею <em class="term">пространств имён</em>.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{привязки (bindings)}-->
 <!--\indexR{привязки (bindings)|seealso{связывание}}-->
@@ -1024,7 +1027,7 @@ href="zz_footnotes.html#foot2.6"><sup>6</sup></a> Мы можем
 <table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="special">dynamic-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
-<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
+<td><span class="math"><span class="ord"></span><span class="rel">≡</span><span class="ord"></span></span></td>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   (<span class="special">declare</span> (<span class="syntax">special</span> <span class="var">x</span>))
   <span class="math"><span class="ord var">β</span></span> )</pre></td>
@@ -1309,7 +1312,7 @@ href="zz_footnotes.html#foot2.6"><sup>6</sup></a> Мы можем
 не специальных форм), то будем считать нашу реализацию представителем
 класса Lisp<sub>2</sub>.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexC{csetq}-->
 <!--\indexR{константы}-->
@@ -1793,7 +1796,7 @@ href="zz_footnotes.html#foot2.9"><sup>9</sup></a> вроде такой:</p>
          ...
          (<i>имя<sub>n</sub></i> <i>выражение<sub>n</sub></i>) )
   <i>тело</i> )</pre></td>
-<td><span class="math"><span class="rel">≡</span><span class="ord"/></span></td>
+<td><span class="math"><span class="rel">≡</span><span class="ord"></span></span></td>
 <td><pre>(<span class="special">let</span> (<i>имя<sub>1</sub></i> ... <i>имя<sub>n</sub></i>)
   (<span class="special">let</span> ((<i>temp<sub>1</sub></i> <i>выражение<sub>1</sub></i>)
         ...
@@ -2357,6 +2360,9 @@ href="zz_footnotes.html#foot2.9"><sup>9</sup></a> вроде такой:</p>
 <p>В <span class="cite">[<a href="z1_bibliography.html#gor88">Gor88</a>]</span> есть интересное введение в <span class="math"><span class="ord var">λ</span></span>-исчисление.</p>
 
 <p>Комбинатор <span class="comb">Y</span> разбирается подробнее в <span class="cite">[<a href="z1_bibliography.html#gab88">Gab88</a>]</span>.</p>
+
+</div>
+</div>
 
 </body>
 </html>

@@ -3,10 +3,13 @@
 
 <head>
     <title>7 – Компиляция</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:compilation"><span class="wrap"><span class="seq">Глава 7.</span><span class="title">Компиляция</span></span></h1>
 
@@ -46,7 +49,7 @@
 <tr><td><code>(<span class="func">CONS-ARGUMENT</span> <i>m</i> <i>m<span class="normal">*</span></i> <i>арность</i>)</code></td>
 <td><code>(<span class="func">ALLOCATE-FRAME</span> <i>размер</i>)</code></td></tr>
 <tr><td><code>(<span class="func">ALLOCATE-DOTTED-FRAME</span> <i>арность</i>)</code></td>
-<td/></tr>
+<td></td></tr>
 </tbody></table>
 <span class="caption">Таблица 7.1. Все 25 инструкций промежуточного языка. <i>m</i>, <i>m<sub><span class="normal">1</span></sub></i>, <i>m<sub><span class="normal">2</span></sub></i>, <i>m<sub><span class="normal">3</span></sub></i>,
 <i>m<span class="normal">+</span></i> и <i>v</i> — значения; <i>m<span class="normal">*</span></i> — запись активации; <i>индекс</i>, <i>арность</i>, <i>размер</i>,
@@ -459,7 +462,7 @@
   (<span class="func">list</span> (<span class="special">lambda</span> () (<span class="special">set!</span> <span class="var">*pc*</span> (<span class="func">list-tail</span> <span class="var">*pc*</span> <span class="var">i</span>)))) )</pre>
 
 <div class="image" id="compilation/bytes/customize/lin-conditional/pic:subj">
-<img src="images/png06.png" alt="Расположение в памяти байт-кода оператора ветвления" style="width: 3.75in"/>
+<img src="images/png06.png" alt="Расположение в памяти байт-кода оператора ветвления" style="width: 3.75in">
 <span class="caption">Рис. 7.1. Линеаризованное ветвление.</span>
 </div>
 
@@ -509,7 +512,7 @@
   (<span class="func">list</span> (<span class="special">lambda</span> () (<span class="func">listify!</span> <span class="var">*val*</span> <span class="var">arity</span>))) )</pre>
 
 <div class="image" id="compilation/bytes/customize/lin-abstraction/pic:subj">
-<img src="images/png07.png" alt="Расположение в памяти байт-кода абстракции" style="width: 3.75in"/>
+<img src="images/png07.png" alt="Расположение в памяти байт-кода абстракции" style="width: 3.75in">
 <span class="caption">Рис. 7.2. Линеаризованная абстракция.</span>
 </div>
 
@@ -577,7 +580,7 @@
 <code><span class="var">*pc*</span></code>, а также стек.</p>
 
 <div class="image" id="compilation/lang-and-target/pic:subj">
-<img src="images/png08.png" alt="Архитектура целевой виртуальной машины" style="width: 5.19in"/>
+<img src="images/png08.png" alt="Архитектура целевой виртуальной машины" style="width: 5.19in">
 <span class="caption">Рис. 7.3. Архитектура целевой виртуальной машины.</span>
 </div>
 
@@ -1174,8 +1177,8 @@
 <pre>(<span class="special">define</span> (<span class="func">PREDEFINED</span> <span class="var">i</span>)
   (<span class="func">check-byte</span> <span class="var">i</span>)
   (<span class="syntax">case</span> <span class="var">i</span>
-    <span class="comment">;; <code><span class="num">0</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="hash">#t</span></code>, <code><span class="num">1</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="hash">#f</span></code>, <code><span class="num">2</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="hash">()</span></code>, <code><span class="num">3</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">cons</span></code>, <code><span class="num">4</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">car</span></code>,</span>
-    <span class="comment">;; <code><span class="num">5</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">cdr</span></code>, <code><span class="num">6</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">pair?</span></code>, <code><span class="num">7</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">symbol?</span></code>, <code><span class="num">8</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code><span class="func">eq?</span></code></span>
+    <span class="comment">;; <code><span class="num">0</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="hash">#t</span></code>, <code><span class="num">1</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="hash">#f</span></code>, <code><span class="num">2</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="hash">()</span></code>, <code><span class="num">3</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">cons</span></code>, <code><span class="num">4</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">car</span></code>,</span>
+    <span class="comment">;; <code><span class="num">5</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">cdr</span></code>, <code><span class="num">6</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">pair?</span></code>, <code><span class="num">7</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">symbol?</span></code>, <code><span class="num">8</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code><span class="func">eq?</span></code></span>
     ((<span class="func">0</span> <span class="num">1</span> <span class="num">2</span> <span class="num">3</span> <span class="num">4</span> <span class="num">5</span> <span class="num">6</span> <span class="num">7</span> <span class="num">8</span>) (<span class="func">list</span> (<span class="func">+</span> <span class="num">10</span> <span class="var">i</span>)))
     (<span class="syntax">else</span>                (<span class="func">list</span> <span class="num">19</span> <span class="var">i</span>)) ) )
 
@@ -1882,7 +1885,7 @@
 </ol>
 
 <div class="image" id="compilation/escapes/pic:push-escaper">
-<img src="images/png09.png" alt="Состояние стека до и после инструкции PUSH-ESCAPER" style="width: 5.55in"/>
+<img src="images/png09.png" alt="Состояние стека до и после инструкции PUSH-ESCAPER" style="width: 5.55in">
 <span class="caption">Рис. 7.4. Состояние стека до и после инструкции <code><span class="func">PUSH-ESCAPER</span></code>.</span>
 </div>
 
@@ -2027,7 +2030,7 @@
 является плохой идеей.</p>
 
 <div class="image" id="compilation/dynamic/pic:subj">
-<img src="images/png10.png" alt="Состояние стека до и после инструкции DYNAMIC-PUSH" style="width: 4.49in"/>
+<img src="images/png10.png" alt="Состояние стека до и после инструкции DYNAMIC-PUSH" style="width: 4.49in">
 <span class="caption">Рис. 7.5. Состояние стека до и после инструкции <code><span class="func">DYNAMIC-PUSH</span></code>.</span>
 </div>
 
@@ -2223,7 +2226,7 @@
 управление операционной системе.</p>
 
 <div class="image" id="compilation/exception/pic:subj">
-<img src="images/png11.png" alt="Конфигурация стека до и после начала обработки исключения" style="width: 4.65in"/>
+<img src="images/png11.png" alt="Конфигурация стека до и после начала обработки исключения" style="width: 4.65in">
 <span class="caption">Рис. 7.6. Процесс обработки исключения.</span>
 </div>
 
@@ -2389,7 +2392,7 @@
 вызова, стоит ограничить применения данного механизма действительно
 <em>исключительными</em> ситуациями.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>В этом разделе была определена система обработки исключений. Рассмотренная
 модель позволяет вернуться из обработчика обратно и попробовать выполнить
@@ -2981,6 +2984,9 @@
 <span class="cite">[<a href="z1_bibliography.html#ste78">Ste78</a>,
 <a href="z1_bibliography.html#as85">AS85</a>,
 <a href="z1_bibliography.html#fwh92">FWH92</a>]</span>.</p>
+
+</div>
+</div>
 
 </body>
 </html>

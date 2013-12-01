@@ -3,10 +3,13 @@
 
 <head>
     <title>3 – Переходы и возвраты: продолжения</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:escape"><span class="wrap"><span class="seq">Глава 3.</span><span class="title">Переходы и возвраты: продолжения</span></span></h1>
 
@@ -24,7 +27,7 @@
 сохранение. Наш интерпретатор будет использовать объекты для представления
 продолжений в виде <em class="term">стека вызовов</em>.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{переходы (escapes)}-->
 <p>Интерпретаторам, построенным нами ранее, было необходимо только окружение, чтобы
@@ -578,7 +581,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
                       (<span class="special">throw</span> <span class="var">tag</span> <span class="var">x</span>) ) )
                 (<span class="func">hack-and-return-list</span>) ) ) )</pre>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Наконец, рассмотрим, как можно проэмулировать <code><span class="special">block</span></code> с помощью <code><span class="special">catch</span></code>
 (естественно, выигрыша в производительности мы не получим). Для этого достаточно
@@ -905,7 +908,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 В этом случае из-за <code><span class="special">unwind-protect</span></code> «после вычислений <code>(<span class="special">return-from</span> <span class="var">bar</span> <span class="num">1</span>)</code>» не наступает вообще.
 (Мы обсудим этот феномен позже вместе деталями реализации данной формы.)</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Конечно же, есть и другие управляющие формы. Особенно их жалует <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>,
 в котором реализована даже старая <code><span class="special">prog</span></code>, только под названием <code><span class="special">tagbody</span></code>.
@@ -935,7 +938,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 <table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="syntax">fluid-let</span> ((<span class="var">x</span> <span class="math"><span class="ord var">α</span></span>))
   <span class="math"><span class="ord var">β</span></span>... ) </pre></td>
-<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
+<td><span class="math"><span class="ord"></span><span class="rel">≡</span><span class="ord"></span></span></td>
 <td><pre>(<span class="syntax">let</span> ((<i>tmp</i> <span class="var">x</span>))
   (<span class="special">set!</span> <span class="var">x</span> <span class="math"><span class="ord var">α</span></span>)
   (<span class="special">unwind-protect</span>
@@ -1885,7 +1888,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 между ними нет <code><span class="special">lambda</span></code>- или <code><span class="special">unwind-protect</span></code>-форм), то <code><span class="func">unwind</span></code> будет
 работать так же быстро, как и раньше.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexCS{unwind-protect}{ограничения \CommonLisp}-->
 <p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL2 <span class="cite">[<a href="z1_bibliography.html#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
@@ -2011,7 +2014,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 часто одинаково мощны, вопрос лишь в балансе сложности — кому важнее
 облегчить жизнь: пользователю или, наоборот, разработчику языка.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Подводя итог, если вам нужна мощь за адекватную цену, то <code><span class="func">call/cc</span></code> к вашим
 услугам, так как она позволяет реализовать все мыслимые управляющие конструкции:
@@ -2167,7 +2170,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 позволило существенно ускорить интерпретацию <span class="cite">[<a href="z1_bibliography.html#gre77">Gre77</a> <a href="z1_bibliography.html#cha80">Cha80</a> <a href="z1_bibliography.html#sj87">SJ87</a>]</span>;
 см. также <span class="cite">[<a href="z1_bibliography.html#han90">Han90</a>]</span>.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexCS{evaluate-begin}{хвостовая рекурсия}-->
 <p>Оптимизация хвостовой рекурсии — это очень желанное свойство интерпретатора;
@@ -2507,6 +2510,9 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 <span class="cite">[<a href="z1_bibliography.html#wan80a">Wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.html#hfw84">HFW84</a>]</span> об эмуляции сопрограмм.
 В <span class="cite">[<a href="z1_bibliography.html#dr87">dR87</a>]</span> прекрасно рассказано о развитии понимания важности рефлексии
 для управляющих форм.</p>
+
+</div>
+</div>
 
 </body>
 </html>

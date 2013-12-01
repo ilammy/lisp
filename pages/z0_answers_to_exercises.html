@@ -3,10 +3,13 @@
 
 <head>
     <title>Ответы к упражнениям</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:ex-answers">Ответы к упражнениям</h1>
 
@@ -214,7 +217,7 @@
 <!--\indexC{begin}-->
 <table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="special">begin</span> <i>выражение</i><sub>1</sub> <i>выражение</i><sub>2</sub>)</pre></td>
-<td><span class="math"><span class="ord"/><span class="rel">≡</span><span class="ord"/></span></td>
+<td><span class="math"><span class="ord"></span><span class="rel">≡</span><span class="ord"></span></span></td>
 <td><pre>((<span class="special">lambda</span> (<span class="var">void</span> <span class="var">other</span>) (<span class="func">other</span>))
  <i>выражение</i><sub>1</sub>
  (<span class="special">lambda</span> () <i>выражение</i><sub>2</sub>) )</pre></td>
@@ -1008,15 +1011,15 @@
 
 <h4>Упражнение <a class="seq" href="ch05_denotational_semantics.html#denotational/ex:dynamic-fallback">5.3</a></h4>
 
-<div class="denotation math"><span class="ord cal">𝓔</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">γ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">let</span><span class="ord var">ε</span><span class="rel">=</span><span class="open">(</span><span class="ord var">δ</span> <span class="ord var">ν</span><span class="close">)</span>
-<span/><span class="rel syntax">in</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">if</span><span class="ord var">ε</span><span class="rel">=</span><span class="ord var">no-dynamic-binding</span>
-<span/><span class="rel syntax">then</span><span class="ord"/><div class="valign math"><span class="rel syntax">let</span><span class="ord var">α</span><span class="rel">=</span><span class="open">(</span><span class="ord var">γ</span> <span class="ord var">ν</span><span class="close">)</span>
-<span/><span class="rel syntax">in</span><span class="ord"/><div class="valign math"><span/><span class="rel syntax">if</span><span class="ord var">α</span><span class="rel">=</span><span class="ord var">no-global-binding</span>
-<span/><span class="rel syntax">then</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"No such variable"</span></code></span>
-<span/><span class="rel syntax">else</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">σ</span> <span class="ord var">α</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>
-<span/><span class="rel syntax">endif</span></div></div>
-<span/><span class="rel syntax">else</span><span class="open">(</span><span class="ord var">κ</span> <span class="ord var">ε</span> <span class="ord var">σ</span><span class="close">)</span>
-<span/><span class="rel syntax">endif</span></div></div></div>
+<div class="denotation math"><span class="ord cal">𝓔</span><span class="open sem-brace">[[</span><span class="normal"><code>(<span class="special">dynamic</span> <span class="math"><span class="ord var">ν</span></span>)</code></span><span class="close sem-brace">]]</span><span class="ord var">ρ</span><span class="ord var">γ</span><span class="ord var">κ</span><span class="ord var">σ</span><span class="rel">=</span><span class="ord"></span><div class="valign math"><span></span><span class="rel syntax">let</span><span class="ord var">ε</span><span class="rel">=</span><span class="open">(</span><span class="ord var">δ</span> <span class="ord var">ν</span><span class="close">)</span>
+<span></span><span class="rel syntax">in</span><span class="ord"></span><div class="valign math"><span></span><span class="rel syntax">if</span><span class="ord var">ε</span><span class="rel">=</span><span class="ord var">no-dynamic-binding</span>
+<span></span><span class="rel syntax">then</span><span class="ord"></span><div class="valign math"><span class="rel syntax">let</span><span class="ord var">α</span><span class="rel">=</span><span class="open">(</span><span class="ord var">γ</span> <span class="ord var">ν</span><span class="close">)</span>
+<span></span><span class="rel syntax">in</span><span class="ord"></span><div class="valign math"><span></span><span class="rel syntax">if</span><span class="ord var">α</span><span class="rel">=</span><span class="ord var">no-global-binding</span>
+<span></span><span class="rel syntax">then</span><span class="ord var">wrong</span> <span class="normal"><code><span class="string">"No such variable"</span></code></span>
+<span></span><span class="rel syntax">else</span><span class="open">(</span><span class="ord var">κ</span> <span class="open">(</span><span class="ord var">σ</span> <span class="ord var">α</span><span class="close">)</span> <span class="ord var">σ</span><span class="close">)</span>
+<span></span><span class="rel syntax">endif</span></div></div>
+<span></span><span class="rel syntax">else</span><span class="open">(</span><span class="ord var">κ</span> <span class="ord var">ε</span> <span class="ord var">σ</span><span class="close">)</span>
+<span></span><span class="rel syntax">endif</span></div></div></div>
 
 
 <h4>Упражнение <a class="seq" href="ch05_denotational_semantics.html#denotational/ex:quantum">5.4</a></h4>
@@ -1858,6 +1861,9 @@
         ((,<span class="var">get-next-method</span>) . ,(<span class="func">flat-variables</span> <span class="var">variables</span>)) )
       (<span class="special">define</span> (<span class="func">next-method?</span>)
         (<span class="func">not</span> (<span class="func">eq?</span> (,<span class="var">get-next-method</span>) (<span class="func">Generic-default</span> ,<span class="var">g</span>))) ) ) ) )</pre>
+
+</div>
+</div>
 
 </body>
 </html>

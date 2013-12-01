@@ -3,10 +3,13 @@
 
 <head>
     <title>4 – Присваивание и побочные эффекты</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:assignment"><span class="wrap"><span class="seq">Глава 4.</span><span class="title">Присваивание и побочные эффекты</span></span></h1>
 
@@ -19,7 +22,7 @@
 побочные эффекты. По мере нашего продвижения мы также будем вынуждены
 отвлекаться на смежные темы вроде равенства и семантики цитирования.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{присваивание}-->
 <p>Присваивание, пришедшее из традиционных алгоритмических языков, позволяет
@@ -280,7 +283,7 @@
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
   <td class="right">если <span class="math"><span class="ord var">x</span><span class="rel">=</span><span class="ord var">v</span></span>, то <code>(<span class="func">box-set!</span> <span class="math"><span class="ord var">v</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code>,</td>
 </tr>
-<tr><td/><td/>
+<tr><td></td><td></td>
   <td class="right">иначе <code>(<span class="special">set!</span> <span class="math"><span class="ord var">x</span></span> <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
@@ -288,10 +291,10 @@
   <td class="center"><span class="math"><span class="rel">⇒</span></span></td>
   <td class="right">если <span class="math"><span class="ord var">v</span><span class="rel">∈</span><span class="open">{</span><span class="open">…</span><span class="ord var"> x </span><span class="close">…</span><span class="close">}</span></span>,</td>
 </tr>
-<tr><td/><td/>
+<tr><td></td><td></td>
   <td class="right">то <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="math"><span class="ord var">π</span></span>)</code>,</td>
 </tr>
-<tr><td/><td/>
+<tr><td></td><td></td>
   <td class="right">иначе <code>(<span class="special">lambda</span> (... <span class="math"><span class="ord var">x</span></span> ...) <span class="boxed"><span class="math"><span class="ord var">π</span></span></span><span class="math"><sup><span class="var">v</span></sup></span>)</code></td>
 </tr>
 <tr>
@@ -822,7 +825,7 @@
 этих объектов: если они указывают на одно и то же место в памяти, то очевидно,
 что это один и тот же объект.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{тождественность}-->
 <p>Итак, сейчас у нас есть два предиката: <code><span class="func">eq?</span></code> для проверки идентичности и
@@ -892,7 +895,7 @@
              (<span class="func">set-cdr!</span> (<span class="func">car</span> <span class="var">pair</span>) <span class="var">pair</span>)
              (<span class="func">set-cdr!</span> <span class="var">pair</span> <span class="var">pair</span>)
              <span class="var">pair</span> ))</pre>
-<img src="images/png02.png" alt="Графическое отображение циклических структур данных o1 и o2" style="width: 1.5in"/>
+<img src="images/png02.png" alt="Графическое отображение циклических структур данных o1 и o2" style="width: 1.5in">
 </div>
 
 <p>Предположим, мы хотим вычислить <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o1</span>)</code>. Пусть <code><span class="func">equal?</span></code>
@@ -908,7 +911,7 @@
 от <code><span class="var">o2</span></code>. Таким образом, лучше воздержаться от сравнения циклических структур
 данных с помощью <code><span class="func">equal?</span></code>.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{сравнение!символов}-->
 <p>Рассмотренные предикаты поддерживают большую часть используемых типов данных, за
@@ -1060,7 +1063,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <p class="noindent">Так как <code><span class="func">eqv?</span></code> передан один и тот же объект, она
 вправе вернуть истину; даже если <code>(<span class="func">eqv?</span> (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>) (<span class="func">f</span> <span class="num">1</span> <span class="num">2</span>))</code> возвращает ложь.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Как мы видим, при сравнении функций возникает множество вопросов, на которые
 нельзя дать однозначный ответ. Предпочтения зависят от свойств эквивалентности,
@@ -1948,7 +1951,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))))
   (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
-<td><span class="math"><span class="ord"/><span class="rel">⇝</span><span class="ord"/></span></td>
+<td><span class="math"><span class="ord"></span><span class="rel">⇝</span><span class="ord"></span></span></td>
 <td><pre>(<span class="special">define</span> <span class="var">quote35</span> '(<span class="var">f</span> <span class="var">o</span> <span class="var">o</span>))
 (<span class="syntax">let</span> ((<span class="var">foo</span> (<span class="special">lambda</span> () <span class="var">quote35</span>)))
   (<span class="func">eq?</span> (<span class="func">foo</span>) (<span class="func">foo</span>)) )</pre></td>
@@ -2230,6 +2233,9 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <h5 class="exercise" id="assignment/ex:dotted">Упражнение <span class="seq">4.7</span></h5>
 <p>Встройте в интерпретатор поддержку функций переменной арности (с точечным
 аргументом).</p>
+
+</div>
+</div>
 
 </body>
 </html>

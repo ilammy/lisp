@@ -119,6 +119,61 @@ pre {
 
 /******************************************************************************/
 
+/* Font sizes */
+
+p .initial,
+table#ch9-table-prepare .giant
+                                            { font-size: 5ex; }
+.math .rel .ontop code,
+.math sub sub, .math sub sup,
+.math sup sub, .math sup sup
+                                            { font-size: 0.6rem; }
+sub, sup,
+table.numbered-source span.lineno
+                                            { font-size: 0.7rem; }
+.math .rel .ontop,
+.math sub, .math sup,
+.math sub .Vset,
+table.ch6-meaning .low-brace
+                                            { font-size: 0.8rem; }
+pre,
+table#ch3-eval-stack td *,
+table + .caption,
+table + .caption code,
+.image .caption,
+.image .caption code,
+table#ch5-dynamic-denotation-transform,
+table.disasm code,
+code .comment code,
+pre .comment code
+                                            { font-size: 0.9rem; }
+blockquote.equation span.eqno,
+.math .Vset,
+body, code,
+pre span.dialect,
+.math .normal
+                                            { font-size: 1.0rem; }
+span.comb
+                                            { font-size: 1.1rem; }
+#footnotes h1,
+#footnotes h1 .seq,
+h3, h3 code, .math
+                                            { font-size: 1.2rem; }
+h1 .seq, h2,
+h2 code, h3 .math
+                                            { font-size: 1.4rem; }
+h2 .math
+                                            { font-size: 1.6rem; }
+#cover h2
+                                            { font-size: 2.2rem; }
+h1
+                                            { font-size: 2.5rem; }
+#cover h1
+                                            { font-size: 3.5rem; }
+
+
+/******************************************************************************/
+
 /* Basic layout */
 
 h1 {
@@ -376,6 +431,10 @@ ul {
 
 ul ul {
     list-style-type: circle;
+}
+
+ul.toc, ul.toc ul {
+    list-style: none;
 }
 
 /******************************************************************************/
@@ -941,4 +1000,24 @@ pre span.highlight { background: #DDDDDD; }
     font-weight: normal;
     line-height: 1;
     margin: 0.8em 0 0 0;
+}
+
+/******************************************************************************/
+
+/* Pages*/
+
+body {
+    background-color: #ccc;
+}
+
+.substrate {
+    background-color: #fff;
+    border: 1px solid #666;
+    border-radius: 4px;
+    margin: 0 auto;
+    max-width: 47.5rem;
+}
+
+.body {
+    margin: 1rem;
 }

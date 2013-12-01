@@ -3,10 +3,13 @@
 
 <head>
     <title>6 – Быстрая интерпретация</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:fast"><span class="wrap"><span class="seq">Глава 6.</span><span class="title">Быстрая интерпретация</span></span></h1>
 
@@ -24,7 +27,7 @@
 представляться специальными комбинаторами, играющими роль промежуточного языка,
 похожего на язык ассемблера (высокоуровневой) виртуальной машины.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>В предыдущей главе мы добились восхитительной точности работы интерпретатора.
 Теперь пришло время исправить его отвратительную медлительность. Естественно,
@@ -149,7 +152,7 @@
 рисунке <a href="#fast/fast/activations/fig:env-lists">6.1</a>.</p>
 
 <div class="image" id="fast/fast/activations/fig:env-lists">
-<img src="images/png03.png" alt="Окружение, реализованное как обычный список объектов — записей активаций" style="width: 2.93in"/>
+<img src="images/png03.png" alt="Окружение, реализованное как обычный список объектов — записей активаций" style="width: 2.93in">
 <span class="caption">Рис. 6.1. Окружение как список записей активаций.</span>
 </div>
 
@@ -207,7 +210,7 @@
       (<span class="func">deep-update!</span> (<span class="func">environment-next</span> <span class="var">sr</span>) (<span class="func">-</span> <span class="var">i</span> <span class="num">1</span>) <span class="var">j</span> <span class="var">v</span>) ) )</pre>
 
 <div class="image" id="fast/fast/activations/fig:env-linked">
-<img src="images/png04.png" alt="Окружение, реализованное как список объектов — записей активаций, связанных через специальное поле" style="width: 2.93in"/>
+<img src="images/png04.png" alt="Окружение, реализованное как список объектов — записей активаций, связанных через специальное поле" style="width: 2.93in">
 <span class="caption">Рис. 6.2. Окружение как непосредственно связный список.</span>
 </div>
 
@@ -269,12 +272,12 @@
 
 <!-- fuck you, html tables rendering, and Unicode too -->
 <table class="nocaption ch6-meaning left"><tbody>
-<tr><td><code><span class="func">meaning</span></code>:<span class="quad-stub" style="width: 1em"/></td><td><span class="math"><span class="ord Vset">Программа</span><span class="binop">×</span><span class="ord Vset">Окружение</span></span></td><td><span class="math"><span class="ord"/><span class="rel">→</span></span></td></tr>
-<tr><td/><td class="low-brace">статическая часть</td><td/></tr>
+<tr><td><code><span class="func">meaning</span></code>:<span class="quad-stub" style="width: 1em"></span></td><td><span class="math"><span class="ord Vset">Программа</span><span class="binop">×</span><span class="ord Vset">Окружение</span></span></td><td><span class="math"><span class="ord"></span><span class="rel">→</span></span></td></tr>
+<tr><td></td><td class="low-brace">статическая часть</td><td></td></tr>
 </tbody></table>
 <table class="nocaption ch6-meaning right"><tbody>
-<tr><td><span class="math"><span class="quad-stub" style="width: 2em"/><span class="rel">→</span><span class="ord"/></span></td><td><span class="math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>∗</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></span></td></tr>
-<tr><td/><td class="low-brace">динамическая часть</td></tr>
+<tr><td><span class="math"><span class="quad-stub" style="width: 2em"></span><span class="rel">→</span><span class="ord"></span></span></td><td><span class="math"><span class="open">(</span><span class="ord Vset">ЗаписиАктиваций<sup>∗</sup></span><span class="binop">×</span><span class="ord Vset">Продолжение</span><span class="rel">→</span><span class="ord Vset">Значение</span><span class="close">)</span></span></td></tr>
+<tr><td></td><td class="low-brace">динамическая часть</td></tr>
 </tbody></table>
 
 <!--\indexR{предобработка программ}-->
@@ -1124,7 +1127,7 @@
 
 <!--\indexC{meaning-primitive-application}-->
 <pre>(<span class="special">define</span> (<span class="func">meaning-primitive-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span>)
-  (<span class="syntax">let*</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)) <span class="comment">; <code><span class="var">desc</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code>(<span class="var">function</span> <i>адрес</i> . <i>аргументы</i>)</code></span>
+  (<span class="syntax">let*</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)) <span class="comment">; <code><span class="var">desc</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code>(<span class="var">function</span> <i>адрес</i> . <i>аргументы</i>)</code></span>
          (<span class="var">address</span> (<span class="func">cadr</span> <span class="var">desc</span>))
          (<span class="var">size</span> (<span class="func">length</span> <span class="var">e*</span>)) )
     (<span class="syntax">case</span> <span class="var">size</span>
@@ -1191,7 +1194,7 @@
 не особо в духе Лиспа).</p>
 
 <div class="image" id="fast/fast/variations/pic:display">
-<img src="images/png05.png" alt="Иллюстрация структуры дисплеев в окружениях" style="width: 5.21in"/>
+<img src="images/png05.png" alt="Иллюстрация структуры дисплеев в окружениях" style="width: 5.21in">
 <span class="caption">Рис. 6.3. Структура дисплеев.</span>
 </div>
 
@@ -2187,7 +2190,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 <!--\indexC{meaning-primitive-application}-->
 <!--\indexC*{CALL0}{CALL\protect<i>n</i>}-->
 <pre>(<span class="special">define</span> (<span class="func">meaning-primitive-application</span> <span class="var">e</span> <span class="var">e*</span> <span class="var">r</span> <span class="var">tail?</span>)
-  (<span class="syntax">let*</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)) <span class="comment">;; <code><span class="var">desc</span></code><span class="math"><span class="ord"/><span class="rel">=</span><span class="ord"/></span><code>(<span class="var">function</span> <i>адрес</i> . <i>аргументы</i>)</code></span>
+  (<span class="syntax">let*</span> ((<span class="var">desc</span> (<span class="func">get-description</span> <span class="var">e</span>)) <span class="comment">;; <code><span class="var">desc</span></code><span class="math"><span class="ord"></span><span class="rel">=</span><span class="ord"></span></span><code>(<span class="var">function</span> <i>адрес</i> . <i>аргументы</i>)</code></span>
          (<span class="var">address</span> (<span class="func">cadr</span> <span class="var">desc</span>))
          (<span class="var">size</span> (<span class="func">length</span> <span class="var">e*</span>)) )
     (<span class="syntax">case</span> <span class="var">size</span>
@@ -2460,6 +2463,9 @@ Scheme. Несмотря на то, что объекты и замыкания 
 перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.html#cli84">Cli84</a>]</span>. Если вам
 действительно понравилось оптимизировать интерпретацию, то определённо стоит
 изучить работы <span class="cite">[<a href="z1_bibliography.html#cha80">Cha80</a>]</span> и <span class="cite">[<a href="z1_bibliography.html#sj93">SJ93</a>]</span>.</p>
+
+</div>
+</div>
 
 </body>
 </html>

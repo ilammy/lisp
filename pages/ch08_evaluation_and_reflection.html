@@ -3,10 +3,13 @@
 
 <head>
     <title>8 – Вычисления и рефлексия</title>
-    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
 </head>
 
 <body>
+
+<div class="substrate">
+<div class="body">
 
 <h1 id="chapter:reflection"><span class="wrap"><span class="seq">Глава 8.</span><span class="title">Вычисления и рефлексия</span></span></h1>
 
@@ -24,7 +27,7 @@
 это первый шаг к рефлексивному программированию —
 теме, которая также будет затронута в этой главе.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <p>Каждый рассмотренный нами интерпретатор показывал ту или иную сторону процесса
 вычислений. Для большинства из них явное предоставление вычислителя
@@ -158,7 +161,7 @@
 </ul>
 
 <div class="image" id="reflection/prog-and-val/pic:recusive">
-<img src="images/png12.png" alt="Изображение синтаксически рекурсивной функции факториала в виде списков Лиспа" style="width: 4.19in"/>
+<img src="images/png12.png" alt="Изображение синтаксически рекурсивной функции факториала в виде списков Лиспа" style="width: 4.19in">
 <span class="caption">Рис. 8.1. Синтаксически рекурсивный факториал.</span>
 </div>
 
@@ -363,7 +366,7 @@
 всех её друзей, чтобы иметь возможность выполнять компиляцию программ на лету,
 — недешёвое удовольствие!</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexCS{eval}{параллель с <code><span class="func">quote</span></code>}-->
 <p>В этом разделе мы попытались уменьшить путаницу между понятиями значения и
@@ -1031,7 +1034,7 @@ P-списков, но нередко в этой роли можно встре
   ( <span class="var">sr</span> <span class="var">r</span> ) )</pre>
 
 <div class="image" id="reflection/reifiy-env/export/pic:reified-env">
-<img src="images/png13.png" alt="Изображение структуры реифицированных окружений в виде списка записей активаций" style="width: 5.52in"/>
+<img src="images/png13.png" alt="Изображение структуры реифицированных окружений в виде списка записей активаций" style="width: 5.52in">
 <span class="caption">Рис. 8.2. Представление окружений.</span>
 </div>
 
@@ -1201,7 +1204,7 @@ P-списков, но нередко в этой роли можно встре
 <span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.html#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span></p>
 
 <div class="image" id="reflection/reify-env/enrich/pic:subj">
-<img src="images/png14.png" alt="Структура расширенного реифицированного окружения" style="width: 5.04in"/>
+<img src="images/png14.png" alt="Структура расширенного реифицированного окружения" style="width: 5.04in">
 <span class="caption">Рис. 8.3. Расширение окружения: <code>(<span class="func">enrich</span> <i>env</i> '<span class="var">x</span> '<span class="var">y</span>)</code>.</span>
 </div>
 
@@ -1377,7 +1380,7 @@ P-списков, но нередко в этой роли можно встре
 рисунке <a href="#reflection/reify-env/closed/pic:subj">8.4</a>.</p>
 
 <div class="image" id="reflection/reify-env/closed/pic:subj">
-<img src="images/png15.png" alt="Расположение в памяти частей реифицированной рефлексивной абстракции" style="width: 4.48in"/>
+<img src="images/png15.png" alt="Расположение в памяти частей реифицированной рефлексивной абстракции" style="width: 4.48in">
 <span class="caption">Рис. 8.4. Рефлексивная абстракция.</span>
 </div>
 
@@ -1628,7 +1631,7 @@ P-списков, но нередко в этой роли можно встре
       (<span class="func">list</span> (<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>) ) ) )</pre>
 
 <div class="image" id="reflection/reify-env/import/pic:env-struct">
-<img src="images/png16.png" alt="Структура окружений и псевдоокружений после исполнения специальной формы import" style="width: 5.72in"/>
+<img src="images/png16.png" alt="Структура окружений и псевдоокружений после исполнения специальной формы import" style="width: 5.72in">
 <span class="caption">Рис. 8.5. Принцип работы <code><span class="special">import</span></code>.</span>
 </div>
 
@@ -2162,7 +2165,7 @@ P-списков, но нередко в этой роли можно встре
 видна в том числе и интерпретатору, и функция <code><span class="func">eval</span></code> отныне будет вести себя
 с ней так же, как и с любой другой специальной формой.</p>
 
-<div class="bigskip"/>
+<div class="bigskip"></div>
 
 <!--\indexR{абстракция!рефлексивная}-->
 <!--\indexR{рефлексивные абстракции}-->
@@ -2288,6 +2291,9 @@ P-списков, но нередко в этой роли можно встре
 В <span class="cite">[<a href="z1_bibliography.html#mul92">Mul92</a>]</span> рассматривается алгебраическая семантика его рефлексивных
 возможностей. Также стоит взглянуть на работы <span class="cite">[<a href="z1_bibliography.html#jf92">JF92</a>]</span> и <span class="cite">[<a href="z1_bibliography.html#imy92">IMY92</a>]</span>,
 затрагивающие рефлексию в общем.</p>
+
+</div>
+</div>
 
 </body>
 </html>
