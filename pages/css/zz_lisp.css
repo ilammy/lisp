@@ -1,0 +1,944 @@
+            /* reset.css :: modified Eric Meyer's Reset CSS 2.0 */
+            html, blockquote, body, div, span, h1, h2, h3, h4, h5,
+            h6, p, pre, a, code, em, img, strong, sub, table, sup,
+            thead, tt, b, tbody, i, dl, dt, dd, ol, ul, tfoot, li,
+            caption, tr, th, td { vertical-align: baseline;  font:
+            inherit; margin:  0; border: 0; padding: 0; font-size:
+            100%;} body { line-height: 1;} table { border-spacing:
+            0; border-collapse: collapse;} blockquote, q { quotes:
+            none; } blockquote:before , blockquote:after {content:
+              ''; content: none; } ol, ul { list-style: none; }
+/******************************************************************************/
+
+@font-face {
+    font-family: STIX;
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/stix-bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: italic;
+    font-weight: bold;
+    src: url('fonts/stix-bolditalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: italic;
+    font-weight: normal;
+    src: url('fonts/stix-italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: STIX;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/stix-regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSerif.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: italic;
+    font-weight: normal;
+    src: url('fonts/DejaVuSerif-Italic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerif-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif Condensed';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerifCondensed-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Serif';
+    font-style: italic;
+    font-weight: bold;
+    src: url('fonts/DejaVuSerif-BoldItalic.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSans.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans Condensed';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSansCondensed.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/DejaVuSansMono.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    font-style: normal;
+    font-weight: bold;
+    src: url('fonts/DejaVuSansMono-Bold.ttf') format('truetype');
+}
+
+/******************************************************************************/
+
+body {
+    font-family: 'DejaVu Serif', serif;
+    line-height: 1.4;
+    padding: 2em 0;
+}
+
+code, pre {
+    font-family: 'DejaVu Sans Mono', monospace;
+}
+
+pre {
+    white-space: pre-wrap;
+}
+
+/******************************************************************************/
+
+/* Basic layout */
+
+h1 {
+    font-weight: bold;
+    text-align: right;
+    margin-bottom: 2em;
+    margin-top: 0.8em;
+}
+
+h1 .seq {
+    display: block;
+    font-variant: small-caps;
+    font-weight: normal;
+    margin-bottom: 1.0715em;
+}
+
+h2 .wrap,
+h3 .wrap,
+h4 .wrap {
+    display: table-row;
+}
+
+h2 .wrap .seq,
+h3 .wrap .seq,
+h4 .wrap .seq {
+    display: table-cell;
+    padding-right: 0.5em;
+}
+
+h2 .wrap .title,
+h3 .wrap .title,
+h4 .wrap .title {
+    display: table-cell;
+}
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 2.3ex;
+    margin-top: 3.5ex;
+}
+
+h3 {
+    font-weight: bold;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+h4 {
+    font-weight: bold;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+h5 {
+    font-weight: bold;
+    margin-top: 3.25ex;
+    margin-bottom: 1ex;
+}
+
+p {
+    text-indent: 1.25em;
+}
+
+pre {
+    margin: 0.4em 0 0.4em 1.25em;
+}
+
+table {
+    margin: 1.2em auto 0;
+    max-width: 95%;
+}
+
+table + .caption {
+    display: table;
+    margin: 0.6em auto 1.2em;
+    max-width: 95%;
+    text-align: center;
+}
+
+table.nocaption {
+    margin: 0.8em auto;
+}
+
+table .underlined
+{
+    border-bottom: 1px solid black;
+}
+
+.image {
+    margin: 1.2em auto;
+    max-width: 95%;
+}
+
+.image img {
+    display: table;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+.image .caption {
+    display: table;
+    margin: 0.6em auto 0;
+    text-align: center;
+}
+
+blockquote.equation {
+    margin: 0.6em auto;
+    max-width: 95%;
+    text-align: center;
+}
+
+/******************************************************************************/
+
+/* Accidental */
+
+p .initial {
+    float: left;
+    height: 1em;
+    position: relative;
+    top: -0.25ex;
+    vertical-align: top;
+}
+
+.sc .c {
+    text-transform: uppercase;
+    font-size: 80%;
+}
+
+p.noindent {
+    text-indent: 0;
+}
+
+span.logo {
+    font-variant: small-caps;
+}
+
+span.fbox {
+    border: 1px solid black;
+    padding: 0.2222em;
+}
+
+span.see {
+    font-weight: bold;
+}
+
+span.see span.stub {
+    visibility: hidden;
+}
+
+div.bigskip { height: 1.25em; }
+
+pre span.dialect {
+    font-family: 'DejaVu Serif', serif;
+    float: right;
+    margin-right: 1.25em;
+}
+
+pre span.llap {
+    display: inline-block;
+    width: 0;
+}
+
+span.boxed {
+    border-top: 1px solid black;
+}
+
+.TeX .E {
+    bottom: -0.5ex;
+    margin-left:-0.1667em;
+    margin-right:-0.125em;
+    position:relative;
+    text-transform:uppercase
+}
+
+code sub sub {
+    display: inline-block;
+    text-indent: 0;
+    width: 0.25em;
+}
+
+/******************************************************************************/
+
+/* Generic */
+
+a {
+    text-decoration: none;
+}
+
+i {
+    font-family: 'DejaVu Serif', serif;
+    font-style: italic;
+}
+
+b {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+em em {
+    font-style: normal;
+}
+
+sub, sup {
+    position: relative;
+}
+
+sub {
+    bottom: -1.0ex;
+}
+
+sup {
+    top: -1.25ex;
+}
+
+/******************************************************************************/
+
+/* Lists */
+
+ol, ul {
+    list-style-position: outside;
+    padding-left: 2.75em;
+    margin: 0.6em 0;
+}
+
+li + li {
+    margin-top: 0.4em;
+}
+
+li p {
+    text-indent: 0;
+}
+
+li p + p {
+    margin-top: 0.4em;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+ol ol {
+    list-style-type: lower-alpha;
+}
+
+ol li {
+    position: relative;
+}
+
+ul {
+    list-style-type: disc;
+}
+
+ul ul {
+    list-style-type: circle;
+}
+
+/******************************************************************************/
+
+/* Nested environments */
+
+div.where {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 0.1em;
+    margin: 0.277em 0;
+    white-space: pre;
+}
+
+div.complex {
+    display: inline-block;
+    vertical-align: text-top;
+    white-space: pre;
+}
+
+div.wrap {
+    display: inline-block;
+    border-left: 1px black solid;
+    padding-left: 0.4em;
+}
+
+/******************************************************************************/
+
+/* Specific source code */
+
+div.snippet {
+    margin: 0.4em 1.25em;
+}
+
+div.snippet.numbered {
+    margin: 0.4em 0;
+}
+
+div.snippet span.title {
+    display: block;
+    font-family: 'DejaVu Sans Condensed', sans-serif;
+    text-align: center;
+}
+
+div.snippet pre {
+    border-bottom: 1px solid black;
+    border-top:    1px solid black;
+    margin: 0;
+    padding: 0.25em 0;
+}
+
+table.numbered-source {
+    margin: 0;
+}
+
+table.numbered-source td {
+    vertical-align: top;
+}
+
+table.numbered-source td.lines {
+    text-align: right;
+    padding: 0 0.5em 0 0.25em;
+}
+
+table.numbered-source span.lineno {
+    color: gray;
+    font-family: 'DejaVu Sans Condensed', sans-serif;
+}
+
+table.numbered-source .lines pre {
+    border: none;
+}
+
+table.numbered-source pre {
+    white-space: pre;
+}
+
+/******************************************************************************/
+
+/* Math */
+
+.math {
+    font-family: STIX, serif;
+    line-height: 0.8333;
+}
+
+.math .ord {
+    color: black;
+    font-style: normal;
+}
+
+.math .cal {
+    color: black;
+    font-family: 'DejaVu Serif';
+}
+
+.math .num {
+    color: black;
+    font-style: normal;
+}
+
+.math .var {
+    color: black;
+    font-style: italic;
+}
+
+.math .big {
+    bottom: -0.1ex;
+    font-size: 120%;
+    line-height: 1;
+    position: relative;
+}
+
+.math .string {
+    color: black;
+}
+
+.math .normal {
+    font-family: 'DejaVu Serif', serif;
+}
+
+.math .sem-brace {
+    letter-spacing: -0.225em;
+    margin-right: 0.225em;
+}
+
+span.quad-stub {
+    display: inline-block;
+}
+
+.denotation {
+    margin: 0.1em 1.04em;
+    line-height: 1.1em;
+    white-space: pre-line;
+}
+
+.semantic .denotation {
+    margin: 0;
+}
+
+.math .valign {
+    display: inline-block;
+    line-height: 1.1em;
+    vertical-align: top;
+    white-space: pre-line;
+}
+
+.math .valign .valign {
+    margin-top: -0.1em;
+}
+
+.math .valign.inline {
+    margin-top: 0;
+}
+
+.math sub, .math sup {
+    font-style: normal;
+}
+
+.math sub {
+    bottom: -0.75ex;
+}
+
+.math sup {
+    top: -1ex;
+}
+
+.math sub + sup {
+    display: inline-block;
+    left: -0.8ex;
+    width: 0;
+}
+
+.math .syntax {
+    font-weight: bold;
+}
+
+.math .frac {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.math .frac .numerator {
+    border-bottom: 1px solid black;
+    display: block;
+    padding-bottom: 0.08333em;
+    text-align: center;
+}
+
+.math .frac .denominator {
+    display: block;
+    padding-top: 0.25em;
+    text-align: center;
+}
+
+span.comb {
+    font-family: 'DejaVu Sans', sans-serif;
+    line-height: 0.909;
+}
+
+.math .bf {
+    font-weight: bold;
+}
+
+.math .Vset {
+    font-family: 'DejaVu Serif Condensed', serif;
+    font-weight: bold;
+}
+
+.math sub .Vset {
+    line-height: 0.8;
+}
+
+blockquote.equation span.eqno {
+    float: right;
+    font-family: 'DejaVu Serif', serif;
+    line-height: 1.3;
+}
+
+.math .rel .ontop {
+    bottom: 1.15em;
+    display: inline-block;
+    height: 0;
+    line-height: 0;
+    position: relative;
+    right: 0.95em;
+    width: 0;
+}
+
+.math .overline {
+    display: inline-block;
+    border-top: 1px solid black;
+}
+
+.math .sem-brace + .normal code {
+    margin-left: -0.1em;
+    margin-right: -0.1em;
+}
+
+/* fuck you, cascading */
+.math code > span.var    { font-style: normal; }
+.math code > span.syntax { font-weight: normal; }
+
+
+/* TeX math spacing rules */
+
+.math .ord   + .op    { margin-left: 0.1666em; }
+.math .ord   + .binop { margin-left: 0.2222em; }
+.math .ord   + .rel   { margin-left: 0.2555em; }
+.math .op    + .ord   { margin-left: 0.1666em; }
+.math .op    + .op    { margin-left: 0.1666em; }
+.math .op    + .rel   { margin-left: 0.2555em; }
+.math .binop + .ord   { margin-left: 0.2222em; }
+.math .binop + .op    { margin-left: 0.2222em; }
+.math .binop + .open  { margin-left: 0.2555em; }
+.math .rel   + .ord   { margin-left: 0.2555em; }
+.math .rel   + .op    { margin-left: 0.2555em; }
+.math .rel   + .open  { margin-left: 0.2555em; }
+.math .close + .op    { margin-left: 0.1666em; }
+.math .close + .binop { margin-left: 0.2222em; }
+.math .close + .rel   { margin-left: 0.2555em; }
+.math .punct + .ord   { margin-left: 0.1666em; }
+.math .punct + .op    { margin-left: 0.1666em; }
+.math .punct + .rel   { margin-left: 0.1666em; }
+.math .punct + .open  { margin-left: 0.1666em; }
+.math .punct + .close { margin-left: 0.1666em; }
+.math .punct + .punct { margin-left: 0.1666em; }
+
+.math sub .ord   + .binop, .math sup .ord   + .binop,
+.math sub .ord   + .rel  , .math sup .ord   + .rel  ,
+.math sub .op    + .rel  , .math sup .op    + .rel  ,
+.math sub .binop + .ord  , .math sup .binop + .ord  ,
+.math sub .binop + .op   , .math sup .binop + .op   ,
+.math sub .binop + .open , .math sup .binop + .open ,
+.math sub .rel   + .ord  , .math sup .rel   + .ord  ,
+.math sub .rel   + .op   , .math sup .rel   + .op   ,
+.math sub .rel   + .open , .math sup .rel   + .open ,
+.math sub .close + .binop, .math sup .close + .binop,
+.math sub .close + .rel  , .math sup .close + .rel  ,
+.math sub .punct + .ord  , .math sup .punct + .ord  ,
+.math sub .punct + .op   , .math sup .punct + .op   ,
+.math sub .punct + .rel  , .math sup .punct + .rel  ,
+.math sub .punct + .open , .math sup .punct + .open ,
+.math sub .punct + .close, .math sup .punct + .close,
+.math sub .punct + .punct, .math sup .punct + .punct  { margin-left: 0; }
+
+/******************************************************************************/
+
+/* Bibliography */
+
+table#bibliography td { padding-bottom: 1em; }
+
+table#bibliography td.label { padding-right: 0.5em; }
+
+#footnotes h1 {
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 1.5ex;
+    margin-top: 3.25ex;
+}
+
+#footnotes h1 .seq {
+    display: inline;
+    font-variant: normal;
+    font-weight: bold;
+    margin: 0;
+}
+
+.footnote p {
+    text-indent: 0;
+}
+
+.footnote p + p {
+    text-indent: 1.25em;
+}
+
+.footnote > p > .num {
+    display: inline-block;
+    margin-left: 1em;
+    text-align: right;
+    width: 1em;
+}
+
+.footnote + .footnote {
+    padding-top: 0.5em;
+}
+
+/******************************************************************************/
+
+/* Table specifics */
+
+table#pref-table-signatures .col1 { text-align: center; }
+table#pref-table-signatures .col2 { text-align: left;
+                                    padding-left: 1em;  }
+
+table#ch1-table-grammar .left   { text-align: right; }
+table#ch1-table-grammar .center { text-align: center; padding-left: 0.333em; }
+table#ch1-table-grammar .right  { text-align: left;   padding-left: 0.333em; }
+
+table#ch1-table-let-expand pre { margin: 0; }
+table#ch1-table-let-expand .divider { padding: 0 0.25em 1em 1em;
+                                      vertical-align: middle; }
+
+table.envtable {
+    border: 1px solid black;
+    margin: 0.6em auto;
+}
+
+table.envtable td {
+    padding: 0.15em 0.75em;
+    border-right: 1px solid black;
+}
+
+table.term-def { margin: 0.8em auto; }
+table.term-def td.left { text-align: right; }
+table.term-def td.right { text-align: left;
+                          padding-left: 1em; }
+
+table.code {
+    margin: 0.4em auto;
+}
+
+table.code pre {
+    margin: 0;
+}
+
+table#ch3-eval-stack { margin: 0.8em auto; }
+table#ch3-eval-stack td.left { float: left; padding-right: 0.75em; }
+table#ch3-eval-stack td.right { float: right; }
+
+table#ch4-box-transform { margin: 0.8em auto; }
+table#ch4-box-transform td.left   { text-align: right;  padding-top: 0.25em; }
+table#ch4-box-transform td.center { text-align: center; padding-left: 0.5em; }
+table#ch4-box-transform td.right  { text-align: left;   padding-left: 0.5em; }
+
+div#ch4-annotated-src { margin: 0.6em 0; }
+div#ch4-annotated-src * { display: inline-block; margin: 0; padding: 0;  }
+div#ch4-annotated-src pre { vertical-align: middle; margin-left: 1.25em; }
+div#ch4-annotated-src img { vertical-align: middle; margin-left: 3em;    }
+
+table#ch5-table-lambda-syntax { margin: 0.6em auto; }
+table#ch5-table-lambda-syntax td.col1 { text-align: right; padding-left: 1.0em; }
+table#ch5-table-lambda-syntax td.col2 { text-align: left;  padding-left: 1.0em; }
+table#ch5-table-lambda-syntax td.col3 { text-align: left;  padding-left: 1.0em; }
+
+table#ch5-table-beta-reduction,
+table#ch5-table-denotation-essence { border-collapse: separate;
+                                     border-spacing: 0.25em;
+                                     margin: 0.6em auto; }
+table#ch5-table-beta-reduction td,
+table#ch5-table-denotation-essence td { text-align: left; }
+
+table#ch5-table-notation td.right.extra { padding-right: 1em; }
+table#ch5-table-notation td.left.extra  { border-left: 1px solid black;
+                                          padding-left: 1em; }
+
+table.domains { margin: 0.8em auto; }
+table.domains td.lhs { text-align: right;  }
+table.domains td.eq  { text-align: center; }
+table.domains td.rhs { text-align: left;   }
+
+table.semantic {
+    border-color: black;
+    border-style: solid;
+    border-width: 1px 2px 2px 1px;
+}
+
+table.semantic td {
+    padding: 1em;
+}
+
+table#ch5-boolify-eq {
+    margin: 0.6em auto;
+}
+
+table#ch5-boolify-eq tr.second td {
+    padding-top: 0.4em;
+}
+
+/* fuck you Unicode for not providing scalable horizontal
+   braces like the vertical ones */
+table .low-brace {
+    border-top: 1px dashed black;
+    text-align: center;
+}
+
+table#ch5-dynamic-denotation-transform td.arrow {
+    padding: 0 0.5em;
+}
+
+table.ch6-meaning.left  { margin-left:  1.25em; margin-bottom: 0.3em; }
+table.ch6-meaning.right { margin-right: 1.25em; margin-top:    0.3em; }
+
+
+table.instruction-list td {
+    border-left:  1px solid black;
+    border-right: 1px solid black;
+    padding: 0.1em 0.25em;
+}
+
+table.instruction-list tbody {
+    border-bottom: 1px solid black;
+    border-top:    1px solid black;
+}
+
+table.disasm td.col1 { padding-right: 1.05em; }
+table.disasm td.col2 { border-left: 1px solid black;
+                       padding-left: 0.95em; }
+
+table#ch7-arity-probs thead {
+    border-bottom: 1px solid black;
+    border-top:    1px solid black;
+}
+
+table#ch7-arity-probs td.desc { text-align: left;
+                                padding: 0; }
+table#ch7-arity-probs td      { text-align: center;
+                                padding-left: 1em; }
+
+table#ch9-table-prepare .left  { text-align: center; }
+table#ch9-table-prepare .arrow { padding: 0 0.75em; }
+table#ch9-table-prepare .right { text-align: left;
+                                 vertical-align: middle; }
+
+/******************************************************************************/
+
+/* Code hightlight */
+
+code .comment,
+pre .comment {
+    font-family: 'DejaVu Serif', serif;
+}
+
+code.c .comment,
+pre.c .comment {
+    font-family: 'DejaVu Sans Mono', monospace;
+}
+
+code span.special,
+pre span.special { color: #B40808; }
+
+code span.syntax,
+pre span.syntax { color: #040475; }
+
+code span.class,
+pre span.class { color: #1D70A0; }
+
+code span.func,
+pre span.func { color: #057905; }
+
+code span.var,
+pre span.var { color: #6E0885; }
+
+code span.hash,
+pre span.hash { color: #087777; }
+
+code span.num,
+pre span.num { color: #769207; }
+
+code span.string,
+pre span.string { color: #915C0D; }
+
+code span.string .pp,
+pre span.string .pp { color: #1070C0; }
+
+code span.string .esc,
+pre span.string .esc { color: #B80A57; }
+
+code span.comment,
+pre span.comment { color: #424242; }
+
+code.c span.pre,
+pre.c span.pre { color: #31770E; }
+
+code.c span.macro,
+pre.c span.macro { color: #1F1F7A; }
+
+code.c span.var,
+pre.c span.var { color: #8B8607; }
+
+code.c span.num,
+pre.c span.num { color: #6B098A; }
+
+code.c span.string,
+pre.c span.string { color: #853159; }
+
+code.c span.keyword,
+pre.c span.keyword { color: #B40808; }
+
+code.c span.type,
+pre.c span.type { color: #0C888D; }
+
+pre.shell             { color: #2C2C2C; }
+pre.shell span.prompt { color: #3E8F39; }
+pre.shell span.cmd    { color: #970B0B; }
+pre.shell span.opt    { color: #0E318B; }
+pre.shell span.arg    { color: #482055; }
+
+code span.highlight,
+pre span.highlight { background: #DDDDDD; }
+
+/******************************************************************************/
+
+/* Cover page */
+
+#cover {
+    text-align: center;
+}
+
+#cover h1 {
+    font-weight: bold;
+    line-height: 0.87;
+    margin: 0 0 0.8em 0;
+    text-align: center;
+}
+
+#cover img {
+    margin: 0;
+}
+
+#cover h2 {
+    font-style: italic;
+    font-weight: normal;
+    line-height: 1;
+    margin: 0.8em 0 0 0;
+}

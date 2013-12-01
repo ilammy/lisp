@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<!DOCTYPE html>
+<html>
 
 <head>
     <title>6 – Быстрая интерпретация</title>
-    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
-    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
 </head>
 
 <body>
@@ -42,7 +40,7 @@
 <!--\indexR{память}-->
 <p>Ради эффективности предположим, что язык реализации содержит некоторый
 минимальный набор средств, в частности, память. Первой на покой уйдёт наша
-инкрементальная память из <a href="ch04_assignment_and_side_effects.xhtml">четвёртой главы</a>.
+инкрементальная память из <a href="ch04_assignment_and_side_effects.html">четвёртой главы</a>.
 Она была введена исключительно как иллюстрация концепции, а не в роли практической
 рекомендации. Конечно, связывание при этом никуда не денется, но память будет
 использоваться лишь для хранения привязок. Теперь это проблемы
@@ -65,12 +63,12 @@
 с подходом Scheme к вычислению аргументов приводит к огромной доле вычислений,
 выполняемых в неподходящее время. Сейчас нас устраивает достигнутый уровень
 точности, так что можно перенести вычисления немного вперёд, чтобы выполнять их
-раньше <span class="cite">[<a href="z1_bibliography.xhtml#deu89">Deu89</a>]</span>.
+раньше <span class="cite">[<a href="z1_bibliography.html#deu89">Deu89</a>]</span>.
 Такой перенос называется <em class="term">миграцией</em> кода, также
 известной под именами <em class="term"><span class="math"><span class="ord var">λ</span></span>-hoisting</em>
-<span class="cite">[<a href="z1_bibliography.xhtml#tak88">Tak88</a>]</span> и
+<span class="cite">[<a href="z1_bibliography.html#tak88">Tak88</a>]</span> и
 <em class="term"><span class="math"><span class="ord var">λ</span></span>-drifting</em>
-<span class="cite">[<a href="z1_bibliography.xhtml#roz92">Roz92</a>]</span>.
+<span class="cite">[<a href="z1_bibliography.html#roz92">Roz92</a>]</span>.
 Конечно, в Scheme его надо применять
 осторожно, чтобы не вызвать какие-либо побочные эффекты в неправильное время, а
 то и неправильное количество раз. Также при переносе могут возникнуть проблемы
@@ -141,7 +139,7 @@
 <p class="noindent">В этом определении используется новая возможность нашей объектной системы:
 звёздочка <code><span class="syntax">*</span></code> обозначает <em>индексированное</em> поле; такие поля содержат
 не одно значение, а упорядоченный набор значений, размер которого определяется
-при создании объекта. (См. раздел <a href="ch11_essence_of_an_object_system.xhtml#objects/sect:repr-obj">11.2</a> за подробностями.)</p>
+при создании объекта. (См. раздел <a href="ch11_essence_of_an_object_system.html#objects/sect:repr-obj">11.2</a> за подробностями.)</p>
 
 <p>Такое представление эффективнее расходует память, когда аргументов больше двух.
 Также оно позволяет получить прямой доступ к элементам, тогда как в списке время
@@ -225,7 +223,7 @@
 <code><span class="var">sr</span></code>. Сами
 окружения, по-хорошему, стоило бы представлять подобно памяти, но знакомые вам
 «гирлянды» из списков
-<span class="see">[см. упр. <a href="ch01_basics.xhtml#basics/ex:new-extend">1.3</a>]</span>
+<span class="see">[см. упр. <a href="ch01_basics.html#basics/ex:new-extend">1.3</a>]</span>
 являются вполне приемлемым вариантом. Окружения расширяются функцией
 <code><span class="func">r-extend*</span></code> (не путать
 с <code><span class="func">sr-extend*</span></code>); кроме неё нам потребуется «полупредикат»
@@ -404,7 +402,7 @@
 <!--\indexR{записи активации!момент создания}-->
 <p id="fast/fast/begin/application/par:call/cc">В наших интересах выполнить как
 можно больше вычислений на этапе
-предобработки.<a class="footref" href="zz_footnotes.xhtml#foot6.1"><sup>1</sup></a> Например, определить
+предобработки.<a class="footref" href="zz_footnotes.html#foot6.1"><sup>1</sup></a> Например, определить
 размер необходимой записи активации. Сейчас это сделать элементарно, зная длину
 списка аргументов. В противоположность этому, гораздо сложнее сказать,
 <em>когда</em> создавать запись. Есть два возможных момента времени:</p>
@@ -426,13 +424,13 @@
 <code><span class="func">call/cc</span></code>, из-за которой этот вариант может
 работать неверно. Он работает правильно только в Лиспе. Причина лежит в том,
 что неограниченные продолжения Scheme можно активировать несколько раз.
-<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/forms/immortal/par:reincarnate">3.1.5</a>]</span>
+<span class="see">[см. раздел <a href="ch03_escape_and_return.html#escape/forms/immortal/par:reincarnate">3.1.5</a>]</span>
 Если сначала создать запись активации для вызываемой функции, а потом в процессе
 вычисления её аргументов захватить продолжение, то все параллельные активации данного
 продолжения будут пользоваться физически одной и той же записью, — а ведь каждый вызов функции
 должен иметь свою собственную. Для пояснения проблемы рассмотрим следующий
 пример. Ожидается, что эта программа вернёт <code>(<span class="num">2</span> <span class="num">1</span>)</code>, но фактически она
-возвращает <code>(<span class="num">2</span> <span class="num">2</span>)</code> в случае разделяемых записей активаций.<a class="footref" href="zz_footnotes.xhtml#foot6.2"><sup>2</sup></a></p>
+возвращает <code>(<span class="num">2</span> <span class="num">2</span>)</code> в случае разделяемых записей активаций.<a class="footref" href="zz_footnotes.html#foot6.2"><sup>2</sup></a></p>
 
 
 <pre>(<span class="syntax">let</span> ((<span class="var">k</span> '<span class="var">wait</span>)
@@ -587,7 +585,7 @@
 будут располагаться в специально отведённом месте для глобальных переменных —
 двух векторах, доступных посредством переменных <code><span class="var">sg.current</span></code> и <code><span class="var">sg.init</span></code>.
 Префикс <code>s</code> здесь потому, что данные векторы — это всё же кусочек памяти.
-Теперь определим эти контейнеры<a class="footref" href="zz_footnotes.xhtml#foot6.3"><sup>3</sup></a> и функции-аксессоры к ним.
+Теперь определим эти контейнеры<a class="footref" href="zz_footnotes.html#foot6.3"><sup>3</sup></a> и функции-аксессоры к ним.
 (Конечно, без <code><span class="func">predefined-update!</span></code>, так как примитивы неизменяемы.)</p>
 
 <!--\indexC{sg.current}-->
@@ -760,9 +758,9 @@
 (<span class="func">compile-and-run</span> (<span class="func">read</span>)))</code>)
 мы могли бы немного оптимизировать обращения к инициализированным
 глобальным переменным. В действительности, у нас даже сейчас есть подобная
-оптимизация<a class="footref" href="zz_footnotes.xhtml#foot6.4"><sup>4</sup></a>
+оптимизация<a class="footref" href="zz_footnotes.html#foot6.4"><sup>4</sup></a>
 в <code><span class="func">meaning-reference</span></code>.
-<span class="see">[см. упр. <a href="ch07_compilation.xhtml#compilation/ex:unchecked-ref">7.4</a>]</span></p>
+<span class="see">[см. упр. <a href="ch07_compilation.html#compilation/ex:unchecked-ref">7.4</a>]</span></p>
 
 
 <h3 id="fast/fast/ssest:starting"><span class="wrap"><span class="seq">6.1.5.</span><span class="title">Запускаем интерпретатор</span></span></h3>
@@ -890,7 +888,7 @@
 это не что иное, как <code><span class="syntax">let</span></code>-форма:
 всего лишь блок кода с локальными переменными. И снова, для функций
 фиксированной арности всё легко и просто, чего не скажешь об арности
-переменной<a class="footref" href="zz_footnotes.xhtml#foot6.5"><sup>5</sup></a>.
+переменной<a class="footref" href="zz_footnotes.html#foot6.5"><sup>5</sup></a>.
 Кстати, в этом случае неправильное количество
 аргументов является статически обнаруживаемой ошибкой.</p>
 
@@ -1035,7 +1033,7 @@
 макросом, раскрывающимся в <code>(<span class="syntax">let</span> ((<i>v</i> <i>x</i>))
 (<span class="special">if</span> (<span class="func">pair?</span> <i>v</i>)
 (<span class="func">unsafe-car</span> <i>v</i>) (<span class="func">error</span> ...)))</code>,
-где <code><span class="func">unsafe-car</span></code><a class="footref" href="zz_footnotes.xhtml#foot6.6"><sup>6</sup></a> работает как <code><span class="func">car</span></code>,
+где <code><span class="func">unsafe-car</span></code><a class="footref" href="zz_footnotes.html#foot6.6"><sup>6</sup></a> работает как <code><span class="func">car</span></code>,
 если её аргумент это точечная пара, и имеет
 неопределённое поведение в противном случае. Теперь остаётся только перенести
 все проверки типов как можно выше, оставив таким образом лишь неизбежные и
@@ -1214,7 +1212,7 @@
 активного замыкания, а другая — со свободными. Конечно, на случай, если
 потребуется разделять какую-либо переменную между несколькими замыканиями, имеет
 смысл реализовать коробки.
-<span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#ch4-box-transform">4.1.1</a>]</span></p>
+<span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.html#ch4-box-transform">4.1.1</a>]</span></p>
 
 <p>В идеале, естественно, стоит использовать все возможные варианты, применяя
 каждый из них в тех случаях, для которых он работает лучше остальных. Чтобы
@@ -1381,7 +1379,7 @@
 проверить статически, а отсутствие считается ошибкой.</p>
 
 <p>Кроме того, как мы упоминали ранее в разговоре о <code><span class="syntax">letrec</span></code>
-<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span>, важно понимать, что
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.html#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span>, важно понимать, что
 создание и инициализация переменных — это не одно и то же. Переменная может
 существовать, но не иметь при этом значения. Вот вам пример такой переменной:</p>
 
@@ -1411,8 +1409,8 @@
 Естественно, непрестанно ведутся исследования, нацеленные на поиск новых
 статических свойств программ, которые могли бы улучшить качество
 предварительной обработки. Вот лишь некоторые из них: абстрактная интерпретация
-в работе <span class="cite">[<a href="z1_bibliography.xhtml#cc77">CC77</a>]</span>, частичные вычисления из <span class="cite">[<a href="z1_bibliography.xhtml#jgs93">JGS93</a>]</span>, анализ потока
-исполнения в <span class="cite">[<a href="z1_bibliography.xhtml#shi91">Shi91</a>]</span>. Ещё одним аспектом, влияющим на эффективность,
+в работе <span class="cite">[<a href="z1_bibliography.html#cc77">CC77</a>]</span>, частичные вычисления из <span class="cite">[<a href="z1_bibliography.html#jgs93">JGS93</a>]</span>, анализ потока
+исполнения в <span class="cite">[<a href="z1_bibliography.html#shi91">Shi91</a>]</span>. Ещё одним аспектом, влияющим на эффективность,
 является выбор используемых структур данных, как можно было увидеть из нашей
 дискуссии о представлении записей активаций.</p>
 
@@ -1491,7 +1489,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 </ul>
 
 <!--\indexR{регистры!как стеки}-->
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#ss80">SS80</a>]</span> предлагается следующее решение: вызывающий помечает регистры
+<p>В <span class="cite">[<a href="z1_bibliography.html#ss80">SS80</a>]</span> предлагается следующее решение: вызывающий помечает регистры
 метками «сохранить при использовании» и «можно свободно изменять», а
 вызываемый может сохранять только то, что действительно надо сохранять, помечая
 регистры как «восстановить при возврате» и «значение не менялось». Тогда
@@ -2347,16 +2345,16 @@ Scheme. Несмотря на то, что объекты и замыкания 
 в заблуждение, поясним эту мысль: количество памяти, необходимое для размещения
 продолжений, не зависит от того, будут ли они жить в стеке или в куче, но
 благодаря обычно небольшому времени жизни продолжений их эффективнее размещать
-именно на стеке. (В <span class="cite">[<a href="z1_bibliography.xhtml#app87">App87</a>]</span> есть иное мнение на этот счёт.) Как показано
-в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">MB93</a>]</span>, данное утверждение остаётся верным, даже если использовать
+именно на стеке. (В <span class="cite">[<a href="z1_bibliography.html#app87">App87</a>]</span> есть иное мнение на этот счёт.) Как показано
+в <span class="cite">[<a href="z1_bibliography.html#mb93">MB93</a>]</span>, данное утверждение остаётся верным, даже если использовать
 отдельную кучу специально для продолжений.</p>
 
 
 <!--\indexR{шитый код}-->
 <p>Способ использования обещаний, показанный в этой главе, известен как <em class="term">шитый
-код</em> <span class="cite">[<a href="z1_bibliography.xhtml#bel73">Bel73</a>]</span> и широко применяется при реализации языка Forth <span class="cite">[<a href="z1_bibliography.xhtml#hon93">Hon93</a>]</span>.
+код</em> <span class="cite">[<a href="z1_bibliography.html#bel73">Bel73</a>]</span> и широко применяется при реализации языка Forth <span class="cite">[<a href="z1_bibliography.html#hon93">Hon93</a>]</span>.
 Вдохновение при создании этого интерпретатора также черпалось из работы
-Марка Филе и Гая Лапальма: <span class="cite">[<a href="z1_bibliography.xhtml#fl87">FL87</a>]</span>.</p>
+Марка Филе и Гая Лапальма: <span class="cite">[<a href="z1_bibliography.html#fl87">FL87</a>]</span>.</p>
 
 <p>Комбинаторы фактически играют роль кодогенераторов. Они используются как простой
 интерфейс представления кода, позволяющий легко изменять реализацию исполнителя
@@ -2385,7 +2383,7 @@ Scheme. Несмотря на то, что объекты и замыкания 
 языков, виртуальной реальности и т. д. Конечно, нам легко сказать: «только»,
 а на самом деле за этим словом скрывается неимоверная сложность разработки
 удобного способа представления примитивных объектов в памяти, который бы
-обеспечил возможность быстрой проверки типов <span class="cite">[<a href="z1_bibliography.xhtml#gud93">Gud93</a>]</span> и эффективной сборки
+обеспечил возможность быстрой проверки типов <span class="cite">[<a href="z1_bibliography.html#gud93">Gud93</a>]</span> и эффективной сборки
 мусора, не говоря уже о как минимум равной трудоёмкости задачи написания
 прикладных библиотек.</p>
 
@@ -2458,10 +2456,10 @@ Scheme. Несмотря на то, что объекты и замыкания 
 
 <h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
-<p>Последний рассмотренный интерпретатор вдохновлён статьёй <span class="cite">[<a href="z1_bibliography.xhtml#fl87">FL87</a>]</span>. Идея
-перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.xhtml#cli84">Cli84</a>]</span>. Если вам
+<p>Последний рассмотренный интерпретатор вдохновлён статьёй <span class="cite">[<a href="z1_bibliography.html#fl87">FL87</a>]</span>. Идея
+перехода от денотаций к комбинаторам взята из <span class="cite">[<a href="z1_bibliography.html#cli84">Cli84</a>]</span>. Если вам
 действительно понравилось оптимизировать интерпретацию, то определённо стоит
-изучить работы <span class="cite">[<a href="z1_bibliography.xhtml#cha80">Cha80</a>]</span> и <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.</p>
+изучить работы <span class="cite">[<a href="z1_bibliography.html#cha80">Cha80</a>]</span> и <span class="cite">[<a href="z1_bibliography.html#sj93">SJ93</a>]</span>.</p>
 
 </body>
 </html>

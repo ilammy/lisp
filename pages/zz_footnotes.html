@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<!DOCTYPE html>
+<html>
 
 <head>
     <title>Сноски</title>
-    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
-    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
 </head>
 
 <body id="footnotes">
@@ -73,7 +71,7 @@
 <div class="footnote" id="foot1.4">
   <p><span class="num"><sup>4</sup></span>
     Заметьте, не «функцию <code><span class="func">wrong</span></code>». Варианты её
-    реализации подробнее рассматриваются в разделе <a href="ch07_compilation.xhtml#compilation/sect:exception">7.9</a>.</p>
+    реализации подробнее рассматриваются в разделе <a href="ch07_compilation.html#compilation/sect:exception">7.9</a>.</p>
 </div>
 
 <div class="footnote" id="foot1.5">
@@ -100,7 +98,7 @@
     в <span class="math"><span class="var">β</span></span>. Обычно в таком случае используется
     <code><span class="func">gensym</span></code>, чтобы получить
     гарантированно уникальное имя переменной.
-    <span class="see">[см. упр. <a href="ch01_basics.xhtml#basics/ex:no-gensym">1.11</a>]</span></p>
+    <span class="see">[см. упр. <a href="ch01_basics.html#basics/ex:no-gensym">1.11</a>]</span></p>
 </div>
 
 <div class="footnote" id="foot1.8">
@@ -124,7 +122,7 @@
 
 <div class="footnote" id="foot1.10">
   <p><span class="num"><sup>10</sup></span>
-    Первый — это синтаксические ошибки (раздел <a href="ch01_basics.xhtml#basic/atoms/para:the-first-error">1.3</a>).</p>
+    Первый — это синтаксические ошибки (раздел <a href="ch01_basics.html#basic/atoms/para:the-first-error">1.3</a>).</p>
 </div>
 
 <div class="footnote" id="foot1.11">
@@ -141,7 +139,7 @@
     <code><span class="syntax">&amp;key</span></code>,
     <code><span class="syntax">&amp;rest</span></code>. Но это сильно усложняет синтаксический
     разбор и связывание. Иные системы позволяют даже обобщённое указание аргументов с помощью
-    шаблонов <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.</p>
+    шаблонов <span class="cite">[<a href="z1_bibliography.html#sj93">SJ93</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot1.13">
@@ -154,7 +152,7 @@
   <p><span class="num"><sup>14</sup></span>
     На самом деле, здесь можно использовать любое необходимое
     окружение. См. про форму <code><span class="special">closure</span></code> в разделе
-    <a href="ch04_assignment_and_side_effects.xhtml#assignement/assignement/para:closure">4.1</a>.</p>
+    <a href="ch04_assignment_and_side_effects.html#assignement/assignement/para:closure">4.1</a>.</p>
 </div>
 
 <div class="footnote" id="foot1.15">
@@ -173,13 +171,13 @@
 
 <div class="footnote" id="foot1.16">
   <p><span class="num"><sup>16</sup></span>
-    О происхождении <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.xhtml#ray91">Ray91</a>]</span>.</p>
+    О происхождении <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.html#ray91">Ray91</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot1.17">
   <p><span class="num"><sup>17</sup></span>
     Наша имитация не совсем точна, так как существует немало диалектов Лиспа (вроде CLtL1
-    <span class="cite">[<a href="z1_bibliography.xhtml#ste84">Ste84</a>]</span>), где
+    <span class="cite">[<a href="z1_bibliography.html#ste84">Ste84</a>]</span>), где
     <code><span class="special">lambda</span></code> — это не специальный оператор, а только ключевое слово-маркер
     вроде <code><span class="syntax">else</span></code> внутри <code><span class="syntax">cond</span></code> и <code><span class="syntax">case</span></code>. В этом случае <code><span class="func">d.evaluate</span></code>
     может вообще не знать ни о какой <code><span class="special">lambda</span></code>. Иногда даже накладываются
@@ -198,20 +196,20 @@
     используются чаще тех, что находятся глубоко внутри. Кстати, ещё стоит отметить, что
     лексические окружения в среднем меньше по размеру, чем динамические, так как
     последним необходимо хранить все переменные, участвующие в вычислениях, включая
-    одноимённые <span class="cite">[<a href="z1_bibliography.xhtml#bak92a">Bak92a</a>]</span>.</p>
+    одноимённые <span class="cite">[<a href="z1_bibliography.html#bak92a">Bak92a</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot1.20">
   <p><span class="num"><sup>20</sup></span>
     Здесь мы не реализуем присваивание переменным, захваченным замыканиями. Об этом можно
-    почитать в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>]</span>.</p>
+    почитать в <span class="cite">[<a href="z1_bibliography.html#bcsj86">BCSJ86</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot1.21">
   <p><span class="num"><sup>21</sup></span>
     Это поле названо в честь <code><span class="var">apval</span></code> из
-    <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>.
-    <span class="see">[см. <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/par:apval">2 главу</a>]</span>
+    <span class="cite">[<a href="z1_bibliography.html#mae+62">MAE<sup>+</sup>62</a>]</span>.
+    <span class="see">[см. <a href="ch02_lisp_1_2_omega.html#lisp1-2-omega/par:apval">2 главу</a>]</span>
     Тогда значения полей действительно хранились в наивных P-списках.</p>
 </div>
 
@@ -329,12 +327,12 @@
 
 <div class="footnote" id="foot2.11">
   <p><span class="num"><sup>11</sup></span>
-    Более подробное объяснение см. в <span class="cite">[<a href="z1_bibliography.xhtml#man74">Man74</a>]</span>.</p>
+    Более подробное объяснение см. в <span class="cite">[<a href="z1_bibliography.html#man74">Man74</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot2.12">
   <p><span class="num"><sup>12</sup></span>
-    Терминология Маккарти из <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>: функционал — это функция, принимающая другие функции как аргументы.</p>
+    Терминология Маккарти из <span class="cite">[<a href="z1_bibliography.html#mae+62">MAE<sup>+</sup>62</a>]</span>: функционал — это функция, принимающая другие функции как аргументы.</p>
 </div>
 
 
@@ -344,7 +342,7 @@
 
 <div class="footnote" id="foot3.1">
   <p><span class="num"><sup>1</sup></span>
-    Например, сравните стили изложения первого и третьего изданий <span class="cite">[<a href="z1_bibliography.xhtml#wh89">WH89</a>]</span>.</p>
+    Например, сравните стили изложения первого и третьего изданий <span class="cite">[<a href="z1_bibliography.html#wh89">WH89</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot3.2">
@@ -413,8 +411,8 @@
   <p><span class="num"><sup>10</sup></span>
     Правильно работающий аналог <code><span class="special">unwind-protect</span></code> для
     Scheme — <code><span class="func">dynamic-wind</span></code>, — был описан ещё в
-    <span class="cite">[<a href="z1_bibliography.xhtml#fwh92">FWH92</a>]</span>;
-    см. также <span class="cite">[<a href="z1_bibliography.xhtml#que93c">Que93c</a>]</span>.</p>
+    <span class="cite">[<a href="z1_bibliography.html#fwh92">FWH92</a>]</span>;
+    см. также <span class="cite">[<a href="z1_bibliography.html#que93c">Que93c</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot3.11">
@@ -513,7 +511,7 @@
   <p><span class="num"><sup>8</sup></span>
     Я запускал этот пример на четырёх различных интерпретаторах Scheme и
     два из них зациклились. Я не буду их называть, так как у них есть полное право
-    так делать. <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
+    так делать. <span class="cite">[<a href="z1_bibliography.html#kcr98">KCR98</a>]</span></p>
 </div>
 
 <div class="footnote" id="foot4.9">
@@ -541,8 +539,8 @@
 <div class="footnote" id="foot4.10">
   <p><span class="num"><sup>10</sup></span>
     Причём по результатам серьёзных исследований
-    вроде <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>,
-    <a href="z1_bibliography.xhtml#cg77">CG77</a>]</span>,
+    вроде <span class="cite">[<a href="z1_bibliography.html#cla79">Cla79</a>,
+    <a href="z1_bibliography.html#cg77">CG77</a>]</span>,
     желательно, чтобы значение <code><span class="var">cdr</span></code>
     (а не <code><span class="var">car</span></code>),
     было доступно непосредственно. Другим преимуществом такого расположения может
@@ -578,9 +576,9 @@
 
 <div class="footnote" id="foot5.1">
   <p><span class="num"><sup>1</sup></span>
-    Хорошим введением в <span class="math"><span class="ord var">λ</span></span>-исчисление могут служить книги <span class="cite">[<a href="z1_bibliography.xhtml#sto77">Sto77</a>,
-    <a href="z1_bibliography.xhtml#gor88">Gor88</a>]</span>.
-    Первой книгой библии <span class="math"><span class="ord var">λ</span></span>-исчисления считается <span class="cite">[<a href="z1_bibliography.xhtml#bar84">Bar84</a>]</span>.</p>
+    Хорошим введением в <span class="math"><span class="ord var">λ</span></span>-исчисление могут служить книги <span class="cite">[<a href="z1_bibliography.html#sto77">Sto77</a>,
+    <a href="z1_bibliography.html#gor88">Gor88</a>]</span>.
+    Первой книгой библии <span class="math"><span class="ord var">λ</span></span>-исчисления считается <span class="cite">[<a href="z1_bibliography.html#bar84">Bar84</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot5.2">
@@ -607,7 +605,7 @@
 <div class="footnote" id="foot5.6">
   <p><span class="num"><sup>6</sup></span>
     Правильная оптимизация вызовов предопределённых примитивов рассматривается в разделе
-    <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:integrating">6.1.8</a>.</p>
+    <a href="ch06_fast_interpretation.html#fast/fast/ssect:integrating">6.1.8</a>.</p>
 </div>
 
 
@@ -633,7 +631,7 @@
 <div class="footnote" id="foot6.3">
   <p><span class="num"><sup>3</sup></span>
     Для простоты количество глобальных переменных пока что ограничено одной сотней.
-    Данное ограничение будет снято в разделе <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:variations">6.1.9</a>.</p>
+    Данное ограничение будет снято в разделе <a href="ch06_fast_interpretation.html#fast/fast/ssect:variations">6.1.9</a>.</p>
 </div>
 
 <div class="footnote" id="foot6.4">
@@ -642,7 +640,7 @@
     код на лету, то можно было бы пойти и дальше: после инициализации переменной
     просто выкинуть код проверок на инициализированность изо всех обращений к ней.
     Например, так делает Bigloo
-    <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>.</p>
+    <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot6.5">
@@ -700,7 +698,7 @@
   <p><span class="num"><sup>4</sup></span>
     Да-да, <code><span class="func">list</span></code>,
     <code><span class="func">append</span></code>, неэффективно,
-    раздел <a href="ch07_compilation.xhtml#compilation/lang-and-target/par:slowpoke">7.2</a>.
+    раздел <a href="ch07_compilation.html#compilation/lang-and-target/par:slowpoke">7.2</a>.
     Извините.</p>
 </div>
 
@@ -743,7 +741,7 @@
   <p><span class="num"><sup>10</sup></span>
     Говоря в общем, это всё же возможно при обработке асинхронных вызовов вроде сигналов UNIX.
     В таком случае, очевидно, следует использовать время от времени проверяемый флаг, как
-    в <span class="cite">[<a href="z1_bibliography.xhtml#dev85">Dev85</a>]</span>,
+    в <span class="cite">[<a href="z1_bibliography.html#dev85">Dev85</a>]</span>,
     или иной механизм синхронизации.</p>
 </div>
 
@@ -806,7 +804,7 @@
     не позволяет захватить <em>пустое</em> окружение! Поэтому мы захватываем хоть что-нибудь —
     в данном случае функцию умножения, — чтобы получить начальное окружение для
     манипуляций (аналогичный костыль применён в
-    <span class="cite">[<a href="z1_bibliography.xhtml#qd96">QD96</a>]</span>).</p>
+    <span class="cite">[<a href="z1_bibliography.html#qd96">QD96</a>]</span>).</p>
 </div>
 
 <div class="footnote" id="foot8.8">
@@ -857,7 +855,7 @@
     Кстати, можно улучшить <code><span class="special">reflective-lambda</span></code>,
     дав ей возможность указывать операции, допустимые над экспортируемыми привязками; например,
     разрешать только чтение, но не изменение значений. Также можно,
-    подобно <span class="cite">[<a href="z1_bibliography.xhtml#lf93">LF93</a>]</span>, реализовать механизм переименования экспортируемых
+    подобно <span class="cite">[<a href="z1_bibliography.html#lf93">LF93</a>]</span>, реализовать механизм переименования экспортируемых
     переменных.</p>
 </div>
 
@@ -988,7 +986,7 @@
     <code><span class="var">car</span></code>, потому что пары — это всё же
     основной элемент связных списков, а <code><span class="var">cdr</span></code> при обходе
     списка просматривается чаще, как утверждается
-    <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>]</span>.</p>
+    <span class="cite">[<a href="z1_bibliography.html#cla79">Cla79</a>]</span>.</p>
 </div>
 
 <div class="footnote" id="foot10.10">
@@ -1033,7 +1031,7 @@
   <p><span class="num"><sup>2</sup></span>
     Полные исходные коды обеих систем — <span class="sc">M<span class="c">eroon</span></span> и
     <span class="sc">M<span class="c">eroonet</span></span> —
-    можно найти на сервере, адрес которого приведён <a href="01_preface.xhtml#pref/sect:source">в предисловии</a>.</p>
+    можно найти на сервере, адрес которого приведён <a href="01_preface.html#pref/sect:source">в предисловии</a>.</p>
 </div>
 
 <div class="footnote" id="foot11.3">

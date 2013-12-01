@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<!DOCTYPE html>
+<html>
 
 <head>
     <title>3 – Переходы и возвраты: продолжения</title>
-    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
-    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
 </head>
 
 <body>
@@ -20,7 +18,7 @@
 продолжений в Лиспе и Scheme, а также своеобразный «стиль передачи
 продолжений». Одним из отличий Лиспа от других языков является большое
 количество механизмов управления ходом вычислений. Это в некотором смысле
-превращает данную главу в каталог <span class="cite">[<a href="z1_bibliography.xhtml#moz87">Moz87</a>]</span>, где представлена тысяча и одна
+превращает данную главу в каталог <span class="cite">[<a href="z1_bibliography.html#moz87">Moz87</a>]</span>, где представлена тысяча и одна
 управляющая конструкция. С другой стороны, мы не будем вдаваться в подробности
 о продолжениях; по крайней мере, о том, как физически реализуется их захват и
 сохранение. Наш интерпретатор будет использовать объекты для представления
@@ -44,7 +42,7 @@
 надежды по переманиванию программистов на Алголе в ряды лисперов, так как
 считалось, что для них было более привычным использование <code>goto</code>. Вместо
 этого оказалось, что данная форма больше влияет на самих лисперов, сталкивая их
-с праведного пути хвостовой рекурсии.<a class="footref" href="zz_footnotes.xhtml#foot3.1"><sup>1</sup></a> Тем не менее, форма <code><span class="special">prog</span></code>
+с праведного пути хвостовой рекурсии.<a class="footref" href="zz_footnotes.html#foot3.1"><sup>1</sup></a> Тем не менее, форма <code><span class="special">prog</span></code>
 достойна рассмотрения, потому как обладает несколькими интересными свойствами.
 Например, вот так с её помощью записывается факториал:</p>
 
@@ -339,7 +337,7 @@
 <tr><td>Определение</td> <td>запрещено</td></tr>
 </table>
 
-<p>Перепишем<a class="footref" href="zz_footnotes.xhtml#foot3.2"><sup>2</sup></a> наш пример с деревом на новый лад:</p>
+<p>Перепишем<a class="footref" href="zz_footnotes.html#foot3.2"><sup>2</sup></a> наш пример с деревом на новый лад:</p>
 
 <!--\indexCS{find-symbol}{с переходами}-->
 <pre>(<span class="special">define</span> (<span class="func">find-symbol</span> <span class="var">id</span> <span class="var">tree</span>)
@@ -366,7 +364,7 @@
 чего вернуть указатель верхушки стека в положение, сохранённое в метке
 <code><span class="var">find</span></code>. Это всего лишь пара-тройка инструкций, а не поиск среди всех
 доступных меток, который устраивает <code><span class="special">catch</span></code>. Отличие станет более заметным,
-когда мы попробуем реализовать <code><span class="special">catch</span></code><a class="footref" href="zz_footnotes.xhtml#foot3.3"><sup>3</sup></a> с помощью <code><span class="special">block</span></code>:</p>
+когда мы попробуем реализовать <code><span class="special">catch</span></code><a class="footref" href="zz_footnotes.html#foot3.3"><sup>3</sup></a> с помощью <code><span class="special">block</span></code>:</p>
 
 <!--\indexC*{active-catchers}{*active-catchers*}-->
 <!--\indexCS{catch}{с лексическими метками}-->
@@ -397,7 +395,7 @@
       <span class="var">result</span> ) ) ) )</pre>
 
 <p>Здесь практически вся стоимость использования <code><span class="syntax">catch</span></code>/<code><span class="syntax">throw</span></code>
-сосредоточена в вызове <code><span class="func">assv</span></code><a class="footref" href="zz_footnotes.xhtml#foot3.4"><sup>4</sup></a> при раскрытии макроса <code><span class="syntax">throw</span></code>.
+сосредоточена в вызове <code><span class="func">assv</span></code><a class="footref" href="zz_footnotes.html#foot3.4"><sup>4</sup></a> при раскрытии макроса <code><span class="syntax">throw</span></code>.
 Рассмотрим, как работает эта реализация. Глобальная переменная (тут она названа
 <code><span class="var">*active-catchers*</span></code>) хранит все активные <code><span class="special">catch</span></code>-формы (выполнение которых
 ещё не завершилось). Переменная обновляется при выходе из <code><span class="syntax">catch</span></code> (как
@@ -411,13 +409,13 @@
 
 <p>Однако, эта эмуляция не совсем хороша, так как если <code><span class="syntax">catch</span></code> окажется внутри
 <code><span class="special">block</span></code>, то значение переменной <code><span class="var">*active-catchers*</span></code> может быть искажено.
-Эмулировать неестественный для языка синтаксис непросто <span class="cite">[<a href="z1_bibliography.xhtml#fel90">Fel90</a>,
-<a href="z1_bibliography.xhtml#bak92c">Bak92c</a>]</span>, так
+Эмулировать неестественный для языка синтаксис непросто <span class="cite">[<a href="z1_bibliography.html#fel90">Fel90</a>,
+<a href="z1_bibliography.html#bak92c">Bak92c</a>]</span>, так
 как это часто требует сложных архитектурных решений, которым необходимы ресурсы
 в единоличное пользование (вроде <code><span class="var">*active-catchers*</span></code>). Позже мы покажем, как
 подружить <code><span class="syntax">catch</span></code> и <code><span class="special">block</span></code>, но уже с помощью специального приспособления:
 <code><span class="special">unwind-protect</span></code>.<a class="footref"
-href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
+href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 
 <!--\indexR{динамическое связывание}-->
 <!--\indexR{продолжения (continuations)!время жизни!динамическое}-->
@@ -564,7 +562,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <p>Функция <code><span class="func">better-map</span></code> интересна тем, что в отличие от <code><span class="func">map</span></code> она не зависает
 намертво на замкнутых списках (при правильном использовании). Если
 <code>(<span class="func">hack-and-return-list</span>)</code> возвращает следующий список:
-<code><span class="hash">#1=</span>((<span class="var">foo</span> . <span class="var">hack</span>) . <span class="hash">#1#</span>)</code><a class="footref" href="zz_footnotes.xhtml#foot3.6"><sup>6</sup></a>, то <code><span class="func">better-map</span></code> прыгнет на
+<code><span class="hash">#1=</span>((<span class="var">foo</span> . <span class="var">hack</span>) . <span class="hash">#1#</span>)</code><a class="footref" href="zz_footnotes.html#foot3.6"><sup>6</sup></a>, то <code><span class="func">better-map</span></code> прыгнет на
 ближайшую метку <code><span class="var">not-a-pair</span></code> и таким образом избежит бесконечного цикла. Но
 вот незадача: замыканию, переданному в <code><span class="func">better-map</span></code>, эта метка тоже нужна.
 Конечно, если в документации к <code><span class="func">better-map</span></code> будет написано, что она
@@ -616,7 +614,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 захватываемым <code><span class="special">catch</span></code> и <code><span class="special">block</span></code>, неограниченное время жизни. Это свойство
 открыло поразительные возможности их использования. Позже, в соответствии
 с догматом о минимальном количестве специальных форм, были предприняты попытки
-выразить захват продолжений и сами продолжения как функции. В <span class="cite">[<a href="z1_bibliography.xhtml#lan65">Lan65</a>]</span>
+выразить захват продолжений и сами продолжения как функции. В <span class="cite">[<a href="z1_bibliography.html#lan65">Lan65</a>]</span>
 Питер Лэндин предложил оператор <span class="math"><span class="ord var">J</span></span>, прямым
 потомком которого является функция <code><span class="func">call/cc</span></code> в Scheme.</p>
 
@@ -636,7 +634,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <p>Теперь, когда мы захватили <i>k</i>, его нужно как-то передать пользователю.
 Но как? Очевидно, нельзя вернуть <i>k</i> как значение <code><span class="func">call/cc</span></code>, потому что
 это бессмысленно. Оно ожидается внутри какого-то вычисления, так что можно это
-вычисление обернуть в унарную функцию<a class="footref" href="zz_footnotes.xhtml#foot3.7"><sup>7</sup></a>, принимающую <i>k</i>, которую и передать внутрь
+вычисление обернуть в унарную функцию<a class="footref" href="zz_footnotes.html#foot3.7"><sup>7</sup></a>, принимающую <i>k</i>, которую и передать внутрь
 <code><span class="func">call/cc</span></code>:</p>
 
 <pre><sub><i>k</i></sub>(<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) ...))</pre>
@@ -744,7 +742,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexR{продолжения (continuations)!сложность реализации}-->
 <!--\indexR{стек!и продолжения}-->
 <p>Неограниченность времени жизни усложняет реализацию продолжений и в общем случае
-увеличивает стоимость их использования. (См. <span class="cite">[<a href="z1_bibliography.xhtml#cho88">CHO88</a>, <a href="z1_bibliography.xhtml#hdb90">HDB90</a>, <a href="z1_bibliography.xhtml#mat92">Mat92</a>]</span>.) Почему?
+увеличивает стоимость их использования. (См. <span class="cite">[<a href="z1_bibliography.html#cho88">CHO88</a>, <a href="z1_bibliography.html#hdb90">HDB90</a>, <a href="z1_bibliography.html#mat92">Mat92</a>]</span>.) Почему?
 Потому, что в таком случае вложенные вычисления уже нельзя представлять в виде
 стека, здесь требуется дерево. Если продолжения имеют исключительно динамическое
 время жизни, то это просто переходы: с их помощью можно покинуть текущие
@@ -757,7 +755,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <p>Если же продолжения живут неограниченно долго, то всё гораздо усложняется.
 Вспомните форму <code>(<span class="func">call/cc</span> ...)</code> в примере с факториалом: она фактически
 возвращает результат несколько раз. Если допускать такую возможность
-(многократного возврата значений<a class="footref" href="zz_footnotes.xhtml#foot3.8"><sup>8</sup></a>), то уже не получится считать, что выполнение
+(многократного возврата значений<a class="footref" href="zz_footnotes.html#foot3.8"><sup>8</sup></a>), то уже не получится считать, что выполнение
 функции окончено, когда она вернула значение.</p>
 
 <!--\indexR{память!и \protect<code><span class="func">call/cc</span></code>}-->
@@ -814,7 +812,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexC{cdr}-->
 <p>Осталось рассмотреть ещё один эффект, относящийся к продолжениям. Связан он
 со специальной формой <code><span class="special">unwind-protect</span></code>.
-Названием она обязана принципу первой реализации<a class="footref" href="zz_footnotes.xhtml#foot3.9"><sup>9</sup></a> и задуманному функциональному назначению. Вот синтаксис этой
+Названием она обязана принципу первой реализации<a class="footref" href="zz_footnotes.html#foot3.9"><sup>9</sup></a> и задуманному функциональному назначению. Вот синтаксис этой
 формы:</p>
 
 <pre>(<span class="special">unwind-protect</span> <i>форма</i>
@@ -872,7 +870,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 определённые действия после завершения вычислений. Следовательно, эта форма
 обязана знать, когда именно они завершаются. Но в присутствии продолжений
 с неограниченным временем жизни <code><span class="special">unwind-protect</span></code> не может легко ответить на
-этот вопрос<a class="footref" href="zz_footnotes.xhtml#foot3.10"><sup>10</sup></a>.</p>
+этот вопрос<a class="footref" href="zz_footnotes.html#foot3.10"><sup>10</sup></a>.</p>
 
 <p>Как мы уже не раз говорили, семантика управляющих структур далека от точного
 определения. Рассмотрим лишь несколько примеров, где нельзя однозначно сказать,
@@ -1002,8 +1000,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexR{функции!обобщённые}-->
 <p>Объекты группируются в <em class="term">классы</em>; объекты одного класса имеют одинаковые
 <em class="term">методы</em>; сообщения посылаются с помощью <em class="term">обобщённых функций</em>,
-популяризованных Common Loops <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">BKK<sup>+</sup>86</a>]</span>, CLOS <span class="cite">[<a href="z1_bibliography.xhtml#bdg+88">BDG<sup>+</sup>88</a>]</span> и
-ΤΕΛΟΣ <span class="cite">[<a href="z1_bibliography.xhtml#pnb93">PNB93</a>]</span>. Для нас важнейшей возможностью объектно-ориентированного
+популяризованных Common Loops <span class="cite">[<a href="z1_bibliography.html#bkk+86">BKK<sup>+</sup>86</a>]</span>, CLOS <span class="cite">[<a href="z1_bibliography.html#bdg+88">BDG<sup>+</sup>88</a>]</span> и
+ΤΕΛΟΣ <span class="cite">[<a href="z1_bibliography.html#pnb93">PNB93</a>]</span>. Для нас важнейшей возможностью объектно-ориентированного
 программирования является отделение обработки различных специальных форм и
 примитивных функций от ядра интерпретатора. Но всё имеет свою цену: в этом
 случае будет сложнее увидеть картину целиком, так как обработка будет размазана
@@ -1226,7 +1224,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <code><span class="func">resume</span></code>, которая вызывает специализацию для нашего класса продолжений.
 В этом продолжении мы выполняем собственно выбор, вычисляем одну их сохранённых
 веток в сохранённом окружении и передаём результат сохранённому продолжению всей
-условной формы.<a class="footref" href="zz_footnotes.xhtml#foot3.11"><sup>11</sup></a></p>
+условной формы.<a class="footref" href="zz_footnotes.html#foot3.11"><sup>11</sup></a></p>
 
 
 <h3 id="escape/actors/ssect:sequence"><span class="wrap"><span class="seq">3.2.5.</span><span class="title">Последовательность</span></span></h3>
@@ -1257,7 +1255,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>)</code>. Это продолжение принимает значение
 <code><span class="var">v</span></code> с помощью <code><span class="func">resume</span></code>,
 игнорирует его и продолжает оставшиеся вычисления
-в том же окружении и с тем же продолжением.<a class="footref" href="zz_footnotes.xhtml#foot3.12"><sup>12</sup></a></p>
+в том же окружении и с тем же продолжением.<a class="footref" href="zz_footnotes.html#foot3.12"><sup>12</sup></a></p>
 
 
 <h3 id="escape/actors/ssect:variables"><span class="wrap"><span class="seq">3.2.6.</span><span class="title">Окружения</span></span></h3>
@@ -1468,7 +1466,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <p>Перед погружением в сокровенные тайны устройства управляющих форм, давайте
 сначала подготовим наш интерпретатор к запуску. Этот раздел похож на
-раздел <a href="ch01_basics.xhtml#basics/sect:global-environment">1.7</a>.
+раздел <a href="ch01_basics.html#basics/sect:global-environment">1.7</a>.
 Неплохо было бы вначале научить наш интерпретатор нескольким полезным вещам вроде
 <code><span class="func">car</span></code>, поэтому объявим
 пару макросов, которые помогут нам наполнить его глобальное окружение.</p>
@@ -1508,7 +1506,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 которая обрабатывает обычные функции. Каждый примитив имеет два поля. Первое из
 них служит для упрощения отладки: оно хранит имя примитива. Естественно, это
 лишь подсказка, так как ничто не мешает в дальнейшем связать один и тот же
-примитив с разными именами.<a class="footref" href="zz_footnotes.xhtml#foot3.13"><sup>13</sup></a> Второе поле хранит «адрес» примитива, ссылку на соответствующую
+примитив с разными именами.<a class="footref" href="zz_footnotes.html#foot3.13"><sup>13</sup></a> Второе поле хранит «адрес» примитива, ссылку на соответствующую
 функцию языка реализации интерпретатора. В итоге примитивы вызываются с помощью
 <code><span class="func">invoke</span></code> следующим образом:</p>
 
@@ -1538,7 +1536,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <p>Заметьте, что мы могли бы легко написать похожий интерпретатор на истинно
 объектно-ориентированном языке, например на Smalltalk
-<span class="cite">[<a href="z1_bibliography.xhtml#gr83">GR83</a>]</span>, получив
+<span class="cite">[<a href="z1_bibliography.html#gr83">GR83</a>]</span>, получив
 заодно доступ к его хвалёному отладчику и среде разработки. Для полного счастья
 останется только добавить те несколько строчек, что открывают гору маленьких
 окошек с контекстными подсказками.</p>
@@ -1890,7 +1888,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <div class="bigskip"/>
 
 <!--\indexCS{unwind-protect}{ограничения \CommonLisp}-->
-<p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
+<p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL2 <span class="cite">[<a href="z1_bibliography.html#ste90">Ste90</a>]</span>) присутствует ещё одно интересное
 ограничение, касающееся переходов из форм-уборщиков. Эти переходы не могут вести
 внутрь той формы, из которой в теле <code><span class="special">unwind-protect</span></code> был вызван выход.
 Введено такое ограничение с целью недопущения бесконечных циклов из переходов,
@@ -1927,16 +1925,16 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 недействительными. Обычно продолжения неявно хранятся в стеке или даже
 в нескольких стеках, согласованных между собой, а переходы между ними
 компилируются в примитивы языка Си: <code>setjmp</code>/<code>longjmp</code>.
-<span class="see">[см. раздел <a href="ch10_compiling_into_c.xhtml#cc/sect:call/cc">10.11</a>]</span></p>
+<span class="see">[см. раздел <a href="ch10_compiling_into_c.html#cc/sect:call/cc">10.11</a>]</span></p>
 
 <!--\indexC{let/cc}-->
-<p>В диалекте <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> <span class="cite">[<a href="z1_bibliography.xhtml#pe92">PE92</a>]</span> есть специальная форма <code><span class="special">let/cc</span></code> со следующим
+<p>В диалекте <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> <span class="cite">[<a href="z1_bibliography.html#pe92">PE92</a>]</span> есть специальная форма <code><span class="special">let/cc</span></code> со следующим
 синтаксисом:</p>
 
 <pre>(<span class="special">let/cc</span> <i>переменная</i> <i>формы</i>...)  <span class="dialect"><span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span></span></pre>
 
 <!--\indexC{bind-exit}-->
-<p id="escape/comparing/par:bind-exit">В диалекте Dylan <span class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span> тоже есть подобная форма:</p>
+<p id="escape/comparing/par:bind-exit">В диалекте Dylan <span class="cite">[<a href="z1_bibliography.html#app92b">App92b</a>]</span> тоже есть подобная форма:</p>
 
 <pre>(<span class="special">bind-exit</span> (<i>переменная</i>) <i>формы</i>...)  <span class="dialect">Dylan</span></pre>
 
@@ -1966,20 +1964,20 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 не пользоваться аппаратным стеком, размещая все фреймы в куче.</p>
 
 <p>Такой подход унифицирует выделение памяти под структуры данных и, по
-мнению <span class="cite">[<a href="z1_bibliography.xhtml#as94">AS94</a>]</span>, облегчает портирование. Тем не менее, он приводит
+мнению <span class="cite">[<a href="z1_bibliography.html#as94">AS94</a>]</span>, облегчает портирование. Тем не менее, он приводит
 к фрагментации, что вынуждает явно хранить ссылки между продолжениями. (Хотя
-в <span class="cite">[<a href="z1_bibliography.xhtml#mb93">MB93</a>]</span> приведено несколько вариантов решения этих проблем.) Как правило,
+в <span class="cite">[<a href="z1_bibliography.html#mb93">MB93</a>]</span> приведено несколько вариантов решения этих проблем.) Как правило,
 ради эффективности в аппаратный стек стараются поместить максимум данных о ходе
 исполнения программы, так что каноническая реализация <code><span class="func">call/cc</span></code> делает снимки
 стека и сохраняет в куче именно их; таким образом, продолжения — это как раз
 такие снимки стека. Конечно, существуют и другие варианты реализации,
-рассмотренные, например, в <span class="cite">[<a href="z1_bibliography.xhtml#cho88">CHO88</a>, <a href="z1_bibliography.xhtml#hdb90">HDB90</a>]</span>, где используются разделяемые
+рассмотренные, например, в <span class="cite">[<a href="z1_bibliography.html#cho88">CHO88</a>, <a href="z1_bibliography.html#hdb90">HDB90</a>]</span>, где используются разделяемые
 копии, отложенное копирование, частичное копирование и т. д. Естественно,
 каждый из этих вариантов даёт свои преимущества, но за определённую плату.</p>
 
 <p>Форма <code><span class="func">call/cc</span></code> больше похожа на <code><span class="special">block</span></code>, нежели на <code><span class="special">catch</span></code>. Оба типа
 продолжений имеют лексическую область видимости, они различаются только временем
-жизни. В некоторых диалектах, вроде <span class="cite">[<a href="z1_bibliography.xhtml#im89">IM89</a>]</span>, есть урезанный вариант
+жизни. В некоторых диалектах, вроде <span class="cite">[<a href="z1_bibliography.html#im89">IM89</a>]</span>, есть урезанный вариант
 <code><span class="func">call/cc</span></code>. Называется он <code><span class="func">call/ep</span></code> (от <em class="term">call with exit procedure</em>);
 эта <em>процедура выхода</em> хорошо видна в <code><span class="special">block</span></code>/<code><span class="special">return-from</span></code>, равно
 как и в <code><span class="special">let/cc</span></code>. Интерфейс у <code><span class="func">call/ep</span></code> такой же, как и у <code><span class="func">call/cc</span></code>:</p>
@@ -2079,7 +2077,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
   (<span class="func">divide</span> <span class="var">p</span> <span class="var">q</span> (<span class="special">lambda</span> (<span class="var">quotient</span> <span class="var">remainder</span>)
                 (<span class="func">=</span> <span class="var">p</span> (<span class="func">+</span> (<span class="func">*</span> <span class="var">quotient</span> <span class="var">q</span>) <span class="var">remainder</span>)) )) )</pre>
 
-<p>Менее тривиальный пример — вычисление коэффициентов Безу.<a class="footref" href="zz_footnotes.xhtml#foot3.14"><sup>14</sup></a> Соотношение Безу утверждает, что для любых целых чисел
+<p>Менее тривиальный пример — вычисление коэффициентов Безу.<a class="footref" href="zz_footnotes.html#foot3.14"><sup>14</sup></a> Соотношение Безу утверждает, что для любых целых чисел
 <span class="math"><span class="ord var">n</span></span>
 и <span class="math"><span class="ord var">p</span></span>
 можно найти такую пару целых <span class="math"><span class="ord var">u</span></span> и
@@ -2166,8 +2164,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 как при таких вызовах они больше никогда не будут использоваться. Следовательно,
 их можно не сохранять, экономя таким образом драгоценную стековую память.
 Подобные оптимизации были детально изучены французским лисп-сообществом, что
-позволило существенно ускорить интерпретацию <span class="cite">[<a href="z1_bibliography.xhtml#gre77">Gre77</a> <a href="z1_bibliography.xhtml#cha80">Cha80</a> <a href="z1_bibliography.xhtml#sj87">SJ87</a>]</span>;
-см. также <span class="cite">[<a href="z1_bibliography.xhtml#han90">Han90</a>]</span>.</p>
+позволило существенно ускорить интерпретацию <span class="cite">[<a href="z1_bibliography.html#gre77">Gre77</a> <a href="z1_bibliography.html#cha80">Cha80</a> <a href="z1_bibliography.html#sj87">SJ87</a>]</span>;
+см. также <span class="cite">[<a href="z1_bibliography.html#han90">Han90</a>]</span>.</p>
 
 <div class="bigskip"/>
 
@@ -2229,7 +2227,7 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 
 <p>Это новое продолжение, хранящее список из последнего вычисленного значения,
 избавляет нас от необходимости передавать окружение <code><span class="var">r</span></code> целиком. Данный приём
-впервые использован Митчеллом Уондом и Дэниелом Фридманом в <span class="cite">[<a href="z1_bibliography.xhtml#wan80b">Wan80b</a>]</span>.</p>
+впервые использован Митчеллом Уондом и Дэниелом Фридманом в <span class="cite">[<a href="z1_bibliography.html#wan80b">Wan80b</a>]</span>.</p>
 
 
 <h2 id="escape/sect:partial"><span class="wrap"><span class="seq">3.7.</span><span class="title">Частичные продолжения</span></span></h2>
@@ -2243,13 +2241,13 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 через него не перешагнули, то он бы принял какое-то значение, выполнил
 определённые действия и передал бы полученное значение своему продолжению.
 То есть вёл бы себя как обычная функция. Во многих работах, вроде
-<span class="cite">[<a href="z1_bibliography.xhtml#ffdm87">FFDM87</a>,
-<a href="z1_bibliography.xhtml#ff87">FF87</a>,
-<a href="z1_bibliography.xhtml#fel88">Fel88</a>,
-<a href="z1_bibliography.xhtml#df90">DF90</a>,
-<a href="z1_bibliography.xhtml#hd90">HD90</a>,
-<a href="z1_bibliography.xhtml#qs91">QS91</a>,
-<a href="z1_bibliography.xhtml#mq94">MQ94</a>]</span>, приводятся способы сохранения и
+<span class="cite">[<a href="z1_bibliography.html#ffdm87">FFDM87</a>,
+<a href="z1_bibliography.html#ff87">FF87</a>,
+<a href="z1_bibliography.html#fel88">Fel88</a>,
+<a href="z1_bibliography.html#df90">DF90</a>,
+<a href="z1_bibliography.html#hd90">HD90</a>,
+<a href="z1_bibliography.html#qs91">QS91</a>,
+<a href="z1_bibliography.html#mq94">MQ94</a>]</span>, приводятся способы сохранения и
 приёмы использования этих срезов — <em class="term">частичных продолжений</em>
 (partial/delimited continuations).</p>
 
@@ -2289,9 +2287,9 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <!--\indexE{REPL!продолжения}-->
 <p>Частичные продолжения представляют собой лишь часть оставшихся вычислений, тогда
 как обычные продолжения — это <em>все</em> оставшиеся вычисления.
-В статьях <span class="cite">[<a href="z1_bibliography.xhtml#fwfd88">FWFD88</a>,
-<a href="z1_bibliography.xhtml#df90">DF90</a>, <a href="z1_bibliography.xhtml#hd90">HD90</a>,
-<a href="z1_bibliography.xhtml#qs91">QS91</a>]</span> приводятся способы захвата частичных и,
+В статьях <span class="cite">[<a href="z1_bibliography.html#fwfd88">FWFD88</a>,
+<a href="z1_bibliography.html#df90">DF90</a>, <a href="z1_bibliography.html#hd90">HD90</a>,
+<a href="z1_bibliography.html#qs91">QS91</a>]</span> приводятся способы захвата частичных и,
 следовательно, поддающихся композиции продолжений. Предположим, теперь
 с <code><span class="var">foo</span></code> связано продолжение <code><span class="hash">[</span>(<span class="func">+</span> <span class="num">1</span> <span class="hash">[]</span>)<span class="hash">]</span></code>, где внешние квадратные скобки
 означают, что оно ведёт себя как функция. Тогда <code>(<span class="func">foo</span> (<span class="func">foo</span> <span class="num">4</span>))</code> будет
@@ -2506,8 +2504,8 @@ href="zz_footnotes.xhtml#foot3.5"><sup>5</sup></a></p>
 <h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Годный, нетривиальный пример использования продолжений приведён в
-<span class="cite">[<a href="z1_bibliography.xhtml#wan80a">Wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.xhtml#hfw84">HFW84</a>]</span> об эмуляции сопрограмм.
-В <span class="cite">[<a href="z1_bibliography.xhtml#dr87">dR87</a>]</span> прекрасно рассказано о развитии понимания важности рефлексии
+<span class="cite">[<a href="z1_bibliography.html#wan80a">Wan80a</a>]</span>. Также стоит почитать <span class="cite">[<a href="z1_bibliography.html#hfw84">HFW84</a>]</span> об эмуляции сопрограмм.
+В <span class="cite">[<a href="z1_bibliography.html#dr87">dR87</a>]</span> прекрасно рассказано о развитии понимания важности рефлексии
 для управляющих форм.</p>
 
 </body>

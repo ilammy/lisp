@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<!DOCTYPE html>
+<html>
 
 <head>
     <title>К читателю</title>
-    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
-    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
 </head>
 
 <body>
@@ -77,10 +75,10 @@
 интроспекция, динамическая кодогенерация и, конечно же, макросы.</p>
 
 <p>Отчасти эта книга вдохновлена двумя работами: «Anatomy of Lisp»
-<span class="cite">[<a href="z1_bibliography.xhtml#all78">All78</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.html#all78">All78</a>]</span>,
 рассматривающей подходы к реализации Лиспа в семидесятых годах, и «Operating
 System Design: The XINU Approach» <span class="cite">[<a
-href="z1_bibliography.xhtml#com84">Com84</a>]</span>, где приводится весь
+href="z1_bibliography.html#com84">Com84</a>]</span>, где приводится весь
 необходимый код без сокрытия любых деталей работы операционной
 системы, что полностью убеждает читателя в верности изложения.</p>
 
@@ -209,7 +207,7 @@ PowerBook) и вообще сделали эту книгу возможной: 
 Жеромом Шейёксом, Жаном-Мари Жеффруа, Кристианом Жюльеном, Жан-Жаком Лакрампом,
 Мишелем Леметром, Люком Моро, Жаном-Франсуа Перро, Дэниелом Риббенсом,
 Бернардом Серпеттом, Мануэлем Серрано, Пьером Ве, а также перед моей музой,
-Клэр Н.<a class="footref" href="zz_footnotes.xhtml#foot0.tr-1"><sup>*</sup></a></p>
+Клэр Н.<a class="footref" href="zz_footnotes.html#foot0.tr-1"><sup>*</sup></a></p>
 
 <p>Конечно же, все ошибки, которые, к сожалению, неизбежно присутствуют в тексте,
 являются моими собственными.</p>
@@ -272,7 +270,7 @@ class="func">pp</span></code> для форматированного вывод
 <p>Некоторые выражения имеют смысл только для какого-то из диалектов Лиспа вроде
 <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, Dylan, <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>,
 <span class="sc">ISL<span class="c">isp</span></span>, Le_Lisp<a class="footref"
-href="zz_footnotes.xhtml#foot0.1"><sup>1</sup></a>, Scheme и т. д. В этом случае
+href="zz_footnotes.html#foot0.1"><sup>1</sup></a>, Scheme и т. д. В этом случае
 мы будем писать рядом название диалекта:</p>
 
 <pre>(<span class="special">defdynamic</span> <span class="var">fooncall</span>          <span class="dialect"><span class="sc">ISL<span class="c">isp</span></span></span>
@@ -290,17 +288,17 @@ class="stub">10.1</span>]</span>.<!-- Также в книге есть пред
 <h2 id="pref/sect:scheme-summary"><span class="wrap"><span class="title">Краткий обзор Scheme</span></span></h2>
 
 <p>Для изучения Scheme существует множество отличных книг, вроде <span
-class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>]</span>,
-<span class="cite">[<a href="z1_bibliography.xhtml#dyb87">Dyb87</a>]</span>,
+class="cite">[<a href="z1_bibliography.html#as85">AS85</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.html#dyb87">Dyb87</a>]</span>,
 <span class="cite">[<a href="sf89">SF89</a>]</span>. Мы же будем опираться на
 спецификацию, описанную в документе «Revised revised revised revised revised
 Report on Scheme», название которого часто сокращают до R<sup>5</sup>RS. <span
-class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
+class="cite">[<a href="z1_bibliography.html#kcr98">KCR98</a>]</span></p>
 
 <p>Сейчас мы лишь набросаем основные характерные черты этого диалекта; те черты,
 которые потом будут подробно проанализированы по мере улучшения понимания языка.</p>
 
-<p>В Scheme можно использовать символы, знаки<a class="footref" href="zz_footnotes.xhtml#foot0.tr-2"><sup>**</sup></a>, строки, списки, числа, логические значения,
+<p>В Scheme можно использовать символы, знаки<a class="footref" href="zz_footnotes.html#foot0.tr-2"><sup>**</sup></a>, строки, списки, числа, логические значения,
 векторы, порты и функции (или процедуры, как их принято называть в Scheme).</p>
 
 <p>Каждый из этих типов данных имеет соответствующий предикат: <code><span
@@ -456,26 +454,26 @@ class="special">set!</span></code>. Для записи литералов ис�
 <h2 id="pref/sect:reading"><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
 
 <p>Так как подразумевается, что вы уже знаете Scheme, мы будем ссылаться на
-традиционные <span class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>,
-<a href="z1_bibliography.xhtml#sf89">SF89</a>]</span>.</p>
+традиционные <span class="cite">[<a href="z1_bibliography.html#as85">AS85</a>,
+<a href="z1_bibliography.html#sf89">SF89</a>]</span>.</p>
 
 <p>Чтобы получить от книги больше, имеет смысл поглядывать в другие руководства:
 <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> <span class="cite">[<a
-href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>, Dylan <span
-class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span>,
+href="z1_bibliography.html#ste90">Ste90</a>]</span>, Dylan <span
+class="cite">[<a href="z1_bibliography.html#app92b">App92b</a>]</span>,
 <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> <span class="cite">[<a
-href="z1_bibliography.xhtml#pe92">PE92</a>]</span>,
+href="z1_bibliography.html#pe92">PE92</a>]</span>,
 <span class="sc">ISL<span class="c">isp</span></span> <span class="cite">[<a
-href="z1_bibliography.xhtml#iso94">ISO94</a></span>, Le_Lisp <span
-class="cite">[<a href="z1_bibliography.xhtml#cdd+91">CDD<sup>+</sup>91</a>]</span>,
-Oaklisp <span class="cite">[<a href="z1_bibliography.xhtml#lp88">LP88</a>]</span>,
-Scheme <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span>,
-T <span class="cite">[<a href="z1_bibliography.xhtml#ram84">RAM84</a>]</span>,
-Talk <span class="cite">[<a href="z1_bibliography.xhtml#ilo94">ILO94</a>]</span>.</p>
+href="z1_bibliography.html#iso94">ISO94</a></span>, Le_Lisp <span
+class="cite">[<a href="z1_bibliography.html#cdd+91">CDD<sup>+</sup>91</a>]</span>,
+Oaklisp <span class="cite">[<a href="z1_bibliography.html#lp88">LP88</a>]</span>,
+Scheme <span class="cite">[<a href="z1_bibliography.html#kcr98">KCR98</a>]</span>,
+T <span class="cite">[<a href="z1_bibliography.html#ram84">RAM84</a>]</span>,
+Talk <span class="cite">[<a href="z1_bibliography.html#ilo94">ILO94</a>]</span>.</p>
 
 <p>Наконец, для лучшего понимания языков программирования в целом будет полезной
-книга <span class="cite">[<a href="z1_bibliography.xhtml#bg94">BG94</a>]</span>.<a class="footref"
-href="zz_footnotes.xhtml#foot0.tr-3">***</a></p>
+книга <span class="cite">[<a href="z1_bibliography.html#bg94">BG94</a>]</span>.<a class="footref"
+href="zz_footnotes.html#foot0.tr-3">***</a></p>
 
 </body>
 </html>

@@ -1,11 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+<!DOCTYPE html>
+<html>
 
 <head>
     <title>4 – Присваивание и побочные эффекты</title>
-    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
-    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+    <link rel="stylesheet" type="text/css" href="css/zz_lisp.css"/>
 </head>
 
 <body>
@@ -143,7 +141,7 @@
   (<span class="special">set!</span> <span class="var">winner</span> (<span class="special">lambda</span> () <span class="var">name</span>))
   (<span class="func">winner</span>) )</pre>
 
-<p>В <span class="cite">[<a href="z1_bibliography.xhtml#sam79">Sam79</a>]</span> предлагается считать эффекты присваиваний видимыми только тем,
+<p>В <span class="cite">[<a href="z1_bibliography.html#sam79">Sam79</a>]</span> предлагается считать эффекты присваиваний видимыми только тем,
 кто это присваивание совершил. Тогда действительно <code><span class="func">set-winner!</span></code> вернёт новое
 значение, а <code><span class="func">winner</span></code> всегда будет возвращать <code><span class="string">"Nemo"</span></code>. В таком мире
 не существует привязок. Нет, конечно у переменных есть значения, но они намертво
@@ -164,11 +162,11 @@
 
 <p>Но данная модель вычислений значительно усложняет как присваивание, так
 и совместное использование переменных. Возможны и другие варианты решения этой
-проблемы; в <span class="cite">[<a href="z1_bibliography.xhtml#sj87">SJ87</a>]</span>
+проблемы; в <span class="cite">[<a href="z1_bibliography.html#sj87">SJ87</a>]</span>
 предлагается научить форму <code><span class="special">closure</span></code> самостоятельно
 искать выделять свободные переменные в функции. Также, как предлагается
-в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>,
-<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>, она может определённым образом
+в <span class="cite">[<a href="z1_bibliography.html#bcsj86">BCSJ86</a>,
+<a href="z1_bibliography.html#sj93">SJ93</a>]</span>, она может определённым образом
 модифицировать найденные присваивания, чтобы избежать неудобств с присваиванием свободным
 переменным.</p>
 
@@ -243,7 +241,7 @@
 
 <!--\indexR{коробки!и изменяемость переменных}-->
 <p>Во всех трёх случаях (даже четырёх, если считать упражнение
-<a href="ch03_escape_and_return.xhtml#escape/ex:crazy-cc">3.10</a>)
+<a href="ch03_escape_and_return.html#escape/ex:crazy-cc">3.10</a>)
 мы явно указываем на неопределённость
 возвращаемого значения вызова <code><span class="func">set-box!</span></code>.
 Каждую переменную, значение которой
@@ -378,7 +376,7 @@
 глобальной, так как её нет в локальных связывающих формах. Но ведь то, что она
 <em>должна</em> быть где-то в глобальном окружении, вовсе не означает, что она
 там есть! Что делать в таком случае? Мы уже разговаривали на эту тему
-<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/simple/code:redefine">2.6.1</a>]</span>, рассмотрев при этом
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.html#lisp1-2-omega/recusion/simple/code:redefine">2.6.1</a>]</span>, рассмотрев при этом
 несколько вариантов поведения.</p>
 
 <p>Что ещё можно делать с глобальной переменной, кроме присваивания? То же, что и
@@ -396,7 +394,7 @@
 <p>Можно определить глобальное окружение как место, где все переменные
 предварительно объявлены. Естественно, в действительности они объявляются
 непосредственно перед первым использованием, но делается это незаметно и
-автоматически <span class="cite">[<a href="z1_bibliography.xhtml#que95">Que95</a>]</span>. В таком мире с каждым именем связана одна и только
+автоматически <span class="cite">[<a href="z1_bibliography.html#que95">Que95</a>]</span>. В таком мире с каждым именем связана одна и только
 одна переменная. Определение переменной здесь не имеет смысла, они все уже
 определены. Изменение переменной тоже не вызывает проблем: мы уверены, что
 изменяемая переменная существует. Соответственно, форма <code><span class="special">define</span></code> фактически
@@ -522,7 +520,7 @@
 ...</div></div></pre>
 
 <p>Глобальные определения заменяются локальными переменными, которые остаются
-неинициализированными до соответствующей <code><span class="special">define</span></code>-формы.<a class="footref" href="zz_footnotes.xhtml#foot4.1"><sup>1</sup></a> Конечно, встроенные функции вроде <code><span class="func">read</span></code>,
+неинициализированными до соответствующей <code><span class="special">define</span></code>-формы.<a class="footref" href="zz_footnotes.html#foot4.1"><sup>1</sup></a> Конечно, встроенные функции вроде <code><span class="func">read</span></code>,
 <code><span class="func">string=?</span></code> или <code><span class="func">string-append</span></code> всё так же остаются видимыми. В этом мире
 глобальное окружение конечно и ограничено предопределёнными функциями (вроде
 <code><span class="func">car</span></code> и <code><span class="func">cons</span></code>), а также свободными переменными наших программ.
@@ -559,8 +557,8 @@
 <code><span class="special">define</span></code> не умеет определять переменные без значений), которые тут же
 изменяются на правильные соответствующими <code><span class="special">set!</span></code>. Как видим, с таким
 окружением есть одна явная проблема: все переменные обязаны быть изменяемыми.
-В ранних версиях Scheme <span class="cite">[<a href="z1_bibliography.xhtml#ss78b">SS78b</a>]</span> существовало специальное приспособление
-— форма <code><span class="syntax">static</span></code>, — с помощью которой можно было<a class="footref" href="zz_footnotes.xhtml#foot4.2"><sup>2</sup></a> писать вот так:</p>
+В ранних версиях Scheme <span class="cite">[<a href="z1_bibliography.html#ss78b">SS78b</a>]</span> существовало специальное приспособление
+— форма <code><span class="syntax">static</span></code>, — с помощью которой можно было<a class="footref" href="zz_footnotes.html#foot4.2"><sup>2</sup></a> писать вот так:</p>
 
 <pre>(<span class="syntax">let</span> ((<span class="var">name</span> <span class="string">"Nemo"</span>))
   (<span class="special">define</span> (<span class="syntax">static</span> <span class="var">winner</span>) (<span class="special">lambda</span> () <span class="var">name</span>))
@@ -575,7 +573,7 @@
 мы рискуем нечаянно загрязнить глобальное окружение переменными, которые должны
 были быть локальными. Как вариант, можно разрешить создавать лишь локальные
 переменные; например, только лексические с помощью <code><span class="syntax">let</span></code>, или, как
-в <span class="cite">[<a href="z1_bibliography.xhtml#nor72">Nor72</a>]</span>, только динамические переменные внутри <code><span class="special">prog</span></code>.<a clas="footref" href="zz_footnotes.xhtml#foot4.3"><sup>3</sup></a> К сожалению, это
+в <span class="cite">[<a href="z1_bibliography.html#nor72">Nor72</a>]</span>, только динамические переменные внутри <code><span class="special">prog</span></code>.<a clas="footref" href="zz_footnotes.html#foot4.3"><sup>3</sup></a> К сожалению, это
 не вернёт ссылочную прозрачность, а кроме того, вызовет известные сложности
 с рекурсией.</p>
 
@@ -738,7 +736,7 @@
 <p>Мы уже видели, что присваивания можно заменить использованием коробок, но сами
 коробки используют точечные пары. Вопрос: можно ли реализовать точечные пары без
 точечных пар? Ответ: да, но для этого нам понадобится присваивание! Их можно
-представить в виде замыкания, реагирующего на сообщения<a class="footref" href="zz_footnotes.xhtml#foot4.4"><sup>4</sup></a> <code><span class="var">car</span></code>,
+представить в виде замыкания, реагирующего на сообщения<a class="footref" href="zz_footnotes.html#foot4.4"><sup>4</sup></a> <code><span class="var">car</span></code>,
 <code><span class="var">cdr</span></code>,
 <code><span class="var">set-car!</span></code> и
 <code><span class="var">set-cdr!</span></code>:</p>
@@ -762,7 +760,7 @@
 
 <!--\indexE{Scheme!проблемы типизации}-->
 <p>И вновь определение оказывается не вполне точным, как справедливо замечено
-в <span class="cite">[<a href="z1_bibliography.xhtml#fel90">Fel90</a>]</span>, потому что теперь мы не можем различать точечные пары и
+в <span class="cite">[<a href="z1_bibliography.html#fel90">Fel90</a>]</span>, потому что теперь мы не можем различать точечные пары и
 замыкания. При таком определении нельзя написать предикат <code><span class="func">pair?</span></code>, который
 будет работать верно в любых условиях. Если не обращать внимания на эту проблему
 (которую можно считать платой за возможность создавать свои типы данных), то
@@ -815,7 +813,7 @@
 <!--\indexC{eq"?}-->
 <p>Составные объекты вроде списков, строк и векторов логично считать равными, если
 они состоят из равных частей. Именно такой смысл равенства олицетворяют
-всевозможные варианты<a class="footref" href="zz_footnotes.xhtml#foot4.5"><sup>5</sup></a>
+всевозможные варианты<a class="footref" href="zz_footnotes.html#foot4.5"><sup>5</sup></a>
 предиката <code><span class="func">equal?</span></code>. К сожалению, если состав объектов можно
 изменять, то равенство их в один момент времени не гарантирует сохранение
 равенства в любой другой. Поэтому мы введём предикат <code><span class="func">eq?</span></code>, проверяющий
@@ -837,9 +835,9 @@
 ни одна программа не сможет их различить.</p>
 
 <p>Предикат <code><span class="func">eq?</span></code> работает на самом низком уровне: он может сравнивать только
-адреса ячеек памяти<a class="footref" href="zz_footnotes.xhtml#foot4.6"><sup>6</sup></a>
+адреса ячеек памяти<a class="footref" href="zz_footnotes.html#foot4.6"><sup>6</sup></a>
 и непосредственные константы. Некоторые объекты могут представляться в памяти
-по-разному, но быть при этом эквивалентными<a class="footref" href="zz_footnotes.xhtml#foot4.7"><sup>7</sup></a>, поэтому выходит, что <code><span class="func">eq?</span></code> не обладает критичной для
+по-разному, но быть при этом эквивалентными<a class="footref" href="zz_footnotes.html#foot4.7"><sup>7</sup></a>, поэтому выходит, что <code><span class="func">eq?</span></code> не обладает критичной для
 отношения эквивалентности рефлексивностью.</p>
 
 <!--\indexC{eqv"?}-->
@@ -868,12 +866,12 @@
 ссылку, можно быть уверенным, что их никто никогда не поменяет.</p>
 
 <!--\indexC{egal}-->
-<p>Генри Бейкер в <span class="cite">[<a href="z1_bibliography.xhtml#bak93">Bak93</a>]</span> предложил унифицировать предикаты равенства,
-объединив их в один — <code><span class="func">egal</span></code><a class="footref" href="zz_footnotes.xhtml#foot4.tr-1"><sup>*</sup></a>, определяемый следующим образом: если
+<p>Генри Бейкер в <span class="cite">[<a href="z1_bibliography.html#bak93">Bak93</a>]</span> предложил унифицировать предикаты равенства,
+объединив их в один — <code><span class="func">egal</span></code><a class="footref" href="zz_footnotes.html#foot4.tr-1"><sup>*</sup></a>, определяемый следующим образом: если
 сравниваемые объекты изменяемы, то он ведёт себя как <code><span class="func">eq?</span></code>, в противном
 случае — как <code><span class="func">equal?</span></code>. Истинность данного предиката гарантирует
 взаимозаменимость объектов. Это очень удобная функция, например, как показано
-в <span class="cite">[<a href="z1_bibliography.xhtml#qd93">QD93</a>, <a href="z1_bibliography.xhtml#que94">Que94</a>]</span>, для параллельного программирования.</p>
+в <span class="cite">[<a href="z1_bibliography.html#qd93">QD93</a>, <a href="z1_bibliography.html#que94">Que94</a>]</span>, для параллельного программирования.</p>
 
 <!--\indexR{сравнение!циклических объектов}-->
 <!--\indexR{циклические структуры данных}-->
@@ -901,7 +899,7 @@
 реализована так, что сначала вызывает <code><span class="func">eq?</span></code>, и только потом — если ей
 переданы объекты, которые действительно могут быть не эквивалентны, — она
 выполняет долгую структурную проверку. В таком случае мы сразу же получаем
-ответ <code><span class="hash">#t</span></code>. Иначе <code><span class="func">equal?</span></code> попадает в бесконечный цикл.<a class="footref" href="zz_footnotes.xhtml#foot4.8"><sup>8</sup></a></p>
+ответ <code><span class="hash">#t</span></code>. Иначе <code><span class="func">equal?</span></code> попадает в бесконечный цикл.<a class="footref" href="zz_footnotes.html#foot4.8"><sup>8</sup></a></p>
 
 <p>Ладно, пусть результат <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o1</span>)</code> зависит от реализации; что насчёт
 <code>(<span class="func">equal?</span> <span class="var">o1</span> <span class="var">o2</span>)</code>? И опять ответ зависит от того, изменяемы ли или нет
@@ -930,7 +928,7 @@
 свойства символа доступны глобально; для хранения каждого свойства требуются две
 точечные пары; желательно организовать эффективный поиск значения по имени
 свойства (например, на основе <em class="term">хеш-таблиц</em><a class="footref"
-href="zz_footnotes.xhtml#foot4.9"><sup>9</sup></a>).</p>
+href="zz_footnotes.html#foot4.9"><sup>9</sup></a>).</p>
 
 
 <h3 id="assignment/side-effects/ssect:equality-func"><span class="wrap"><span class="seq">4.2.2.</span><span class="title">Равенство функций</span></span></h3>
@@ -990,7 +988,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 проблемы. Например, в языке без проверки типов <code>(<span class="func">car</span> '<span class="var">foo</span>)</code> вызовет ошибку и
 выброс исключения, но результаты его перехвата и обработки слабо предсказуемы и
 зависят отнюдь не только от аргументов. Поэтому не все функции вообще могут
-вернуть что-то сравнимое. Это касается всех частичных функций<a class="footref" href="zz_footnotes.xhtml#foot4.tr-2"><sup>**</sup></a>, которые используются вне своей фактической области
+вернуть что-то сравнимое. Это касается всех частичных функций<a class="footref" href="zz_footnotes.html#foot4.tr-2"><sup>**</sup></a>, которые используются вне своей фактической области
 определения.</p>
 
 <!--\indexR{замыкания (closures)!сравнение}-->
@@ -1071,7 +1069,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 сравнения зависят от выбора авторов реализации языка. Иногда оно и вообще
 оказывается под запретом. Хотя в этой книге сравнение функций всё же
 используется для методов <span class="sc">M<span class="c">eroonet</span></span>
-<span class="see">[см. раздел <a href="ch11_essence_of_an_object_system.xhtml#objects/method/par:func-eq">11.9</a>]</span>,
+<span class="see">[см. раздел <a href="ch11_essence_of_an_object_system.html#objects/method/par:func-eq">11.9</a>]</span>,
 пожалуйста, если это возможно, старайтесь воздержаться от сравнения функций
 в любом виде.</p>
 
@@ -1434,7 +1432,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 которому она передаст список выделенных адресов и новое состояние памяти, где по
 соответствующим адресам хранятся значения «не инициализировано». Именно на эту
 функцию возложена вся работа по управлению памятью, в частности, сборка мусора.
-Это отдельная сложная тема<a class="footref" href="zz_footnotes.xhtml#foot4.tr-3"><sup>***</sup></a>, которой мы
+Это отдельная сложная тема<a class="footref" href="zz_footnotes.html#foot4.tr-3"><sup>***</sup></a>, которой мы
 не будем здесь касаться и предположим, что память у нас бесконечная —
 то есть мы всегда можем найти необходимое количество свободных адресов.</p>
 
@@ -1562,7 +1560,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 представлять в виде двух адресов: один будет ссылаться на <code><span class="var">car</span></code>, второй —
 на <code><span class="var">cdr</span></code>. Это может показаться необычным, так как традиционно точечные пары
 представляются не двумя отдельными коробками, а одной коробкой с двумя
-отделениями<a class="footref" href="zz_footnotes.xhtml#foot4.10"><sup>10</sup></a>.
+отделениями<a class="footref" href="zz_footnotes.html#foot4.10"><sup>10</sup></a>.
 Это бы позволило чуть быстрее обращаться к её компонентам, а
 также применить известную технику размещения точечных пар в параллельных
 массивах: хранить <code><span class="var">car</span></code> и <code><span class="var">cdr</span></code> пар в двух отдельных массивах, но по
@@ -1619,7 +1617,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 думать об объектах как о «замыканиях для бедных», как считают некоторые
 фанатики Scheme, ведь даже объекты из предыдущей главы оказались значительно
 выразительнее. Хотя это не значит, что замыкания ни на что не способны
-<span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>]</span>.</p>
+<span class="cite">[<a href="z1_bibliography.html#ar88">AR88</a>]</span>.</p>
 
 
 <h3 id="assignment/implementation/ssect:init-env"><span class="wrap"><span class="seq">4.3.11.</span><span class="title">Начальное окружение</span></span></h3>
@@ -1898,7 +1896,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 переменных). Но, к сожалению, точный смысл таких цитат немного отличается от
 того, который обычно подразумевается в Лиспе и Scheme. Рассмотрим выражение
 <code>(<span class="special">quote</span> (<span class="var">a</span> . <span class="var">b</span>))</code>. По определению оно <em>в точности</em> эквивалентно
-<code>(<span class="func">cons</span> '<span class="var">a</span> '<span class="var">b</span>)</code><a class="footref" href="zz_footnotes.xhtml#foot4.11"><sup>11</sup></a>.
+<code>(<span class="func">cons</span> '<span class="var">a</span> '<span class="var">b</span>)</code><a class="footref" href="zz_footnotes.html#foot4.11"><sup>11</sup></a>.
 Когда мы цитируем составной объект вроде точечной пары <code>(<span class="var">a</span> . <span class="var">b</span>)</code>, мы создаём
 новую пару в памяти. Таким образом, такое цитирование — это лишь краткая
 запись для наших <code><span class="func">create-</span></code>функций. Поэтому ничуть не удивительно, что
@@ -2027,7 +2025,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 этапе компиляции, чем компилятор и пользуется, подставляя вместо них сразу
 готовый результат. Такая оптимизация называется <em class="term">свёрткой констант</em>
 (constant folding), её обобщением является техника частичных вычислений
-<span class="cite">[<a href="z1_bibliography.xhtml#jgs93">JGS93</a>]</span>.</p>
+<span class="cite">[<a href="z1_bibliography.html#jgs93">JGS93</a>]</span>.</p>
 
 <p>Компилятор также может решить подставить константы и в само определение функции
 <code><span class="func">vowel&lt;=</span></code> ради небольшого ускорения:</p>
@@ -2133,7 +2131,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 макросимволом, оборачивающим следующее прочитанное выражение в
 <code><span class="special">quote</span></code>. Или
 <code><span class="hash">#.</span><i>выражение</i></code>, вместо которого подставляется значение <i>выражения</i>;
-то есть следующее за <code><span class="hash">#.</span></code> выражение считывается, вычисляется<a class="footref" href="zz_footnotes.xhtml#foot4.12"><sup>12</sup></a> и его значение подставляется
+то есть следующее за <code><span class="hash">#.</span></code> выражение считывается, вычисляется<a class="footref" href="zz_footnotes.html#foot4.12"><sup>12</sup></a> и его значение подставляется
 вместо всей конструкции. В итоге, мы можем написать так:</p>
 
 <pre>(<span class="special">define</span> <span class="var">bar</span> (<span class="special">quote</span> <span class="hash">#.</span>(<span class="syntax">let</span> ((<span class="var">list</span> '(<span class="num">0</span> <span class="num">1</span>)))     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
@@ -2143,7 +2141,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 <p class="noindent">После этого переменная <code><span class="func">bar</span></code> будет содержать бесконечный
 список из чередующихся нулей и единиц. С помощью <code><span class="hash">#.</span></code> мы
 процитировали пару, чей
-<code><span class="var">cddr</span></code> равен ей самой. В CLtL2 <span class="cite">[<a href="z1_bibliography.xhtml#ste90">Ste90</a>]</span> прямым текстом написано, что
+<code><span class="var">cddr</span></code> равен ей самой. В CLtL2 <span class="cite">[<a href="z1_bibliography.html#ste90">Ste90</a>]</span> прямым текстом написано, что
 <code><span class="hash">#.</span></code> и существует для ввода таких неудобных значений. Если мы захотим
 реализовать такое поведение у себя, то это немного усложнит трансформацию
 программ (которая выносит вычисление цитат в начало), так как она должна будет
@@ -2154,7 +2152,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 есть просто макросы, с помощью которых можно добиться того же результата. Форма
 <code><span class="special">define-syntax</span></code>, правда, такого не позволяет, поэтому мы используем
 <code><span class="syntax">define-abbreviation</span></code> — макрос для определения макросов, который детально
-рассматривается в <a href="ch09_macros.xhtml">девятой главе</a>.</p>
+рассматривается в <a href="ch09_macros.html">девятой главе</a>.</p>
 
 <!--\indexC{cycle}-->
 <pre>(<span class="syntax">define-abbreviation</span> (<span class="syntax">cycle</span> <span class="var">n</span>)
@@ -2169,7 +2167,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 подставляемый в цитату, которой инициализируется переменная <code><span class="var">bar</span></code>. Мы
 не можем написать такой список прямым текстом в определении <code><span class="var">bar</span></code>, так как
 <code><span class="func">read</span></code> Scheme не умеет считывать циклические данные. В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> это
-возможно с помощью макросимволов <code><span class="hash">#<i>n</i>=</span></code> и <code><span class="hash">#<i>n</i>#</span></code><a class="footref" href="zz_footnotes.xhtml#foot4.13"><sup>13</sup></a>:</p>
+возможно с помощью макросимволов <code><span class="hash">#<i>n</i>=</span></code> и <code><span class="hash">#<i>n</i>#</span></code><a class="footref" href="zz_footnotes.html#foot4.13"><sup>13</sup></a>:</p>
 
 <pre>(<span class="special">define</span> <span class="var">bar</span> <span class="hash">#1=</span>(<span class="num">0</span> <span class="num">1</span> . <span class="hash">#1#</span>))</pre>
 
@@ -2178,7 +2176,7 @@ R<sup>5</sup>RS оставляет результат <code><span class="func">e
 цитировать подобные структуры можно только лишь с помощью ухищрений вроде
 макросов.</p>
 
-<p><a href="ch09_macros.xhtml">Девятая глава</a> будет посвящена подробному рассмотрению макросов, их возможностей,
+<p><a href="ch09_macros.html">Девятая глава</a> будет посвящена подробному рассмотрению макросов, их возможностей,
 ограничений и вызываемых ими проблем.</p>
 
 
