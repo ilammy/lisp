@@ -1,0 +1,2080 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+
+<head>
+    <title>11 – Квинтэссенция объектной системы</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+</head>
+
+<body>
+
+<h1 id="chapter:objects"><span class="wrap"><span class="seq">Глава 11.</span><span class="title">Квинтэссенция объектной системы</span></span></h1>
+
+<p class="noindent"><span class="initial">О</span><span class="sc"><span class="c">бъекты</span></span>!
+Ах, что бы мы без них делали? В этой
+главе рассматривается реализация объектной системы, повсеместно используемой
+в данной книге. Мы намеренно разберём лишь часть её возможностей, дабы
+не перегружать изложение несущественными деталями. Действительно, хотелось бы
+ограничиться тем, что Франсуа Рабле называл <em class="term">substantifique moelle</em>, —
+сердцевиной объектной системы, её квинтэссенцией.</p>
+
+<!--\indexE{Meroon@\protect\MeroonMeroonet}-->
+<p>Эта объектная система называется <span class="sc">M<span class="c">eroon</span></span><a class="footref"
+href="zz_footnotes.xhtml#foot11.1"><sup>1</sup></a>. Подобные системы весьма сложны и
+требуют существенных усилий, чтобы оставаться одновременно эффективными и
+переносимыми. Как результат, её архитектура во многом продиктована, а кое-где и
+искажена тревогами о переносимости. Поэтому здесь мы будем рассматривать более
+аккуратную уменьшенную версию <span class="sc">M<span class="c">eroon</span></span>,
+называемую <span class="sc">M<span class="c">eroonet</span></span>.<a class="footref"
+href="zz_footnotes.xhtml#foot11.2"><sup>2</sup></a></p>
+
+<div class="bigskip"/>
+
+<!--\indexR{объекты}-->
+<p>Лисп уже долгое время идёт рука об руку с объектами. Именно на Лиспе изначально
+был реализован Smalltalk — один из первых объектно-ориентированных языков.
+С тех пор Лисп, являясь прекрасным инструментом разработки, послужил колыбелью
+для множества исследований на тему объектов. Упомянем лишь пару из них: Flavors,
+которая разрабатывалась в компании Symbolics как GUI-фреймворк, давшая миру идею
+множественного наследования; Loops, созданная в Xerox PARC, благодаря которой
+появились обобщённые функции. Кульминацией работ в этих направлениях являются
+CLOS (<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> Object System) и ΤΕΛΟΣ
+(The <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> Object System). Они
+объединяют большинство возможностей своих предшественников, но главной их
+заслугой является введение объектов в систему типов языка. Таким образом эти
+системы стали истинно объектно-ориентированными — в них всё состоит из
+объектов.</p>
+
+<p>По сравнению с другими языками, для объектных систем Лиспа характерны следующие
+две особенности:</p>
+
+<ul>
+  <li><p>Обобщённые функции, а также мультиметоды, реализующие механизм
+    <em>множественной диспетчеризации</em>.</p>
+<!--\indexR{множественная диспетчеризация}-->
+<!--\indexR{диспетчеризация!множественная}-->
+<!--\indexR{мультиметоды}-->
+<!--\indexR{методы!мультиметоды}-->
+  <p>Отправка сообщения записывается как <code>(<i>сообщение</i>
+    <i>аргументы</i>...)</code>, что синтаксически идентично вызову
+    функции: <code>(<i>функция</i> <i>аргументы</i>...)</code>. Мультиметоды же
+    не предполагают, что получателем сообщения будет один-единственный
+    объект, хоть чаще всего это именно так. Вместо этого методы
+    считаются функциями классов существенных аргументов
+    (дискриминантов). Например, вывод в поток числа в шестнадцатеричном
+    виде не является методом исключительно чисел или только потоков,
+    поведение данного метода определяется декартовым произведением
+    типов: <span class="math"><span class="ord normal">число</span><span class="binop">×</span><span class="ord normal">поток</span></span>.</p></li>
+
+  <li><p>Рефлексия.</p>
+<!--\indexR{метаобъектный протокол}-->
+<!--\indexR{рефлексия}-->
+<!--\indexR{интроспекция}-->
+  <p>Рефлексия — это способность системы осознавать собственную
+    структуру. Такие системы реализуют понятие <em class="term">метаклассов</em>.
+    Классы объектов в них сами являются полноценными объектами —
+    экземплярами классов, называемых метаклассами, которые, в свою
+    очередь, тоже являются объектами, и так далее. Спецификация
+    этих метаобъектов именуется <em>метаобъектным протоколом</em>. Им
+    определяется широта рефлексивных возможностей данной объектной
+    системы: например, от простой интроспекции до полноценной
+    самомодификации. Всё это даёт возможность точного и обратимого
+    представления любых объектов в виде строк байтов, что необходимо
+    для сохранения их в файлах, базах данных или передачи по сети.
+    Кроме того, интроспекция чрезвычайно полезна при разработке как
+    инструмент отладки кода, может существенно помочь компиляторам
+    <span class="see">[см. раздел <a href="ch09_macros.xhtml#macros/usage/ssect:code-walk">9.9.2</a>]</span>, а также незаменима в распределённых системах
+    <span class="cite">[<a href="z1_bibliography.xhtml#que94">Que94</a>]</span>.</p></li>
+</ul>
+
+<!--\indexE{Meroon@\protect\MeroonMeroonet!возможности}-->
+<p>Нашим же вкладом в историю ООП в Лиспе станет <span class="sc">M<span class="c">eroonet</span></span>. Будем надеяться, что
+поставленные ограничения не оставят в тени отличные возможности данной системы.
+Среди них:</p>
+
+<ul>
+  <li>Объектами <span class="sc">M<span class="c">eroonet</span></span> можно выразить любые значения Scheme
+    (включая векторы) без каких-либо ограничений на наследование.</li>
+
+  <li><span class="sc">M<span class="c">eroonet</span></span> — это рефлексивная объектная система, где каждый
+    класс является отдельным полноценным объектом, полностью доступным
+    для изучения. Проблема бесконечной регрессии решается подобно
+    ObjVlisp <span class="cite">[<a href="z1_bibliography.xhtml#coi87">Coi87</a>,
+  <a href="z1_bibliography.xhtml#bc87">BC87</a>]</span>.</li>
+
+  <li>Поддерживаются обобщённые функции <em>а-ля</em> CLOS
+    <span class="cite">[<a href="z1_bibliography.xhtml#bdg+88">BDG<sup>+</sup>88</a>]</span>,
+    но без мультиметодов.</li>
+
+  <li>Очень эффективная реализация перечисленных возможностей.</li>
+</ul>
+
+<p>Существует множество разнообразных объектных систем для семейства Лиспа в общем
+и Scheme в частности, например, описанные в
+<span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>,
+<a href="z1_bibliography.xhtml#kes88">Kes88</a>,
+<a href="z1_bibliography.xhtml#coi87">Coi87</a>,
+<a href="z1_bibliography.xhtml#mnc+89">MNC<sup>+</sup>89</a>,
+<a href="z1_bibliography.xhtml#del89">Del89</a>,
+<a href="z1_bibliography.xhtml#kdrb92">KdRB92</a>]</span>.
+<span class="sc">M<span class="c">eroonet</span></span> отличается от них в нескольких аспектах:</p>
+
+<ul>
+  <li>Как было сказано ранее, <span class="sc">M<span class="c">eroonet</span></span> реализует
+    обобщённые функции Common Loops
+    <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">BKK<sup>+</sup>86</a>]</span>,
+    но не мультиметоды.</li>
+
+  <li>Как и ObjVlisp, <span class="sc">M<span class="c">eroonet</span></span> представляет классы полноценными
+    объектами, что положительно сказывается на возможностях рефлексии.</li>
+
+<!--\indexR{множественное наследование}-->
+<!--\indexR{наследование!множественное}-->
+  <li><span class="sc">M<span class="c">eroonet</span></span> презирает множественное наследование!
+    Как только его семантика будет лучше изучена, а сформулированные в
+    <span class="cite">[<a href="z1_bibliography.xhtml#dhhm92">DHHM92</a>]</span>
+    проблемы — решены, тогда <span class="sc">M<span class="c">eroonet</span></span> пересмотрит свою позицию.
+    Возможно.</li>
+
+  <li>Объекты <span class="sc">M<span class="c">eroonet</span></span> непрерывны, то есть представляются
+    векторами. Такая форма позволяет единообразно выражать любые типы данных,
+    не привязываясь к конкретному языку и его конструкциям
+    <span class="cite">[<a href="z1_bibliography.xhtml#qc88">QC88</a>,
+    <a href="z1_bibliography.xhtml#que95">Que95</a>,
+    <a href="z1_bibliography.xhtml#que90a">Que90a</a>]</span>.</li>
+</ul>
+
+<p>Помимо собственно описания <span class="sc">M<span class="c">eroonet</span></span>, мы также обсудим
+причины, по которым было принято то или иное архитектурное решение. Некоторые из них продиктованы
+выбором Scheme в качестве языка реализации. Эти решения, конечно же, могли бы
+быть другими, если бы <span class="sc">M<span class="c">eroonet</span></span> разрабатывалась, к примеру, для Си. Желая
+упростить повествование, мы будем рассматривать реализацию снизу вверх, вводя
+новые функции по мере необходимости. Описание возможностей <span class="sc">M<span class="c">eroonet</span></span> здесь
+приводится вместе с деталями их реализации, но вы также можете пользоваться
+краткой документацией из третьей главы.
+<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/actors/ssect:review">3.2.1</a>]</span></p>
+
+
+<h2 id="objects/sect:foundation"><span class="wrap"><span class="seq">11.1.</span><span class="title">Основы</span></span></h2>
+
+<!--\indexR{представление!объектов \protect\Meroonet}-->
+<!--\indexR{классы!идентификаторы}-->
+<!--\indexR{циклические структуры данных}-->
+<p>Первое архитектурное решение касается способа представления объектов
+<span class="sc">M<span class="c">eroonet</span></span>. Для этого были выбраны непрерывные наборы
+значений. Такие структуры
+данных в Scheme называются векторами. Первый элемент вектора (с индексом ноль)
+будет хранить идентификатор класса, что позволяет легко определить, какому
+классу принадлежит любой рассматриваемый объект. Наиболее очевидная реализация
+такой связи — это прямая ссылка на соответствующий класс (на самый конкретный
+из классов, которым принадлежит объект), но вместо этого мы пронумеруем классы и
+будем ссылаться на них по этим номерам. Такой подход упростит вывод объектов на
+экран с помощью стандартных средств Scheme, так как классы — это весьма
+громоздкие объекты, чья внутренняя структура не особо интересна в данном
+случае<a class="footref" href="zz_footnotes.xhtml#foot11.3"><sup>3</sup></a>. Также классы
+могут содержать циклические ссылки, а стандартная функция
+<code><span class="func">display</span></code> с ними
+не во всех реализациях дружит и может выводить их, мягко говоря, странно. Позже,
+при рассмотрении обобщённых функций и предикатов принадлежности, появятся и иные
+причины для предпочтения чисел в качестве идентификаторов классов.</p>
+
+<p>Однако, если классы пронумерованы, то нам однозначно понадобится способ
+получения нужного класса по его номеру. Для этого все классы помещаются
+в вектор. К сожалению, в Scheme (в отличие от <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>) векторы
+не расширяются автоматически, поэтому для простоты мы формально ограничим
+максимально возможное количество классов, однако явно контролировать
+фактическое соблюдение установленного ограничения не будем. Переменная
+<code><span class="var">*class-number*</span></code> будет хранить индекс
+первого элемента в векторе
+<code><span class="var">*classes*</span></code>, который ещё не занят каким-нибудь
+классом. Пока что это ноль,
+но <span class="sc">M<span class="c">eroonet</span></span> использует некоторое количество классов для своих нужд, поэтому
+со временем начальное значение <code><span class="var">*class-number*</span></code> увеличится. Кроме того,
+внутренний код <span class="sc">M<span class="c">eroonet</span></span> можно считать абсолютно корректным, поэтому
+<code><span class="var">number-&gt;class</span></code> не будет проверять, действительно ли переданное ей значение
+является допустимым идентификатором класса.</p>
+
+<!--\indexC*{maximal-number-of-classes}{*maximal-number-of-classes*}-->
+<!--\indexC*{classes}{*classes*}-->
+<!--\indexC*{class-number}{*class-number*}-->
+<!--\indexC{number->class}-->
+<pre>(<span class="special">define</span> <span class="var">*class-number*</span> <span class="num">0</span>)
+(<span class="special">define</span> <span class="var">*maximal-number-of-classes*</span> <span class="num">100</span>)
+(<span class="special">define</span> <span class="var">*classes*</span> (<span class="func">make-vector</span> <span class="var">*maximal-number-of-classes*</span> <span class="hash">#f</span>))
+
+(<span class="special">define</span> (<span class="func">number-&gt;class</span> <span class="var">n</span>)
+  (<span class="func">vector-ref</span> <span class="var">*classes*</span> <span class="var">n</span>) )</pre>
+
+<!--\indexR{классы!имена}-->
+<!--\indexR{переопределение!классов}-->
+<!--\indexR{классы!переопределение}-->
+<p>Обращаться к классам по номерам как-то невежливо, гораздо удобнее будет дать им
+всем имена. Таким образом, анонимных классов не существует. Более того, их имена
+должны быть известны статически, то есть классы нельзя динамически создавать
+на лету. Функция <code><span class="func">-&gt;Class</span></code> преобразует символ в одноимённый класс. И снова,
+для простоты в ней используется банальный линейный поиск, что приводит
+к интересному побочному эффекту: если определить два класса с одинаковыми
+именами, то <code><span class="func">-&gt;Class</span></code> гарантированно вернёт более новый из них. Это позволяет
+в некотором смысле переопределять классы, но это «слабое» переопределение,
+поэтому без веской причины лучше так не делать.</p>
+
+<!--\indexC*{Class}{->Class}-->
+<pre>(<span class="special">define</span> (<span class="func">-&gt;Class</span> <span class="var">name</span>)
+  (<span class="syntax">let</span> <span class="func">scan</span> ((<span class="var">index</span> (<span class="func">-</span> <span class="var">*class-number*</span> <span class="num">1</span>)))
+    (<span class="syntax">and</span> (<span class="func">>=</span> <span class="var">index</span> <span class="num">0</span>)
+         (<span class="syntax">let</span> ((<span class="var">c</span> (<span class="func">vector-ref</span> <span class="var">*classes*</span> <span class="var">index</span>)))
+           (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">name</span> (<span class="func">Class-name</span> <span class="var">c</span>))
+               <span class="var">c</span>
+               (<span class="func">scan</span> (<span class="func">-</span> <span class="var">index</span> <span class="num">1</span>)) ) ) ) ) )</pre>
+
+<p>Обобщённые функции уже <em>обязаны</em> иметь имена. Они будут храниться в списке
+<code><span class="var">*generics*</span></code>. Функция <code><span class="func">-&gt;Generic</span></code> преобразует символ в соответствующую
+обобщённую функцию. (Причины такого решения обсудим чуть позже.)</p>
+
+<!--\indexC*{Generic}{->Generic}-->
+<pre>(<span class="special">define</span> <span class="var">*generics*</span> (<span class="func">list</span>))
+
+(<span class="special">define</span> (<span class="func">-&gt;Generic</span> <span class="var">name</span>)
+  (<span class="syntax">let</span> <span class="func">lookup</span> ((<span class="var">l</span> <span class="var">*generics*</span>))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">l</span>)
+        (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">name</span> (<span class="func">Generic-name</span> (<span class="func">car</span> <span class="var">l</span>)))
+            (<span class="func">car</span> <span class="var">l</span>)
+            (<span class="func">lookup</span> (<span class="func">cdr</span> <span class="var">l</span>)) )
+        <span class="hash">#f</span> ) ) )</pre>
+
+
+<h2 id="objects/sect:repr-obj"><span class="wrap"><span class="seq">11.2.</span><span class="title">Представление объектов</span></span></h2>
+
+<!--\indexR{представление!объектов \protect\Meroonet}-->
+<!--\indexR{индексированные поля}-->
+<!--\indexR{поля!индексированные}-->
+<p>Как было сказано ранее, объекты <span class="sc">M<span class="c">eroonet</span></span> представляются векторами. Мы хотим
+иметь возможность представить любое значение Scheme в виде объекта <span class="sc">M<span class="c">eroonet</span></span>,
+а для этого придётся что-то делать с самими векторами<a class="footref" href="zz_footnotes.xhtml#foot11.4"><sup>4</sup></a>. Предлагается
+следующее решение: ввести индексированные поля, хранящие несколько значений
+вместо обычного одного. Эта идея была реализована ещё в Smalltalk <span class="cite">[<a href="z1_bibliography.xhtml#gr83">GR83</a>]</span>,
+но там возникают некоторые трудности с наследованием от классов, содержащих
+индексированные поля. <span class="sc">M<span class="c">eroonet</span></span> не имеет подобного недостатка.</p>
+
+<!--\indexR{представление!строк}-->
+<p>Ещё одна проблема касается строк: ради эффективности они обычно считаются
+примитивным типом данных. Тем не менее, принципиально их всё же можно понимать
+как векторы символов — и не то, чтобы это было такой уж плохой идеей в свете
+Юникода, где один символ может занимать вплоть до четырёх байтов. Однако,
+в Scheme строкам нельзя добавить новые поля, так что неэффективные явные векторы
+остаются единственным возможным вариантом представления строк в виде объектов
+<span class="sc">M<span class="c">eroonet</span></span>.</p>
+
+<!--\indexR{поля!обычные}-->
+<p>В <span class="sc">M<span class="c">eroonet</span></span> поля бывают двух видов: обычные (представляемые объектами класса
+<code><span class="class">Mono-Field</span></code>) и индексированные (им соответствует класс <code><span class="class">Poly-Field</span></code>).
+Обычное поле является просто элементом вектора-объекта, тогда как
+индексированное реализуется подобно строкам в Паскале: сначала идёт количество
+элементов этого поля, затем собственно элементы. Рассмотрим наглядный пример.
+Предположим, определён класс точек:</p>
+
+<pre>(<span class="syntax">define-class</span> <span class="class">Point</span> <span class="class">Object</span> (<span class="var">x</span> <span class="var">y</span>))</pre>
+
+<p>Далее, пусть классу <code><span class="class">Point</span></code> соответствует номер 7; тогда значение точки,
+созданной формой <code>(<span class="func">make-Point</span> <span class="num">11</span> <span class="num">22</span>)</code>, представляется вектором <code>#(<span class="num">7</span> <span class="num">11</span>
+<span class="num">22</span>)</code>. Многоугольник можно определить как последовательность точек,
+представляющих его вершины, перечисленные в некотором порядке обхода. Если
+сделать класс <code><span class="class">Polygon</span></code> наследником <code><span class="class">Point</span></code>, то дополнительную пару
+координат можно понимать как некую опорную точку фигуры (центр, например).</p>
+
+<pre>(<span class="syntax">define-class</span> <span class="class">Polygon</span> <span class="class">Point</span> ((<span class="syntax">*</span> <span class="var">side</span>)))</pre>
+
+<!--\indexE{=@<code><span class="func">=</span></code> (в \protect\Meroon)}-->
+<!--\indexE{*@<code><span class="func">*</span></code> (в \protect\Meroon)}-->
+<p>Это пример расширенного синтаксиса описания полей, в таком случае их имена
+записываются в скобках. Перед обычными пол<span class="func"></span>ями ставится знак равенства, а перед
+индексированными — звёздочка<a class="footref" href="zz_footnotes.xhtml#foot11.5"><sup>5</sup></a>.
+Если нам понадобятся цветные многоугольники, то соответствующий класс можно определить вот так:</p>
+
+<pre>(<span class="syntax">define-class</span> <span class="class">ColoredPolygon</span> <span class="class">Polygon</span> ((<span class="syntax">=</span> <span class="var">color</span>)))</pre>
+
+<p>Каждое определение класса формирует для него личную армию функций, главной среди
+которых является функция-конструктор, создающая соответствующие объекты. Её имя
+состоит из префикса <code><span class="func">make-</span></code> и имени класса. Каждый создаваемый объект должен
+иметь чётко определённое начальное состояние, то есть значения всех полей. Для
+индексированных полей необходимо также указать их размер, который записывается
+перед перечислением соответствующих значений. Рассмотрим, к примеру, создание
+оранжевого треугольника (многоугольника с тремя вершинами) и получаемый
+в результате вектор:</p>
+
+<pre>(<span class="func">make-ColoredPolygon</span>
+  <span class="num">11</span>                      <span class="comment">; <span class="math"><span class="ord var">x</span></span></span>
+  <span class="num">22</span>                      <span class="comment">; <span class="math"><span class="ord var">y</span></span></span>
+  <span class="num">3</span> (<span class="func">make-Point</span> <span class="num">44</span> <span class="num">55</span>)    <span class="comment">; 3 стороны</span>
+    (<span class="func">make-Point</span> <span class="num">66</span> <span class="num">77</span>)
+    (<span class="func">make-Point</span> <span class="num">88</span> <span class="num">99</span>)
+  '<span class="var">orange</span> )               <span class="comment">; цвет</span>
+
+<span class="math" style="display: inline-block; width: 0"><span class="rel">→</span></span>   #(<span class="num">9</span>             <span class="comment">; <code>(<span class="func">Class-number</span> <span class="var">ColoredPolygon-class</span>)</code></span>
+       <span class="num">11</span>          <span class="comment">; <code><span class="var">x</span></code></span>
+       <span class="num">22</span>          <span class="comment">; <code><span class="var">y</span></code></span>
+       <span class="num">3</span>           <span class="comment">; длина <code><span class="var">side</span></code></span>
+       #(<span class="num">7</span> <span class="num">44</span> <span class="num">55</span>)  <span class="comment">; <code><span class="var">side</span></code><span class="math"><span class="open">[</span><span class="ord num">0</span><span class="close">]</span></span></span>
+       #(<span class="num">7</span> <span class="num">66</span> <span class="num">77</span>)  <span class="comment">; <code><span class="var">side</span></code><span class="math"><span class="open">[</span><span class="ord num">1</span><span class="close">]</span></span></span>
+       #(<span class="num">7</span> <span class="num">88</span> <span class="num">99</span>)  <span class="comment">; <code><span class="var">side</span></code><span class="math"><span class="open">[</span><span class="ord num">1</span><span class="close">]</span></span></span>
+       <span class="var">orange</span> )    <span class="comment">; <code><span class="var">color</span></code></span></pre>
+
+<!--\indexR{смещение}-->
+<!--\indexR{индексы!в \protect\MeroonMeroonet}-->
+<!--\indexC*{starting-offset}{*starting-offset*}-->
+<!--\indexE{Scheme!проблемы типизации}-->
+<!--\indexC{Object"?}-->
+<p>Любой объект <span class="sc">M<span class="c">eroonet</span></span> — это вектор, в котором первый элемент содержит
+идентификатор класса данного объекта. Настало время немного упорядочить
+терминологию; номер элемента вектора-объекта будем называть <em class="term">смещением</em>,
+а к элементам индексированных полей будем обращаться по <em class="term">индексам</em>. Итак,
+в объектах как минимум один элемент зарезервирован под внутренние нужды системы,
+поэтому смещения полей класса будут начинаться со значения
+<code><span class="var">*starting-offset*</span></code>. Тип объекта всегда можно узнать с помощью функции
+<code><span class="func">object-&gt;class</span></code><a class="footref" href="zz_footnotes.xhtml#foot11.6"><sup>6</sup></a>. Выяснить, является ли некоторое значение объектом,
+помогает предикат <code><span class="func">Object?</span></code>. К сожалению, Scheme не позволяет определять
+новые типы данных, отличные от существующих. Можно хитрить и мудрить, но все
+составные значения в конечном итоге принципиально остаются векторами либо
+списками. Поэтому <code><span class="func">Object?</span></code> успешно распознаёт все объекты <span class="sc">M<span class="c">eroonet</span></span>, но
+при этом считает таковыми также любые векторы, начинающиеся на целое число.</p>
+
+<!--\indexC{Object"?}-->
+<!--\indexC{object->class}-->
+<pre>(<span class="special">define</span> <span class="var">*starting-offset*</span> <span class="num">1</span>)
+
+(<span class="special">define</span> (<span class="func">object-&gt;class</span> <span class="var">o</span>)
+  (<span class="func">vector-ref</span> <span class="var">*classes*</span> (<span class="func">vector-ref</span> <span class="var">o</span> <span class="num">0</span>)) )
+
+(<span class="special">define</span> (<span class="func">Object?</span> <span class="var">o</span>)
+  (<span class="syntax">and</span> (<span class="func">vector?</span> <span class="var">o</span>)
+       (<span class="func">integer?</span> (<span class="func">vector-ref</span> <span class="var">o</span> <span class="num">0</span>)) ) )</pre>
+
+<!--\indexR{соглашения именования}-->
+<!--\indexE{o @\protect<code><span class="func">o</span></code> (объекты)}-->
+<!--\indexE{i @\protect<code><span class="func">i</span></code> (индексы)}-->
+<!--\indexE{v @\protect<code><span class="func">v</span></code> (значения)}-->
+<p>Завершим данное вступление, пожалуй, перечнем обозначений, которые будут
+использоваться в этой главе:</p>
+
+<table class="term-def">
+<tr><td class="left"><code><span class="var">o</span></code></td>
+    <td class="right">объекты</td></tr>
+<tr><td class="left"><code><span class="var">v</span></code></td>
+    <td class="right">значения</td></tr>
+<tr><td class="left"><code><span class="var">i</span></code></td>
+    <td class="right">индексы</td></tr>
+</table>
+
+
+<h2 id="objects/sect:def-class"><span class="wrap"><span class="seq">11.3.</span><span class="title">Определение классов</span></span></h2>
+
+<!--\indexC{define-class}-->
+<p>Классы определяются с помощью формы <code><span class="syntax">define-class</span></code>, принимающей три
+аргумента:</p>
+
+<ol>
+  <li>имя определяемого класса;</li>
+  <li>имя его суперкласса;</li>
+  <li>перечень собственных полей.</li>
+</ol>
+
+<!--\indexR{наследование}-->
+<!--\indexR{классы!наследование}-->
+<p>Создаваемый класс наследует все поля своего суперкласса, а также любые методы
+обобщённых функций, определённые для него. В некоторых языках состояние (поля)
+и поведение (методы) класса могут наследоваться отдельно друг от друга.</p>
+
+<p>Синтаксис формы <code><span class="syntax">define-class</span></code> следующий:</p>
+
+<pre>(<span class="syntax">define-class</span> <i>имя-класса</i> <i>имя-суперкласса</i> (<i>поля</i>...))</pre>
+
+<p>Поле в списке полей обозначается или просто своим именем (в таком случае это
+будет обычное поле), или списком из имени и знака равенства (для обычных полей)
+или звёздочки (для индексированных).</p>
+
+<!--\indexR{функции!сопутствующие}-->
+<!--\indexR{сопутствующие функции}-->
+<!--\indexR{соглашения именования!сопутствющих функций}-->
+<p>Кроме того, при определении класса автоматически создаются несколько
+сопутствующих функций. (Надеюсь, они вам понравятся!)</p>
+
+<ul>
+<!--\indexR{предикаты}-->
+<!--\indexR{функции!предикаты}-->
+<!--\indexR{классы!предикаты}-->
+  <li><em class="term">Предикат</em>, распознающий объекты данного класса. Его имя,
+    как принято в Scheme, состоит из имени класса и знака вопроса.</li>
+
+<!--\indexR{аллокаторы}-->
+<!--\indexR{функции!аллокаторы}-->
+<!--\indexR{классы!аллокаторы}-->
+  <li><em class="term">Аллокатор</em>, создающий новые экземпляры класса, но
+    не инициализирующий поля. Их начальные значения могут быть
+    абсолютно любыми. Размеры индексированных полей при этом всё
+    равно должны быть известны, поэтому аллокатор принимает столько
+    аргументов-чисел, сколько у класса индексированных полей. Имя
+    аллокатора состоит из префикса <code><span class="func">allocate-</span></code>
+    и имени класса.</li>
+
+<!--\indexR{конструкторы}-->
+<!--\indexR{функции!конструкторы}-->
+<!--\indexR{классы!конструкторы}-->
+  <li><em class="term">Конструктор</em>, который создаёт объекты класса с инициализированными
+    полями. Значениям, составляющим индексированное поле, предшествует
+    их количество. Имя конструктора состоит из префикса
+    <code><span class="func">make-</span></code> и имени класса.</li>
+
+<!--\indexR{аксессоры}-->
+<!--\indexR{функции!аксессоры}-->
+<!--\indexR{поля!аксессоры полей}-->
+<!--\indexR{классы!аксессоры}-->
+<!--\indexR{селекторы}-->
+<!--\indexR{геттеры}-->
+<!--\indexR{мутаторы}-->
+<!--\indexR{сеттеры}-->
+  <li><em class="term">Аксессоры</em> для доступа к обычным и индексированным полям
+    объектов. Каждому полю выдаётся один аксессор чтения (также
+    называемый селектором или геттером), чьё имя состоит из имени
+    класса и имени поля, разделённых дефисом. Соответствующий
+    аксессор записи (сеттер или мутатор) называется аналогично,
+    только начинается на <code><span class="func">set-</span></code> и, как
+    обычно, заканчивается на
+    восклицательный знак, чтобы подчеркнуть тот факт, что он изменяет
+    состояние памяти. Аксессоры индексированных полей принимают
+    дополнительный аргумент — индекс.</li>
+
+  <li>Вдобавок ко всему, для каждого индексированного поля класса
+    создаётся функция, чьё имя составлено из имени селектора и
+    суффикса <code><span class="func">-length</span></code>. Очевидно, она
+    возвращает длину соответствующего поля.</li>
+</ul>
+
+<!--\indexR{рефлексия}-->
+<p>Для поддержки рефлексии определяемый класс сам является объектом класса
+<code><span class="class">Class</span></code>, представленным в программе глобальной переменной с именем, состоящим
+из имени класса и суффикса <code><span class="var">-class</span></code>.
+В качестве примера рассмотрим функции и
+переменные<a class="footref" href="zz_footnotes.xhtml#foot11.7"><sup>7</sup></a>,
+генерируемые формой <code>(<span class="syntax">define-class</span> <span class="class">ColoredPolygon</span> <span class="class">Point</span> (<span class="var">color</span>))</code>.</p>
+
+<pre>(<span class="func">ColoredPolygon?</span> <span class="var">o</span>)                              <span class="math"><span class="rel">→</span><span class="ord normal">логическое значение</span></span>
+(<span class="func">allocate-ColoredPolygon</span> <span class="var">sides-number</span>)                <span class="math"><span class="rel">→</span><span class="ord normal">многоугольник</span></span>
+(<span class="func">make-ColoredPolygon</span> <span class="var">x</span> <span class="var">y</span> <span class="var">sides-number</span> <span class="var">sides</span>... <span class="var">color</span>) <span class="math"><span class="rel">→</span><span class="ord normal">многоугольник</span></span>
+
+(<span class="func">ColoredPolygon-x</span> <span class="var">o</span>)                                  <span class="math"><span class="rel">→</span><span class="ord normal">значение</span></span>
+(<span class="func">ColoredPolygon-y</span> <span class="var">o</span>)                                  <span class="math"><span class="rel">→</span><span class="ord normal">значение</span></span>
+(<span class="func">ColoredPolygon-side</span> <span class="var">o</span> <span class="var">index</span>)                         <span class="math"><span class="rel">→</span><span class="ord normal">значение</span></span>
+(<span class="func">ColoredPolygon-color</span> <span class="var">o</span>)                              <span class="math"><span class="rel">→</span><span class="ord normal">значение</span></span>
+
+(<span class="func">set-ColoredPolygon-x!</span> <span class="var">o</span> <span class="var">value</span>)                       <span class="math"><span class="rel">→</span><span class="ord normal">не определено</span></span>
+(<span class="func">set-ColoredPolygon-y!</span> <span class="var">o</span> <span class="var">value</span>)                       <span class="math"><span class="rel">→</span><span class="ord normal">не определено</span></span>
+(<span class="func">set-ColoredPolygon-side!</span> <span class="var">o</span> <span class="var">value</span> <span class="var">index</span>)              <span class="math"><span class="rel">→</span><span class="ord normal">не определено</span></span>
+(<span class="func">set-ColoredPolygon-color!</span> <span class="var">o</span> <span class="var">value</span>)                   <span class="math"><span class="rel">→</span><span class="ord normal">не определено</span></span>
+
+(<span class="func">ColoredPolygon-side-length</span> <span class="var">o</span>)                        <span class="math"><span class="rel">→</span><span class="ord normal">число</span></span>
+
+<span class="var">ColoredPolygon-class</span>                                  <span class="math"><span class="rel">→</span><span class="ord normal">класс</span></span></pre>
+
+<!--\indexCS{define-class}{состояние}-->
+<!--\indexC{define-meroonet-macro}-->
+<p>Специальная форма <code><span class="syntax">define-class</span></code>, создающая классы, реализуется в виде
+макроса; к сожалению, со всеми вытекающими из этого последствиями. Первым из
+них является то, что макрос <code><span class="syntax">define-class</span></code> обладает внутренним состоянием
+— иерархией наследования, — но макросистема Scheme стандарта R<sup>5</sup>RS
+такого не позволяет. Поэтому предполагается, что существует макрос
+<code><span class="syntax">define-meroonet-macro</span></code>, который может без ограничений определять всё
+необходимое. Этот <em>интерфейс</em> является единственной непереносимой частью
+<span class="sc">M<span class="c">eroonet</span></span>, которую приходится писать вручную для каждой реализации Scheme.</p>
+
+<!--\indexR{аксессоры!синтаксис}-->
+<!--\indexR{синтаксис!аксессоров}-->
+<!--\indexR{макросы!внутреннее состояние}-->
+<p>А так ли необходимо глобальное состояние для <code><span class="syntax">define-class</span></code>? Ответ: да; для
+<span class="sc">M<span class="c">eroonet</span></span> в текущем виде, по крайней мере. И вот почему: вместе с классом
+создаётся набор функций-аксессоров. При создании <code><span class="class">Point</span></code> автоматически
+определяются функции <code><span class="func">Point-x</span></code> и <code><span class="func">Point-y</span></code> для доступа к полям <code><span class="var">x</span></code>
+и <code><span class="var">y</span></code>. Когда же мы определяем его наследника <code><span class="class">Polygon</span></code>, <span class="sc">M<span class="c">eroonet</span></span>
+создаёт для этих полей новые аксессоры <code><span class="func">Polygon-x</span></code> и <code><span class="func">Polygon-y</span></code> вместо
+того, чтобы просто оставить пользователю старые родительские. Определение
+<code><span class="class">Polygon</span></code> не содержит описания полей своего суперкласса, об их количестве и
+именах можно узнать только из определения самого класса <code><span class="class">Point</span></code>.
+Следовательно, для правильной работы макроса <code><span class="syntax">define-class</span></code> требуется вести
+учёт и где-то хранить родственные связи классов — это и есть то самое
+внутреннее состояние.</p>
+
+<p id="objects/def-class/par:accessors">Данного неудобства можно было бы избежать, применив другой подход к именованию
+аксессоров. Например, если не упоминать в них имя класса: называть аксессоры
+поля <code><span class="var">x</span></code> просто <code><span class="func">get-x</span></code> и <code><span class="func">set-x!</span></code>. В этом случае определение класса
+<code><span class="class">Polygon</span></code> будет вынуждено модифицировать определение функции <code><span class="func">get-x</span></code>,
+чтобы она знала, где в экземплярах <code><span class="class">Polygon</span></code> лежит поле <code><span class="var">x</span></code>. Наиболее
+простой способ реализации такого поведения — это сделать аксессоры
+обобщёнными функциями, для которых определяются методы всех классов, имеющих
+соответствующие поля. Так сделано, например, в CLOS, где при определении поля
+(слота) можно указать имя обобщённой функции, которой будет добавлен
+метод-геттер (или сеттер, или оба сразу). В таком случае, очевидно, обобщённые
+функции будут изменяемыми, что не совсем удобно при компиляции из-за усложнения
+статического анализа кода и проведения оптимизаций.</p>
+
+<p>Поэтому было решено сделать аксессоры обычными неизменяемыми функциями, что
+гарантирует возможность оптимизаций вроде инлайнинга. Конечно, такое решение
+тоже не лишено недостатков. Во-первых, функции <code><span class="func">Point-x</span></code> и <code><span class="func">Polygon-x</span></code>
+не обязательно эквивалентны. По сути, они обе извлекают одно и то же
+поле <code><span class="var">x</span></code>, но ведь первая делает это для точек, а вторая — для
+многоугольников. Кажется логичным требовать, чтобы форма <code>(<span class="func">Polygon-x</span>
+(<span class="func">make-Point</span> <span class="num">11</span> <span class="num">22</span>))</code> вызывала ошибку типизации, поэтому аксессоры <code><span class="func">Point-x</span></code>
+и <code><span class="func">Polygon-x</span></code> должны быть разными. Кроме философских затруднений, у данного
+решения есть и более прагматичное следствие: такой подход генерирует много
+глобальных переменных и функций. Это может огорчить компьютеры с небольшим
+объёмом памяти, но программы пишутся в первую очередь для людей, а у нас нет
+особых проблем с запоминанием любого количества фактов, если они тщательно
+систематизированы, подобно именам наших сопутствующих функций.</p>
+
+<p>Знание полей суперклассов (инкапсулированное во внутреннем состоянии макроса
+<code><span class="syntax">define-class</span></code>) полезно не только при создании аксессоров: если компилятору
+статически известны количество и порядок всех полей, то он может генерировать
+более эффективный код для аллокаторов и конструкторов. Чуть позже мы обсудим
+это в деталях.</p>
+
+<p>В свете рассмотренных соображений, для <span class="sc">M<span class="c">eroonet</span></span> применяется следующее
+решение: определение класса приводит к созданию экземпляра класса <code><span class="class">Class</span></code> и
+размещению данного объекта в глобальной иерархии классов. Всё это будет делать
+функция <code><span class="func">register-class</span></code>. Сопутствующие функции будут генерироваться функцией
+<code><span class="func">Class-generate-related-names</span></code>. Итого, <code><span class="syntax">define-class</span></code> можно определить
+примерно следующим образом:</p>
+
+
+<!--\indexCS{define-class}{в двух мирах}-->
+<pre>(<span class="syntax">define-meroonet-macro</span> (<span class="syntax">define-class</span> <span class="var">name</span> <span class="var">super-name</span>
+                                     <span class="var">own-fields</span> )
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">register-class</span> <span class="var">name</span> <span class="var">super-name</span> <span class="var">own-fields</span>)))
+    (<span class="func">Class-generate-related-names</span> <span class="var">class</span>) ) )</pre>
+
+<!--\indexR{макросы!компиляция}-->
+<!--\indexR{компиляция!макросов}-->
+<p id="objects/def-class/par:two-worlds">Такое определение ведёт себя не совсем верно при компиляции, так как здесь
+смешиваются этапы макрораскрытия и исполнения программ. Класс создаётся и
+вводится в иерархию наследования во время раскрытия макросов, тогда как
+сопутствующие функции создаются во время исполнения раскрытого кода.
+Предположим, мы компилируем файл, содержащий определение класса
+<code><span class="class">Polygon</span></code>.
+В конечном итоге получается файл с расширением <code>*.o</code> (для компиляторов в Си
+вроде KCL <span class="cite">[<a href="z1_bibliography.xhtml#yh85">YH85</a>]</span>, Scheme<span class="math"><span class="rel">→</span></span>C <span class="cite">[<a href="z1_bibliography.xhtml#bar89">Bar89</a>]</span> или Bigloo <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>) или
+какой-нибудь <code>*.fasl</code>-файл для других компиляторов. Как бы то ни было, в этом
+файле останется лишь откомпилированный код раскрытых выражений, то есть
+определения сопутствующих функций. Собственно класс создаётся только в памяти
+компилятора во время раскрытия макросов, но не в памяти той лисп-системы,
+к которой будет подключен <code>*.o</code>-файл или которая динамически загрузит
+<code>*.fasl</code>-образ. Классы просто испаряются после того, как компилятор закончит
+свою работу.</p>
+
+<!--\indexR{множественные миры}-->
+<!--\indexR{единый мир}-->
+<!--\indexE{Scheme!глобальные переменные}-->
+<p>Так что если мы хотим иметь поддержку рефлексии, то объекты-классы должны
+создаваться в мире программ. Однако, если и сами классы будут определяться
+тогда же, то их сопутствующие функции нельзя будет генерировать, потому как
+этот процесс должен выполняться во время макрораскрытия<a class="footref" href="zz_footnotes.xhtml#foot11.8"><sup>8</sup></a>, но ему необходим перечень всех
+полей класса. Следовательно, класс должен существовать в обоих мирах: и при
+раскрытии макросов, и после него. В качестве приятного дополнения, такой подход
+заодно позволит определять подклассы вместе с их суперклассами в одном общем
+файле. В случае, когда мы имеем дело c единым миром
+<span class="see">[см. раздел <a href="ch09_macros.xhtml#macros/preparation/ssect:unique">9.1.2</a>]</span>,
+<span class="sc">M<span class="c">eroonet</span></span> может попытаться создать
+класс дважды: первый раз при раскрытии макросов, а второй — при исполнении
+раскрытого кода. Чтобы избежать такого поведения<a class="footref" href="zz_footnotes.xhtml#foot11.9"><sup>9</sup></a>, применяется следующий хитрый трюк: пусть определена глобальная
+переменная <code><span class="var">*last-defined-class*</span></code>, тогда если во время раскрытия макросов
+в неё поместить ссылку на первый попавшийся класс, то в едином мире это значение
+перейдёт в мир программ, а во множественных мирах переменная сохранит исходное
+значение. Это позволит узнать, когда определяемый класс не требуется создавать
+повторно.</p>
+
+<!--\indexC*{last-defined-class}{*last-defined-class*}-->
+<pre>(<span class="special">define</span> <span class="var">*last-defined-class*</span> <span class="hash">#f</span>)
+
+(<span class="syntax">define-meroonet-macro</span> (<span class="syntax">define-class</span> <span class="var">name</span> <span class="var">super-name</span> <span class="var">own-fields</span>)
+  (<span class="special">set!</span> <span class="var">*last-defined-class*</span> <span class="hash">#f</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">register-class</span> <span class="var">name</span> <span class="var">super-name</span> <span class="var">own-fields</span>)))
+    (<span class="special">set!</span> <span class="var">*last-defined-class*</span> <span class="var">class</span>)
+    `(<span class="special">begin</span>
+       (<span class="special">if</span> (<span class="func">not</span> <span class="var">*last-defined-class*</span>)
+         (<span class="func">register-class</span> ',<span class="var">name</span> ',<span class="var">super-name</span> ',<span class="var">own-fields</span>) )
+       ,(<span class="func">Class-generate-related-names</span> <span class="var">class</span>) ) ) )</pre>
+
+
+<h4 id="objects/def-class/sssect:other"><span class="wrap"><span class="title">Прочие затруднения</span></span></h4>
+
+<!--\indexCS{define-class}{порядок определений}-->
+<p>Продолжая иллюстрировать трудности использования макросов в реальных проектах
+(на примере <span class="sc">M<span class="c">eroonet</span></span>), стоит ещё раз задуматься о важности
+порядка раскрытия для макросов со внутренним состоянием наподобие
+<code><span class="syntax">define-class</span></code>. Рассмотрим
+следующую форму:</p>
+
+<pre>(<span class="special">begin</span> (<span class="syntax">define-class</span> <span class="class">Point</span> <span class="class">Object</span> (<span class="var">x</span> <span class="var">y</span>))
+       (<span class="syntax">define-class</span> <span class="class">Polygon</span> <span class="class">Point</span> ((<span class="syntax">*</span> <span class="var">side</span>))) )</pre>
+
+<p>Если раскрытие производится слева направо, то класс <code><span class="class">Point</span></code> определяется до
+класса <code><span class="class">Polygon</span></code> и всё замечательно. Если же порядок будет противоположным,
+то класс <code><span class="class">Polygon</span></code> определить не получится, не имея на руках его суперкласса.
+Эту проблему, в принципе, можно обойти, если отложить создание <code><span class="class">Polygon</span></code> до
+момента раскрытия определения <code><span class="class">Point</span></code>. Тогда определение <code><span class="class">Polygon</span></code>
+фактически станет пустым, а форма, создающая <code><span class="class">Point</span></code>, должна будет раскрыться
+в определения обоих классов в правильном порядке.</p>
+
+<!--\indexR{макросы!компиляция!раздельная}-->
+<!--\indexR{классы!прототипы}-->
+<p>А что если <code><span class="class">Point</span></code> и <code><span class="class">Polygon</span></code> определяются в одном файле, а класс
+<code><span class="class">ColoredPolygon</span></code> — в другом? Теперь-то уже никак не отвертеться, все
+поля суперкласса надо каким-то образом извлечь и передать между файлами.
+<span class="sc">M<span class="c">eroonet</span></span> не забивает себе голову подобными трудностями и просто требует,
+чтобы все зависимые друг от друга классы компилировались вместе. <span class="sc">M<span class="c">eroon</span></span> же
+применяет ещё одну хитрость. Каждый родительский класс должен быть или ранее
+определён в этом же файле, или помечен ключевым словом <code><span class="syntax">:prototype</span></code>. Такая
+форма лишь<a class="footref" href="zz_footnotes.xhtml#foot11.10"><sup>10</sup></a> помещает
+соответствующий класс в иерархию наследования, но не генерирует никаких функций.
+Выглядит это вот так:</p>
+
+<!--\indexC*{prototype}{:prototype}-->
+<!--\indexCS{define-class}{<code><span class="func">:prototype</span></code>}-->
+<pre>(<span class="syntax">define-class</span> <span class="class">Polygon</span> <span class="class">Point</span> ((<span class="syntax">*</span> <span class="var">side</span>)) <span class="syntax">:prototype</span>)
+(<span class="syntax">define-class</span> <span class="class">ColoredPolygon</span> <span class="class">Polygon</span> (<span class="var">color</span>))</pre>
+
+<!--\indexR{модули}-->
+<p>Наиболее правильным решением, пожалуй, будет поддержка модулей с механизмом
+импорта/экспорта, позволяющим указать, что надо каждому модулю для компиляции и
+откуда это брать. В принципе это сводится к тому, что внутреннее состояние
+компилятора выносится в некую базу данных, которая используется для разрешения
+неудовлетворённых зависимостей между определениями.</p>
+
+
+<h2 id="objects/sect:repr-class"><span class="wrap"><span class="seq">11.4.</span><span class="title">Представление классов</span></span></h2>
+
+<!--\indexR{представление!классов \protect\Meroonet}-->
+<!--\indexR{классы}-->
+<p>Классы <span class="sc">M<span class="c">eroonet</span></span> представляются объектами <span class="sc">M<span class="c">eroonet</span></span>. Такой подход
+значительно облегчает реализацию рефлексивных возможностей объектной системы.
+Метаметоды также легче писать, оперируя структурой классов напрямую, а
+не косвенно опираясь на наследование. Методы, переносящие объекты с одного
+компьютера на другой, или, например, универсальные методы вывода объектов
+на экран очевидно удобнее определять, имея полное представление о структуре
+обрабатываемых объектов, об устройстве их классов. Прародителем всех объектов
+является класс <code><span class="class">Object</span></code> — корень иерархии наследования. Все классы сами
+являются экземплярами класса <code><span class="class">Class</span></code>. Поля представляются объектами классов
+<code><span class="class">Mono-Field</span></code> и <code><span class="class">Poly-Field</span></code>, наследников <code><span class="class">Field</span></code>.</p>
+
+<p>В процессе раскрытия определений классов используется множество вспомогательных
+функций, работающих с предопределёнными классами: <code><span class="func">Mono-Field?</span></code>,
+<code><span class="func">make-Poly-Field</span></code> и т. д. Значит ли это, что сопутствующие функции класса
+становятся доступными после его определения? Например, сможем ли мы использовать
+в определениях других классов функцию <code><span class="func">make-Point</span></code> после того, как определим
+класс <code><span class="class">Point</span></code>? Для текущей версии <code><span class="syntax">define-class</span></code> ответ на этот вопрос
+отрицательный, так как <code><span class="func">make-Point</span></code> создаётся не в процессе раскрытия, а уже
+во время исполнения раскрытого кода. Такой подход несколько усложняет реализацию
+метаклассов при компиляции, но <span class="sc">M<span class="c">eroonet</span></span> обходит стороной эту проблему.</p>
+
+<p>Стараясь не перегружать классы, мы помещаем в них лишь самое необходимое: имя,
+числовой идентификатор, список полей, ссылку на суперкласс, список
+идентификаторов подклассов. Этот перечень дочерних классов пригодится для
+реализации обобщённых функций. Список хранит номера вместо прямых ссылок
+с целью избежать зацикливания. Итого, <code><span class="class">Class</span></code> — класс всех классов —
+определяется следующим образом:</p>
+
+<!--\indexC{Class}-->
+<pre>(<span class="syntax">define-class</span> <span class="class">Class</span> <span class="class">Object</span>
+  ( <span class="var">name</span> <span class="var">number</span> <span class="var">fields</span> <span class="var">superclass</span> <span class="var">subclass-numbers</span> ) )</pre>
+
+<!--\indexR{поля}-->
+<p>Поля классов, естественно, тоже являются объектами <span class="sc">M<span class="c">eroonet</span></span>. Поле
+характеризуется своим видом, именем и классом, которому оно принадлежит. Здесь
+ссылка на класс тоже сделана числом, чтобы поля можно было нормально
+распечатывать. Таким образом, имеем:</p>
+
+<!--\indexC{Field}-->
+<!--\indexC{Mono-Field}-->
+<!--\indexC{Poly-Field}-->
+<pre>(<span class="syntax">define-class</span> <span class="class">Field</span> <span class="class">Object</span> (<span class="var">name</span> <span class="var">defining-class-number</span>))
+(<span class="syntax">define-class</span> <span class="class">Mono-Field</span> <span class="class">Field</span> ())
+(<span class="syntax">define-class</span> <span class="class">Poly-Field</span> <span class="class">Field</span> ())</pre>
+
+<p>Наконец, иногда может потребоваться хозяин поля собственной персоной, а
+не только его номер. Мы всегда очень вежливы и точно знаем, кто нам нужен,
+поэтому следующая функция не утруждает себя излишними проверками:</p>
+
+<!--\indexC{Field-defining-class}-->
+<pre>(<span class="special">define</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)
+  (<span class="func">number-&gt;class</span> (<span class="func">careless-Field-defining-class-number</span> <span class="var">field</span>)) )</pre>
+
+<!--\indexR{раскрутка (bootstrapping)}-->
+<p>Конечно, на самом деле все эти классы не получится определить до того, как
+<span class="sc">M<span class="c">eroonet</span></span> будет загружена, но и загрузить <span class="sc">M<span class="c">eroonet</span></span> без них тоже не выйдет.
+Чтобы разорвать данный порочный круг, придётся определить их вручную:</p>
+
+<!--\indexC{Object-class}-->
+<!--\indexC{Class-class}-->
+<!--\indexC{Generic-class}-->
+<!--\indexC{Mono-Field-class}-->
+<!--\indexC{Poly-Field-class}-->
+<pre>(<span class="special">define</span> <span class="var">Object-class</span>
+  (<span class="func">vector</span>
+   <span class="num">1</span>                            <span class="comment">; это класс</span>
+   '<span class="var">Object</span>                      <span class="comment">; имя</span>
+   <span class="num">0</span>                            <span class="comment">; номер</span>
+   <span class="hash">'()</span>                          <span class="comment">; поля</span>
+   <span class="hash">#f</span>                           <span class="comment">; нет суперкласса</span>
+   '(<span class="num">1</span> <span class="num">2</span> <span class="num">3</span>)                     <span class="comment">; дочерние классы</span>
+   ) )
+
+(<span class="special">define</span> <span class="var">Class-class</span>
+  (<span class="func">vector</span>
+   <span class="num">1</span>                                   <span class="comment">; это тоже класс</span>
+   '<span class="var">Class</span>                              <span class="comment">; имя</span>
+   <span class="num">1</span>                                   <span class="comment">; номер</span>
+   (<span class="func">list</span>                               <span class="comment">; поля</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">name</span>             <span class="num">1</span>)     <span class="comment">; смещение 1</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">number</span>           <span class="num">1</span>)     <span class="comment">; смещение 2</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">fields</span>           <span class="num">1</span>)     <span class="comment">; смещение 3</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">superclass</span>       <span class="num">1</span>)     <span class="comment">; смещение 4</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">subclass-numbers</span> <span class="num">1</span>) )   <span class="comment">; смещение 5</span>
+   <span class="var">Object-class</span>                        <span class="comment">; суперкласс</span>
+   <span class="hash">'()</span>
+   ) )
+
+(<span class="special">define</span> <span class="var">Generic-class</span>
+  (<span class="func">vector</span>
+   <span class="num">1</span>
+   '<span class="var">Generic</span>
+   <span class="num">2</span>
+   (<span class="func">list</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">name</span>           <span class="num">2</span>)
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">default</span>        <span class="num">2</span>)
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">dispatch-table</span> <span class="num">2</span>)
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">signature</span>      <span class="num">2</span>) )
+    <span class="var">Object-class</span>
+    <span class="hash">'()</span>
+    ) )
+
+(<span class="special">define</span> <span class="var">Field-class</span>
+  (<span class="func">vector</span>
+   <span class="num">1</span>
+   '<span class="var">Field</span>
+   <span class="num">3</span>
+   (<span class="func">list</span>
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">name</span>                  <span class="num">3</span>)
+    (<span class="func">vector</span> <span class="num">4</span> '<span class="var">defining-class-number</span> <span class="num">3</span>) )
+   <span class="var">Object-class</span>
+   '(<span class="num">4</span> <span class="num">5</span>)
+   ) )
+
+(<span class="special">define</span> <span class="var">Mono-Field-class</span>
+  (<span class="func">vector</span> <span class="num">1</span>
+          '<span class="var">Mono-Field</span>
+          <span class="num">4</span>
+          (<span class="func">careless-Class-fields</span> <span class="var">Field-class</span>)
+          <span class="var">Field-Class</span>
+          <span class="hash">'()</span> ) )
+
+(<span class="special">define</span> <span class="var">Poly-Field-class</span>
+  (<span class="func">vector</span> <span class="num">1</span>
+          '<span class="var">Poly-Field</span>
+          <span class="num">5</span>
+          (<span class="func">careless-Class-fields</span> <span class="var">Field-class</span>)
+          <span class="var">Field-Class</span>
+          <span class="hash">'()</span> ) )</pre>
+
+<p>Затем классы ставятся на положенные места:</p>
+
+<pre>(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">0</span> <span class="var">Object-class</span>)
+(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">1</span> <span class="var">Class-class</span>)
+(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">2</span> <span class="var">Generic-class</span>)
+(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">3</span> <span class="var">Field-class</span>)
+(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">4</span> <span class="var">Mono-Field-class</span>)
+(<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="num">5</span> <span class="var">Poly-Field-class</span>)
+
+(<span class="special">set!</span> <span class="var">*class-number*</span> <span class="num">6</span>)</pre>
+
+<!--\indexR{аксессоры!\protect<code><span class="func">careless-</span></code>}-->
+<p>Так как <span class="sc">M<span class="c">eroonet</span></span> основана на иерархии классов, которую сама же определяет,
+некоторые функции (вроде аксессоров <code><span class="func">Class-number</span></code> и <code><span class="func">Class-fields</span></code>)
+требуются ещё до того, как они будут созданы. С этой целью мы определим их
+эквиваленты, начинающиеся на <code><span class="func">careless-</span></code>. Имена говорят сами за себя: данные
+функции никак не проверяют свои аргументы; это приемлемо, так как они
+используются лишь внутри <span class="sc">M<span class="c">eroonet</span></span>, где всё находится под контролем.</p>
+
+<pre>(<span class="special">define</span> (<span class="func">careless-Class-name</span> <span class="var">class</span>)
+  (<span class="func">vector-ref</span> <span class="var">class</span> <span class="num">1</span>) )
+(<span class="special">define</span> (<span class="func">careless-Class-number</span> <span class="var">class</span>)
+  (<span class="func">vector-ref</span> <span class="var">class</span> <span class="num">2</span>) )
+(<span class="special">define</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>)
+  (<span class="func">vector-ref</span> <span class="var">class</span> <span class="num">3</span>) )
+(<span class="special">define</span> (<span class="func">careless-Class-superclass</span> <span class="var">class</span>)
+  (<span class="func">vector-ref</span> <span class="var">class</span> <span class="num">4</span>) )
+
+(<span class="special">define</span> (<span class="func">careless-Field-name</span> <span class="var">field</span>)
+  (<span class="func">vector-ref</span> <span class="var">field</span> <span class="num">1</span>) )
+(<span class="special">define</span> (<span class="func">careless-Field-defining-class-number</span> <span class="var">field</span>)
+  (<span class="func">vector-ref</span> <span class="var">field</span> <span class="num">2</span>) )</pre>
+
+
+<h2 id="objects/sect:accomp"><span class="wrap"><span class="seq">11.5.</span><span class="title">Сопутствующие функции</span></span></h2>
+
+<p>Формирование имён этих функций значительно облегчит следующее вспомогательное
+определение:</p>
+
+<!--\indexC{symbol-concatenate}-->
+<pre>(<span class="special">define</span> (<span class="func">symbol-concatenate</span> . <span class="var">names</span>)
+  (<span class="func">string-&gt;symbol</span> (<span class="func">apply</span> <span class="var">string-append</span> (<span class="func">map</span> <span class="var">symbol-&gt;string</span> <span class="var">names</span>))) )</pre>
+
+<!--\indexR{сопутствующие функции!варианты определения}-->
+<p>Навскидку можно придумать два варианта конструирования функций, сопутствующих
+определениям классов. В первом случае их код помещается непосредственно
+в соответствующие определения; во втором же эти определения сводятся к формам,
+генерирующим необходимые замыкания во время исполнения. Второй вариант позволяет
+отделить неизменяемую часть функций, что облегчает их понимание и реализацию, но
+уменьшает эффективность, так как вызываемые функции не будут фиксированы на
+этапе компиляции, что усложняет оптимизацию. Различия двух подходов отлично
+видны на примере аллокатора класса <code><span class="class">Polygon</span></code>:</p>
+
+<pre>(<span class="special">define</span> <span class="var">allocate-Polygon</span>
+        (<span class="special">lambda</span> (<span class="var">size</span>)
+          (<span class="syntax">let</span> ((<span class="var">o</span> (<span class="func">make-vector</span> (<span class="func">+</span> <span class="num">1</span> <span class="num">2</span> <span class="num">1</span> <span class="var">size</span>))))
+            (<span class="func">vector-set!</span> <span class="var">o</span> <span class="num">0</span> (<span class="func">careless-Class-number</span> <span class="var">Polygon-class</span>))
+            (<span class="func">vector-set!</span> <span class="var">o</span> <span class="num">3</span> <span class="var">size</span>)
+            <span class="var">o</span> ) ) )
+
+(<span class="special">define</span> <span class="var">allocate-Polygon</span> (<span class="func">make-allocator</span> <span class="var">Polygon-class</span>))</pre>
+
+<p>В первом случае компилятору статически известно, что аллокатор является унарной
+функцией, а его тело состоит из вызовов тривиальных библиотечных функций вроде
+аксессоров векторов. Следовательно, это прекрасный кандидат на инлайнинг и его,
+например, можно сразу компилировать в виде макроса Си. Но вот второе определение
+ничего не говорит об арности. Фактически, нельзя даже с уверенностью сказать<a class="footref" href="zz_footnotes.xhtml#foot11.11"><sup>11</sup></a>,
+ будет ли с переменной <code><span class="var">allocate-Polygon</span></code> связана
+функция или что-то другое. Но несмотря на это, мы всё равно изберём второй
+путь, так как первый сложнее устроен и его описание более запутанно, а кроме
+того, он требует существенно больше памяти как при компиляции, так и
+в результирующем коде. Итак, сопутствующие функции будут генерироваться вот так:</p>
+
+<!--\indexC{Class-generate-related-names}-->
+<pre>(<span class="special">define</span> (<span class="func">Class-generate-related-names</span> <span class="var">class</span>)
+  (<span class="syntax">let*</span> ((<span class="var">name</span> (<span class="func">Class-name</span> <span class="var">class</span>))
+         (<span class="var">class-variable-name</span> (<span class="func">symbol-concatenate</span> <span class="var">name</span> '<span class="var">-class</span>))
+         (<span class="var">predicate-name</span>      (<span class="func">symbol-concatenate</span> <span class="var">name</span> '<span class="var">?</span>))
+         (<span class="var">maker-name</span>          (<span class="func">symbol-concatenate</span> '<span class="var">make-</span> <span class="var">name</span>))
+         (<span class="var">allocator-name</span>      (<span class="func">symbol-concatenate</span> '<span class="var">allocate-</span> <span class="var">name</span>)) )
+   `(<span class="special">begin</span>
+      (<span class="special">define</span> ,<span class="var">class-variable-name</span> (<span class="func">-&gt;Class</span> ',<span class="var">name</span>))
+      (<span class="special">define</span> ,<span class="var">predicate-name</span> (<span class="func">make-predicate</span> ,<span class="var">class-variable-name</span>))
+      (<span class="special">define</span> ,<span class="var">maker-name</span>     (<span class="func">make-maker</span>     ,<span class="var">class-variable-name</span>))
+      (<span class="special">define</span> ,<span class="var">allocator-name</span> (<span class="func">make-allocator</span> ,<span class="var">class-variable-name</span>))
+      ,@(<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">field</span>) (<span class="func">Field-generate-related-names</span> <span class="var">field</span> <span class="var">class</span>))
+             (<span class="func">Class-fields</span> <span class="var">class</span>) )
+      ',(<span class="func">Class-name</span> <span class="var">class</span>) ) ) )</pre>
+
+
+<h3 id="objects/accomp/ssect:pred"><span class="wrap"><span class="seq">11.5.1.</span><span class="title">Предикаты</span></span></h3>
+
+<!--\indexR{сопутствующие функции!предикаты}-->
+<!--\indexR{предикаты}-->
+<!--\indexR{проверки типов}-->
+<!--\indexR{динамическая типизация}-->
+<p>Для каждого класса <span class="sc">M<span class="c">eroonet</span></span> определяется предикат, способный отличать объекты
+данного класса и его наследников от всех остальных. Необычайно важно, чтобы этот
+предикат работал с максимально возможной скоростью, так как Scheme — это язык
+с динамической типизацией, где типы постоянно проверяются и перепроверяются. При
+компиляции иногда можно предсказать<a class="footref" href="zz_footnotes.xhtml#foot11.12"><sup>12</sup></a> тип объекта, объединить
+некоторые проверки, извлечь необходимую информацию из пользовательских
+определений или даже потребовать полной типобезопасности программ, например,
+предоставив функции, возвращающие типы своих аргументов.</p>
+
+<!--\indexC{meroonet-error}-->
+<!--\indexR{обработка ошибок!в \protect\Meroonet}-->
+<p>Проверка принадлежности объекта классу является фундаментальной операцией языка,
+выполняемой предикатом <code><span class="func">is-a?</span></code>. Ради быстродействия
+<code><span class="func">is-a?</span></code> предполагает,
+что его аргумент действительно является объектом, а класс — классом.
+Следовательно, нельзя свободно применять <code><span class="func">is-a?</span></code>
+к чему попало. В противоположность ему, предикаты, связанные с конкретными классами, более
+устойчивы: они сразу отбраковывают аргументы, который не похожи на объекты
+<span class="sc">M<span class="c">eroonet</span></span>. Наконец, полезным будет ещё один, самый строгий предикат,
+убеждающийся в принадлежности объекта указанному классу и выводящий понятное
+сообщение об ошибке в случае несовпадения. Так как в Scheme нет<a class="footref" href="zz_footnotes.xhtml#foot11.13"><sup>13</sup></a>
+стандартного механизма обработки ошибок, то <span class="sc">M<span class="c">eroonet</span></span> сообщает о них, вызывая
+функцию <code><span class="func">meroonet-error</span></code>, которая… не определена — гарантированно
+переносимый способ получить ошибку!</p>
+
+<!--\indexC{make-predicate}-->
+<!--\indexC{is-a"?}-->
+<!--\indexC{check-class-membership}-->
+<pre>(<span class="special">define</span> (<span class="func">make-predicate</span> <span class="var">class</span>)
+  (<span class="special">lambda</span> (<span class="var">o</span>) (<span class="syntax">and</span> (<span class="func">Object?</span> <span class="var">o</span>)
+                   (<span class="func">is-a?</span> <span class="var">o</span> <span class="var">class</span>) )) )
+
+(<span class="special">define</span> (<span class="func">is-a?</span> <span class="var">o</span> <span class="var">class</span>)
+  (<span class="syntax">let</span> <span class="func">up</span> ((<span class="var">c</span> (<span class="func">object-&gt;class</span> <span class="var">o</span>)))
+    (<span class="syntax">or</span> (<span class="func">eq?</span> <span class="var">class</span> <span class="var">c</span>)
+        (<span class="syntax">let</span> ((<span class="var">sc</span> (<span class="func">careless-Class-superclass</span> <span class="var">c</span>)))
+          (<span class="syntax">and</span> <span class="var">sc</span> (<span class="func">up</span> <span class="var">sc</span>)) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+  (<span class="special">if</span> (<span class="func">not</span> (<span class="func">is-a?</span> <span class="var">o</span> <span class="var">class</span>))
+    (<span class="func">meroonet-error</span> <span class="string">"Wrong class"</span> <span class="var">o</span> <span class="var">class</span>)
+    <span class="hash">#t</span> ) )</pre>
+
+<p>Предикат <code><span class="func">is-a?</span></code> имеет вычислительную сложность
+<span class="math"><span class="ord var">O</span><span class="open">(</span><span class="ord var">n</span><span class="close">)</span></span>, так как сначала
+проверяется класс объекта, затем его суперкласс, затем суперкласс суперкласса
+и так далее. Но это в худшем случае; чаще всего достаточно одной проверки,
+реже — двух-трёх.</p>
+
+<p>Стоит отметить, что в формулировке предиката <code><span class="func">is-a?</span></code> заботливо оставлены
+грабли в виде возможной бесконечной регрессии. Мы их успешно обошли, использовав
+функцию <code><span class="func">careless-Class-superclass</span></code> для получения суперкласса вместо
+кажущейся более логичной <code><span class="func">Class-superclass</span></code>. Разница между ними в том, что
+первая функция предполагает, что её аргумент является классом. В контексте
+<code><span class="func">is-a?</span></code> мы не особо рискуем, делая подобные предположения. Но вот вторая
+функция обязана быть более аккуратной, и она наверняка проверяет, что её
+аргумент — это действительно класс. Естественно, это приведёт к рекурсивному
+вызову <code><span class="func">is-a?</span></code>, что самым печальным образом скажется на производительности
+<span class="sc">M<span class="c">eroonet</span></span>.</p>
+
+
+<h3 id="objects/accomp/ssect:allocator"><span class="wrap"><span class="seq">11.5.2.</span><span class="title">Аллокатор без инициализации</span></span></h3>
+
+<!--\indexR{сопутствующие функции!аллокаторы}-->
+<!--\indexR{аллокаторы}-->
+<p><span class="sc">M<span class="c">eroonet</span></span> предоставляет два вида аллокаторов. Первый, называемый просто
+аллокатором, лишь выделяет в памяти место под объекты, не утруждая себя его
+инициализацией. Второй, именуемый конструктором, создаёт объекты с чётко
+определёнными значениями полей. Аналогичные понятия есть и в Scheme:
+<code><span class="func">cons</span></code> — это конструктор точечных пар;
+<code><span class="func">vector</span></code> создаёт и
+инициализирует векторы. Существует также и другой способ получить новый вектор
+— функция <code><span class="func">make-vector</span></code>, если ей передать только один аргумент, возвращает
+вектор указанного размера с неопределённым содержимым. <span class="sc">M<span class="c">eroonet</span></span> поддерживает
+обе разновидности.</p>
+
+<!--\indexR{неопределённое значение}-->
+<!--\indexR{неинициализированные переменные}-->
+<!--\indexR{переменные!неинициализированные}-->
+<p>Аллокаторы создают объекты с неопределённым начальным состоянием. Существует как
+минимум два варианта понимания неопределённости. По причинам, связанным
+со сборкой мусора (если сборщики не пользуются некоторыми хитростями,
+см. <span class="cite">[<a href="z1_bibliography.xhtml#bw88">BW88</a>]</span>), неопределённое состояние часто понимается как неизвестное для
+пользователя языка, но вполне определённое для реализации. У такого подхода есть
+два подварианта, различающиеся семантикой используемых значений.</p>
+
+<ul>
+<!--\indexC*{uninitialized}{\#<uninitialized>}-->
+  <li>Неопределённые поля могут быть помечены специальной сущностью
+    <code><span class="hash">#&lt;uninitialized&gt;</span></code>,
+    которая показывает отсутствие значения.
+    Сама она не является значением в строгом смысле, поэтому попытка
+    прочитать содержимое такого поля приводит к ошибке.</li>
+
+  <li>Если реализация не поддерживает подобные сущности, то она
+    может записывать в поле произвольное нормальное значение.
+    В Лиспе, например, это зачастую <code><span class="var">nil</span></code>,
+    в Le_Lisp — <code><span class="var">t</span></code>,
+    многие реализации Scheme используют <code><span class="hash">#f</span></code>.
+    Следовательно, пользователь не может полагаться на какие-либо
+    конкретные начальные значения неинициализированных полей, но
+    обращения к ним не будут принципиальной ошибкой.</li>
+</ul>
+
+<p>И есть ещё третья интерпретация — известная как «С-style», — по которой
+обращение к неинициализированному полю приводит к неопределённым последствиям.
+Поэтому от греха подальше лучше вообще никогда не пытаться читать
+неинициализированные поля. Такое понимание неинициализированности очень удобно
+для разработчиков языка, но отнюдь не для его пользователей, потому как термин
+«неопределённое поведение» может означать действительно <em>что угодно</em>.
+Возьмём, например, какой-нибудь аксессор чтения. Очевидно, его быстродействие
+должно быть максимально высоким, поэтому сам он принципиально не проверяет, что
+и откуда там считывается. А так как реализация ничего не гарантирует в случае
+неинициализированных полей, то в зависимости от настроения и текущей фазы
+Луны она может как выбросить мерзкую, но кристально понятную ошибку <code>"Bus
+error, core dumped"</code>, так и молча выдать какой-нибудь мусор, который программа
+примет за чистую монету. Вся ответственность за чтение неинициализированных
+полей возлагается на пользователей — справедливо, но очень опасно.</p>
+
+<p>Первый подход (с <code><span class="hash">#&lt;uninitialized&gt;</span></code>)
+требует, чтобы обращение к полю,
+которое не было инициализировано, вызывало ошибку. Очевидно, это условие
+необходимо проверять всякий раз, когда производится обращение к потенциально
+неинициализированному полю <span class="cite">[<a href="z1_bibliography.xhtml#que93b">Que93b</a>]</span>. Второй вариант, равно как и третий,
+не нуждается в лишних проверках.</p>
+
+<p>Сишный вариант, конечно, является наиболее эффективным с точки зрения скорости,
+так как выделенную память не надо ни инициализировать, ни очищать. Если собрать
+все эти утверждения воедино, то станет очевидным парадоксальный факт: в итоге
+изначально инициализированные объекты оказываются эффективнее, нежели объекты
+без инициализации. Это для пользователя начальные значения полей не имеют
+смысла, но реализация обязана помещать туда конкретные значения вроде
+<code><span class="hash">#&lt;uninitialized&gt;</span></code>;
+с таким же успехом она могла бы заполнять их чем-то
+более осмысленным. Наконец, чаще всего поля, не инициализированные при создании
+объекта, всё равно инициализируются впоследствии — а это двойная работа.
+В некоторых случаях её можно простить, но когда все значения известны заранее,
+глупо не использовать явную инициализацию, формирующую объект за один проход
+вместо двух.</p>
+
+<p>CLOS понимает неопределённость в первом смысле и гарантирует обнаружение ошибок
+доступа к неинициализированным полям. В Scheme есть формы, для реализации
+которых может потребоваться понятие неинициализированных переменных.
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span>
+По нашей задумке, <span class="sc">M<span class="c">eroonet</span></span> должна быть способна
+полностью эмулировать Scheme, а значит, иметь
+какой-то механизм представления таких переменных. Но дабы не усложнять
+реализацию, мы будем просто заполнять неинициализированные поля
+значением <code><span class="hash">#f</span></code>.</p>
+
+<!--\indexR{объекты!неинициализированные}-->
+<!--\indexR{побочные эффекты}-->
+<p>Концепция аллокации без инициализации имеет смысл только для изменяемых
+объектов. Это очень важное замечание, так как неизменяемые значения проще
+определить математически, чем объекты, имеющие состояние, что помогает при их
+сравнении. <span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#assignment/side-effects/ssect:equality">4.2.1</a>]</span> Кроме того,
+неизменяемые объекты гораздо лучше оптимизируются в силу того, что все их поля
+неизменны. Возьмём, например, функцию <code><span class="func">make-allocator</span></code>,
+которая определена чуть ниже. В ней используется форма <code>(<span class="func">Class-number</span> <span class="var">class</span>)</code>,
+значение которой вполне можно было бы вычислить заранее и подставить напрямую (как это сделано
+для <code>(<span class="func">Class-fields</span> <span class="var">class</span>)</code>), если бы номер класса был неизменной величиной.
+Но из-за возможности переименования классов мы вынуждены выяснять его каждый
+раз заново.</p>
+
+<p>Функция <code><span class="func">make-allocator</span></code> создаёт аллокаторы. Она берёт класс и возвращает
+функцию, принимающую список натуральных чисел, соответствующих длине каждого
+индексированного поля этого класса. Полученная функция сначала определяет
+размеры необходимого участка памяти (длину вектора), складывая длины всех полей.
+Откуда она про них узнает? Их список извлекается из класса методом
+<code><span class="func">Class-fields</span></code>. После того, как требуемый кусок памяти наконец получен, ему
+необходимо придать форму, записав в соответствующие места длины всех
+индексированных полей. Для этого организуется второй цикл, проходящий по всем
+полям класса и отслеживающий текущее смещение в выделенной области памяти.
+Наконец, получившийся «скелет» объекта связывается со своим классом и
+возвращается из аллокатора.</p>
+
+<!--\indexC{make-allocator}-->
+<pre>(<span class="special">define</span> (<span class="func">make-allocator</span> <span class="var">class</span>)
+  (<span class="syntax">let</span> ((<span class="var">fields</span> (<span class="func">Class-fields</span> <span class="var">class</span>)))
+    (<span class="special">lambda</span> <span class="var">sizes</span>
+      <span class="comment">;; вычисляем размер создаваемого объекта</span>
+      (<span class="syntax">let</span> ((<span class="var">room</span> (<span class="syntax">let</span> <span class="func">iter</span> ((<span class="var">fields</span> <span class="var">fields</span>)
+                             (<span class="var">sizes</span> <span class="var">sizes</span>)
+                             (<span class="var">room</span> <span class="var">*starting-offset*</span>) )
+                    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+                        (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                               (<span class="func">iter</span> (<span class="func">cdr</span> <span class="var">fields</span>) <span class="var">sizes</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">room</span>)) )
+                              ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                               (<span class="func">iter</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">cdr</span> <span class="var">sizes</span>)
+                                     (<span class="func">+</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">sizes</span>) <span class="var">room</span>) ) ) )
+                        <span class="var">room</span> ) )))
+        (<span class="syntax">let</span> ((<span class="var">o</span> (<span class="func">make-vector</span> <span class="var">room</span> <span class="hash">#f</span>)))
+          <span class="comment">;; формируем родственные связи объекта и его скелет</span>
+          (<span class="func">vector-set!</span> <span class="var">o</span> <span class="num">0</span> (<span class="func">Class-number</span> <span class="var">class</span>))
+          (<span class="syntax">let</span> <span class="func">iter</span> ((<span class="var">fields</span> <span class="var">fields</span>)
+                     (<span class="var">sizes</span> <span class="var">sizes</span>)
+                     (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+            (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+                (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                       (<span class="func">iter</span> (<span class="func">cdr</span> <span class="var">fields</span>) <span class="var">sizes</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                      ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                       (<span class="func">vector-set!</span> <span class="var">o</span> <span class="var">offset</span> (<span class="func">car</span> <span class="var">sizes</span>))
+                       (<span class="func">iter</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">cdr</span> <span class="var">sizes</span>)
+                             (<span class="func">+</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">sizes</span>) <span class="var">offset</span>) ) ) )
+                <span class="var">o</span> ) ) ) ) ) ) )</pre>
+
+<p>Следует сделать несколько замечаний касательного этого кода:</p>
+
+<ol>
+  <li>Аллокаторы единственным аргументом принимают список длин полей.
+    Следовательно, они неявно требуют создания в памяти этого списка,
+    состоящего из точечных пар, — чтобы выделить память, вначале
+    требуется выделить память! Позже мы рассмотрим способ этого избежать.</li>
+
+  <li>Лишние элементы данного списка просто игнорируются, не вызывая
+    никаких ошибок.</li>
+
+  <li>Аллокатор дважды проходит по одному и тому же списку полей класса.
+    Это не сильно эффективно, особенно для классов без индексированных
+    полей, чей размер неизменен. Этот недочёт впоследствии тоже будет
+    исправлен.</li>
+
+  <li>Если не дай бог указанный размер индексированного поля будет
+    отрицательным, то необходимый объём памяти будет вычислен неверно и
+    пользователь рано или поздно получит какое-то малопонятное сообщение
+    об ошибке. Это не очень хорошо, поэтому следует выполнять явную
+    проверку и заранее выводить своё, вменяемое сообщение.</li>
+
+  <li>Поля могут быть только экземплярами классов
+    <code><span class="class">Mono-Field</span></code> или
+    <code><span class="class">Poly-Field</span></code>. Пользовательские классы
+    полей при такой реализации добавить невозможно.</li>
+</ol>
+
+
+<h3 id="objects/accomp/ssect:maker"><span class="wrap"><span class="seq">11.5.3.</span><span class="title">Аллокатор с инициализацией</span></span></h3>
+
+<!--\indexR{сопутствующие функции!конструкторы}-->
+<!--\indexR{конструкторы}-->
+<!--\indexR{специализация!конструкторов}-->
+<!--\indexR{индексированные поля}-->
+<!--\indexR{поля!индексированные}-->
+<p>Конструкторы классов определяются похожим образом, но мы немного оптимизируем
+создание объектов небольших размеров. В Scheme аллокаторы (вроде
+<code><span class="func">make-vector</span></code> или <code><span class="func">make-string</span></code>) принимают размер создаваемого объекта,
+а также необязательное значение-заполнитель, которым инициализируется по
+умолчанию его содержимое. Конструкторы (наподобие <code><span class="func">cons</span></code>, <code><span class="func">vector</span></code> или
+<code><span class="func">string</span></code>) принимают соответствующее количество значений для всех полей
+создаваемых объектов. Так как в векторе или строке только одно индексированное
+поле, то его длина без проблем определяется по количеству аргументов, переданных
+конструктору. У нас же таких полей может быть несколько, так что если не вводить
+для их инициализации особый синтаксис, то соответствующие длины необходимо
+указывать явно. В <span class="sc">M<span class="c">eroonet</span></span> они записываются перед перечислением содержимого
+подобных полей. Итого, цветной многоугольник с тремя сторонами создаётся
+следующим образом:</p>
+
+<pre>(<span class="func">make-ColoredPolygon</span> '<span class="var">x</span> '<span class="var">y</span> <span class="num">3</span> '<span class="var">Point0</span> '<span class="var">Point1</span> '<span class="var">Point2</span> '<span class="var">color</span>)</pre>
+
+<p>Для аллокаторов с инициализацией мы применим следующий подход: все аргументы
+собираются в один общий список <code><span class="var">params</span></code>; затем создаётся вектор, в который
+укладываются элементы этого списка вместе с номером класса. После этого остаётся
+только проверить, что структура созданного объекта корректна с точки зрения
+<span class="sc">M<span class="c">eroonet</span></span>. Для этого мы пройдёмся по всем аргументам и полям класса, убеждаясь
+в том, что все поля инициализированы. Если всё хорошо, то сконструированный
+объект возвращается из функции. Такой подход проще (и, вероятно, быстрее), чем
+кажущийся более естественным предыдущий, где аргументы проверяются до того,
+как объект создаётся в памяти.</p>
+
+<!--\indexC{make-maker}-->
+<pre>(<span class="special">define</span> (<span class="func">make-maker</span> <span class="var">class</span>)
+  (<span class="syntax">or</span> (<span class="func">make-fix-maker</span> <span class="var">class</span>)
+      (<span class="syntax">let</span> ((<span class="var">fields</span> (<span class="func">Class-fields</span> <span class="var">class</span>)))
+        (<span class="special">lambda</span> <span class="var">params</span>
+          <span class="comment">;; создаём объект</span>
+          (<span class="syntax">let</span> ((<span class="func">o</span> (<span class="func">apply</span> <span class="var">vector</span> (<span class="func">Class-number</span> <span class="var">class</span>) <span class="var">params</span>)))
+            <span class="comment">;; проверяем его скелет</span>
+            (<span class="syntax">let</span> <span class="func">check</span> ((<span class="var">fields</span> <span class="var">fields</span>)
+                        (<span class="var">params</span> <span class="var">params</span>)
+                        (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+              (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+                  (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                         (<span class="func">check</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">cdr</span> <span class="var">params</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                        ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                         (<span class="func">check</span> (<span class="func">cdr</span> <span class="var">fields</span>)
+                                (<span class="func">list-tail</span> (<span class="func">cdr</span> <span class="var">params</span>) (<span class="func">car</span> <span class="var">params</span>))
+                                (<span class="func">+</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">params</span>) <span class="var">offset</span>) ) ) )
+                  <span class="var">o</span> ) ) ) ) ) ) )</pre>
+
+<p>Этот аллокатор тоже игнорирует лишние аргументы, но он всё ещё не особо
+эффективен, так как аргументы собираются в список, который тут же превращается
+в вектор. Далее, из-за того, что для проверки структуры создаваемого объекта
+используется список <code><span class="var">params</span></code>, а не полученный вектор, будет весьма непросто
+убедить компилятор в том, что этот список бесполезен и его можно не создавать.
+Поэтому мы прикрутим к <code><span class="func">make-maker</span></code> небольшой костыль, чтобы исправить
+ситуацию хотя бы для объектов, не имеющих индексированных полей.</p>
+
+<!--\indexC{make-fix-maker}-->
+<pre id="objects/accomp/maker/src:fix-maker">(<span class="special">define</span> (<span class="func">make-fix-maker</span> <span class="var">class</span>)
+  (<span class="special">define</span> (<span class="func">static-size?</span> <span class="var">fields</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+        (<span class="syntax">and</span> (<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+             (<span class="func">static-size?</span> (<span class="func">cdr</span> <span class="var">fields</span>)) )
+        <span class="hash">#t</span> ) )
+  (<span class="syntax">let</span> ((<span class="var">fields</span> (<span class="func">Class-fields</span> <span class="var">class</span>)))
+    (<span class="syntax">and</span> (<span class="func">static-size?</span> <span class="var">fields</span>)
+         (<span class="syntax">let</span> ((<span class="var">size</span> (<span class="func">length</span> <span class="var">fields</span>))
+               (<span class="var">cn</span> (<span class="func">Class-number</span> <span class="var">class</span>)) )
+           (<span class="syntax">case</span> <span class="var">size</span>
+             ((<span class="num">0</span>)  (<span class="special">lambda</span> ()              (<span class="func">vector</span> <span class="var">cn</span>)))
+             ((<span class="num">1</span>)  (<span class="special">lambda</span> (<span class="var">a</span>)             (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span>)))
+             ((<span class="num">2</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span>)           (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span>)))
+             ((<span class="num">3</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span>)         (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span>)))
+             ((<span class="num">4</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span>)       (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span>)))
+             ((<span class="num">5</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span>)     (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span>)))
+             ((<span class="num">6</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span> <span class="var">f</span>)   (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span> <span class="var">f</span>)))
+             ((<span class="num">7</span>)  (<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span> <span class="var">f</span> <span class="var">g</span>) (<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> <span class="var">d</span> <span class="var">e</span> <span class="var">f</span> <span class="var">g</span>)))
+             (<span class="syntax">else</span> <span class="hash">#f</span>) ) ) ) ) )</pre>
+
+<p>Таким образом, конструкторы классов, имеющих менее девяти неиндексированных
+полей, будут эффективными функциями с фиксированной арностью. Если класс
+не содержит индексированных полей, но в нём слишком много обычных, то для него
+тоже применяется стратегия со списком и явной проверкой. Кстати, если вы
+заметили, для индексированных полей эта проверка выполняется весьма элегантным
+образом с помощью <code><span class="func">list-tail</span></code> и
+<code><span class="func">cdr</span></code>: если в списке окажется недостаточно
+элементов, то одна из этих функций выдаст ошибку, так как они обе неприменимы
+к слишком коротким (в том числе пустым) спискам. Для небольших же объектов эта
+проверка тождественна обычной проверке арности. Естественно, подобное
+разнообразие стратегий отлова одной и той же ошибки означает нарушение
+единообразия сообщений о ней, что не очень красиво выглядит, но повсеместная
+реализация данных удобств раздула бы исходный код <span class="sc">M<span class="c">eroonet</span></span>
+более чем на четверть.</p>
+
+<p>Действительно эффективно создавать объекты <span class="sc">M<span class="c">eroonet</span></span> можно только при
+непосредственной поддержке этой системы самим языком. Нелепостей вроде функции
+выделения памяти, требующей для работы сравнимого объёма памяти, можно избежать,
+например, имея в распоряжении внутреннюю функцию, создающую аллокаторы вида
+<code>(<span class="func">vector</span> <span class="var">cn</span> <span class="var">a</span> <span class="var">b</span> <span class="var">c</span> ...)</code>.</p>
+
+
+<h3 id="objects/accomp/ssect:access"><span class="wrap"><span class="seq">11.5.4.</span><span class="title">Аксессоры</span></span></h3>
+
+<!--\indexR{сопутствующие функции!аксессоры}-->
+<!--\indexR{аксессоры}-->
+<p>Для каждого поля класса в <span class="sc">M<span class="c">eroonet</span></span> определяются вспомогательные функции,
+позволяющие читать, писать и узнавать длину этого поля, если оно индексировано.
+Определения данных функций генерируются подфункцией
+<code><span class="func">Field-generate-related-names</span></code>:</p>
+
+<!--\indexC{Field-generate-related-names}-->
+<pre>(<span class="special">define</span> (<span class="func">Field-generate-related-names</span> <span class="var">field</span> <span class="var">class</span>)
+  (<span class="syntax">let*</span> ((<span class="var">fname</span> (<span class="func">careless-Field-name</span> <span class="var">field</span>))
+         (<span class="var">cname</span> (<span class="func">Class-name</span> <span class="var">class</span>))
+         (<span class="var">cname-variable</span> (<span class="func">symbol-concatenate</span> <span class="var">cname</span> '<span class="var">-class</span>))
+         (<span class="var">reader-name</span> (<span class="func">symbol-concatenate</span> <span class="var">cname</span> '<span class="var">-</span> <span class="var">fname</span>))
+         (<span class="var">writer-name</span> (<span class="func">symbol-concatenate</span> '<span class="var">set-</span> <span class="var">reader-name</span> '<span class="var">!</span>)) )
+    `(<span class="special">begin</span>
+       (<span class="special">define</span> ,<span class="var">reader-name</span>
+         (<span class="func">make-reader</span>
+          (<span class="func">retrieve-named-field</span> ,<span class="var">cname-variable</span> ',<span class="var">fname</span>) ) )
+       (<span class="special">define</span> ,<span class="var">writer-name</span>
+         (<span class="func">make-writer</span>
+          (<span class="func">retrieve-named-field</span> ,<span class="var">cname-variable</span> ',<span class="var">fname</span>) ) )
+       ,@(<span class="special">if</span> (<span class="func">Poly-Field?</span> <span class="var">field</span>)
+             `((<span class="special">define</span> ,(<span class="func">symbol-concatenate</span> <span class="var">reader-name</span> '<span class="var">-length</span>)
+                 (<span class="func">make-lengther</span>
+                  (<span class="func">retrieve-named-field</span> ,<span class="var">cname-variable</span> ',<span class="var">fname</span>) ) ))
+             <span class="hash">'()</span> ) ) ) )</pre>
+
+<p>Как и для всех остальных сопутствующих классам функций, код аксессоров
+извлекается из соответствующих замыканий, а не генерируется напрямую.
+Конструкторы <code><span class="func">make-reader</span></code>, <code><span class="func">make-writer</span></code> и <code><span class="func">make-lengther</span></code> принимают
+поле и возвращают необходимые замыкания. Так как аксессоры создаются
+динамически, данные функции вынуждены обращаться к глобальной переменной,
+содержащей информацию о классе, и искать там нужное поле по имени; для этого
+используется функция <code><span class="func">retrieve-named-field</span></code>:</p>
+
+<!--\indexC{retrieve-named-field}-->
+<pre>(<span class="special">define</span> (<span class="func">retrieve-named-field</span> <span class="var">class</span> <span class="var">name</span>)
+  (<span class="syntax">let</span> <span class="func">search</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>)))
+    (<span class="syntax">and</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+         (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">name</span> (<span class="func">careless-Field-name</span> (<span class="func">car</span> <span class="var">fields</span>)))
+             (<span class="func">car</span> <span class="var">fields</span>)
+             (<span class="func">search</span> (<span class="func">cdr</span> <span class="var">fields</span>)) ) ) ) )</pre>
+
+
+<h3 id="objects/accomp/ssect:read"><span class="wrap"><span class="seq">11.5.5.</span><span class="title">Чтение полей</span></span></h3>
+
+<!--\indexR{специализация!аксессоров}-->
+<p>Так как поля бывают двух видов: индексированные и обычные, то и аксессоры должны
+производиться в двух вариантах, различающихся арностью. Также сейчас самое время
+заметить, что смещения полей, расположенных до конца первого индексированного
+поля, не зависят от определения класса. Функция <code><span class="func">make-reader</span></code>, создающая
+аксессоры чтения, конечно же, не должна забывать о данной возможности
+оптимизации. Мы воспользуемся списком полей класса для проверки неизменности
+смещения обрабатываемого поля. Если это так, то <code><span class="func">make-reader</span></code> сгенерирует
+соответствующий специализированный аксессор; в противном случае будет
+использована стандартная функция, построенная на основе универсального аксессора
+<code><span class="func">field-value</span></code>. Таким образом, все поля, имеющие фиксированные смещения,
+получат более эффективные аксессоры.</p>
+
+<!--\indexR{проверки типов}-->
+<p>Аксессоры типобезопасны — они проверяют, соответствует ли класс передаваемых
+им объектов родительскому классу поля, с которым связан конкретный аксессор. За
+это отвечает функция <code><span class="func">check-class-membership</span></code>, рассмотренная ранее. Более
+того, аксессоры индексированных полей должны проверять запрашиваемые индексы на
+соответствие размерам этих полей. С этим им поможет функция
+<code><span class="func">check-index-range</span></code>.</p>
+
+<!--\indexC{make-reader}-->
+<!--\indexC{check-index-range}-->
+<pre>(<span class="special">define</span> (<span class="func">make-reader</span> <span class="var">field</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    (<span class="syntax">let</span> <span class="func">skip</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+               (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">field</span> (<span class="func">car</span> <span class="var">fields</span>))
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="special">lambda</span> (<span class="var">o</span>)
+                   (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+                   (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>) ) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">i</span>)
+                   (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+                   (<span class="func">check-index-range</span> <span class="var">i</span> <span class="var">o</span> <span class="var">offset</span>)
+                   (<span class="func">vector-ref</span> <span class="var">o</span> (<span class="func">+</span> <span class="var">offset</span> <span class="num">1</span> <span class="var">i</span>)) ) ) )
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="func">skip</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> <span class="var">field</span>)
+                        (<span class="special">lambda</span> (<span class="var">o</span>)
+                          (<span class="func">field-value</span> <span class="var">o</span> <span class="var">field</span>) ) )
+                       ((<span class="func">Poly-Field?</span> <span class="var">field</span>)
+                        (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">i</span>)
+                          (<span class="func">field-value</span> <span class="var">o</span> <span class="var">field</span> <span class="var">i</span>) ) ) ) ) ) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">check-index-range</span> <span class="var">i</span> <span class="var">o</span> <span class="var">offset</span>)
+  (<span class="syntax">let</span> ((<span class="var">size</span> (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>)))
+    (<span class="special">if</span> (<span class="func">not</span> (<span class="syntax">and</span> (<span class="func">&lt;=</span> <span class="num">0</span> <span class="var">i</span>) (<span class="func">&lt;</span> <span class="var">i</span> <span class="var">size</span>)))
+        (<span class="func">meroonet-error</span> <span class="string">"Index out of range"</span> <span class="var">i</span> <span class="var">size</span>)
+        <span class="hash">#t</span> ) ) )</pre>
+
+<p>Для доступа к остальным полям, находящимся за первым индексированным,
+применяется функция <code><span class="func">field-value</span></code>. Она является обобщённой в смысле
+универсальности — позволяет получить доступ к любому полю любого класса.
+Реализуется она всё же как нормальная, не обобщённая функция, потому что
+<span class="sc">M<span class="c">eroonet</span></span> всё равно не позволяет пользователям определять свои классы
+полей. Естественно, у функции <code><span class="func">field-value</span></code> есть сестра-близнец
+<code><span class="func">set-field-value!</span></code>. Им обеим необходимо уметь динамически вычислять
+смещения полей в произвольном объекте, так что соответствующий код вынесен
+в отдельную функцию <code><span class="func">compute-field-offset</span></code>.</p>
+
+<!--\indexC{compute-field-offset}-->
+<!--\indexC{field-value}-->
+<pre>(<span class="special">define</span> (<span class="func">compute-field-offset</span> <span class="var">o</span> <span class="var">field</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    <span class="comment">;; <code>(<span class="syntax">assume</span> (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>))</code></span>
+    (<span class="syntax">let</span> <span class="func">skip</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+               (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">field</span> (<span class="func">car</span> <span class="var">fields</span>)) <span class="var">offset</span>
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="func">skip</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="func">skip</span> (<span class="func">cdr</span> <span class="var">fields</span>)
+                       (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span> (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>)) ) ) ) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">field-value</span> <span class="var">o</span> <span class="var">field</span> . <span class="var">i</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+    (<span class="syntax">let</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+          (<span class="var">offset</span> (<span class="func">compute-field-offset</span> <span class="var">o</span> <span class="var">field</span>)) )
+      (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> <span class="var">field</span>)
+             (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>) )
+            ((<span class="func">Poly-Field?</span> <span class="var">field</span>)
+             (<span class="func">check-index-range</span> (<span class="func">car</span> <span class="var">i</span>) <span class="var">o</span> <span class="var">offset</span>)
+             (<span class="func">vector-ref</span> <span class="var">o</span> (<span class="func">+</span> <span class="var">offset</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">i</span>))) ) ) ) ) )</pre>
+
+
+<h3 id="objects/accomp/ssect:write"><span class="wrap"><span class="seq">11.5.6.</span><span class="title">Запись в поля</span></span></h3>
+
+<!--\indexC{putprop}-->
+<!--\indexR{соглашения именования!сеттеров}-->
+<p>Определения аксессоров записи полностью аналогичны аксессорам чтения и
+не представляют существенных трудностей. Единственная функция, достойная
+внимания, — это <code><span class="func">set-field-value!</span></code>, имеющая немного странную сигнатуру.
+Обычно порядок аргументов сеттера повторяет порядок в геттере, только в конце
+дописывается новое значение поля. Сравните, например, <code><span class="func">car</span></code> и <code><span class="func">set-car!</span></code>.
+Но в случае <span class="sc">M<span class="c">eroonet</span></span> необязательный индекс нарушает эту стройную систему,
+поэтому и был выбран порядок<a class="footref" href="zz_footnotes.xhtml#foot11.14"><sup>14</sup></a> <code>(<span class="var">o</span> <span class="var">v</span> <span class="var">field</span> . <span class="var">i</span>)</code>.</p>
+
+<!--\indexC{make-writer}-->
+<!--\indexC{set-field-value"!}-->
+<pre>(<span class="special">define</span> (<span class="func">make-writer</span> <span class="var">field</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    (<span class="syntax">let</span> <span class="func">skip</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+               (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">field</span> (<span class="func">car</span> <span class="var">fields</span>))
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">v</span>)
+                   (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+                   (<span class="func">vector-set!</span> <span class="var">o</span> <span class="var">offset</span> <span class="var">v</span>) ) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">i</span> <span class="var">v</span>)
+                   (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+                   (<span class="func">check-index-range</span> <span class="var">i</span> <span class="var">o</span> <span class="var">offset</span>)
+                   (<span class="func">vector-set!</span> <span class="var">o</span> (<span class="func">+</span> <span class="var">offset</span> <span class="num">1</span> <span class="var">i</span>) <span class="var">v</span>) ) ) )
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="func">skip</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> <span class="var">field</span>)
+                        (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">v</span>)
+                          (<span class="func">set-field-value!</span> <span class="var">o</span> <span class="var">v</span> <span class="var">field</span>) ) )
+                       ((<span class="func">Poly-Field?</span> <span class="var">field</span>)
+                        (<span class="special">lambda</span> (<span class="var">o</span> <span class="var">i</span> <span class="var">v</span>)
+                          (<span class="func">set-field-value!</span> <span class="var">o</span> <span class="var">v</span> <span class="var">field</span> <span class="var">i</span>) ) ) ) ) ) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">set-field-value!</span> <span class="var">o</span> <span class="var">v</span> <span class="var">field</span> . <span class="var">i</span>)
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+    (<span class="syntax">let</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+          (<span class="var">offset</span> (<span class="func">compute-field-offset</span> <span class="var">o</span> <span class="var">field</span>)) )
+      (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> <span class="var">field</span>)
+             (<span class="func">vector-set!</span> <span class="var">o</span> <span class="var">offset</span> <span class="var">v</span>) )
+            ((<span class="func">Poly-Field?</span> <span class="var">field</span>)
+             (<span class="func">check-index-range</span> (<span class="func">car</span> <span class="var">i</span>) <span class="var">o</span> <span class="var">offset</span>)
+             (<span class="func">vector-set!</span> <span class="var">o</span> (<span class="func">+</span> <span class="var">offset</span> <span class="num">1</span> (<span class="func">car</span> <span class="var">i</span>)) <span class="var">v</span>) ) ) ) ) )</pre>
+
+<p>Немаловажным моментом является стиль именования сеттеров. Здесь используется
+префикс <code><span class="func">set-</span></code>, подобно <code><span class="func">set-cdr!</span></code>. В принципе, можно было бы использовать
+и суффикс <code><span class="func">-set!</span></code>, как в <code><span class="func">vector-set!</span></code>, но у префикса есть определённые
+преимущества: так сразу понятно, что данная функция модифицирует объекты. Да и
+читаются имена в этом случае естественнее.</p>
+
+
+<h3 id="objects/accomp/ssect:len"><span class="wrap"><span class="seq">11.5.7.</span><span class="title">Длина полей</span></span></h3>
+
+<p>Каждое индексированное поле получает особую функцию, позволяющую узнать его
+длину в конкретном объекте. Устроены эти функции так же, как и остальные
+аксессоры: если возможно, то генерируется оптимизированный вариант, иначе
+используется универсальная функция <code><span class="func">field-length</span></code>.</p>
+
+<!--\indexC{make-lengther}-->
+<!--\indexC{field-length}-->
+<pre>(<span class="special">define</span> (<span class="func">make-lengther</span> <span class="var">field</span>)
+  <span class="comment">;; <code>(<span class="syntax">assume</span> (<span class="func">Poly-Field?</span> <span class="var">field</span>))</code></span>
+  (<span class="syntax">let</span> ((<span class="var">class</span> (<span class="func">Field-defining-class</span> <span class="var">field</span>)))
+    (<span class="syntax">let</span> <span class="func">skip</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+               (<span class="var">offset</span> <span class="var">*starting-offset*</span>) )
+      (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">field</span> (<span class="func">car</span> <span class="var">fields</span>))
+          (<span class="special">lambda</span> (<span class="var">o</span>)
+            (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+            (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>) )
+          (<span class="syntax">cond</span> ((<span class="func">Mono-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="func">skip</span> (<span class="func">cdr</span> <span class="var">fields</span>) (<span class="func">+</span> <span class="num">1</span> <span class="var">offset</span>)) )
+                ((<span class="func">Poly-Field?</span> (<span class="func">car</span> <span class="var">fields</span>))
+                 (<span class="special">lambda</span> (<span class="var">o</span>)
+                   (<span class="func">field-length</span> <span class="var">o</span> <span class="var">field</span>)) ) ) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">field-length</span> <span class="var">o</span> <span class="var">field</span>)
+  (<span class="syntax">let*</span> ((<span class="var">class</span>  (<span class="func">Field-defining-class</span> <span class="var">field</span>))
+         (<span class="var">fields</span> (<span class="func">careless-Class-fields</span> <span class="var">class</span>))
+         (<span class="var">offset</span> (<span class="func">compute-field-offset</span> <span class="var">o</span> <span class="var">field</span>)) )
+    (<span class="func">check-class-membership</span> <span class="var">o</span> <span class="var">class</span>)
+    (<span class="func">vector-ref</span> <span class="var">o</span> <span class="var">offset</span>) ) )</pre>
+
+
+<h2 id="objects/sect:create-class"><span class="wrap"><span class="seq">11.6.</span><span class="title">Создание классов</span></span></h2>
+
+<p>Форма <code><span class="syntax">define-class</span></code> на самом деле не создаёт объект, представляющий
+определяемый класс. Она перепоручает эту работу функции <code><span class="func">register-class</span></code>.
+Эта функция уже выделяет память и вызывает <code><span class="func">Class-initialize!</span></code>, чтобы
+заполнить её осмысленными данными, полученными в результате анализа определения
+класса и его родословной. После формирования дескрипторов полей (с чем помогает
+функция <code><span class="func">parse-fields</span></code>) класс помещается на подобающее ему место в иерархии
+наследования. Наконец, функция <code><span class="func">update-generics</span></code> рассказывает всем обобщённым
+функциям о пополнении в семействе, обеспечивая корректное наследование методов.</p>
+
+<!--\indexC{register-class}-->
+<!--\indexC{Class-initialize"!}-->
+<pre>(<span class="special">define</span> (<span class="func">register-class</span> <span class="var">name</span> <span class="var">super-name</span> <span class="var">own-fields</span>)
+  (<span class="func">Class-initialize!</span> (<span class="func">allocate-Class</span>)
+                     <span class="var">name</span>
+                     (<span class="func">-&gt;Class</span> <span class="var">super-name</span>)
+                     <span class="var">own-fields</span> ) )
+
+(<span class="special">define</span> (<span class="func">Class-initialize!</span> <span class="var">class</span> <span class="var">name</span> <span class="var">superclass</span> <span class="var">own-fields</span>)
+  <span class="comment">;; инициализируем поля класса</span>
+  (<span class="func">set-Class-number!</span>           <span class="var">class</span> <span class="var">*class-number*</span>)
+  (<span class="func">set-Class-name!</span>             <span class="var">class</span> <span class="var">name</span>)
+  (<span class="func">set-Class-superclass!</span>       <span class="var">class</span> <span class="var">superclass</span>)
+  (<span class="func">set-Class-subclass-numbers!</span> <span class="var">class</span> <span class="hash">'()</span>)
+  (<span class="func">set-Class-fields!</span>
+   <span class="var">class</span> (<span class="func">append</span> (<span class="func">Class-fields</span> <span class="var">superclass</span>)
+                 (<span class="func">parse-fields</span> <span class="var">class</span> <span class="var">own-fields</span>) ) )
+  <span class="comment">;; помещаем его в иерархию</span>
+  (<span class="func">set-Class-subclass-numbers!</span>
+   <span class="var">superclass</span>
+   (<span class="func">cons</span> <span class="var">*class-number*</span> (<span class="func">Class-subclass-numbers</span> <span class="var">superclass</span>)) )
+  (<span class="func">vector-set!</span> <span class="var">*classes*</span> <span class="var">*class-number*</span> <span class="var">class</span>)
+  (<span class="special">set!</span> <span class="var">*class-number*</span> (<span class="func">+</span> <span class="num">1</span> <span class="var">*class-number*</span>))
+  <span class="comment">;; передаём в наследство методы родителей</span>
+  (<span class="func">update-generics</span> <span class="var">class</span>)
+  <span class="var">class</span> )</pre>
+
+<!--\indexR{переопределение!полей}-->
+<p>Описания полей в определениях классов разбираются функцией <code><span class="func">parse-fields</span></code>.
+Она проводит синтаксический анализ полученного списка дескрипторов. Каждый
+дескриптор может быть или просто именем, или списком. Если это список, то он
+может начинаться лишь на знак равенства или звёздочку. Любая другая форма записи
+приводит к <code><span class="func">meroonet-error</span></code>. <span class="sc">M<span class="c">eroonet</span></span> не позволяет переопределять
+наследуемые поля; функция <code><span class="func">check-conflicting-name</span></code> гарантирует соблюдение
+данного запрета. С повторением имён собственных полей <span class="sc">M<span class="c">eroonet</span></span> поступает
+так же, как и с повторным определением классов: никак.</p>
+
+<!--\indexC{parse-fields}-->
+<!--\indexC{check-conflicting-name}-->
+<pre>(<span class="special">define</span> (<span class="func">parse-fields</span> <span class="var">class</span> <span class="var">own-fields</span>)
+  (<span class="special">define</span> (<span class="func">Field-initialize!</span> <span class="var">field</span> <span class="var">name</span>)
+    (<span class="func">check-conflicting-name</span> <span class="var">class</span> <span class="var">name</span>)
+    (<span class="func">set-Field-name!</span> <span class="var">field</span> <span class="var">name</span>)
+    (<span class="func">set-Field-defining-class-number!</span> <span class="var">field</span> (<span class="func">Class-number</span> <span class="var">class</span>))
+    <span class="var">field</span> )
+
+  (<span class="special">define</span> (<span class="func">parse-Mono-Field</span> <span class="var">name</span>)
+    (<span class="func">Field-initialize!</span> (<span class="func">allocate-Mono-Field</span>) <span class="var">name</span>) )
+
+  (<span class="special">define</span> (<span class="func">parse-Poly-Field</span> <span class="var">name</span>)
+    (<span class="func">Field-initialize!</span> (<span class="func">allocate-Poly-Field</span>) <span class="var">name</span>) )
+
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">own-fields</span>)
+      (<span class="func">cons</span> (<span class="syntax">cond</span>
+             ((<span class="func">symbol?</span> (<span class="func">car</span> <span class="var">own-fields</span>))
+              (<span class="func">parse-Mono-Field</span> (<span class="func">car</span> <span class="var">own-fields</span>)) )
+             ((<span class="func">pair?</span> (<span class="func">car</span> <span class="var">own-fields</span>))
+              (<span class="syntax">case</span> (<span class="func">caar</span> <span class="var">own-fields</span>)
+                ((<span class="var">=</span>) (<span class="func">parse-Mono-Field</span> (<span class="func">cadr</span> (<span class="func">car</span> <span class="var">own-fields</span>))))
+                ((<span class="var">*</span>) (<span class="func">parse-Poly-Field</span> (<span class="func">cadr</span> (<span class="func">car</span> <span class="var">own-fields</span>))))
+                (<span class="syntax">else</span> (<span class="func">meroonet-error</span>
+                       <span class="string">"Erroneous field description"</span>
+                       (<span class="func">car</span> <span class="var">own-fields</span>) )) ) ) )
+            (<span class="func">parse-fields</span> <span class="var">class</span> (<span class="func">cdr</span> <span class="var">own-fields</span>)) )
+      <span class="hash">'()</span> ) )
+
+(<span class="special">define</span> (<span class="func">check-conflicting-name</span> <span class="var">class</span> <span class="var">fname</span>)
+  (<span class="syntax">let</span> <span class="func">check</span> ((<span class="var">fields</span> (<span class="func">careless-Class-fields</span> (<span class="func">Class-superclass</span> <span class="var">class</span>))))
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">fields</span>)
+        (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">careless-Field-name</span> (<span class="func">car</span> <span class="var">fields</span>)) <span class="var">fname</span>)
+            (<span class="func">meroonet-error</span> <span class="string">"Duplicated field name"</span> <span class="var">fname</span>)
+            (<span class="func">check</span> (<span class="func">cdr</span> <span class="var">fields</span>)) )
+        <span class="hash">#t</span> ) ) )</pre>
+
+
+<h2 id="objects/sect:predef-accomp"><span class="wrap"><span class="seq">11.7.</span><span class="title">Предопределённые сопутствующие функции</span></span></h2>
+
+<!--\indexR{раскрутка (bootstrapping)}-->
+<!--\indexR{сопутствующие функции}-->
+<!--\indexR{функции!сопутствующие}-->
+<p>На данный момент мы описали практически всё, что необходимо для определения
+новых классов, за исключением одной маленькой детали. В самом деле,
+рассмотренные определения не заработают без функций, сопутствующих классам
+<code><span class="class">Class</span></code>, <code><span class="class">Field</span></code>
+и т. д. Форму <code><span class="syntax">define-class</span></code> нельзя использовать,
+пока эти функции не будут определены, но проблема в том, что именно
+<code><span class="syntax">define-class</span></code> и должна их определить.
+Опять мы оказались в порочном кругу.</p>
+
+<p>Как обычно, разрывается такой круг волевым усилием, заключающемся в «ручном»
+определении всех необходимых функций. Не требуется определять их все, достаточно
+будет лишь минимально необходимого набора. Также можно не проводить каких-либо
+проверок вроде того, что <code><span class="var">Class-class</span></code> — это действительно класс, и т. п.
+Если всё сделать правильно, то после этого можно будет передать
+<code><span class="syntax">define-class</span></code> описания предопределённых классов и получить на выходе код,
+совпадающий с приведённым в начале главы с точностью до номеров классов.
+Единственное правило, которое требуется неукоснительно соблюдать: предикаты
+определяются первыми, геттеры — перед сеттерами, аллокаторы — в последнюю
+очередь. Ах да, и функции для класса <code><span class="class">Class</span></code> должны быть определены перед
+аналогичными для остальных классов. Здесь приведена лишь часть необходимых
+определений, так как их полный список малоинтересен.</p>
+
+<!--\indexC{allocate-Class}-->
+<!--\indexC{allocate-Poly-Field}-->
+<pre>(<span class="special">define</span> <span class="var">Class?</span>   (<span class="func">make-predicate</span> <span class="var">Class-class</span>))
+(<span class="special">define</span> <span class="var">Generic?</span> (<span class="func">make-predicate</span> <span class="var">Generic-class</span>))
+(<span class="special">define</span> <span class="var">Field?</span>   (<span class="func">make-predicate</span> <span class="var">Field-class</span>))
+
+(<span class="special">define</span> <span class="var">Class-name</span>
+  (<span class="func">make-reader</span> (<span class="func">retrieve-named-field</span> <span class="var">Class-class</span> '<span class="var">name</span>)))
+(<span class="special">define</span> <span class="var">set-Class-name!</span>
+  (<span class="func">make-writer</span> (<span class="func">retrieve-named-field</span> <span class="var">Class-class</span> '<span class="var">name</span>)))
+(<span class="special">define</span> <span class="var">Class-number</span>
+  (<span class="func">make-reader</span> (<span class="func">retrieve-named-field</span> <span class="var">Class-class</span> '<span class="var">number</span>)) )
+(<span class="special">define</span> <span class="var">set-Class-subclass-numbers!</span>
+  (<span class="func">make-writer</span> (<span class="func">retrieve-named-field</span> <span class="var">Class-class</span> '<span class="var">subclass-numbers</span>)) )
+
+(<span class="special">define</span> <span class="var">make-Class</span> (<span class="func">make-maker</span> <span class="var">Class-class</span>))
+(<span class="special">define</span> <span class="var">allocate-Class</span> (<span class="func">make-allocator</span> <span class="var">Class-class</span>))
+
+(<span class="special">define</span> <span class="var">Generic-name</span>
+  (<span class="func">make-reader</span> (<span class="func">retrieve-named-field</span> <span class="var">Generic-class</span> '<span class="var">name</span>)) )
+
+(<span class="special">define</span> <span class="var">allocate-Poly-Field</span> (<span class="func">make-allocator</span> <span class="var">Poly-Field-class</span>))</pre>
+
+<!--\indexR{переопределение!классов}-->
+<p>Вот теперь <code><span class="syntax">define-class</span></code> полностью готова к использованию. Осторожно:
+не следует тут же бежать «правильно» переопределять классы <code><span class="class">Object</span></code>,
+<code><span class="class">Class</span></code> и другие. Во-первых, из-за того, что <code><span class="syntax">define-class</span></code>
+не идемпотентна<a class="footref" href="zz_footnotes.xhtml#foot11.15"><sup>15</sup></a>, вы получите шесть новых классов, а предыдущие шесть так
+и останутся бессмысленно болтаться в памяти. Во-вторых, компилятор не особо
+обрадует переопределение всех сопутствующих функций, до этого считавшихся
+неизменными.</p>
+
+
+<h2 id="objects/sect:generics"><span class="wrap"><span class="seq">11.8.</span><span class="title">Обобщённые функции</span></span></h2>
+
+<!--\indexR{обобщённые функции}-->
+<!--\indexR{обмен сообщениями}-->
+<!--\indexR{функции!обобщённые}-->
+<!--\indexR{сообщения}-->
+<p>Обобщённые функции появились в результате адаптации идеи отправки сообщений
+(родом из объектно-ориентированных языков) к функциональному миру Лиспа.
+В Smalltalk <span class="cite">[<a href="z1_bibliography.xhtml#gr83">GR83</a>]</span> сообщения посылаются следующим образом:</p>
+
+<pre><i>получатель</i> <i>сообщение</i>: <i>аргументы</i>...</pre>
+
+<!--\indexC{send}-->
+<!--\indexC{=>}-->
+<p>Как известно, абсолютно любой язык можно превратить в Лисп, просто добавив
+в него побольше скобочек! Первые попытки перенести обмен сообщениями в Лисп
+использовали специальные ключевые слова наподобие <code><span class="syntax">send</span></code>
+или <code><span class="syntax">=></span></code>
+(Planner <span class="cite">[<a href="z1_bibliography.xhtml#hs75">HS75</a>]</span>):</p>
+
+<pre>(<span class="syntax">send</span> <i>получатель</i> <i>сообщение</i> <i>аргументы</i>...)</pre>
+
+<!--\indexR{диспетчеризация}-->
+<!--\indexR{диспетчеризация!множественная}-->
+<!--\indexR{мультиметоды}-->
+<!--\indexR{методы!мультиметоды}-->
+<p>Получателями сообщений, естественно, являются объекты. Smalltalk позволяет
+отправить сообщение только одному конкретному объекту; в этом языке нельзя
+попросить несколько объектов совместно обработать какое-либо сообщение. Но
+даже в Лиспе легко увидеть огромное множество функций вроде банального
+сложения, чьи действия зависят от типа более чем одного объекта. И правда,
+целые числа складываются одним способом, дроби и комплексные числа —
+другим, у сложения чисел с плавающей запятой есть свои особенности. Если
+аргументы имеют различные типы, то их необходимо как-то свести к общему
+знаменателю; подходящий алгоритм приведения зависит от типов всех аргументов,
+а не только первого. Методы — это способы обработки конкретного сообщения
+конкретным объектом. Их обобщением на случай нескольких ответственных за
+обработку объектов являются <em class="term">мультиметоды</em>. Однако, предыдущий синтаксис
+отправки сообщений ставит единственного получателя в привилегированное
+положение, поэтому Common Loops <span class="cite">[<a href="z1_bibliography.xhtml#bkk+86">BKK<sup>+</sup>86</a>]</span> был предложен более подходящий
+вариант:</p>
+
+<pre>(<i>сообщение</i> <i>объекты</i>...)</pre>
+
+<p>Ключевое слово <code><span class="syntax">send</span></code> исчезло,
+а вместо него на место функции стало само
+сообщение — следовательно, это сообщение должно быть настоящей функцией.
+Точный смысл таких функций зависит от типов получателей сообщения, поэтому они
+называются <em class="term">обобщёнными</em>. Обобщённые функции полагаются при выборе действий
+на свои аргументы, причём они обладают существенной свободой их трактовки:</p>
+
+<!--\indexR{дискриминант}-->
+<!--\indexR{обобщённые функции!дискриминант}-->
+<ol>
+  <li>Обобщённая функция сама определяет, какие аргументы влияют на её
+    выбор. Такие аргументы называются <em class="term">дискриминантами</em>.</li>
+
+  <li>Дискриминантом не обязательно является первый аргумент.</li>
+
+  <li>Дискриминантов может быть несколько, как в случае со сложением.</li>
+</ol>
+
+<p>Короче говоря, обобщённые функции обобщают идею обмена сообщениями. Именно
+в таком виде эта идея реализована в <span class="sc">M<span class="c">eroonet</span></span>. С одной поправкой: мы решили
+не включать в неё мультиметоды. Вспомните, ведь они ни разу не понадобились при
+объяснениях в этой книге. По мнению
+<span class="cite">[<a href="z1_bibliography.xhtml#kr90">KR90</a>]</span>,
+мультиметоды действительно необходимы лишь в 5 % случаев. Это не настолько
+важная или невообразимо сложная для реализации функциональность, чтобы заострять
+здесь на ней особое внимание.</p>
+
+<p>У вас вполне может возникнуть вопрос, применимы ли вообще подобные обобщения
+к объектам, ведь они являются «суверенными» сущностями, которые вполне
+способны самостоятельно разобраться, как им вызывать свои же методы. Мы не будем
+детально обсуждать данный вопрос в силу его философского характера. Достаточно
+отметить, что обобщённые функции полностью скрывают объектно-ориентированный
+аспект производимых ими действий: это просто функции, а не какой-то хитрый
+оператор <code><span class="syntax">send</span></code>. Не важно, анализируют ли
+они типы аргументов или организуют обмен сообщениями между объектами — для
+пользователя они выглядят как функции, вызываются как функции и работают как
+функции. Хотя, естественно, с точки зрения реализации разница определённо есть.
+Рассмотрим обобщённую функцию <i>g</i>, чьим дискриминантом является первый аргумент.
+Каждый её вызов <code>(<i>g</i> <i>аргументы</i>...)</code> на самом деле может
+раскрываться в обращения к замыканию вида <code>(<span class="special">lambda</span> <span class="var">args</span> (<span class="func">apply</span> <span class="var">send</span> (<span class="func">car</span> <span class="var">args</span>) <i>g</i> (<span class="func">cdr</span> <span class="var">args</span>)))</code>,
+что однозначно сказывается на производительности.</p>
+
+<!--\indexR{функции!функторы}-->
+<!--\indexR{объекты!вызываемые}-->
+<!--\indexR{объекты!функторы}-->
+<!--\indexR{функторы}-->
+<!--\indexE{Scheme!и обобщённые функции}-->
+<!--\indexR{обобщённые функции!в Scheme}-->
+<p>Как же реализовать обобщённые функции на Scheme? С одной стороны, весьма
+желательно, чтобы для них работала <code><span class="func">apply</span></code>, а это возможно лишь при условии,
+что обобщённые функции будут реализованы как функции Scheme. С другой стороны,
+не хотелось бы терять рефлексивные возможности, предоставляемые <span class="sc">M<span class="c">eroonet</span></span>,
+для чего необходимо оставить обобщённые функции объектами класса <code><span class="class">Generic</span></code>.
+Итого, они должны стать одновременно объектами <em>и</em> функциями, то есть
+<em class="term">функторами</em> — вызываемыми объектами. CLOS и Oaklisp
+<span class="cite">[<a href="z1_bibliography.xhtml#lp86">LP86</a>,
+<a href="z1_bibliography.xhtml#lp88">LP88</a>]</span>
+поддерживают эту концепцию непосредственно.</p>
+
+<!--\indexR{представление!обобщённых функций}-->
+<p>Без сомнения, обобщённые функции являются объектами, так как у них есть
+состояние — текущий набор поддерживаемых методов. Поэтому мы реализуем их
+следующим образом, пусть он и не особо оптимален. Каждая обобщённая функция
+представляется парой из объекта <span class="sc">M<span class="c">eroonet</span></span> и функции Scheme, чьё имя совпадает
+с именем обобщённой функции. Эта функция запомнит свой объект в замыкании, чтобы
+иметь возможность добраться до него в любом контексте. С другой стороны,
+данный объект будет доступен не только изнутри замыкания, что обеспечивает
+возможность добавления новых методов. Однако, для этого потребуется найти нужный
+объект обобщённой функции, для чего всем им потребуются некоторые идентификаторы
+(следовательно, обобщённые функции не могут быть анонимными). Глобальные
+переменные не используются потому, что это бы позволило локальным переменным
+(нечаянно) скрывать объекты, необходимые для корректной работы
+<span class="sc">M<span class="c">eroonet</span></span>.</p>
+
+<p>Определения обобщённых функций имеют следующий синтаксис:</p>
+
+<!--\indexC{define-generic}-->
+<pre>(<span class="syntax">define-generic</span> (<i>имя</i> <i>аргументы</i>...) <span class="normal">[<code><i>тело-по-умолчанию</i></code>]</span>)</pre>
+
+<!--\indexR{обобщённые функции!сигнатуры}-->
+<!--\indexR{методы!сигнатуры}-->
+<p class="noindent">Первой указывается форма вызова функции и её дискриминант (получатель сообщения
+в терминах Smalltalk). Дискриминант записывается в скобках. Вся оставшася часть
+определения образует тело метода по умолчанию. В языке, где все значения
+являются объектами, это было бы аналогично определению метода для самого общего
+класса значений — <code><span class="class">Object</span></code>. Но в нашем случае ещё остаются обычные
+значения Scheme, которые, очевидно, не являются объектами, поэтому метод по
+умолчанию необходимо также применять ко всем значениям, провалившим проверку
+<code><span class="func">Object?</span></code>. Такой подход облегчает интеграцию <span class="sc">M<span class="c">eroonet</span></span> и Scheme, а также
+позволяет пользователю отлавливать ошибки типизации. Ещё одним достоинством
+<span class="sc">M<span class="c">eroonet</span></span> является поддержка всех возможных сигнатур обобщённых функций,
+включая точечные переменные. Естественно, методов это тоже касается.</p>
+
+<p>Класс <code><span class="class">Generic</span></code> определяется следующим образом:</p>
+
+<!--\indexC{Generic}-->
+<pre>(<span class="syntax">define-class</span> <span class="class">Generic</span> <span class="class">Object</span>
+  ( <span class="var">name</span> <span class="var">default</span> <span class="var">dispatch-table</span> <span class="var">signature</span> ) )</pre>
+
+<!--\indexC*{Generic}{->Generic}-->
+<p>Поиском обобщённых функций по именам занимается функция <code><span class="func">-&gt;Generic</span></code>. Поле
+<code><span class="var">default</span></code> содержит метод по умолчанию, чьё тело или явно определяется
+пользователем, или содержит автоматически сгенерированную заглушку с сообщением
+об ошибке. Сохранённая сигнатура понадобится для проверки арности добавляемых
+методов на совместимость. Это очень важная проверка, так как, во-первых, вызовы
+обобщённых функций и так уже достаточно зависят от контекста — набора
+определённых методов, — добавление ещё одной степени свободы в виде арности
+только усложнит восприятие программ. Во-вторых, единообразие сигнатур методов
+позволяет эффективнее реализовывать вызовы обобщённых функций, см. <span class="cite">[<a href="z1_bibliography.xhtml#kr90">KR90</a>]</span>.</p>
+
+<!--\indexR{таблица диспетчеризации}-->
+<!--\indexR{диспетчеризация!таблица диспетчеризации}-->
+<p>Внутреннее состояние обобщённой функции состоит из единственного вектора, чьи
+индексы соответствуют номерам классов. Этот вектор хранит все определённые
+методы данной функции и называется <em class="term">таблицей диспетчеризации</em> (dispatch
+table). Алгоритм вызова обобщённых функций теперь очевиден: номер класса
+дискриминанта — это индекс требуемого метода в таблице диспетчеризации
+обобщённой функции. Такой механизм выбора невероятно быстр, но эта скорость
+приобретается ценой повышенного потребления памяти: суммарно все такие векторы
+составляют матрицу <span class="math"><span class="ord var">m</span><span class="binop">×</span><span class="ord var">n</span></span>, где <span class="math"><span class="ord var">m</span></span> и <span class="math"><span class="ord var">n</span></span> — это количество всех
+используемых программе классов и обобщённых функций соответственно. Однако, чаще
+всего в таких таблицах очень много пустых ячеек, что открывает возможности для
+оптимизации, см. например <span class="cite">[<a href="z1_bibliography.xhtml#vh94">VH94</a>, <a href="z1_bibliography.xhtml#que93b">Que93b</a>]</span>.</p>
+
+<!--\indexCS{define-generic}{арность методов}-->
+<p>Методы обобщённых функций (включая умолчательный) всегда имеют фиксированную
+арность, даже когда у функции есть точечная переменная. Например, если
+обобщённая функция <code><span class="func">f</span></code> определена вот так:</p>
+
+<pre>(<span class="syntax">define-generic</span> (<span class="func">f</span> <span class="var">a</span> (<span class="var">b</span>) . <span class="var">c</span>) (<span class="func">g</span> <span class="var">b</span> <span class="var">a</span> <span class="var">c</span>))</pre>
+
+<p class="noindent">то её метод по умолчанию будет таким:</p>
+
+<pre>(<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> <span class="var">c</span>) (<span class="func">g</span> <span class="var">b</span> <span class="var">a</span> <span class="var">c</span>))</pre>
+
+<p>Остальные методы также должны иметь арность, совместимую с <code>(<span class="var">a</span> <span class="var">b</span> <span class="var">c</span>)</code>.
+Функция, представляющая <code><span class="func">f</span></code> в мире Scheme, получает сигнатуру, идентичную
+написанной в определении <code><span class="func">f</span></code>:</p>
+
+<pre>(<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span> . <span class="var">c</span>) ((<span class="func">determine-method</span> <span class="var">G127</span> <span class="var">b</span>) <span class="var">a</span> <span class="var">b</span> <span class="var">c</span>))</pre>
+
+<p>Значение переменной <code><span class="var">G127</span></code><a class="footref" href="zz_footnotes.xhtml#foot11.16"><sup>16</sup></a>
+— это тот самый объект класса <code><span class="class">Generic</span></code>, представляющий обобщённую
+функцию <code><span class="func">f</span></code> со стороны <span class="sc">M<span class="c">eroonet</span></span>; в нём лежит таблица диспетчеризации, из
+которой <code><span class="func">determine-method</span></code> достаёт соответствующие методы. Ввиду того, что
+не все значения Scheme являются объектами, перед поиском метода необходимо
+убедиться в том, что дискриминант — это действительно объект <span class="sc">M<span class="c">eroonet</span></span>.</p>
+
+<!--\indexC{determine-method}-->
+<pre>(<span class="special">define</span> (<span class="func">determine-method</span> <span class="var">generic</span> <span class="var">o</span>)
+  (<span class="special">if</span> (<span class="func">Object?</span> <span class="var">o</span>)
+      (<span class="func">vector-ref</span> (<span class="func">Generic-dispatch-table</span> <span class="var">generic</span>)
+                  (<span class="func">vector-ref</span> <span class="var">o</span> <span class="num">0</span>) )
+      (<span class="func">Generic-default</span> <span class="var">generic</span>) ) )</pre>
+
+<p>Сами же обобщённые функции определяются следующим образом:</p>
+
+<!--\indexC{define-generic}-->
+<pre>(<span class="func">define-meroonet-macro</span> (<span class="syntax">define-generic</span> <span class="var">call</span> . <span class="var">body</span>)
+  (<span class="func">parse-variable-specifications</span>
+   (<span class="func">cdr</span> <span class="var">call</span>)
+   (<span class="special">lambda</span> (<span class="var">discriminant</span> <span class="var">variables</span>)
+     (<span class="syntax">let</span> ((<span class="var">generic</span> (<span class="func">gensym</span>)))      <span class="comment">; соблюдаем гигиену</span>
+       `(<span class="special">define</span> ,(<span class="func">car</span> <span class="var">call</span>)
+          (<span class="syntax">let</span> ((,<span class="var">generic</span> (<span class="func">register-generic</span>
+                           ',(<span class="func">car</span> <span class="var">call</span>)
+                           (<span class="special">lambda</span> ,(<span class="func">flat-variables</span> <span class="var">variables</span>)
+                             ,(<span class="special">if</span> (<span class="func">pair?</span> <span class="var">body</span>)
+                                  `(<span class="special">begin</span> . ,<span class="var">body</span>)
+                                  `(<span class="func">meroonet-error</span>
+                                    <span class="string">"No method"</span> ',(<span class="func">car</span> <span class="var">call</span>)
+                                    . ,(<span class="func">flat-variables</span> <span class="var">variables</span>) ) ) )
+                           ',(<span class="func">cdr</span> <span class="var">call</span>) )))
+            (<span class="special">lambda</span> ,<span class="var">variables</span>
+              ((<span class="func">determine-method</span> ,<span class="var">generic</span> ,(<span class="func">car</span> <span class="var">discriminant</span>))
+               . ,(<span class="func">flat-variables</span> <span class="var">variables</span>) ) ) ) ) ) ) ) )</pre>
+
+<p>Функция <code><span class="func">parse-variable-specifications</span></code> анализирует список аргументов,
+определяет в нём дискриминант и корректирует его синтаксис в соответствии
+с правилами Scheme. Эта функция используется как в <code><span class="syntax">define-generic</span></code>, так и
+в <code><span class="syntax">define-method</span></code>. Полученные два значения она передаёт своему второму
+аргументу. Ради простоты функция <code><span class="func">parse-variable-specifications</span></code> определена
+слегка небрежно: она не проверяет, единственен ли дискриминант.</p>
+
+<!--\indexC{parse-variable-specifications}-->
+<pre>(<span class="special">define</span> (<span class="func">parse-variable-specifications</span> <span class="var">specifications</span> <span class="var">k</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">specifications</span>)
+      (<span class="func">parse-variable-specifications</span>
+       (<span class="func">cdr</span> <span class="var">specifications</span>)
+       (<span class="special">lambda</span> (<span class="var">discriminant</span> <span class="var">variables</span>)
+         (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">car</span> <span class="var">specifications</span>))
+             (<span class="func">k</span> (<span class="func">car</span> <span class="var">specifications</span>)
+                (<span class="func">cons</span> (<span class="func">caar</span> <span class="var">specifications</span>) <span class="var">variables</span>) )
+             (<span class="func">k</span> <span class="var">discriminant</span> (<span class="func">cons</span> (<span class="func">car</span> <span class="var">specifications</span>) <span class="var">variables</span>)) ) ) )
+      (<span class="func">k</span> <span class="hash">#f</span> <span class="var">specifications</span>) ) )</pre>
+
+<p>Вслед за списком аргументов конструируется тело обобщённой функции, после чего
+функция <code><span class="func">register-generic</span></code> создаёт итоговый объект <span class="sc">M<span class="c">eroonet</span></span>. Эта функция
+позволяет скрыть (на уровне макроса <code><span class="syntax">define-generic</span></code>) детали реализации
+обобщённых функций, в частности, список <code><span class="var">*generics*</span></code>. Она же создаёт таблицу
+диспетчеризации, все ячейки которой изначально содержат метод по умолчанию —
+именно этот метод должен вызываться, если нет более подходящего. Размер таблицы
+диспетчеризации зависит от общего количества классов, а не текущего на момент
+создания обобщённой функции: при определении новых классов во всех таблицах
+должны добавляться новые ячейки. Так как у нас максимальное количество классов
+фиксировано, то достаточно будет просто зарезервировать вектор соответствующего
+размера.</p>
+
+<!--\indexC{register-generic}-->
+<pre>(<span class="special">define</span> (<span class="func">register-generic</span> <span class="var">generic-name</span> <span class="var">default</span> <span class="var">signature</span>)
+  (<span class="syntax">let*</span> ((<span class="var">dispatch-table</span> (<span class="func">make-vector</span> <span class="var">*maximal-number-of-classes*</span>
+                                      <span class="var">default</span> ))
+         (<span class="var">generic</span> (<span class="func">make-Generic</span> <span class="var">generic-name</span>
+                                <span class="var">default</span>
+                                <span class="var">dispatch-table</span>
+                                <span class="var">signature</span> )) )
+    (<span class="special">set!</span> <span class="var">*generics*</span> (<span class="func">cons</span> <span class="var">generic</span> <span class="var">*generics*</span>))
+    <span class="var">generic</span> ) )</pre>
+
+<p>Функция <code><span class="func">flat-variables</span></code> собирает все аргументы в простой список и
+преобразует точечную переменную в обычную. Это преобразование используется при
+определении всех методов.</p>
+
+<!--\indexC{flat-variables}-->
+<pre>(<span class="special">define</span> (<span class="func">flat-variables</span> <span class="var">variables</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">variables</span>)
+      (<span class="func">cons</span> (<span class="func">car</span> <span class="var">variables</span>) (<span class="func">flat-variables</span> (<span class="func">cdr</span> <span class="var">variables</span>)))
+      (<span class="special">if</span> (<span class="func">null?</span> <span class="var">variables</span>) <span class="var">variables</span> (<span class="func">list</span> <span class="var">variables</span>)) ) )</pre>
+
+
+<h4 id="objects/generics/sssect:class-def"><span class="wrap"><span class="title">Ещё немного об определениях классов</span></span></h4>
+
+<!--\indexR{наследование!методов}-->
+<p>Как вы помните, при определении класса вызывается функция <code><span class="func">update-generics</span></code>.
+Её задача заключается в распространении методов суперкласса на объекты
+создаваемого класса. Если для ранее определённого класса <code><span class="class">Point</span></code> существует
+метод <code><span class="func">show</span></code>, то логично будет сделать так, чтобы его подкласс
+<code><span class="class">ColoredPoint</span></code> тоже обладал этим методом. Для этого потребуется обновить
+таблицы диспетчеризации всех обобщённых функций, которые были определены на
+момент создания нового класса.</p>
+
+<!--\indexC{update-generics}-->
+<pre>(<span class="special">define</span> (<span class="func">update-generics</span> <span class="var">class</span>)
+  (<span class="syntax">let</span> ((<span class="var">superclass</span> (<span class="func">Class-superclass</span> <span class="var">class</span>)))
+    (<span class="func">for-each</span>
+     (<span class="special">lambda</span> (<span class="var">generic</span>)
+       (<span class="func">vector-set!</span> (<span class="func">Generic-dispatch-table</span> <span class="var">generic</span>)
+                    (<span class="func">Class-number</span> <span class="var">class</span>)
+                    (<span class="func">vector-ref</span> (<span class="func">Generic-dispatch-table</span> <span class="var">generic</span>)
+                                (<span class="func">Class-number</span> <span class="var">superclass</span>) ) ) )
+     <span class="var">*generics*</span> ) ) )</pre>
+
+
+<h2 id="objects/sect:method"><span class="wrap"><span class="seq">11.9.</span><span class="title">Методы</span></span></h2>
+
+<!--\indexR{методы}-->
+<p>Методы определяются с помощью формы <code><span class="syntax">define-method</span></code>. Её синтаксис схож
+с <code><span class="special">define</span></code>, только список аргументов метода выглядит так же, как и
+в <code><span class="syntax">define-generic</span></code>: аргумент-дискриминант записывается в скобках вместе
+с именем класса, для которого определяется данный метод.</p>
+
+<!--\indexC{define-method}-->
+<pre>(<span class="syntax">define-method</span> (<i>имя</i> <i>переменные</i>...) <i>формы</i>...)</pre>
+
+<p>Обобщённые функции являются объектами, чьё поведение можно динамически
+расширять, определяя новые методы с помощью <code><span class="syntax">define-method</span></code>. Следовательно,
+обобщённые функции изменяемы, что несколько усложняет оптимизацию их вызовов,
+если только в языке нет возможности полностью или частично зафиксировать
+иерархию классов (подобно ключевому слову <code><span class="syntax">sealed</span></code> в Dylan <span class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span>),
+чтобы можно было спокойно провести её статический анализ. Другим решением будет
+сделать обобщённые функции неизменяемыми, но для этого необходимы функторы,
+которых в стандартном Scheme нет.</p>
+
+<p>C арностью методов мы уже разобрались, когда рассматривали определение
+обобщённых функций и методов по умолчанию. Кроме этого надо не забыть
+распространить определяемый метод не только на непосредственно указанный класс,
+но также и на все его подклассы, для которых данный метод не был определён
+ранее.</p>
+
+<!--\indexC{super}-->
+<!--\indexC{call-next-method}-->
+<p>Единственной оставшейся проблемой является реализация возможности, которая
+в Smalltalk называется <code><span class="func">super</span></code>, а в CLOS — <code><span class="func">call-next-method</span></code>. Имеется
+в виду возможность для метода подкласса вызвать одноимённый метод суперкласса
+(который иначе для подкласса недоступен). Форма <code>(<span class="func">call-next-method</span>)</code> может
+использоваться только внутри определений методов и означает вызов
+соответствующего суперметода с теми же<a class="footref" href="zz_footnotes.xhtml#foot11.17"><sup>17</sup></a> аргументами,
+что и у вызывающего метода. Естественно, суперметодами класса <code><span class="func">Object</span></code>
+являются методы по умолчанию.</p>
+
+<!--\indexR{методы!предметоды}-->
+<!--\indexR{предварительный метод}-->
+<p>Функция <code><span class="func">call-next-method</span></code> определяется локально в теле метода и реализуется
+аналогична рассмотренной ранее <code><span class="func">determine-method</span></code>: нужный метод извлекается
+из таблицы диспетчеризации соответствующей обобщённой функции по номеру класса,
+просто в этот раз используется суперкласс рассматриваемого объекта. Внимание:
+по причинам, связанным с потенциальными особенностями макрораскрытия
+<span class="see">[см. раздел <a href="#objects/def-class/par:two-worlds">11.3</a>]</span>,
+невозможно гарантированно знать
+номера классов до начала исполнения программы. Поэтому мы поступим следующим
+образом. Форма <code><span class="syntax">define-method</span></code> сначала определит предварительный метод,
+принимающий класс и обобщённую функцию; он должен будет вернуть замыкание,
+содержащее код настоящего метода. Затем, во время исполнения, этот предметод
+будет вызван с корректными аргументами, а полученное замыкание — установлено
+на его место. Всё это помещается в функцию <code><span class="func">register-method</span></code>, чтобы скрыть
+детали реализации и не перегружать ими определение макроса <code><span class="syntax">define-method</span></code>.</p>
+
+<!--\indexC{define-method}-->
+<pre>(<span class="syntax">define-meroonet-macro</span> (<span class="syntax">define-method</span> <span class="var">call</span> . <span class="var">body</span>)
+  (<span class="func">parse-variable-specifications</span>
+   (<span class="func">cdr</span> <span class="var">call</span>)
+   (<span class="special">lambda</span> (<span class="var">discriminant</span> <span class="var">variables</span>)
+     (<span class="syntax">let</span> ((<span class="var">g</span> (<span class="func">gensym</span>)) (<span class="var">c</span> (<span class="func">gensym</span>)))
+       `(<span class="func">register-method</span>
+         ',(<span class="func">car</span> <span class="var">call</span>)
+         (<span class="special">lambda</span> (,<span class="var">g</span> ,<span class="var">c</span>)
+           (<span class="special">lambda</span> ,(<span class="func">flat-variables</span> <span class="var">variables</span>)
+             (<span class="special">define</span> (<span class="func">call-next-method</span>)
+               ((<span class="special">if</span> (<span class="func">Class-superclass</span> ,<span class="var">c</span>)
+                    (<span class="func">vector-ref</span> (<span class="func">Generic-dispatch-table</span> ,<span class="var">g</span>)
+                                (<span class="func">Class-number</span> (<span class="func">Class-superclass</span> ,<span class="var">c</span>)) )
+                    (<span class="func">Generic-default</span> ,<span class="var">g</span>) )
+                . ,(<span class="func">flat-variables</span> <span class="var">variables</span>) ) )
+             . ,<span class="var">body</span> ) )
+         ',(<span class="func">cadr</span> <span class="var">discriminant</span>)
+         ',(<span class="func">cdr</span> <span class="var">call</span>) ) ) ) ) )</pre>
+
+<!--\indexR{сравнение!функций}-->
+<!--\indexR{функции!сравнение}-->
+<p id="objects/method/par:func-eq">Функция <code><span class="func">register-method</span></code>
+определяет необходимый класс и обобщённую функцию, преобразует предметод в нормальный метод,
+проверяет согласованность его сигнатуры и сигнатуры обобщённой функции, после чего, наконец,
+устанавливает метод в таблицу диспетчеризации. Проверку согласованности, в принципе, можно
+было бы выполнить ещё при раскрытии макросов, но для этого макрос
+<code><span class="syntax">define-method</span></code> должен помнить все определённые на момент раскрытия
+обобщённые функции — короче говоря, мы бы получили те же сложности
+с состоянием, что и у <code><span class="syntax">define-class</span></code>. Так как эта проверка весьма проста,
+выполняется всего лишь один раз и в дальнейшем никак не влияет на быстродействие
+обобщённых функций, то её с чистой совестью можно провести во время исполнения
+программы. Заметьте, что при обновлении методов функции сравниваются
+с помощью <code><span class="func">eq?</span></code>.</p>
+
+<!--\indexC{register-method}-->
+<!--\indexC{check-signature-compatibility}-->
+<pre>(<span class="special">define</span> (<span class="func">register-method</span> <span class="var">generic-name</span> <span class="var">pre-method</span> <span class="var">class-name</span> <span class="var">signature</span>)
+  (<span class="syntax">let*</span> ((<span class="var">generic</span> (<span class="func">-&gt;Generic</span> <span class="var">generic-name</span>))
+         (<span class="var">class</span> (<span class="func">-&gt;Class</span> <span class="var">class-name</span>))
+         (<span class="var">new-method</span> (<span class="func">pre-method</span> <span class="var">generic</span> <span class="var">class</span>))
+         (<span class="var">dispatch-table</span> (<span class="func">Generic-dispatch-table</span> <span class="var">generic</span>))
+         (<span class="var">old-method</span> (<span class="func">vector-ref</span> <span class="var">dispatch-table</span>
+                                 (<span class="func">Class-number</span> <span class="var">class</span>) )) )
+    (<span class="func">check-signature-compatibility</span> <span class="var">generic</span> <span class="var">signature</span>)
+    (<span class="syntax">let</span> <span class="func">propagate</span> ((<span class="var">cn</span> (<span class="func">Class-number</span> <span class="var">class</span>)))
+      (<span class="syntax">let</span> ((<span class="var">content</span> (<span class="func">vector-ref</span> <span class="var">dispatch-table</span> <span class="var">cn</span>)))
+        (<span class="special">if</span> (<span class="func">eq?</span> <span class="var">content</span> <span class="var">old-method</span>)
+            (<span class="special">begin</span>
+              (<span class="func">vector-set!</span> <span class="var">dispatch-table</span> <span class="var">cn</span> <span class="var">new-method</span>)
+              (<span class="func">for-each</span> <span class="var">propagate</span>
+               (<span class="func">Class-subclass-numbers</span> (<span class="func">number-&gt;Class</span> <span class="var">cn</span>)) ) ) ) ) ) ) )
+
+(<span class="special">define</span> (<span class="func">check-signature-compatibility</span> <span class="var">generic</span> <span class="var">signature</span>)
+  (<span class="special">define</span> (<span class="func">coherent-signatures?</span> <span class="var">la</span> <span class="var">lb</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">la</span>)
+        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">lb</span>)
+            (<span class="syntax">and</span> (<span class="syntax">or</span>
+                  <span class="comment">;; совпадают дискриминанты</span>
+                  (<span class="syntax">and</span> (<span class="func">pair?</span> (<span class="func">car</span> <span class="var">la</span>)) (<span class="func">pair?</span> (<span class="func">car</span> <span class="var">lb</span>)))
+                  <span class="comment">;; совпадают аргументы</span>
+                  (<span class="syntax">and</span> (<span class="func">symbol?</span> (<span class="func">car</span> <span class="var">la</span>)) (<span class="func">symbol?</span> (<span class="func">car</span> <span class="var">lb</span>))) )
+              (<span class="func">coherent-signatures?</span> (<span class="func">cdr</span> <span class="var">la</span>) (<span class="func">cdr</span> <span class="var">lb</span>)) )
+            <span class="hash">#f</span> )
+        (<span class="syntax">or</span> (<span class="syntax">and</span> (<span class="func">null?</span> <span class="var">la</span>) (<span class="func">null?</span> <span class="var">lb</span>))
+            <span class="comment">;; совпадает точечная переменная</span>
+            (<span class="syntax">and</span> (<span class="func">symbol?</span> <span class="var">la</span>) (<span class="func">symbol?</span> <span class="var">lb</span>)) ) ) )
+
+  (<span class="special">if</span> (<span class="func">not</span> (<span class="func">coherent-signatures?</span> <span class="var">signature</span>
+                                 (<span class="func">Generic-signature</span> <span class="var">generic</span>) ))
+    (<span class="func">meroonet-error</span> <span class="string">"Incompatible signature"</span> <span class="var">generic</span> <span class="var">signature</span>)
+    <span class="hash">#t</span> ) )</pre>
+
+
+<h2 id="objects/sect:conclusions"><span class="wrap"><span class="seq">11.10.</span><span class="title">Заключение</span></span></h2>
+
+<p>В рассмотренных программах много чего можно улучшить как в плане повышения
+быстродействия, так и для улучшений рефлексивных качеств объектной системы.
+Ещё одной возможностью, достойной внимания, является встраивание <span class="sc">M<span class="c">eroonet</span></span>
+в реализацию языка, что открыло бы дорогу множеству других оптимизаций, а также
+сделало бы Scheme по-настоящему объектно-ориентированным. Именно из этих
+соображений <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>, ILOG Talk,
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> и многие другие поддерживают
+концепцию объектов непосредственно, делая их базовыми понятиями языка.</p>
+
+
+<h2 id="objects/sect:exercises"><span class="wrap"><span class="seq">11.11.</span><span class="title">Упражнения</span></span></h2>
+
+<h5 class="exercise" id="objects/ex:precise-predicate">Упражнение <span class="seq">11.1</span></h5>
+<p>Улучшите определение предиката <code><span class="func">Object?</span></code>, чтобы он чётче различал объекты и
+значения Scheme.</p>
+
+
+<h5 class="exercise" id="objects/ex:clone">Упражнение <span class="seq">11.2</span></h5>
+<p>Напишите обобщённую функцию <code><span class="func">clone</span></code>, копирующую объекты <span class="sc">M<span class="c">eroonet</span></span>. Пусть
+она выполняет «поверхностное копирование» (shallow copy): содержимое полей
+исходного объекта можно просто перенести в копию без рекурсивных вызовов
+<code><span class="func">clone</span></code>.</p>
+
+
+<h5 class="exercise" id="objects/ex:metaclass">Упражнение <span class="seq">11.3</span></h5>
+<p><span class="sc">M<span class="c">eroonet</span></span> позволяет определять новые типы классов — метаклассы, являющиеся
+наследниками <code><span class="class">Class</span></code>. Реализуйте метакласс, чьими экземплярами будут классы,
+подсчитывающие количество своих объектов.</p>
+
+
+<h5 class="exercise" id="objects/ex:field-reflection">Упражнение <span class="seq">11.4</span></h5>
+<p>Классам и полям <span class="sc">M<span class="c">eroonet</span></span> не помешало бы чуть больше рефлексии. Добавьте им
+дополнительные поля, ссылающиеся на сопутствующие функции: предикат и оба
+аллокатора для классов; геттеры, сеттеры и измерители длины для полей.</p>
+
+
+<h5 class="exercise" id="objects/ex:auto-generic">Упражнение <span class="seq">11.5</span></h5>
+<p>CLOS не требует обязательного существования обобщённой функции для определения
+её метода. Доработайте <code><span class="syntax">define-method</span></code> так, чтобы она создавала необходимую
+обобщённую функцию на лету, если она ещё не была определена.</p>
+
+
+<h5 class="exercise" id="objects/ex:next-method">Упражнение <span class="seq">11.6</span></h5>
+<!--\indexC{next-method"?}-->
+<p>Некоторые объектные системы, вроде CLOS и ΤΕΛΟΣ, наряду с <code><span class="func">call-next-method</span></code>
+имеют также предикат <code><span class="func">next-method?</span></code>, возвращающий ложь, когда следующий
+суперметод не определён. Эта рефлексивная возможность позволяет последовательно
+выполнить всю цепочку суперметодов, не рискуя при этом вызвать метод по
+умолчанию, потенциально приводящий к ошибке. Научите <code><span class="syntax">define-method</span></code>
+определять функцию <code><span class="func">next-method?</span></code>.</p>
+
+
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
+
+<p>Диалект T <span class="cite">[<a href="z1_bibliography.xhtml#ar88">AR88</a>]</span> предлагает иной подход к объектам в Scheme. Если вам
+понравилась идея метаобъектов, то сперва стоит взглянуть на вот эту статью
+о рефлексии в ObjVlisp: <span class="cite">[<a href="z1_bibliography.xhtml#coi87">Coi87</a>]</span>, а после уже приниматься за изучение
+метаобъектного протокола CLOS <span class="cite">[<a href="z1_bibliography.xhtml#kdrb92">KdRB92</a>]</span>.</p>
+
+</body>
+</html>

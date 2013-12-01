@@ -1,0 +1,1148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+
+<head>
+    <title>Сноски</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+</head>
+
+<body id="footnotes">
+
+<h1>К читателю</h1>
+
+<div class="footnote" id="foot0.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Sophie Anglade, Josy Byron, Kathleen Callaway, Jérôme Chaillox, Jean-Marie
+    Geffroy, Christian Jullien, Jean-Jacques Lacrampe, Michel Lemaître, Luc
+    Moreau, Jean-François Perrot, Daniel Ribbens, Bernard Serpette, Manuel
+    Serrano, Pierre Weis, Claire N. — <em>Прим. перев.</em></p>
+</div>
+
+<div class="footnote" id="foot0.1">
+  <p><span class="num"><sup>1</sup></span>
+    Le_Lisp является торговой маркой INRIA.</p>
+</div>
+
+<div class="footnote" id="foot0.tr-2">
+<p><span class="num"><sup>**</sup></span>
+    Если возможны разночтения, то слово <em class="term">знак</em> будет
+    использоваться в смысле «печатный символ» (character), а слово
+    <em class="term">символ</em> — в привычном для Лиспа значении
+    (symbol). — <em>Прим. перев.</em></p>
+</div>
+
+<div  class="footnote" id="foot0.tr-3">
+  <p><span class="num"><sup>***</sup></span>
+    Кроме того, лично я хотел бы посоветовать замечательную книгу <i>Franklyn Turbak
+    and David Gifford with Mark A. Sheldon.</i> Design Concepts in Programming
+    Languages. — The MIT Press, 2008. — 1352 p. — <em>Прим. перев.</em></p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 1.</span> Основы интерпретации</h1>
+
+<div class="footnote" id="foot1.1">
+  <p><span class="num"><sup>1</sup></span>
+    Интерпретатор, описываемый в этой главе, занимает около 150 строк.</p>
+</div>
+
+<div class="footnote" id="foot1.2">
+  <p><span class="num"><sup>2</sup></span>
+    Как вы знаете, «родная» функция-вычислитель Scheme называется <code><span
+    class="func">eval</span></code>. Чтобы их
+    не путать, нашу функцию мы назовём <code><span class="func">evaluate</span></code>.
+    По тем же причинам местный аналог <code><span class="func">apply</span></code>
+    будет называться <code><span class="func">invoke</span></code>. Меньше перекрытий имён —
+    меньше проблем.</p>
+</div>
+
+<div class="footnote" id="foot1.3">
+  <p><span class="num"><sup>3</sup></span>
+    Лично я не люблю называть функции приведения типов
+    <code><span class="func"><i>x</i>-&gt;<i>y</i></span></code>,
+    потому что так сложнее понимать цепочки преобразований. Запись
+    <code>(<span class="func"><i>y</i>-&gt;<i>z</i></span>(<span class="func"><i>x</i>-&gt;<i>y</i></span> ...))}</code> не так очевидна, как <code>(<span class="func"><i>z</i>&lt;-<i>y</i></span>(<span class="func"><i>y</i>&lt;-<i>x</i></span> ...))</code>.
+    Хотя, с другой стороны, одиночная запись <code><span class="func"><i>z</i>&lt;-<i>y</i></span></code> не так легко читается, как <code><span class="func"><i>y</i>-&gt;<i>z</i></span></code>.
+    Приходится выбирать.</p>
+</div>
+
+<div class="footnote" id="foot1.4">
+  <p><span class="num"><sup>4</sup></span>
+    Заметьте, не «функцию <code><span class="func">wrong</span></code>». Варианты её
+    реализации подробнее рассматриваются в разделе <a href="ch07_compilation.xhtml#compilation/sect:exception">7.9</a>.</p>
+</div>
+
+<div class="footnote" id="foot1.5">
+  <p><span class="num"><sup>5</sup></span>
+    <code><span class="special">if</span></code> не обязательно принимает условие и ровно две
+    альтернативы. К примеру, в Scheme и <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> <code><span
+    class="special">if</span></code> может принимать как
+    два, так и три аргумента; <code><span class="special">if</span></code> в
+    <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> и <span class="sc">ISL<span class="c">isp</span></span> исключительно
+    тернарный; Le_Lisp в случае, если условие ложно, вычисляет остаток
+    формы <code><span class="special">if</span></code>, обернув его в
+    <code><span class="special">begin</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot1.6">
+  <p><span class="num"><sup>6</sup></span>
+    Напомним: в Scheme запись <code>#(...)</code> означает процитированный вектор.</p>
+</div>
+
+<div class="footnote" id="foot1.7">
+  <p><span class="num"><sup>7</sup></span>
+    Переменная <i>void</i> не должна быть свободной
+    в <span class="math"><span class="var">β</span></span>. Это условие выполняется, если <i>void</i> никогда не встречается
+    в <span class="math"><span class="var">β</span></span>. Обычно в таком случае используется
+    <code><span class="func">gensym</span></code>, чтобы получить
+    гарантированно уникальное имя переменной.
+    <span class="see">[см. упр. <a href="ch01_basics.xhtml#basics/ex:no-gensym">1.11</a>]</span></p>
+</div>
+
+<div class="footnote" id="foot1.8">
+  <p><span class="num"><sup>8</sup></span>
+    В соответствии с принятым в Scheme соглашением, имена функций с побочными эффектами
+    оканчиваются на восклицательный знак.</p>
+</div>
+
+<div class="footnote" id="foot1.9">
+  <p><span class="num"><sup>9</sup></span>
+    Как известно, <code><span class="syntax">let</span></code> —
+    это всего лишь простой макрос: <code>(<span class="syntax">let</span>
+    ((<span class="math"><span class="var">x</span></span>
+    <span class="math"><span class="var">π</span><sub>1</sub></span>))
+    <span class="math"><span class="var">π</span><sub>2</sub></span>)
+    <span class="math"><span class="binop">≡</span></span>
+    ((<span class="special">lambda</span> (<span class="math"><span class="var">x</span></span>)
+    <span class="math"><span class="var">π</span><sub>2</sub></span>)
+    <span class="math"><span class="var">π</span><sub>1</sub></span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot1.10">
+  <p><span class="num"><sup>10</sup></span>
+    Первый — это синтаксические ошибки (раздел <a href="ch01_basics.xhtml#basic/atoms/para:the-first-error">1.3</a>).</p>
+</div>
+
+<div class="footnote" id="foot1.11">
+  <p><span class="num"><sup>11</sup></span>
+    Память (вместе с подсистемами ввода-вывода) всё ещё остаётся одной из наиболее дорогих
+    частей компьютера, хоть и постоянно дешевеет.</p>
+</div>
+
+<div class="footnote" id="foot1.12">
+  <p><span class="num"><sup>12</sup></span>
+    Некоторые лисп-системы, вроде <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, поддались соблазну
+    расширить синтаксис перечня аргументов ключевыми словами вроде
+    <code><span class="syntax">&amp;aux</span></code>,
+    <code><span class="syntax">&amp;key</span></code>,
+    <code><span class="syntax">&amp;rest</span></code>. Но это сильно усложняет синтаксический
+    разбор и связывание. Иные системы позволяют даже обобщённое указание аргументов с помощью
+    шаблонов <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.13">
+  <p><span class="num"><sup>13</sup></span>
+    Функция могла бы потом ещё проверять на правильность типы переданных аргументов, но это
+    не имеет отношения к механизму вызова.</p>
+</div>
+
+<div class="footnote" id="foot1.14">
+  <p><span class="num"><sup>14</sup></span>
+    На самом деле, здесь можно использовать любое необходимое
+    окружение. См. про форму <code><span class="special">closure</span></code> в разделе
+    <a href="ch04_assignment_and_side_effects.xhtml#assignement/assignement/para:closure">4.1</a>.</p>
+</div>
+
+<div class="footnote" id="foot1.15">
+  <p><span class="num"><sup>15</sup></span>
+    В объектно-ориентированных языках под динамическим
+    связыванием обычно понимается механизм выбора метода объекта на основе его
+    реального типа во время исполнения программы, в противоположность статическому
+    связыванию, при котором метод выбирается компилятором исходя из типа переменной,
+    которая хранит рассматриваемый объект.</p>
+</div>
+
+<div  class="footnote" id="foot1.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Начиная с Emacs Lisp v. 24 и Perl 5, эти языки имеют и лексические переменные.</p>
+</div>
+
+<div class="footnote" id="foot1.16">
+  <p><span class="num"><sup>16</sup></span>
+    О происхождении <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.xhtml#ray91">Ray91</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.17">
+  <p><span class="num"><sup>17</sup></span>
+    Наша имитация не совсем точна, так как существует немало диалектов Лиспа (вроде CLtL1
+    <span class="cite">[<a href="z1_bibliography.xhtml#ste84">Ste84</a>]</span>), где
+    <code><span class="special">lambda</span></code> — это не специальный оператор, а только ключевое слово-маркер
+    вроде <code><span class="syntax">else</span></code> внутри <code><span class="syntax">cond</span></code> и <code><span class="syntax">case</span></code>. В этом случае <code><span class="func">d.evaluate</span></code>
+    может вообще не знать ни о какой <code><span class="special">lambda</span></code>. Иногда даже накладываются
+    ограничения на положение <code><span class="special">lambda</span></code>-форм, разрешающие им находиться только
+    внутри <code><span class="special">function</span></code> и в определениях функций.</p>
+</div>
+
+<div class="footnote" id="foot1.18">
+  <p><span class="num"><sup>18</sup></span>
+    В терминах <span class="math"><span class="ord var">λ</span></span>-исчисления подобная замена имён называется <span class="math"><span class="ord var">α</span></span>-конверсией.</p>
+</div>
+
+<div class="footnote" id="foot1.19">
+  <p><span class="num"><sup>19</sup></span>
+    К счастью, статистика показывает, что переменные, располагающиеся ближе к началу списка,
+    используются чаще тех, что находятся глубоко внутри. Кстати, ещё стоит отметить, что
+    лексические окружения в среднем меньше по размеру, чем динамические, так как
+    последним необходимо хранить все переменные, участвующие в вычислениях, включая
+    одноимённые <span class="cite">[<a href="z1_bibliography.xhtml#bak92a">Bak92a</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.20">
+  <p><span class="num"><sup>20</sup></span>
+    Здесь мы не реализуем присваивание переменным, захваченным замыканиями. Об этом можно
+    почитать в <span class="cite">[<a href="z1_bibliography.xhtml#bcsj86">BCSJ86</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot1.21">
+  <p><span class="num"><sup>21</sup></span>
+    Это поле названо в честь <code><span class="var">apval</span></code> из
+    <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>.
+    <span class="see">[см. <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/par:apval">2 главу</a>]</span>
+    Тогда значения полей действительно хранились в наивных P-списках.</p>
+</div>
+
+<div class="footnote" id="foot1.22">
+  <p><span class="num"><sup>22</sup></span>
+    Эти функции проходят по списку свойств символа (его P-списку,
+    от property) до тех пор, пока не найдут нужное. Скорость поиска, соответственно,
+    линейно зависит от длины списка, если только не применяются хеш-таблицы.</p>
+</div>
+
+<div class="footnote" id="foot1.23">
+  <p><span class="num"><sup>23</sup></span>
+    Согласитесь, было бы странным втискивать всю книгу в первую главу.</p>
+</div>
+
+<div class="footnote" id="foot1.24">
+  <p><span class="num"><sup>24</sup></span>
+    К сожалению, сейчас они ещё и инициализируются. Эта ошибка будет исправлена позже.</p>
+</div>
+
+<div class="footnote" id="foot1.25">
+  <p><span class="num"><sup>25</sup></span>
+    Можно только порадоваться за наш выбор не называть
+    <code><span class="func">invoke</span></code>
+    «<code><span class="func">apply</span></code>».</p>
+</div>
+
+<div class="footnote" id="foot1.26">
+  <p><span class="num"><sup>26</sup></span>
+    После того, как мы раскроем все
+    используемые макросы и сокращения вроде <code><span class="syntax">let</span></code>,
+    <code><span class="syntax">case</span></code>, <code><span class="special">define</span></code>
+    и т. д. Потом надо будет ещё поместить в глобальное окружение функции
+    <code><span class="func">evaluate</span></code>,
+    <code><span class="func">evlis</span></code> и др.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 2.</span> Lisp, 1, 2, …, ω</h1>
+
+<div class="footnote" id="foot2.1">
+  <p><span class="num"><sup>1</sup></span>
+    <code><span class="var">APVAL</span></code>,
+    <em class="term">A Permanent VALue</em>, для глобальных переменных;
+    <code><span class="var">EXPR</span></code>,
+    <em class="term">EXPRession</em>, для глобальных функций;
+    <code><span class="var">MACRO</span></code> для макросов.</p>
+</div>
+
+<div class="footnote" id="foot2.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    REPL — «<em class="term">read–eval–print loop</em>», интерактивная сессия.
+    В интерпретаторе из предыдущей главы ей соответствует функция
+    <code><span class="func">toplevel</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot2.2">
+  <p><span class="num"><sup>2</sup></span>
+    Существуют и другие самоприменения, которые имеют смысл, хотя их и не особо много.
+    Например, <code>(<span class="func">number?</span> <span class="var">number?</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot2.3">
+  <p><span class="num"><sup>3</sup></span>
+    Название «локальные переменные» не совсем удачно, так как
+    поведение динамических переменных кардинально отличается от поведения обычных
+    (лексических) переменных.</p>
+</div>
+
+<div class="footnote" id="foot2.4">
+  <p><span class="num"><sup>4</sup></span>
+    Это две различные функции <code><span class="func">display</span></code>, принимающие один
+    и два аргумента соответственно. В Scheme нет
+    поддержки опциональных аргументов и значений по умолчанию на уровне языка.
+    Лисп же поддерживает эту идею, поэтому не нуждается в динамических переменных
+    для реализации подобного поведения.</p>
+</div>
+
+<div class="footnote" id="foot2.5">
+  <p><span class="num"><sup>5</sup></span>
+    См. также реализацию функции <code><span class="func">list-length</span></code> из
+    <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot2.6">
+  <p><span class="num"><sup>6</sup></span>
+    По соглашению, имена динамических переменных окружаются звёздочками, чтобы выделить их.</p>
+</div>
+
+<div class="footnote" id="foot2.7">
+  <p><span class="num"><sup>7</sup></span>
+    Разумеется, это не <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>. Это наш Lisp<sub>3</sub>,
+    определённый чуть выше.</p>
+</div>
+
+<div class="footnote" id="foot2.8">
+  <p><span class="num"><sup>8</sup></span>
+    Многие реализации Лиспа не считают ключевые слова вроде <code><span class="var">nil</span></code> или <code><span class="special">if</span></code> символами (а значит, и легальными именами переменных).</p>
+</div>
+
+<div class="footnote" id="foot2.9">
+  <p><span class="num"><sup>9</sup></span>
+    Ведь <code>(<span class="num">42</span> <span class="num">42</span>)</code> вполне
+    подходит как корень данного уравнения, но почему именно
+    <code><span class="num">42</span></code>?</p>
+</div>
+
+<div class="footnote" id="foot2.10">
+  <p><span class="num"><sup>10</sup></span>
+    Правда, расплачиваясь за это необходимостью собирать бесполезный список, который тут же
+    удаляется после создания.</p>
+</div>
+
+<div class="footnote" id="foot2.11">
+  <p><span class="num"><sup>11</sup></span>
+    Более подробное объяснение см. в <span class="cite">[<a href="z1_bibliography.xhtml#man74">Man74</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot2.12">
+  <p><span class="num"><sup>12</sup></span>
+    Терминология Маккарти из <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>: функционал — это функция, принимающая другие функции как аргументы.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 3.</span> Переходы и возвраты: продолжения</h1>
+
+<div class="footnote" id="foot3.1">
+  <p><span class="num"><sup>1</sup></span>
+    Например, сравните стили изложения первого и третьего изданий <span class="cite">[<a href="z1_bibliography.xhtml#wh89">WH89</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot3.2">
+  <p><span class="num"><sup>2</sup></span>
+    Нам пришлось воспользоваться <code><span class="syntax">letrec</span></code>, так как в Scheme
+    запрещено располагать <code><span class="special">define</span></code> сразу внутри
+    <code><span class="special">block</span></code>, а <code>(<span class="syntax">let</span> ()
+    (<span class="special">define</span> ...))</code> писать тоже нельзя из-за <code>()</code>.</p>
+</div>
+
+<div class="footnote" id="foot3.3">
+  <p><span class="num"><sup>3</sup></span>
+    Этот вариант <code><span class="special">catch</span></code>
+    использует <code><span class="special">block</span></code> с меткой
+    <code><span class="var">label</span></code>. Естественно, система макросов должна
+    обеспечивать гигиеничность имён (гарантировать отсутствие коллизий) и для
+    окружения меток.</p>
+</div>
+
+<div class="footnote" id="foot3.4">
+  <p><span class="num"><sup>4</sup></span>
+    Кстати, в этом случае равенство меток устанавливается предикатом
+    <code><span class="func">eqv?</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot3.5">
+  <p><span class="num"><sup>5</sup></span>
+    Альтернативное решение: эмулировать <code><span class="special">block</span></code>
+    и <code><span class="special">return-from</span></code> с помощью самих себя таким образом,
+    чтобы они учитывали <code><span class="syntax">catch</span></code> и
+    <code><span class="syntax">throw</span></code>. Это сложновато реализовать прямиком в
+    интерпретаторе, но вполне возможно.</p>
+</div>
+
+<div class="footnote" id="foot3.6">
+  <p><span class="num"><sup>6</sup></span>
+    Здесь используется нотация <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> для рекурсивных
+    структур данных. Такой список в Scheme возвращает выражение
+    <code>(<span class="syntax">let</span> ((<span class="var">p</span> (<span class="func">list</span> (<span class="func">cons</span> '<span class="var">foo</span> '<span class="var">hack</span>)))) (<span class="func">set-cdr!</span> <span class="var">p</span> <span class="var">p</span>) <span class="var">p</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot3.7">
+  <p><span class="num"><sup>7</sup></span>
+    В Scheme достаточно, чтобы функция могла принять как минимум один аргумент.
+    То есть с <code>(<span class="func">call/cc</span> <span class="var">list</span>)</code> никаких проблем нет.</p>
+</div>
+
+<div class="footnote" id="foot3.8">
+  <p><span class="num"><sup>8</sup></span>
+    Здесь ударение стоит на слове «<em>возврат</em>», а не «значений».
+    Функция <code><span class="func">values</span></code> не имеет никакого
+    отношения к <code><span class="func">call/cc</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot3.9">
+  <p><span class="num"><sup>9</sup></span>
+    Тут та же ситуация, что и с <code><span class="func">car</span></code> и
+    <code><span class="func">cdr</span></code>, которые являются акронимами от «contents of the
+    address register» и «contents of the decrement register» — с помощью данных
+    примитивов обрабатывались точечные пары в оригинальной реализации Лиспа для
+    IBM 704. Это не имеет ничего общего с текущими реализациями, но названия
+    приклеились.</p>
+</div>
+
+<div class="footnote" id="foot3.10">
+  <p><span class="num"><sup>10</sup></span>
+    Правильно работающий аналог <code><span class="special">unwind-protect</span></code> для
+    Scheme — <code><span class="func">dynamic-wind</span></code>, — был описан ещё в
+    <span class="cite">[<a href="z1_bibliography.xhtml#fwh92">FWH92</a>]</span>;
+    см. также <span class="cite">[<a href="z1_bibliography.xhtml#que93c">Que93c</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot3.11">
+  <p><span class="num"><sup>11</sup></span>
+    С точки зрения реализации можно считать, что
+    <code><span class="func">make-if-cont</span></code> кладёт в стек
+    <code><span class="var">et</span></code> и <code><span class="var">ef</span></code>,
+    а также <code><span class="var">r</span></code>; под ними
+    в стеке лежат аналогичные группы выражений и окружений, которые фактически и
+    есть ничем иным, как продолжением <code><span class="var">k</span></code>.
+    А вызовы вроде <code>(<span class="func">if-cont-et</span> <span class="var">k</span>)</code>
+    лишь снимают с верхушки стека нужные данные.</p>
+</div>
+
+<div class="footnote" id="foot3.12">
+  <p><span class="num"><sup>12</sup></span>
+    Внимательный читатель наверняка заметил странную форму
+    <code>(<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>))</code> в методе
+    <code><span class="func">resume</span></code>. Конечно, мы могли бы отбросить уже
+    вычисленное выражение ещё в <code><span class="func">evaluate-begin</span></code>:
+    <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span>)</code>, и получить тот же
+    результат. Причина такого решения в том, что если случится ошибка, то у нас
+    будет на руках её источник.</p>
+</div>
+
+<div class="footnote" id="foot3.13">
+  <p><span class="num"><sup>13</sup></span>
+    Эта подсказка позволяет также копировать примитивы по значению: выражение
+    <code>(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">foo</span> <span class="var">car</span>) (<span class="special">set!</span> <span class="var">car</span> <span class="num">3</span>) <span class="var">foo</span>)</code>
+    возвращает <code><span class="hash">#&lt;car&gt;</span></code> — собственное имя примитива, связанного с глобальной переменной.</p>
+</div>
+
+<div class="footnote" id="foot3.14">
+  <p><span class="num"><sup>14</sup></span>
+    Фух! Наконец-то мне удалось опубликовать эту функцию! Она с 1981 года валяется у меня без дела.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 4.</span> Присваивание и побочные эффекты</h1>
+
+<div class="footnote" id="foot4.1">
+  <p><span class="num"><sup>1</sup></span>
+    К сожалению, непреднамеренно так вышло, что повторное определение
+    переменной сейчас имеет смысл. Для точного соответствия необходимо будет внести
+    коррективы в процедуру преобразования <code><span class="special">define</span></code> в
+    <code><span class="special">set!</span></code> во избежание
+    переопределения переменных.</p>
+</div>
+
+<div class="footnote" id="foot4.2">
+  <p><span class="num"><sup>2</sup></span>
+    После того, как <code><span class="special">define</span></code> объяснили, что
+    <code>(<span class="syntax">static</span> <i>переменная</i>)</code> — это ссылка на
+    глобальную переменную, а не вызов унарной функции
+    <code><span class="func">static</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.3">
+  <p><span class="num"><sup>3</sup></span>
+    Например, так сделано в <span class="TeX">Τ<span class="E">e</span>Χ</span>е: определения, создаваемые <code>\def</code>,
+    автоматически отменяются при выходе из текущей группы.</p>
+</div>
+
+<div class="footnote" id="foot4.4">
+  <p><span class="num"><sup>4</sup></span>
+    Будем писать эти имена через <code>k</code>, чтобы не путать их с обычными.</p>
+</div>
+
+<div class="footnote" id="foot4.5">
+  <p><span class="num"><sup>5</sup></span>
+    Например, <code><span class="func">equalp</span></code> и
+    <code><span class="func">tree-equal</span></code> в <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot4.6">
+  <p><span class="num"><sup>6</sup></span>
+    В случае распределённых вычислений <code><span class="func">eq?</span></code> должен
+    также уметь сравнивать переменные, расположенные на различных компьютерах. Так
+    что низкоуровневость этого предиката ещё не означает молниеносность его работы.</p>
+</div>
+
+<div class="footnote" id="foot4.7">
+  <p><span class="num"><sup>7</sup></span>
+    Например, в Scheme значение <code>(<span class="func">eq?</span> <span class="num">33</span> <span class="num">33</span>)</code> не определено.
+    Для правильного сравнения чисел существует <code><span class="func">eqv?</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Немецкое слово egal и французское égal буквально значат «равен».</p>
+</div>
+
+<div class="footnote" id="foot4.8">
+  <p><span class="num"><sup>8</sup></span>
+    Я запускал этот пример на четырёх различных интерпретаторах Scheme и
+    два из них зациклились. Я не буду их называть, так как у них есть полное право
+    так делать. <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
+</div>
+
+<div class="footnote" id="foot4.9">
+  <p><span class="num"><sup>9</sup></span>
+    По моему скромному мнению, изобретение хеш-таблиц является одним из величайших достижений
+    информатики.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-2">
+  <p><span class="num"><sup>**</sup></span>
+    Функция <span class="math"><span class="ord var">f</span><span class="ord">: </span><span class="ord var">X</span><span class="rel">→</span><span class="ord var">Y</span></span>
+    называется частичной, если её значения на <span class="math"><span class="ord var">X</span></span> могут быть не определены. Классический пример: операция вычитания для натуральных чисел
+    имеет тип <span class="math"><span class="ord var"><span class="bb">N</span></span><span class="binop">×</span><span class="ord var"><span class="bb">N</span></span><span class="rel">→</span><span class="ord var"><span class="bb">N</span></span></span>,
+    но определена не для всех пар натуральных чисел
+    <span class="math"><span class="open">(</span><span class="ord var">a</span><span class="punct">,</span><span class="ord var">b</span><span class="close">)</span><span class="rel">∈</span><span class="ord var"><span class="bb">N</span></span><span class="binop">×</span><span class="ord var"><span class="bb">N</span></span></span>,
+    только для тех, где
+    <span class="math"><span class="ord var">a</span><span class="rel">⩾</span><span class="ord var">b</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot4.tr-3">
+  <p><span class="num"><sup>***</sup></span>
+    Достаточно неплохое введение в сборку мусора есть в первом томе «Искусства программирования» Дональда Кнута.</p>
+</div>
+
+<div class="footnote" id="foot4.10">
+  <p><span class="num"><sup>10</sup></span>
+    Причём по результатам серьёзных исследований
+    вроде <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>,
+    <a href="z1_bibliography.xhtml#cg77">CG77</a>]</span>,
+    желательно, чтобы значение <code><span class="var">cdr</span></code>
+    (а не <code><span class="var">car</span></code>),
+    было доступно непосредственно. Другим преимуществом такого расположения может
+    быть то, что точечные пары используются для представления связных списков,
+    поэтому можно ввести общий класс «связных объектов» с единственным
+    полем <code><span class="var">cdr</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot4.11">
+  <p><span class="num"><sup>11</sup></span>
+    Ещё точнее: <code>'(<span class="var">a</span> . <span class="var">b</span>) <span class="math"><span class="rel">≡</span></span> `(,'<span class="var">a</span> . ,'<span class="var">b</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot4.12">
+  <p><span class="num"><sup>12</sup></span>
+    Окружение и продолжение вычислений выбираются на усмотрение реализации.</p>
+</div>
+
+<div class="footnote" id="foot4.13">
+  <p><span class="num"><sup>13</sup></span>
+    Здесь считываемый объект ссылается на самого себя. Следовательно, функция
+    <code><span class="func">read</span></code>
+    должна уметь создать в памяти точечную пару, «зациклить» её и подставить адрес
+    на место макроса. Ей также желательно быть достаточно сообразительной, чтобы
+    не попасть впросак на чём-нибудь вроде <code><span class="hash">#1=</span><span class="hash">#1#</span></code>.</p>
+</div>
+
+
+
+
+
+<h1><span class="seq">Глава 5.</span> Денотационная семантика</h1>
+
+<div class="footnote" id="foot5.1">
+  <p><span class="num"><sup>1</sup></span>
+    Хорошим введением в <span class="math"><span class="ord var">λ</span></span>-исчисление могут служить книги <span class="cite">[<a href="z1_bibliography.xhtml#sto77">Sto77</a>,
+    <a href="z1_bibliography.xhtml#gor88">Gor88</a>]</span>.
+    Первой книгой библии <span class="math"><span class="ord var">λ</span></span>-исчисления считается <span class="cite">[<a href="z1_bibliography.xhtml#bar84">Bar84</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot5.2">
+  <p><span class="num"><sup>2</sup></span>
+    Фактически, именно это Джон Маккарти и сделал в 1960 году.</p>
+</div>
+
+<div class="footnote" id="foot5.3">
+  <p><span class="num"><sup>3</sup></span>
+    Очень полезное преимущество, если учесть, что средний размер научной публикации — это около десяти страниц.</p>
+</div>
+
+<div class="footnote" id="foot5.4">
+  <p><span class="num"><sup>4</sup></span>
+    Данная функция была придумана и реализована совместно с Матиасом Феллайзеном
+    (Matthias Felleisen).</p>
+</div>
+
+<div class="footnote" id="foot5.5">
+  <p><span class="num"><sup>5</sup></span>
+    Он передаётся первым, чтобы упростить работу с функциями переменной арности.</p>
+</div>
+
+<div class="footnote" id="foot5.6">
+  <p><span class="num"><sup>6</sup></span>
+    Правильная оптимизация вызовов предопределённых примитивов рассматривается в разделе
+    <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:integrating">6.1.8</a>.</p>
+</div>
+
+
+
+
+
+<h1><span class="seq">Глава 6.</span> Быстрая интерпретация</h1>
+
+<div class="footnote" id="foot6.1">
+  <p><span class="num"><sup>1</sup></span>
+    Именно ради этого разработчики языков программирования стараются
+    сделать как можно больше вещей доступными статически.</p>
+</div>
+
+<div class="footnote" id="foot6.2">
+  <p><span class="num"><sup>2</sup></span>
+    Мануэль Серрано (Manuel Serrano) обнаружил, что данная программа зависит от
+    порядка вычисления аргументов: форма <code><span class="func">cons</span></code>
+    должна вычисляться слева направо.
+    Поэтому и используется <code><span class="syntax">let</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot6.3">
+  <p><span class="num"><sup>3</sup></span>
+    Для простоты количество глобальных переменных пока что ограничено одной сотней.
+    Данное ограничение будет снято в разделе <a href="ch06_fast_interpretation.xhtml#fast/fast/ssect:variations">6.1.9</a>.</p>
+</div>
+
+<div class="footnote" id="foot6.4">
+  <p><span class="num"><sup>4</sup></span>
+    Если бы у нас была возможность изменять скомпилированный
+    код на лету, то можно было бы пойти и дальше: после инициализации переменной
+    просто выкинуть код проверок на инициализированность изо всех обращений к ней.
+    Например, так делает Bigloo
+    <span class="cite">[<a href="z1_bibliography.xhtml#ser94">Ser94</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot6.5">
+  <p><span class="num"><sup>5</sup></span>
+    Это уже который раз мы такое говорим? Надеюсь, теперь вам
+    понятно, почему во многих языках подобные функции не реализованы вообще,
+    несмотря на всю их полезность.</p>
+</div>
+
+<div class="footnote" id="foot6.6">
+  <p><span class="num"><sup>6</sup></span>
+    Большинство реализаций предоставляют подобные небезопасные примитивы, оказывающиеся весьма
+    полезными для различных преобразований программ. Естественно, эти преобразования
+    должны гарантировать использование <code><span class="func">unsafe</span></code>-примитивов
+    только в безопасном контексте. Компилятор часто способен уследить за типами значений, хранимых
+    в переменных, поэтому данные примитивы очень важны для эффективной компиляции.</p>
+</div>
+
+
+
+
+
+<h1><span class="seq">Глава 7.</span> Компиляция</h1>
+
+<div class="footnote" id="foot7.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вот здесь могут возникнуть некоторые проблемы, потому что смещение может оказаться
+    как меньшим 256, так и превышать это значение, то есть занимать
+    один или два байта. Это может оказаться причиной определённых
+    потерь производительности.</p>
+</div>
+
+<div class="footnote" id="foot7.2">
+  <p><span class="num"><sup>2</sup></span>
+    В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> даже есть специальная
+    константа <code><span class="func">LAMBDA-PARAMETERS-LIMIT</span></code>,
+    хранящая максимально возможно количество
+    аргументов функции. По стандарту оно не может быть меньше 50. Стандарт Scheme
+    ничего не говорит о подобных ограничениях, но его молчание можно толковать
+    по-разному.</p>
+  <p>Как бы то ни было, вопрос представления чисел интересен сам по
+    себе. В большинстве систем, поддерживающих длинную арифметику, максимально
+    представимое число немного меньше, чем <span class="math">256<sup><span class="ord num">2<sup><span class="ord num">32</span></sup></span></sup></span>.
+    (Чуть-чуть не хватило до бесконечности.) Хитрость в том, что перед длинным
+    числом записывается его длина в байтах. Аналогичное решение можно применить и здесь.</p>
+</div>
+
+<div class="footnote" id="foot7.3">
+  <p><span class="num"><sup>3</sup></span>
+    В последующих определениях мы не будем упоминать
+    <code><span class="func">check-byte</span></code> ради краткости.</p>
+</div>
+
+<div class="footnote" id="foot7.4">
+  <p><span class="num"><sup>4</sup></span>
+    Да-да, <code><span class="func">list</span></code>,
+    <code><span class="func">append</span></code>, неэффективно,
+    раздел <a href="ch07_compilation.xhtml#compilation/lang-and-target/par:slowpoke">7.2</a>.
+    Извините.</p>
+</div>
+
+<div class="footnote" id="foot7.5">
+  <p><span class="num"><sup>5</sup></span>
+    Инструкции с кодом <code><span class="num">0</span></code> не существует —
+    бедный ноль и без того особенный.</p>
+</div>
+
+<div class="footnote" id="foot7.6">
+  <p><span class="num"><sup>6</sup></span>
+    Вообще-то это не совсем верное предположение, ведь мы только что убедились в том,
+    что <i>j</i> чаще
+    всего оказывается меньше четырёх. Но так как свободные переменные используются
+    значительно реже локальных и глобальных, то можно не особо спешить с ускорением
+    доступа к ним.</p>
+</div>
+
+<div class="footnote" id="foot7.7">
+  <p><span class="num"><sup>7</sup></span>
+    Это досадно, но где-то же должна проходить граница между обычными числами и длинными.</p>
+</div>
+
+<div class="footnote" id="foot7.8">
+  <p><span class="num"><sup>8</sup></span>
+    На некоторых старых машинах, основанных на процессоре i8086, такое ограничение действительно
+    существовало.</p>
+</div>
+
+<div class="footnote" id="foot7.9">
+  <p><span class="num"><sup>9</sup></span>
+    Очевидно, что подобное разделение на <code>SHORT</code>- и
+    <code>LONG</code>-версию может быть применено, например, к
+    <code><span class="func">GLOBAL-REF</span></code>
+    с компанией, чтобы количество изменяемых глобальных переменных больше не было
+    ограничено 256-ю.</p>
+</div>
+
+<div class="footnote" id="foot7.10">
+  <p><span class="num"><sup>10</sup></span>
+    Говоря в общем, это всё же возможно при обработке асинхронных вызовов вроде сигналов UNIX.
+    В таком случае, очевидно, следует использовать время от времени проверяемый флаг, как
+    в <span class="cite">[<a href="z1_bibliography.xhtml#dev85">Dev85</a>]</span>,
+    или иной механизм синхронизации.</p>
+</div>
+
+<div class="footnote" id="foot7.11">
+  <p><span class="num"><sup>11</sup></span>
+    Вроде <code><span class="string">"Bus error: core not dumped"</span></code>.</p>
+</div>
+
+
+
+
+
+<h1><span class="seq">Глава 8.</span> Вычисления и рефлексия</h1>
+
+<div class="footnote" id="foot8.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вот именно их можно и разрешить: это не так сложно сделать, а они могли бы быть полезными,
+    например, при реализации <span class="sc">M<span class="c">eroonet</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot8.2">
+  <p><span class="num"><sup>2</sup></span>
+    Как думаете, значение <code>(<span class="syntax">let</span> ((<span class="var">e</span> '(<span class="var">x</span>))) `(<span class="special">lambda</span>
+    ,<span class="var">e</span> ,<span class="var">e</span>))</code> считается допустимой программой?</p>
+</div>
+
+<div class="footnote" id="foot8.3">
+  <p><span class="num"><sup>3</sup></span>
+    Правда, такой способ определения <code><span class="special">eval</span></code> позволяет
+    её использовать только на глобальном уровне, воспользоваться локальным
+    окружением функций загружаемые программы не смогут. К вопросам управления
+    окружениями при явных вычислениях мы вернёмся чуть позже.</p>
+</div>
+
+<div class="footnote" id="foot8.4">
+  <p><span class="num"><sup>4</sup></span>
+    В отличие от остальных, переменная <code><span class="var">*dynamic-variables*</span></code>
+    общая дл компилятора и машины-исполнителя. Сейчас подобные присваивания ей бессмысленны,
+    но они напоминают, что их необходимо проводить, если данная переменная не будет
+    разделяемой.</p>
+</div>
+
+<div class="footnote" id="foot8.5">
+  <p><span class="num"><sup>5</sup></span>
+    Это утверждение носит слегка теоретический характер, так как с практической точки
+    зрения можно засечь время выполнения обеих программ. Более медленная, очевидно,
+    использует <code><span class="special">eval</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot8.6">
+  <p><span class="num"><sup>6</sup></span>
+    Конечно же, переменные вроде <code><span class="var">car</span></code> не включаются
+    в определение <code><span class="func">set-global-value!</span></code> для
+    обеспечения их неизменяемости.</p>
+</div>
+
+<div class="footnote" id="foot8.7">
+  <p><span class="num"><sup>7</sup></span>
+    А вот и архитектурная ошибочка нашлась: <code><span class="special">export</span></code>
+    не позволяет захватить <em>пустое</em> окружение! Поэтому мы захватываем хоть что-нибудь —
+    в данном случае функцию умножения, — чтобы получить начальное окружение для
+    манипуляций (аналогичный костыль применён в
+    <span class="cite">[<a href="z1_bibliography.xhtml#qd96">QD96</a>]</span>).</p>
+</div>
+
+<div class="footnote" id="foot8.8">
+  <p><span class="num"><sup>8</sup></span>
+    <code><span class="func">EXPLICIT-CONSTANT</span></code> используется
+    для того, чтобы не получить <code>(<span class="func">PREDEFINED0</span>)</code>
+    вместо ожидаемого <code>(<span class="func">CONSTANT</span> <span class="hash">'()</span>)</code>.</p>
+</div>
+
+<div class="footnote" id="foot8.9">
+  <p><span class="num"><sup>9</sup></span>
+    Пустой список, подобно <code><span class="special">export</span></code>,
+    может означать все возможные переменные.</p>
+</div>
+
+<div class="footnote" id="foot8.10">
+  <p><span class="num"><sup>10</sup></span>
+    Помимо этого необходимы ещё многие другие возможности, вроде механизма диспетчеризации
+    методов по классам объектов.</p>
+</div>
+
+<div class="footnote" id="foot8.11">
+  <p><span class="num"><sup>11</sup></span>
+    Чтобы избежать потенциально ошибочного цитирования присваиваемого значения, используется
+    промежуточное замыкание, принимающее это значение.</p>
+</div>
+
+<div class="footnote" id="foot8.12">
+  <p><span class="num"><sup>12</sup></span>
+    Рассмотренная реализация <code><span class="special">dynamic-let</span></code> не позволяет
+    напрямую изменять такие связи; не существует соответствующей
+    <code><span class="special">dynamic-set!</span></code>.
+    Но ничто не мешает связать с именем изменяемый объект и таким образом обойти
+    данное ограничение.</p>
+</div>
+
+<div class="footnote" id="foot8.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    В <span class="math"><span class="ord var">λ</span></span>-исчислении <span class="math"><span class="ord var">α</span></span>-конверсией называется правило
+<span class="math"><span class="ord var">λ</span><span class="ord var">x</span><span class="ord">.</span><span class="ord var">N</span><span class="rel">≡</span><span class="ord var">λ</span><span class="ord var">y</span><span class="ord">.</span><span class="ord var">N</span><span class="open">[</span>x<span class="rel">→</span><span class="ord var">y</span><span class="close">]</span></span>,
+    которое даёт возможность свободно переименовывать связанные переменные абстракции
+    при условии, что новое имя <span class="math"><span class="ord var">y</span></span>
+    не встречается в <span class="math"><span class="ord var">N</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot8.13">
+  <p><span class="num"><sup>13</sup></span>
+    Кстати, можно улучшить <code><span class="special">reflective-lambda</span></code>,
+    дав ей возможность указывать операции, допустимые над экспортируемыми привязками; например,
+    разрешать только чтение, но не изменение значений. Также можно,
+    подобно <span class="cite">[<a href="z1_bibliography.xhtml#lf93">LF93</a>]</span>, реализовать механизм переименования экспортируемых
+    переменных.</p>
+</div>
+
+<div class="footnote" id="foot8.14">
+  <p><span class="num"><sup>14</sup></span>
+    В откомпилированном виде, конечно же, потому как его исходный код
+    содержит чуть менее 3000 символов, плюс ещё столько же пробелов.</p>
+</div>
+
+<div class="footnote" id="foot8.15">
+  <p><span class="num"><sup>15</sup></span>
+    Ну, она сказала нечто подобное на радио
+    France Musique тем воскресным утром 19 сентября 1993 года, когда я писал эти
+    строки.</p>
+</div>
+
+<div class="footnote" id="foot8.16">
+  <p><span class="num"><sup>16</sup></span>
+    Наконец-то у нас есть Лисп, из которого можно нормально
+    выйти! Можете самостоятельно убедиться в том, что <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>,
+    Scheme и даже Dylan лишены такого удобства.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 9.</span> Макросы: употребление и злоупотребление</h1>
+
+<div class="footnote" id="foot9.1">
+  <p><span class="num"><sup>1</sup></span>
+    Например, никто не может сказать загодя, какие переменные окружения
+    выведет <code>printenv</code>, или что написано в конфигурационных
+    файлах операционной системы.</p>
+</div>
+
+<div class="footnote" id="foot9.2">
+  <p><span class="num"><sup>2</sup></span>
+    Располагаемых, к примеру, в самом начале файла.</p>
+</div>
+
+<div class="footnote" id="foot9.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    «<span class="sc">М<span class="c">акрология</span></span>, <i>сущ., ж.</i>
+    (букв. <i>многословие</i> или <i>макрос</i> + <i>учение</i>)
+    <b>1.</b> Набор обыкновенно сложных или хитроумных макросов, напр., как
+    составная часть большой программной системы, написанной на Лиспе, TECO или
+    (реже) ассемблере. <b>2.</b> Искусство и наука постижения смысла макрологий
+    в значении 1 (ср. археология, экология, теология)» — The Jargon File.</p>
+</div>
+
+<div class="footnote" id="foot9.3">
+  <p><span class="num"><sup>3</sup></span>
+    Столь экзотическое имя выбрано с целью избежать противоречивых ассоциаций с конструкцией
+    <code><span class="syntax">define-macros</span></code>, присутствующей во многих реализациях
+    Лиспа и Scheme.</p>
+</div>
+
+<div class="footnote" id="foot9.tr-2">
+  <p><span class="num"><sup>**</sup></span>
+    Прагматика — понятие лингвистики:
+    смысл выражения, определяемый его контекстом. Для языков программирования таким
+    контекстом является компьютер, исполняющий программы. То есть прагматика —
+    это принципы реализации языка для конкретных вычислительных машин, тогда как
+    семантика — это просто абстрактный смысл выражений языка.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 10.</span> Компиляция в Си</h1>
+
+<div class="footnote" id="foot10.1">
+  <p><span class="num"><sup>1</sup></span>
+    Даже если сейчас в дереве нет <code><span class="class">Fix-Let</span></code>-узлов,
+    соответствующих приводимым формам, метод их обработки должен существовать.</p>
+</div>
+
+<div class="footnote" id="foot10.2">
+  <p><span class="num"><sup>2</sup></span>
+    Однако, например, <code>gcc</code> расширяет язык формой
+    <code>({ ... })</code>, позволяющей вводить переменные где угодно.</p>
+</div>
+
+<div class="footnote" id="foot10.3">
+  <p><span class="num"><sup>3</sup></span>
+    Используемая в этой главе функция <code><span class="func">read</span></code>
+    переводит все имена символов в верхний регистр.</p>
+</div>
+
+<div class="footnote" id="foot10.4">
+  <p><span class="num"><sup>4</sup></span>
+    Конечно, при этом можно применять и более агрессивные оптимизации. Например, в приведённом
+    примере переменные <code><span class="var">x1</span></code> и <code><span class="var">x2</span></code> невозможно использовать одновременно, так что они могут физически
+    совпадать в памяти.</p>
+</div>
+
+<div class="footnote" id="foot10.5">
+  <p><span class="num"><sup>5</sup></span>
+    Имена функций вида <code class="c"><span class="func">function_<i>i</i></span></code>,
+    очевидно, никак не связаны с именами соответствующих им
+    глобальных переменных. Если не пренебрегать таблицей символов, как это сделано
+    здесь, то вполне можно выводить более понятные имена.</p>
+</div>
+
+<div class="footnote" id="foot10.6">
+  <p><span class="num"><sup>6</sup></span>
+    Большая часть потраченного времени уходит на
+    загрузку; собственно исполнение занимает пренебрежимо малую его часть. Если
+    данные вычисления повторить 10000 раз, то время выполнения программы
+    увеличится всего до одной секунды.</p>
+</div>
+
+<div class="footnote" id="foot10.7">
+  <p><span class="num"><sup>7</sup></span>
+    Замеры производились на Sony News 3200 с процессором MIPS R3000 на борту.</p>
+</div>
+
+<div class="footnote" id="foot10.8">
+  <p><span class="num"><sup>8</sup></span>
+    Пустой указатель в Си (<code class="c"><span class="macro">NULL</span></code>) чаще всего
+    численно равен нулю. Естественно, он не является допустимым значением Scheme, так как
+    нелегко будет отыскать в памяти адрес <span class="math"><span class="ord">−</span><span class="ord num">1</span></span>.</p>
+</div>
+
+<div class="footnote" id="foot10.9">
+  <p><span class="num"><sup>9</sup></span>
+    Как вы помните, <code><span class="var">cdr</span></code> лучше располагать перед
+    <code><span class="var">car</span></code>, потому что пары — это всё же
+    основной элемент связных списков, а <code><span class="var">cdr</span></code> при обходе
+    списка просматривается чаще, как утверждается
+    <span class="cite">[<a href="z1_bibliography.xhtml#cla79">Cla79</a>]</span>.</p>
+</div>
+
+<div class="footnote" id="foot10.10">
+  <p><span class="num"><sup>10</sup></span>
+    Некоторые компиляторы Си <em>достаточно сообразительны</em>,
+    чтобы избавиться от части ненужных проверок, но, как известно, хочешь сделать
+    хорошо — сделай это сам.</p>
+</div>
+
+<div class="footnote" id="foot10.tr-1">
+  <p><span class="num"><sup>*</sup></span>
+    Или к более современной книге:
+    <i>Richard Jones, Antony Hosking, Eliot Moss.</i> The Garbage Collection
+    Handbook: The Art of Automatic Memory Management. — Chapman &amp; Hall/CRC,
+    2012. — 511 p.</p>
+</div>
+
+<div class="footnote" id="foot10.tr-2">
+  <p><span class="num"><sup>**</sup></span>
+    В C99 появился макрос <code class="c"><span class="macro">va_copy</span></code>,
+    позволяющий сделать это безопасно.</p>
+</div>
+
+<div class="footnote" id="foot10.11">
+  <p><span class="num"><sup>11</sup></span>
+    Если вам здесь видится нечеловеческое ущемление прав, то сперва узнайте предел
+    вашей любимой реализации Scheme.</p>
+</div>
+
+
+
+
+<h1><span class="seq">Глава 11.</span> Квинтэссенция объектной системы</h1>
+
+<div class="footnote" id="foot11.1">
+  <p><span class="num"><sup>1</sup></span>
+    Вообще так звали плюшевого мишку моего сына, но если хотите, можете считать это
+    имя акронимом и придумать ему какую-нибудь расшифровку.</p>
+</div>
+
+<div class="footnote" id="foot11.2">
+  <p><span class="num"><sup>2</sup></span>
+    Полные исходные коды обеих систем — <span class="sc">M<span class="c">eroon</span></span> и
+    <span class="sc">M<span class="c">eroonet</span></span> —
+    можно найти на сервере, адрес которого приведён <a href="01_preface.xhtml#pref/sect:source">в предисловии</a>.</p>
+</div>
+
+<div class="footnote" id="foot11.3">
+  <p><span class="num"><sup>3</sup></span>
+    Кроме того такой подход немного помогает сборщику мусора:
+    ему теперь надо проверять и запоминать на одну ссылку меньше.</p>
+</div>
+
+<div class="footnote" id="foot11.4">
+  <p><span class="num"><sup>4</sup></span>
+    Конечно, как вариант, можно было бы схитрить и воспользоваться тем, что любой объект
+    <span class="sc">M<span class="c">eroonet</span></span> — это уже фактически вектор, только из-за ссылки на класс
+    в начале следует вносить небольшую поправку при индексации.</p>
+</div>
+
+<div class="footnote" id="foot11.5">
+  <p><span class="num"><sup>5</sup></span>
+    Звёздочка используется в качестве
+    символа повторения, как это принято в нотации регулярных выражений, где данный
+    символ означает замыкание Клини.</p>
+</div>
+
+<div class="footnote" id="foot11.6">
+  <p><span class="num"><sup>6</sup></span>
+    Эта функция аналогична функции <code><span class="func">class-of</span></code> из
+    <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> и
+    <span class="sc">ISL<span class="c">isp</span></span>. Как обычно, мы назвали её по-другому,
+    чтобы избежать ложных ассоциаций и позволить использовать несколько объектных
+    систем одновременно.</p>
+</div>
+
+<div class="footnote" id="foot11.7">
+  <p><span class="num"><sup>7</sup></span>
+    Несмотря на то, что индексированные поля состоят из
+    нескольких значений, имена им лучше давать в единственном числе. Тогда выражения
+    вида <code>(<span class="func">ColoredPolygon-side</span> <i>o</i> <i>i</i>)</code>
+    читаются естественнее: «<i>i</i>-я сторона цветного многоугольника <i>o</i>». Слово
+    <code><span class="func">sides</span></code>
+    выглядело бы тут странно, ведь мы обращаемся к одной стороне, а не нескольким.</p>
+</div>
+
+<div class="footnote" id="foot11.8">
+  <p><span class="num"><sup>8</sup></span>
+    Вспомните, что в Scheme нельзя ни создавать, ни обращаться к переменным с динамически
+    вычисляемыми именами. Все имена всех используемых переменных после раскрытия
+    макросов должны быть записаны прямым текстом.</p>
+</div>
+
+<div class="footnote" id="foot11.9">
+  <p><span class="num"><sup>9</sup></span>
+    <span class="sc">M<span class="c">eroonet</span></span> не придаёт чёткого смысла переопределению классов,
+    поэтому не стоит лишний раз искушать судьбу.</p>
+</div>
+
+<div class="footnote" id="foot11.10">
+  <p><span class="num"><sup>10</sup></span>
+    На самом деле в <span class="sc">M<span class="c">eroon</span></span> всё немного сложнее: модификатор
+    <code><span class="syntax">:prototype</span></code> раскрывается в проверку того,
+    что к моменту исполнения программы реальный класс был создан и написанный прототип
+    ему соответствует.</p>
+</div>
+
+<div class="footnote" id="foot11.11">
+  <p><span class="num"><sup>11</sup></span>
+    Лисп вообще не гарантирует, что вычисление этой формы будет
+    завершено, а в Scheme она вполне может вернуть несколько значений вместо
+    предполагаемого одного.</p>
+</div>
+
+<div class="footnote" id="foot11.12">
+  <p><span class="num"><sup>12</sup></span>
+    Например, форма <code><span class="syntax">define-method</span></code>
+    явно указывает тип дискриминирующего аргумента.</p>
+</div>
+
+<div class="footnote" id="foot11.13">
+  <p><span class="num"><sup>13</sup></span>
+    По крайней мере, в стандарте R<sup>5</sup>RS, который взят за основу в этой книге.</p>
+</div>
+
+<div class="footnote" id="foot11.14">
+  <p><span class="num"><sup>14</sup></span>
+    Если вы ещё не забыли, что такое списки свойств, то наверяка вспомните и то,
+    что аргументы <code><span class="func">putprop</span></code> располагаются
+    в точно таком же порядке.</p>
+</div>
+
+<div class="footnote" id="foot11.15">
+  <p><span class="num"><sup>15</sup></span>
+    Правда, здесь можно схитрить и сбросить <code><span class="var">*class-number*</span></code>
+    в ноль перед переопределением встроенных классов. Только
+    определять их надо в точно таком же порядке, как ранее вручную, чтобы номера
+    остались неизменными.</p>
+</div>
+
+<div class="footnote" id="foot11.16">
+  <p><span class="num"><sup>16</sup></span>
+    Так как <code><span class="syntax">define-generic</span></code> — это
+    макрос, то во избежание коллизий все имена используемых им переменных генерируются
+    <code><span class="func">gensym</span></code>.</p>
+</div>
+
+<div class="footnote" id="foot11.17">
+  <p><span class="num"><sup>17</sup></span>
+    В отличие от CLOS, мы запретили
+    изменять аргументы вызова суперметода, так как иначе стало бы возможным заменить
+    дискриминант абсолютно любым объектом, что противоречит самой идее суперметодов,
+    а также мешает восприятию кода как людьми, так и компиляторами.</p>
+</div>
+
+</body>
+</html>

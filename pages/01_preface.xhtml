@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+
+<head>
+    <title>К читателю</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+</head>
+
+<body>
+
+<h1 id="chapter:to_the_reader"><span class="wrap"><span class="title">К читателю</span></span></h1>
+
+<p class="noindent"><span class="initial">Н</span><span class="sc"><span class="c">есмотря
+на то</span></span> что литературы на тему Лиспа достаточно и она легкодоступна, эта книга имеет свою
+нишу. Программирование требует понимания фундаментальных основ языка; для Лиспа
+и Scheme ими являются нетривиальные вещи вроде функций высшего порядка,
+объектов, продолжений и тому подобного. Их незнание и непонимание преграждает
+вам путь в будущее, так как то, что ещё сегодня считалось сложным, завтра уже
+станет нормой для образованного человека.</p>
+
+<p>Для объяснения природы данных сущностей, их происхождения и разновидностей
+нам придётся серьёзно углубиться в детали. Ходит поговорка, что лисперы знают
+ценность всего, но не ведают цены. Данная книга также направлена на сокращение
+этой пропасти в понимании языка с помощью детального изучения его семантики,
+а также реализации различных возможностей Лиспа, которые были изобретены за его
+более чем тридцатилетнюю историю.</p>
+
+<p>Лисп — это приятный язык, на котором многие фундаментальные и нетривиальные
+вещи выражаются простым образом. Вместе с ML, своим строго типизированным
+собратом, (почти) лишённым побочных эффектов, он является типичным
+представителем семейства аппликативных языков программирования. Изучение
+концепций, на которых это семейство основано, без сомнения будет полезно для
+студентов и учёных-информатиков наших и будущих лет. Основанные на идее
+<em class="term">функции</em>, — идее, которая веками оттачивалась и
+уточнялась математикой, — аппликативные языки присутствуют практически везде,
+где присутствуют вычисления, проявляясь в различных формах: начиная
+перенаправлением потоков в UNIX, заканчивая языком расширений редактора Emacs
+и многими другими скриптовыми языками. Использование таких инструментов без
+понимания основного их механизма — комбинации — подобно попыткам выразить
+мысль с помощью отдельных слов вместо цельного предложения. Для выживания может
+быть достаточно нескольких заученных фраз, но для полноценной жизни требуется
+вся мощь языка.</p>
+
+
+<h2 id="pref/sect:audience"><span class="wrap"><span class="title">Аудитория</span></span></h2>
+
+<p>Книга предназначена для широкой аудитории специалистов:</p>
+<ul>
+    <li>для выпускников вузов и студентов, которые изучают приёмы
+        реализации языков программирования; аппликативных или нет,
+        интерпретацию или компиляцию — не важно;</li>
+    <li>для программистов на Лиспе или Scheme, желающих чётче понимать
+        нюансы и стоимость используемых ими конструкций, дабы писать
+        более эффективные и переносимые программы;</li>
+    <li>для всех любителей аппликативных языков, которые найдут в этой
+        книге множество интересных размышлений на свою любимую тему.</li>
+</ul>
+
+
+<h2 id="pref/sect:philosophy"><span class="wrap"><span class="title">Философия</span></span></h2>
+
+<p>Данная книга основана на курсе лекций, читаемом в магистратуре Университета
+Пьера и Марии Кюри; некоторые части курса также преподаются в Политехнической
+школе.</p>
+
+<p>Темы, рассматриваемые здесь, обычно следуют за вводным курсом аппликативных
+языков вроде Лиспа, Scheme или ML, так как подобные курсы чаще всего
+заканчиваются детальным разбором рассматриваемого языка. Цель этой книги —
+как можно шире покрыть тему семантики аппликативных языков и разработки их
+интерпретаторов и компиляторов. Здесь приведено двенадцать интерпретаторов и
+два компилятора (в байт-код и в Си). Не обходится стороной и
+объектно-ориентированная модель (рассматриваемая на примере
+<span class="sc">M<span class="c">eroon</span></span>). Также, в отличие от многих других книг, эта
+не пренебрегает такими существенными для семейства Лиспов вещами как рефлексия,
+интроспекция, динамическая кодогенерация и, конечно же, макросы.</p>
+
+<p>Отчасти эта книга вдохновлена двумя работами: «Anatomy of Lisp»
+<span class="cite">[<a href="z1_bibliography.xhtml#all78">All78</a>]</span>,
+рассматривающей подходы к реализации Лиспа в семидесятых годах, и «Operating
+System Design: The XINU Approach» <span class="cite">[<a
+href="z1_bibliography.xhtml#com84">Com84</a>]</span>, где приводится весь
+необходимый код без сокрытия любых деталей работы операционной
+системы, что полностью убеждает читателя в верности изложения.</p>
+
+<p>В таком же духе — точности, а не лаконичности — написана и эта книга,
+главным вопросом которой есть семантика аппликативных языков в общем и Scheme
+в частности. Исследуя множество реализаций, рассматривая их различные аспекты,
+мы узнаем с максимальной точностью, как строится любая подобная система. Мы
+рассмотрим большую часть проблемных вопросов, вызывающих расколы в сообществе;
+каждая из этих проблем будет изучена, варианты её решения — реализованы,
+сравнены и проанализированы. «Я расскажу всё, что знаю», чтобы вы, читатель,
+никогда не зашли в тупик из-за недостатка информации, и, более того, имея
+такой фундамент знаний, могли самостоятельно экспериментировать
+с рассматриваемыми концепциями.</p>
+
+<p>Именно поэтому вы можете получить в электронном виде полный код всех программ,
+приведённых в этой книге (подробности <a href="#pref/sect:source">здесь</a>).</p>
+
+
+<h2 id="pref/sect:structure"><span class="wrap"><span class="title">Структура</span></span></h2>
+
+<p>Книга разделена на две части. Первая часть начинается реализацией наивного
+интерпретатора Лиспа и рассматривает в основном семантику Scheme. Здесь нам
+требуется точность повествования, поэтому мы будем раз за разом уточнять и
+переопределять различными способами пространства имён (Lisp<sub>1</sub>,
+Lisp<sub>2</sub> и т. д.), продолжения (и связанные с ними управляющие
+конструкции), присваивание и изменяемые структуры данных. Мы заметим, что по
+мере того, как определяемый язык обрастает возможностями, его определение
+становится всё более простым, приближаясь к <span class="math"><span class="ord var">λ</span></span>-исчислению. Полученное
+таким образом описание языка мы превратим в его денотационный, строго
+математический эквивалент.</p>
+
+<p>Более шести лет практики преподавания убедили меня в том, что именно такой
+подход постепенного уточнения языка необходим для мягкого знакомства с темой
+исследования языков вообще и денотационной семантикой вычислений в частности
+— темой, которую мы не можем себе позволить обойти стороной.</p>
+
+<p>Вторая часть книги следует иным путём. Преследуя цель сделать наивную
+реализацию денотационного интерпретатора более эффективной, мы коснёмся темы
+ускорения интерпретации (заранее вычисляя неизменные величины), а потом
+реализуем эту предварительную обработку (с помощью прекомпиляции) для нашего
+компилятора в байт-код. В этой части подготовка программы к исполнению и
+собственно исполнение чётко отделены, поэтому здесь будут рассматриваться такие
+темы как динамические вычисления (<code><span class="func">eval</span></code>),
+рефлексия (окружения как объекты первого класса, самоинтерпретация, «башня»
+интерпретаторов), семантика макросов. Далее мы реализуем транслятор Scheme в код
+на языке Си.</p>
+
+<p>Завершается книга реализацией объектно-ориентированной системы, которая
+существенно поможет нам в реализации некоторых интерпретаторов и компиляторов.</p>
+
+<p>Как известно, повторенье — мать ученья. Все приведённые интерпретаторы
+намеренно написаны в различных стилях: наивном, объектно-ориентированном,
+основанном на замыканиях, денотационном и т. д. Это позволит рассмотреть
+множество приёмов, используемых при реализации аппликативных языков. Также это
+подтолкнёт вас на размышления о различиях между ними. Понимание этих различий
+(см. таблицу <a href="#pref-table-signatures">1</a> с подсказками) является
+истинным пониманием языка и его реализаций. Лисп — это не одна из таких
+реализаций, это <em>семейство</em> диалектов, каждый из которых имеет свой
+уникальный набор черт, которые мы будем рассматривать.</p>
+
+<table id="pref-table-signatures">
+<thead class="underlined">
+    <tr><th class="col1">Глава</th><th class="col2">Прототип</th></tr>
+</thead>
+<tbody>
+    <tr><td class="col1">1 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span>)</code></td></tr>
+    <tr><td class="col1">2 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">fenv</span> <span class="var">denv</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">denv</span>)</code></td></tr>
+    <tr><td class="col1">3 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">exp</span> <span class="var">env</span> <span class="var">cont</span>)</code></td></tr>
+    <tr><td class="col1">4 </td><td class="col2"><code>(<span class="func">eval</span> <span class="var">e</span> <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">5 </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span>) <span class="var">r</span> <span class="var">s</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">6 </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>) <span class="var">sr</span> <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>) <span class="var">k</span>)</code></td></tr>
+    <tr><td class="col1">  </td><td class="col2"><code>((<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
+    <tr><td class="col1">7 </td><td class="col2"><code>(<span class="func">run</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span> <span class="var">tail?</span>))</code></td></tr>
+    <tr><td class="col1">10</td><td class="col2"><code>(<span class="func">-&gt;C</span> (<span class="func">meaning</span> <span class="var">e</span> <span class="var">r</span>))</code></td></tr>
+</tbody>
+</table>
+<span class="caption">Таблица 1. Прототипы интерпретаторов и компиляторов.</span>
+
+<p>Главы более-менее независимы, занимают примерно по 40 страниц; каждая глава
+имеет список упражнений, ответы к которым можно найти в конце книги. Список
+литературы содержит не только исторически важные книги, позволяющие отследить
+развитие Лиспа с 1960 года, но и современные труды.</p>
+
+
+<h2 id="pref/sect:prereqs"><span class="wrap"><span class="title">Предварительные знания</span></span></h2>
+
+<p>Хоть я и надеюсь, что книга будет увлекательной и содержательной, но она
+не обязательно будет лёгкой для чтения. Некоторые описанные здесь вещи можно
+постичь, только если прикладывать усилия, соответствующие их сложности. Говоря
+языком куртуазных романов, некоторые предметы воздыханий открывают свою истинную
+красоту и обаяние только тогда, когда мы учтиво, но непреклонно штурмуем их;
+если их богатый и непростой внутренний мир не будет под постоянной осадой, они
+так и останутся неприступными.</p>
+
+<p>Изучение сущности языков программирования требует владения инструментами вроде
+<span class="math"><span class="ord var">λ</span></span>-исчисления и денотационной семантики. Хотя повествование и будет
+мягко, последовательно и логично переходить от одной темы к следующей, это
+не сможет избавить вас ото всех необходимых усилий.</p>
+
+<p>Вам потребуются некоторые предварительные знания о Лиспе или Scheme;
+в частности, знание примерно тридцати базовых функций и умение понимать рекурсию
+без чрезмерного умственного напряжения. Основным языком этой книги выбран Scheme
+(его краткий обзор можно найти <a href="#pref/sect:scheme-summary">чуть дальше</a>),
+а также его объектно-ориентированное расширение <span class="sc">M<span class="c">eroon</span></span>.
+Данное расширение поможет нам в рассмотрении некоторых проблем представления и
+реализации структур данных.</p>
+
+<p>Все приведённые в книге программы были протестированы и действительно работают
+в интерпретаторе Scheme. А для тех, кто усвоит материал этой книги, не будет
+составлять особого труда портировать их куда угодно!</p>
+
+
+<h2 id="pref/sect:thanks"><span class="wrap"><span class="title">Благодарности</span></span></h2>
+
+<p>Я должен поблагодарить организации, которые обеспечили меня оборудованием
+(Apple Mac SE/30, затем Sony NEWS 3260, впоследствии разнообразными PC и
+PowerBook) и вообще сделали эту книгу возможной: Политехническую школу,
+Государственный институт исследований в области информатики и автоматики
+(INRIA), Национальный центр научных исследований (CNRS).</p>
+
+<p>Также я хотел бы поблагодарить тех, кто помогал мне всем, чем мог, в создании
+этой книги. В особом долгу я перед Софи Англад, Жози Бирон, Кэтлин Коллэвей,
+Жеромом Шейёксом, Жаном-Мари Жеффруа, Кристианом Жюльеном, Жан-Жаком Лакрампом,
+Мишелем Леметром, Люком Моро, Жаном-Франсуа Перро, Дэниелом Риббенсом,
+Бернардом Серпеттом, Мануэлем Серрано, Пьером Ве, а также перед моей музой,
+Клэр Н.<a class="footref" href="zz_footnotes.xhtml#foot0.tr-1"><sup>*</sup></a></p>
+
+<p>Конечно же, все ошибки, которые, к сожалению, неизбежно присутствуют в тексте,
+являются моими собственными.</p>
+
+
+<h2 id="pref/sect:notation"><span class="wrap"><span class="title">Нотация</span></span></h2>
+
+<p>Фрагменты программ будут набраны <code>таким шрифтом, который несомненно
+напомнит вам о старых добрых печатных машинках</code>. Некоторые слова в коде
+также будут набраны <i>курсивом</i> для обозначения понятий, подразумеваемых на
+месте этих слов.</p>
+
+<!--\indexC*{.->}{\protect\is}
+\indexC*{.=}{\protect\equals}-->
+<p>Знак <span class="math"><span class="rel">→</span></span> читается: «имеет значение»,
+а знак <span class="math"><span class="rel">≡</span></span> обозначает
+эквивалентность, «имеет то же значение, что и». При разборе вычисления
+выражений после вертикальной черты мы будем записывать окружение, в котором
+проводятся вычисления. Вот пример, иллюстрирующий эти соглашения:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">a</span> (<span class="func">+</span> <span class="var">b</span> <span class="num">1</span>)))
+  (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>)))
+    (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>) ) )<div class="where"><div class="wrap">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
+</div></div>
+
+<span class="math"><span class="rel">≡</span></span> (<span class="syntax">let</span> ((<span class="var">f</span> (<span class="special">lambda</span> () <span class="var">a</span>))) (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>))<div class="where"><div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)</div><div class="where">
+
+
+
+<div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span></div></div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">foo</span> (<span class="func">f</span>) <span class="var">a</span>)<div class="where"><div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span>
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">foo</span> <span class="math"><span class="rel">≡</span></span> <span class="func">cons</span>
+<span class="var">f</span> <span class="math"><span class="rel">≡</span></span> (<span class="special">lambda</span> () <span class="var">a</span>)</div><div class="where">
+
+
+
+<div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">4</span></div></div></div>
+<span class="math"><span class="rel">→</span></span> (<span class="num">4</span> . <span class="num">4</span>)</pre>
+
+<p>Все имена переменных и сообщения об ошибках в приводимых программах мы будем
+записывать на английском — «родном языке» Scheme.</p>
+
+<p>Мы будем использовать несколько нестандартных функций вроде <code><span
+class="func">gensym</span></code>, которая генерирует символы, гарантированно не
+встречавшиеся ранее в тексте программы. В десятой главе также будут применяться
+функции <code><span class="func">format</span></code> и <code><span
+class="func">pp</span></code> для форматированного вывода (pretty-printing).
+Эти функции есть в большинстве реализаций Лиспа и Scheme.</p>
+
+<p>Некоторые выражения имеют смысл только для какого-то из диалектов Лиспа вроде
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, Dylan, <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span>,
+<span class="sc">ISL<span class="c">isp</span></span>, Le_Lisp<a class="footref"
+href="zz_footnotes.xhtml#foot0.1"><sup>1</sup></a>, Scheme и т. д. В этом случае
+мы будем писать рядом название диалекта:</p>
+
+<pre>(<span class="special">defdynamic</span> <span class="var">fooncall</span>          <span class="dialect"><span class="sc">ISL<span class="c">isp</span></span></span>
+  (<span class="special">lambda</span> (<span class="var">one</span> <span class="syntax">:rest</span> <span class="var">others</span>)
+    (<span class="func">funcall</span> <span class="var">one</span> <span class="var">others</span>) ) )</pre>
+
+<p>Дабы было легче ориентироваться в этой книге, мы будем использовать
+обозначение <span class="see">[см. <span class="stub">10.1</span>]</span> для
+перекрёстных ссылок на разделы. Похожая нотация будет использоваться при
+необходимости указать на упражнение: <span class="see">[см. упр. <span
+class="stub">10.1</span>]</span>.<!-- Также в книге есть предметный указатель со
+ссылками на все определяемые функции. \seePage[chapter:index]--></p>
+
+
+<h2 id="pref/sect:scheme-summary"><span class="wrap"><span class="title">Краткий обзор Scheme</span></span></h2>
+
+<p>Для изучения Scheme существует множество отличных книг, вроде <span
+class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#dyb87">Dyb87</a>]</span>,
+<span class="cite">[<a href="sf89">SF89</a>]</span>. Мы же будем опираться на
+спецификацию, описанную в документе «Revised revised revised revised revised
+Report on Scheme», название которого часто сокращают до R<sup>5</sup>RS. <span
+class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span></p>
+
+<p>Сейчас мы лишь набросаем основные характерные черты этого диалекта; те черты,
+которые потом будут подробно проанализированы по мере улучшения понимания языка.</p>
+
+<p>В Scheme можно использовать символы, знаки<a class="footref" href="zz_footnotes.xhtml#foot0.tr-2"><sup>**</sup></a>, строки, списки, числа, логические значения,
+векторы, порты и функции (или процедуры, как их принято называть в Scheme).</p>
+
+<p>Каждый из этих типов данных имеет соответствующий предикат: <code><span
+class="func">symbol?</span></code>, <code><span class="func">char?</span></code>,
+<code><span class="func">string?</span></code>, <code><span
+class="func">pair?</span></code>, <code><span class="func">number?</span></code>,
+<code><span class="func">boolean?</span></code>, <code><span
+class="func">vector?</span></code>, <code><span class="func">procedure?</span></code>.</p>
+
+<p>Помимо них в наличии есть процедуры-аксессоры и модификаторы для тех типов,
+где это имеет смысл: <code><span class="func">string-ref</span></code>,
+<code><span class="func">string-set!</span></code>,
+<code><span class="func">vector-ref</span></code> и <code><span
+class="func">vector-set!</span></code>.</p>
+
+<p>Для списков они называются <code><span class="func">car</span></code>,
+<code><span class="func">cdr</span></code>, <code><span
+class="func">set-car!</span></code>
+и <code><span class="func">set-cdr!</span></code>.</p>
+
+<p>Функции <code><span class="func">car</span></code> и <code><span
+class="func">cdr</span></code> могут комбинироваться. Например,
+для доступа ко второму элементу списка используется
+<code><span class="func">cadr</span></code>.</p>
+
+<p>Все значения этих типов могут быть непосредственно записаны в программе.
+С символами и числами всё очевидно. Перед знаками пишется префикс <code><span
+class="hash">#\</span></code>, например: <code><span class="hash">#\Z</span></code>,
+<code><span class="hash">#\+</span></code>, <code><span class="hash">#\space</span></code>.
+Строки окружаются <code>"</code>кавычками<code>"</code>, списки —
+<code>(</code>круглыми скобками<code>)</code>. Логические значения записываются
+как <code><span class="hash">#t</span></code> и <code><span
+class="hash">#f</span></code> соответственно. Для записи векторов используется
+синтаксис <code>#(<span class="var">do</span> <span class="var">re</span> <span
+class="var">mi</span>)</code>. Естественно, такие значения могут быть построены и
+динамически с помощью <code><span class="func">cons</span></code>, <code><span
+class="func">list</span></code>, <code><span class="func">string</span></code>,
+<code><span class="func">make-string</span></code>, <code><span
+class="func">vector</span></code>, <code><span class="func">make-vector</span></code>.
+Также в наличии есть функции приведения типов вроде <code><span
+class="func">string->symbol</span></code>
+и <code><span class="func">int->char</span></code>.</p>
+
+<p>Ввод-вывод обеспечивают следующие функции: <code><span
+class="func">read</span></code> читает вводимые выражения, <code><span
+class="func">display</span></code> выводит их на экран, а <code><span
+class="func">newline</span></code> переходит на следующую строку.</p>
+
+<div class="bigskip"/>
+
+<!--\indexR{форма!концепция Scheme}-->
+<p>Программы на Scheme представляются так называемыми <em class="term">формами</em>.</p>
+
+<!--\indexC{begin}-->
+<p>Форма <code><span class="special">begin</span></code> позволяет сгруппировать
+формы и вычислить их последовательно; например, <code>(<span
+class="special">begin</span> (<span class="func">display</span> <span
+class="num">1</span>) (<span class="func">display</span> <span
+class="num">2</span>) (<span class="func">newline</span>))</code>.</p>
+
+<!--\indexC{if}\indexC{cond}\indexC{else}
+\indexE{Scheme!логические значения}
+\indexR{логические значения!в Scheme}-->
+<p>Есть несколько форм ветвления. Простейшей из них является <i>if–then–else</i>,
+которая на Scheme так и записывается: <code>(<span class="special">if</span>
+<i>условие</i> <i>тогда</i>
+<i>иначе</i>)</code>. Если вариантов больше двух, то для этого случая в Scheme есть
+формы <code><span class="syntax">cond</span></code> и <code><span
+class="special">case</span></code>. Форма <code><span
+class="special">cond</span></code> содержит список утверждений, каждое из
+которых начинается с условия — выражения, возвращающего логическое значение,
+— за которым располагается последовательность других форм
+(следствие). Она последовательно вычисляет условия утверждений до тех пор,
+пока одно из них не вернёт истину (а точнее: не ложь, не <code><span
+class="hash">#f</span></code>); затем
+вычисляется следствие данного утверждения, и результат его вычисления становится
+результатом всей формы <code><span class="syntax">cond</span></code>. Вот
+пример использования этой формы, который заодно показывает ключевое слово
+<code><span class="syntax">else</span></code>:</p>
+
+<pre>(<span class="syntax">cond</span> ((<span class="func">eq?</span> <span class="var">x</span> '<span class="var">flip</span>) '<span class="var">flop</span>)
+      ((<span class="func">eq?</span> <span class="var">x</span> '<span class="var">flop</span>) '<span class="var">flip</span>)
+      (<span class="syntax">else</span> (<span class="func">list</span> <span class="var">x</span> <span class="string">"neither flip nor flop"</span>)) )</pre>
+
+<!--\indexC{case}-->
+<p>Форма <code><span class="syntax">case</span></code> похожа на <code><span
+class="special">cond</span></code>, но она принимает первым параметром форму,
+на основе значения которой производится выбор между вариантами.
+Каждый из вариантов в начале содержит список значений, которые подходят для него.
+Как только найден подходящий вариант, он вычисляется и этот результат становится
+результатом всей формы <code><span class="syntax">case</span></code>.
+Аналогично, в конце может стоять универсальный вариант <code><span
+class="syntax">else</span></code>. Вот так можно переписать предыдущий пример
+с помощью <code><span class="syntax">case</span></code>:</p>
+
+<pre>(<span class="syntax">case</span> <span class="var">x</span>
+  ((<span class="var">flip</span>) '<span class="var">flop</span>)
+  ((<span class="var">flop</span>) '<span class="var">flip</span>)
+  (<span class="syntax">else</span> (<span class="func">list</span> <span class="var">x</span> <span class="string">"neither flip nor flop"</span>)) )</pre>
+
+<!--\indexC{lambda}
+\indexC{let}\indexC{let*}\indexC{letrec}
+\indexC{set"!}\indexC{quote}-->
+<p>Функции определяются формой <code><span class="special">lambda</span></code>.
+За словом <code><span class="special">lambda</span></code>
+следует список аргументов, а после него — последовательность выражений, которые
+описывают собственно вычисление функции. Формы <code><span
+class="syntax">let</span></code>, <code><span class="syntax">let*</span></code>
+и <code><span class="syntax">letrec</span></code> определяют локальные переменные
+(они отличаются тонкостями вычисления начальных значений определяемых переменных).
+Значения переменных в дальнейшем можно изменять с помощью формы <code><span
+class="special">set!</span></code>. Для записи литералов используется форма
+<code><span class="special">quote</span></code>.</p>
+
+<!--\indexC{define}
+\indexCS{define}{синтаксис}
+\indexR{синтаксис!define@\protect<code>define</code>}-->
+<p>С помощью формы <code><span class="special">define</span></code> можно
+назначить имя любому значению. У неё есть особые возможности, которые мы будем
+использовать. В частности, возможность
+использовать её как подобие <code><span class="syntax">let</span></code>, а
+также вариант синтаксиса этой формы, позволяющий удобнее определять функции.
+Вот, что имеется ввиду:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">rev</span> <span class="var">l</span>)
+  (<span class="special">define</span> <span class="var">nil</span> <span class="hash">'()</span>)
+  (<span class="special">define</span> (<span class="func">reverse</span> <span class="var">l</span> <span class="var">r</span>)
+    (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">l</span>) (<span class="func">reverse</span> (<span class="func">cdr</span> <span class="var">l</span>) (<span class="func">cons</span> (<span class="func">car</span> <span class="var">l</span>) <span class="var">r</span>)) <span class="var">r</span>))
+  (<span class="func">reverse</span> <span class="var">l</span> <span class="var">nil</span>) )</pre>
+
+<p class="noindent">Без синтаксического сахара этот пример выглядит так:</p>
+
+<pre>(<span class="special">define</span> <span class="var">rev</span>
+  (<span class="special">lambda</span> (<span class="var">l</span>)
+    (<span class="special">letrec</span> ((<span class="var">reverse</span> (<span class="special">lambda</span> (<span class="var">l</span> <span class="var">r</span>)
+                        (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">l</span>) (<span class="func">reverse</span> (<span class="func">cdr</span> <span class="var">l</span>)
+                                               (<span class="func">cons</span> (<span class="func">car</span> <span class="var">l</span>) <span class="var">r</span>))
+                            <span class="var">r</span>) )))
+      (<span class="func">reverse</span> <span class="var">l</span> <span class="hash">'()</span>) ) ) )</pre>
+
+<p>На этом мы заканчиваем наш краткий обзор Scheme.</p>
+
+
+<h2 id="pref/sect:source"><span class="wrap"><span class="title">Исходный код</span></span></h2>
+
+<p>Программы (интерпретируемые и скомпилированные), приведённые в этой книге,
+объектную систему и тесты для них можно забрать <a href="http://pagesperso-systeme.lip6.fr/Christian.Queinnec/Books/LiSP-2ndEdition-2006Dec11.tgz">отсюда</a>.</p>
+
+Электронный адрес автора книги:
+<a href="mailto:Christian.Queinnec@lip6.fr">Christian.Queinnec@lip6.fr</a>
+
+
+<h2 id="pref/sect:reading"><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
+
+<p>Так как подразумевается, что вы уже знаете Scheme, мы будем ссылаться на
+традиционные <span class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>,
+<a href="z1_bibliography.xhtml#sf89">SF89</a>]</span>.</p>
+
+<p>Чтобы получить от книги больше, имеет смысл поглядывать в другие руководства:
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> <span class="cite">[<a
+href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>, Dylan <span
+class="cite">[<a href="z1_bibliography.xhtml#app92b">App92b</a>]</span>,
+<span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> <span class="cite">[<a
+href="z1_bibliography.xhtml#pe92">PE92</a>]</span>,
+<span class="sc">ISL<span class="c">isp</span></span> <span class="cite">[<a
+href="z1_bibliography.xhtml#iso94">ISO94</a></span>, Le_Lisp <span
+class="cite">[<a href="z1_bibliography.xhtml#cdd+91">CDD<sup>+</sup>91</a>]</span>,
+Oaklisp <span class="cite">[<a href="z1_bibliography.xhtml#lp88">LP88</a>]</span>,
+Scheme <span class="cite">[<a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span>,
+T <span class="cite">[<a href="z1_bibliography.xhtml#ram84">RAM84</a>]</span>,
+Talk <span class="cite">[<a href="z1_bibliography.xhtml#ilo94">ILO94</a>]</span>.</p>
+
+<p>Наконец, для лучшего понимания языков программирования в целом будет полезной
+книга <span class="cite">[<a href="z1_bibliography.xhtml#bg94">BG94</a>]</span>.<a class="footref"
+href="zz_footnotes.xhtml#foot0.tr-3">***</a></p>
+
+</body>
+</html>

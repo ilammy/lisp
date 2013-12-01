@@ -1,0 +1,1797 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ru">
+
+<head>
+    <title>1 – Основы интерпретации</title>
+    <link rel="stylesheet" type="text/css" href="zz_lisp.css"/>
+    <link rel="stylesheet" type="text/css" href="zz_fontsize.css"/>
+</head>
+
+<body>
+
+<h1 id="chapter:basics"><span class="wrap"><span class="seq">Глава 1.</span><span class="title">Основы интерпретации</span></span></h1>
+
+<p class="noindent"><span class="initial">В</span><span class="sc"><span class="c">этой главе</span></span> описывается базовый интерпретатор, идеи
+которого проходят красной нитью через большую часть этой книги. Он намеренно
+сделан простым и более близким к Scheme, чем к Лиспу; это позволит нам
+в дальнейшем описывать Лисп в терминах Scheme. Мы коснёмся следующих тем в этой
+вводной главе: сути интерпретации; известной пары функций <code><span class="func">eval</span></code> и
+<code><span class="func">apply</span></code>; ожидаемых свойств окружений и функций. Короче говоря, мы начнём
+рассматривать здесь то, что будем изучать подробнее в следующих главах, надеясь,
+что вас не отпугнёт пропасть незнания по обе стороны моста, которым мы пойдём.</p>
+
+<div class="bigskip"/>
+
+<p>Интерпретатор и его варианты будут написаны на Scheme без использования
+каких-либо существенных особенностей данного диалекта.</p>
+
+<p>В книгах по Лиспу редко когда отказываются от нарциссического соблазна описать
+Лисп с помощью Лиспа. Начало традиции положило первое руководство по
+<span class="sc">L<span class="c">isp</span> 1.5</span> <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>, и впоследствии такой подход широко распространился.
+Вот лишь малая часть существующих примеров:
+<span class="cite">[<a href="z1_bibliography.xhtml#rib69">Rib69</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#gre77">Gre77</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#que82">Que82</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#cay83">Cay83</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#cha80">Cha80</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#rey72">Rey72</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#gor75">Gor75</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#ss75">SS75</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#all78">All78</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#mcc78b">McC78b</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#lak80">Lak80</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#hen80">Hen80</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#bm82">DM82</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#cli84">Cli84</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#fw84">FW84</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#drs84">dRS84</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#r3r86">R3R86</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#mas86">Mas86</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#dyb87">Dyb87</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#wh89">WH89</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#kes88">Kes88</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#lf88">LF88</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#dil88">Dil88</a>]</span>,
+<span class="cite">[<a href="z1_bibliography.xhtml#kam90">Kam90</a>]</span>.</p>
+
+<p>Эти интерпретаторы довольно сильно разнятся, как языками, которые они реализуют
+и используют для реализации, так и, что более важно, целями, которые они
+преследуют. Например, интерпретатор из <span class="cite">[<a href="z1_bibliography.xhtml#lak80">Lak80</a>]</span> показывает, как объекты
+и концепции компьютерной графики естественным образом реализуются на Лиспе;
+а интерпретатор, описываемый в <span class="cite">[<a href="z1_bibliography.xhtml#bm82">BM82</a>]</span>, создан для явного замера сложности
+интерпретируемых программ.</p>
+
+<!--\indexR{язык!реализации}-->
+<!--\indexR{язык!реализуемый}-->
+<p>Язык, <em>используемый</em> для реализации, тоже играет немалую роль. Если в нём
+есть присваивание и доступ к памяти (<code><span class="func">set-car!</span></code> и <code><span class="func">set-cdr!</span></code>), это даёт
+бóльшую свободу и делает исходный код интерпретатора более компактным. Мы
+получаем возможность описать язык в терминах, которые близки к машинным
+инструкциям. И, как и с машинными инструкциями, несмотря на то, что такое
+описание может быть непросто составить, не возникает никаких сомнений в том, что
+именно делает каждая конкретная строка. Даже если подобное описание занимает
+больше места, чем высокоуровневое, оно даёт более точное понимание смысла
+происходящего при интерпретации — для нас важно именно это.</p>
+
+<div class="image" id="basics/fig:richness-plot">
+<img src="images/png01.png" alt="График уровеней сложности определяемых языков программирования относительно уровней сложности языков, используемых для их определения" style="width: 5.15in"/>
+<span class="caption">Рис. 1.1. Уровни сложности.</span>
+</div>
+
+<p>На рисунке <a href="#basics/fig:richness-plot">1.1</a> показано сравнение уровней сложности
+определяющего (по оси <span class="math"><span class="ord var">x</span></span>) и
+определяемого (по оси <span class="math"><span class="ord var">y</span></span>)
+языков для некоторых из интерпретаторов. Здесь хорошо виден ход развития наших
+знаний со временем: всё
+более сложные проблемы решаются с использованием всё более ограниченных
+возможностей. Эта книга соответствует вектору, который начинается использованием
+высокоуровневого Лиспа для реализации Scheme, а заканчивается реализацией
+высокоуровневого Лиспа с помощью одного лишь <span class="math"><span class="ord var">λ</span></span>-исчисления.</p>
+
+
+<h2 id="basics/sect:evaluation"><span class="wrap"><span class="seq">1.1.</span><span class="title">Вычисления</span></span></h2>
+
+<!--\indexC{eval}-->
+<!--\indexR{вычислитель}-->
+<p>Важнейшая часть интерпретатора Лиспа находится в одной функции, вокруг которой
+крутится все остальное. Эта функция, называемая <code><span class="func">eval</span></code>, принимает на вход
+программу, а на выходе даёт результат её исполнения. Явное наличие исполнителя
+кода отнюдь не случайно, а, наоборот, является характерной и намеренно
+реализованной чертой Лиспа.</p>
+
+<!--\indexR{язык!универсальный}-->
+<!--\indexR{универсальный язык}-->
+<!--\indexR{машина Тьюринга}-->
+<!--\indexR{Тьюринга, машина}-->
+<p>Язык программирования называется <em class="term">универсальным</em>, если он не уступает
+в выразительных возможностях машине Тьюринга. Так как машина Тьюринга довольно
+примитивна, то несложно разработать язык, который бы удовлетворял этому условию;
+действительно, сложнее будет придумать язык, который был бы полезным, но при
+этом не был бы полным по Тьюрингу.</p>
+
+<!--\indexR{тезис Чёрча}-->
+<!--\indexR{Чёрча, тезис}-->
+<p>В соответствии с тезисом Чёрча, любая вычислимая функция может быть записана на
+любом тьюринг-полном языке. Интерпретатор Лиспа можно представить как такую
+функцию, которая принимает программы и возвращает результаты их исполнения. Так
+что если такая функция вообще существует, её можно записать на любом
+тьюринг-полном языке. Следовательно, функцию-вычислитель Лиспа <code><span class="func">eval</span></code> можно
+записать в частности на том же самом Лиспе. В этом нет никаких противоречий,
+точно так же, к примеру, можно реализовать Фортран на Фортране.</p>
+
+<p>Но что делает Лисп уникальным (и оправдывает явное описание <code><span class="func">eval</span></code>), так это
+небольшой размер кода интерпретатора: обычно от одной до двадцати страниц
+в зависимости от детализации.<a class="footref" href="zz_footnotes.xhtml#foot1.1"><sup>1</sup></a> Это результат желания сделать язык последовательным,
+с минимальным количеством исключений из правил, и, что самое главное, с простым,
+но выразительным синтаксисом.</p>
+
+<!--\indexCS{eval}{свойства}-->
+<p>Сам факт существования <code><span class="func">eval</span></code>, а также возможность её описания на Лиспе
+имеют несколько интересных следствий.</p>
+
+<ul>
+    <li><p>Можно изучить Лисп или прочитав руководство (в котором описываются
+        все доступные функции), или изучив собственно функцию <code><span class="func">eval</span></code>.
+        Второй подход сложен тем, что надо уже знать Лисп для того, чтобы
+        понять описание <code><span class="func">eval</span></code>; но ведь знание Лиспа по идее должно быть
+        <em>следствием</em> изучения <code><span class="func">eval</span></code>, нежели <em>предпосылкой</em> для
+        него. На самом деле, достаточно знать лишь ту часть Лиспа, которая
+        используется для описания <code><span class="func">eval</span></code>. Кроме того, язык, определяемый
+        одной <code><span class="func">eval</span></code>, не является всем Лиспом: он есть лишь сутью языка,
+        в нём реализованы только специальные формы и немного примитивных
+        функций.</p>
+
+        <p>Тем не менее, в возможности изучать язык двумя разными, но всё же
+        связанными путями лежит несомненный плюс Лиспа.</p></li>
+
+    <li><p>Тот факт, что <code><span class="func">eval</span></code> написана на Лиспе, значит также и то, что
+        среда разработки является составной частью языка и не требует
+        значительных накладных расходов. Под средой разработки понимаются
+        такие вещи как отладчик, трассировщик или возможность обратного
+        хода <span class="cite">[<a href="z1_bibliography.xhtml#lie87">Lie87</a>]</span>. Практически, реализация таких инструментов —
+        это лишь доработка <code><span class="func">eval</span></code>, к примеру, чтобы она выводила
+        сообщения при вызове функций, приостанавливала вычисления
+        в интересующих местах и так далее.</p>
+
+        <p>Долгое время среда разработки с такими возможностями была уникальной
+        для Лиспа. Но и сегодня то, что <code><span class="func">eval</span></code> может быть описана на самом
+        Лиспе, даёт возможность легко экспериментировать с новыми вариантами
+        реализации вычислений или отладки.</p></li>
+
+    <li><p>Наконец, сама по себе <code><span class="func">eval</span></code> способна быть инструментом
+        программирования. Достаточно спорным инструментом, так как
+        использование <code><span class="func">eval</span></code> требует присутствия в памяти целого
+        интерпретатора или компилятора во время исполнения кода; но ещё
+        более серьёзной проблемой является невозможность применения в таком
+        случае некоторых оптимизаций. Другими словами, использование
+        <code><span class="func">eval</span></code> имеет свою цену. В некоторых случаях её использование
+        полностью оправдано, к примеру, когда Лисп используется для описания
+        и реализации метаязыков.</p>
+
+        <p>Кроме ощутимой стоимости использования, семантика <code><span class="func">eval</span></code> часто
+        неоднозначна. Именно поэтому она вообще не входила в стандарт до
+        ревизии R<sup>5</sup>RS <span class="cite">[<a href="z1_bibliography.xhtml#cr91b">CR91b</a>, <a href="z1_bibliography.xhtml#kcr98">KCR98</a>]</span>.
+        <span class="see">[см. <a href="ch08_evaluation_and_reflection.xhtml">8 главу</a>]</span></p></li>
+</ul>
+
+
+<h2 id="basics/sect:basic-evaluator"><span class="wrap"><span class="seq">1.2.</span><span class="title">Базовый вычислитель</span></span></h2>
+
+<!--\indexR{переменные!свободные}-->
+<!--\indexR{переменные!связанные}-->
+<!--\indexR{свободные переменные}-->
+<!--\indexR{связывающие формы}-->
+<!--\indexR{форма!связывающая}-->
+<!--\indexR{окружение}-->
+<!--\indexC{evaluate}-->
+<p>Будем различать в программе <em class="term">свободные</em> и <em class="term">связанные переменные</em>.
+Переменная свободна, если ни одна связывающая форма (вроде <code><span class="special">let</span></code> или
+<code><span class="special">lambda</span></code>) не связывает её с каким-либо значением. В противном случае она
+называется связанной. Соответственно, свободные переменные могут иметь любое
+значение, и нельзя определённо сказать, какое именно, не выходя за рамки
+функции. Структура данных, которая связывает переменные с их значениями,
+называется <em class="term">окружением</em>. Таким образом, функция <code><span class="func">evaluate</span></code><a class="footref" href="zz_footnotes.xhtml#foot1.2"><sup>2</sup></a> имеет два аргумента: программу и окружение, в котором она
+должна быть исполнена:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>) ... )</pre>
+
+
+<h2 id="basics/sect:evaluating-atoms"><span class="wrap"><span class="seq">1.3.</span><span class="title">Вычисляем атомы</span></span></h2>
+
+<p>Одна из ключевых особенностей Лиспа состоит в том, что программы записываются
+теми же конструкциями, что и остальные данные. Но так как любая запись
+подразумевает определённые условности, поговорим о таких условностях для записи
+программ. Главные соглашения: переменные записываются символами (своими
+именами), а вызовы функций — списками, где первый элемент — это вызываемая
+функция, а остальные — её аргументы.</p>
+
+<!--\indexR{атом}-->
+<p>Как и любой другой компилятор, <code><span class="func">evaluate</span></code> начинает свою работу
+с синтаксического анализа переданного ей выражения, чтобы выяснить, что именно
+оно означает. В этом смысле, название раздела не совсем правильное: мы
+рассматриваем не буквально вычисление атомов, а интерпретацию программ,
+состоящих из атомов. Сейчас важно отличать саму программу от её представления
+(письмо от листа бумаги, на котором оно написано). Функция <code><span class="func">evaluate</span></code>
+работает с представлением программ, по нему она узнаёт предписываемые программой
+действия и выполняет их.</p>
+
+<!--\indexC{atom"?}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">exp</span>)   <span class="comment">; <code>(<span class="func">atom?</span> <span class="var">exp</span>)</code> <span class="math"><span class="rel">≡</span></span> <code>(<span class="func">not</span> (<span class="func">pair?</span> <span class="var">exp</span>))</code></span>
+      ...
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">exp</span>)
+        ...
+        (<span class="syntax">else</span> ...) ) ) )</pre>
+
+<p>Если выражение не является списком, то это скорее всего символ, или число, или
+какая-нибудь строка. Если это всё же символ, то он представляет
+<em class="term">переменную</em>, а её значение хранится в окружении:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">exp</span>)
+      (<span class="special">if</span> (<span class="func">symbol?</span> <span class="var">exp</span>) (<span class="func">lookup</span> <span class="var">exp</span> <span class="var">env</span>) <span class="var">exp</span>)
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">exp</span>)
+        ...
+        (<span class="syntax">else</span> ...) ) ) )</pre>
+
+<p>Функция <code><span class="func">lookup</span></code> (которая рассматривается подробнее в разделе <a href="#basics/sect:repr-the-env">1.5</a>) знает, как отыскать значение
+переменной в окружении. Вот её прототип:</p>
+
+<!--\indexC{lookup}-->
+<pre>(<span class="func">lookup</span> <i>переменная</i> <i>окружение</i>) <span class="math"><span class="rel">→</span></span> <i>значение</i></pre>
+
+<!--\indexR{переменные!связь с символами}-->
+<!--\indexR{символы!связь с переменными}-->
+<p>Как видим, здесь происходит неявное преобразование символа в переменную. Если
+быть более дотошным, тогда вместо <code>(<span class="func">lookup</span> <span class="var">exp</span> <span class="var">env</span>)</code> надо записать что-то
+вроде:</p>
+
+<pre>... (<span class="func">lookup</span> (<span class="func">symbol-&gt;variable</span> <span class="var">exp</span>) <span class="var">env</span>) ...</pre>
+
+<!--\indexR{приведение типов}-->
+<!--\indexR{объекты!второго класса}-->
+<p>В таком случае мы явно говорим, что символ <code><span class="var">exp</span></code>, чьим значением является имя
+переменной, должен быть превращён в переменную. Также это подчёркивает тот факт,
+что функция <code><span class="func">symbol-&gt;variable</span></code><a class="footref" href="zz_footnotes.xhtml#foot1.3"><sup>3</sup></a> вовсе не переводит <code><span class="func">exp</span></code> сам
+в себя; она превращает синтаксическую сущность (символ) в семантическую
+(переменную). В действительности, переменные — это лишь воображаемые объекты,
+которым язык и программист дали какие-то имена, и которые ради удобства
+используются в форме имён. Способ представления имён также выбран из соображений
+удобства, так как Лисп имеет базовый тип символов. В данном случае
+<code><span class="func">symbol-&gt;variable</span></code> ничего не делает, хотя на самом деле могла бы применяться
+какая-нибудь другая форма записи имени переменной, например: строка, состоящая
+из знака доллара и имени переменной; в этом случае, конечно же,
+<code><span class="func">symbol-&gt;variable</span></code> будет сложнее.</p>
+
+<p>Если бы переменные действительно были лишь воображаемыми, то <code><span class="func">lookup</span></code>
+не знала бы как обрабатывать свой первый аргумент, так как она ожидает нечто
+«материальное». Так что нам надо преобразовать переменную в её программное
+представление, какой-нибудь уникальный ключ, по которому <code><span class="func">lookup</span></code> сможет
+отыскать переменную в окружении. Так что ещё точнее было бы записать:</p>
+
+<pre>... (<span class="func">lookup</span> (<span class="func">variable-&gt;key</span> (<span class="func">symbol-&gt;variable</span> <span class="var">exp</span>)) <span class="var">env</span>) ...</pre>
+
+<p>Однако, врождённая лень лисперов настаивает на использовании символов для
+ключей. Так что <code><span class="func">variable-&gt;key</span></code> — это лишь обратная функция
+к <code><span class="func">symbol-&gt;variable</span></code>, и их последовательное применение
+никак не изменяет <code><span class="var">exp</span></code>.</p>
+
+<!--\indexR{автоцитирование}-->
+<!--\indexR{механизм автоцитирования}-->
+<p>Если выражение атомарное (то есть не является списком) и не является символом,
+то соблазнительно его считать представлением какой-нибудь константы
+с соответствующим значением. Такое поведение называется механизмом
+<em class="term">автоцитирования</em>. Автоцитируемый объект не требует явного цитирования и
+имеет собственное значение. За примерами можно обратиться к <span class="cite">[<a href="z1_bibliography.xhtml#cha96">Cha96</a>]</span>.</p>
+
+<p>Но является ли такое поведение правильным? Во-первых, не всегда атомарные
+объекты обозначают сами себя. Например, строка <code>"a?b:c"</code> могла бы означать
+вызов компилятора Си, затем вызов получившейся программы и подстановку
+возвращаемого ей значения вместо этой строки.</p>
+
+<p>С другими объектами (вроде функций) вообще не понятно, как именно их
+<em>вычислять</em>. К примеру, ясно, что значением переменной <code><span
+class="var">car</span></code> является
+функция, возвращающая левый элемент пары, но что является значением самой
+функции <i>car</i>? Чаще всего попытки вычисления значения функции считаются
+ошибочными.</p>
+
+<!--\indexC{()}-->
+<!--\indexR{пустой список, \protect<code><span class="func">()</span></code>}-->
+<p>Другой пример проблемного значения — пустой список <code><span class="hash">()</span></code>.
+Судя по тому, что это список, он должен означать вызов функции. Вот только в нём нет
+ни аргументов, ни самой функции. Такая запись в Scheme запрещена и является
+синтаксической ошибкой.</p>
+
+<p>Поэтому необходимо очень аккуратно анализировать программу и автоцитировать
+только те данные, для которых это явно стоить делать, например: числа, строки
+и знаки.
+<span class="see">[см. раздел <a href="#basics/evaluating-forms/ssect:quoting">1.4.1</a>]</span>
+Так что мы записываем следующее:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">exp</span>)
+      (<span class="syntax">cond</span> ((<span class="func">symbol?</span> <span class="var">exp</span>) (<span class="func">lookup</span> <span class="var">exp</span> <span class="var">env</span>))
+            ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">exp</span>) (<span class="func">string?</span> <span class="var">exp</span>) (<span class="func">char?</span> <span class="var">exp</span>)
+                 (<span class="func">boolean?</span> <span class="var">exp</span>) (<span class="func">vector?</span> <span class="var">exp</span>) )
+             <span class="var">exp</span> )
+            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">exp</span>)) )
+      ... ) )</pre>
+
+<!--\indexR{ошибки!варианты обработки}-->
+<!--\indexC{wrong}-->
+<p id="basic/atoms/para:the-first-error">В этом фрагменте кода виден первый случай,
+когда могут возникнуть ошибки. Большая часть лисп-систем имеет свои собственные механизмы
+обработки исключительных ситуаций, которые непросто сделать переносимыми. В случае ошибки
+мы вызываем <code><span class="special">wrong</span></code><a class="footref" href="zz_footnotes.xhtml#foot1.4"><sup>4</sup></a> и передаём ей первым аргументом строку. В строке находится
+текстовое описание ошибки, а следующие за ней аргументы несут дополнительную информацию о том, что
+вызвало проблему. Системы с зачаточным механизмом обработки ошибок обычно
+в случае проблем выдают какие-то непонятные надписи вроде <code><span class="string">"Bus
+error: core dumped"</span></code> и умирают. Другие останавливают текущие вычисления и
+возвращаются к диалоговому режиму. А третьи могут связывать с вычисляемым выражением
+специальный обработчик исключений, который перехватит брошенный объект,
+описывающий ошибку, и будет уже по нему решать, что делать дальше.
+<span class="see">[см. раздел <a href="ch07_compilation.xhtml#compilation/sect:exception">7.9</a>]</span>
+В некоторых случаях даже реализуется подобие экспертной системы, которая анализирует ошибку,
+вызвавший её код и выдаёт пользователю варианты её исправления. В общем, сложно сказать однозначно,
+что следует делать в случае ошибки.</p>
+
+
+<h2 id="basics/sect:evaluating-forms"><span class="wrap"><span class="seq">1.4.</span><span class="title">Вычисляем формы</span></span></h2>
+
+<!--\indexR{специальные формы}-->
+<!--\indexR{форма!специальная}-->
+<!--\indexR{Лисп!специальные формы}-->
+<p>Каждый язык имеет некоторое количество «неприкасаемых» синтаксических
+конструкций: их нельзя адекватно переопределить и вообще не стоит трогать.
+В Лиспе такие конструкции называются <em class="term">специальными формами</em>. Они
+представляются списками, где первый элемент — это определённый символ,
+принадлежащий множеству <em class="term">специальных операторов</em> (или синтаксических
+ключевых слов, как их называют в Scheme).</p>
+
+<!--\indexR{функции!примитивы}-->
+<!--\indexR{примитивы}-->
+<!--\indexR{диалекты Лиспа}-->
+<p>Конкретный диалект Лиспа характеризуется набором специальных форм и библиотекой
+примитивных функций (эти функции нельзя определить на самом диалекте, так как
+они тесно связаны с реализацией; например, для Scheme это
+<code><span class="func">call/cc</span></code>).</p>
+
+<p>В некотором понимании, Лисп является лишь прикладным <span class="math"><span class="ord var">λ</span></span>-исчислением
+вместе с расширяющим его набором специальных форм. Специфика каждого конкретного
+диалекта Лиспа лежит только в этом наборе. В Scheme используется минимальный
+набор специальных операторов (<code><span class="special">quote</span></code>,
+<code><span class="special">if</span></code>,
+<code><span class="special">set!</span></code> и
+<code><span class="special">lambda</span></code>),
+тогда как <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL2 <span class="cite">[<a
+href="z1_bibliography.xhtml#ste90">Ste90</a>]</span>) определяет более тридцати, описывая
+таким образом случаи, когда может быть сгенерирован высокоэффективный машинный
+код.</p>
+
+<p>Так как специальные формы записываются буквально, то их синтаксический анализ
+прост, хватит одного <code><span class="syntax">case</span></code>-выражения: надо лишь смотреть на первый элемент
+списка. Если форма начинается не со специального оператора, то она означает
+применение функции. В данный момент мы ограничимся лишь небольшим подмножеством
+специальных форм: <code><span class="special">quote</span></code>, <code><span class="special">if</span></code>, <code><span class="special">begin</span></code>, <code><span class="special">set!</span></code> и <code><span class="special">lambda</span></code>.
+(В следующих главах мы введём другие, более специализированные формы.)</p>
+
+<!--\indexC{evaluate}-->
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="syntax">cond</span> ((<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">lookup</span> <span class="var">e</span> <span class="var">env</span>))
+            ((<span class="syntax">or</span> (<span class="func">number?</span> <span class="var">e</span>)(<span class="func">string?</span> <span class="var">e</span>)(<span class="func">char?</span> <span class="var">e</span>)
+                 (<span class="func">boolean?</span> <span class="var">e</span>)(<span class="func">vector?</span> <span class="var">e</span>) ) <span class="var">e</span>)
+            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">e</span>)) )
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ((<span class="var">quote</span>)  (<span class="func">cadr</span> <span class="var">e</span>))
+        ((<span class="var">if</span>)     (<span class="special">if</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>)
+                      (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)
+                      (<span class="func">evaluate</span> (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">env</span>) ))
+        ((<span class="var">begin</span>)  (<span class="func">eprogn </span>(<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>))
+        ((<span class="var">set!</span>)   (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span> (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)))
+        ((<span class="var">lambda</span>) (<span class="func">make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>))
+        (<span class="syntax">else</span>     (<span class="func">invoke</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">env</span>)
+                          (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>) )) ) ) )</pre>
+
+<!--\indexR{синтаксис!if@\protect<code><span class="func">if</span></code>}-->
+<p>Чтобы упростить определение, синтаксический анализ оставлен минимальным: мы
+не проверяем, правильно ли записаны цитаты, действительно ли
+<code><span class="special">if</span></code> передано
+три аргумента<a class="footref" href="zz_footnotes.xhtml#foot1.5"><sup>5</sup></a>
+и так далее. Мы априори считаем
+интерпретируемые программы синтаксически корректными.</p>
+
+
+<h3 id="basics/evaluating-forms/ssect:quoting"><span class="wrap"><span class="seq">1.4.1.</span><span class="title">Цитирование</span></span></h3>
+
+<!--\indexC{quote}-->
+<!--\indexE{M-выражения}-->
+<!--\indexE{S-выражения}-->
+<!--\indexR{программы!как данные}-->
+<!--\indexR{значения!как программы}-->
+<!--\indexR{цитаты}-->
+<p>Специальная форма <code><span class="special">quote</span></code> позволяет записать значение, которое без
+цитирования было бы спутано с каким-нибудь выражением. Такой механизм необходим,
+если программы тоже являются типом данных в языке — надо же как-то
+различать, где записана программа, а где данные. Если бы был выбран другой
+синтаксис, то эта проблема бы не возникла. К примеру, изначально в Лиспе
+планировались M-выражения <span class="cite">[<a href="z1_bibliography.xhtml#mcc60">McC60</a>]</span> для записи действий над данными, а сами
+данные должно были записываться S-выражениями. Это решило бы проблему
+разделения кода и данных, но сделало бы невозможными вменяемые макросы —
+очень полезную вещь для расширения синтаксиса. Как бы то ни было, M-выражения
+долго не прожили <span class="cite">[<a href="z1_bibliography.xhtml#mcc78a">McC78a</a>]</span>, программы и данные стали записываться
+исключительно S-выражениями. Поэтому в Лиспе есть специальная форма <code><span class="special">quote</span></code>,
+служащая для разделения кода и данных.</p>
+
+<p>Суть цитирования состоит в возврате выражения, следующего за ключевым словом,
+«как есть», без его вычисления. Это чётко видно в следующем фрагменте кода:</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">quote</span>) (<span class="func">cadr</span> <span class="var">e</span>)) ... ) ...</pre>
+
+
+<!--\indexR{цитаты!явные и неявные}-->
+<p>Также интересен вопрос: а есть ли разница между явным и неявным цитированием,
+например, между <code><span class="num">33</span></code> и <code>'<span class="num">33</span></code>, или между<a class="footref" href="zz_footnotes.xhtml#foot1.6"><sup>6</sup></a> <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> и
+<code>'#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>? Если первое сравнение происходит между непосредственными
+значениями и тут вроде бы всё очевидно, то во втором случае сравниваются
+составные объекты (хоть для Лиспа они и являются формально атомами). Можно легко
+придумать несколько возможных трактовок данного выражения. Цитирование
+возвращает аргумент как значение, но сама запись <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> могла бы
+возвращать каждый раз новый вектор из трёх символов. Другими словами, <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> могла бы быть просто сокращённой записью выражения <code>(<span class="func">vector</span> <span class="var">'fa</span> <span class="var">'do</span> <span class="var">'sol</span>)</code>, которое, конечно же, будет означать совсем иное, нежели <code>'#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>, и тем более <code>(<span class="func">vector</span> <span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>. Мы вернёмся к этой проблеме позже
+<span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.xhtml#assignment/sect:quotation">4.5</a>]</span>, потому что, как видите, не так просто
+определиться, какой именно смысл придавать цитированию.</p>
+
+
+<h3 id="basics/evaluating-forms/ssect:alternatives"><span class="wrap"><span class="seq">1.4.2.</span><span class="title">Ветвление</span></span></h3>
+
+<!--\indexC{if}-->
+<p>Вспомним, как работает условный оператор <code><span class="special">if</span></code>: эта форма вычисляет свой
+первый аргумент (<em class="term">условие</em>), затем в зависимости от результата вычислений
+выбирает, возвращать значение второго аргумента (<em class="term">следствия</em>) или третьего
+(<em class="term">альтернативы</em>). Эта идея выражается следующим кодом:</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">if</span>) (<span class="special">if</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>)
+                (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)
+                (<span class="func">evaluate</span> (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">env</span>) )) ... ) ...</pre>
+
+<!--\indexR{представление!логических значений}-->
+<!--\indexR{логические значения}-->
+<p>Эта программа не совсем точно учитывает представление логических значений. Явно
+видно, что здесь смешиваются два языка: Scheme (или хотя бы что-то неотличимо
+похожее на него) и Scheme (или что-то довольно похожее). Причём мы определяем
+второй в терминах первого. Так что между ними присутствуют примерно те же
+отношения, что и между Паскалем (на котором написана первая реализация <span class="TeX">Τ<span class="E">e</span>Χ</span>) и
+самой системой <span class="TeX">Τ<span class="E">e</span>Χ</span> <span class="cite">[<a href="z1_bibliography.xhtml#knu84">Knu84</a>]</span>. Соответственно, нет ни единого повода
+считать способы представления логических значений в этих языках одинаковыми.</p>
+
+<p>Функция <code><span class="func">evaluate</span></code> возвращает значения определяемого языка. Они априори никак
+не связаны с логическими значениями языка, используемого для реализации. Следуя
+соглашению о том, что любой объект, не равный логической <em class="term">лжи</em>, должен
+считаться логической <em class="term">истиной</em>, мы запишем:</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">if</span>) (<span class="special">if</span> (<span class="func">not</span> (<span class="func">eq?</span> (<span class="func">evaluate</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>) <span class="var">the-false-value</span>))
+                (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>)
+                (<span class="func">evaluate</span> (<span class="func">cadddr</span> <span class="var">e</span>) <span class="var">env</span>) )) ... ) ...</pre>
+
+<!--\indexC{the-false-value}-->
+<p>Здесь считается, что переменная <code><span class="var">the-false-value</span></code> хранит значение <em class="term">лжи</em>
+определяемого языка, выраженное в терминах определяющего. Вариантов выбора
+такого представления много, например, сделаем так:</p>
+
+<pre>(<span class="special">define</span> <span class="var">the-false-value</span> (<span class="func">cons</span> <span class="string">"false"</span> <span class="string">"boolean"</span>))</pre>
+
+<p>В этом случае всё будет замечательно, так как <code><span class="func">eq?</span></code> в Scheme сравнивает
+не значения, а адреса, и, соответственно, любое другое значение никак нельзя
+будет спутать со значением переменной <code><span class="var">the-false-value</span></code>.</p>
+
+<!--\indexC{()}-->
+<!--\indexC{NIL}-->
+<!--\indexR{пустой список, \protect<code><span class="func">()</span></code>}-->
+<p>Вопрос представления логических значений вовсе не тривиален. В истории Лиспа
+полно споров на тему различий между булевым значением <em class="term">ложь</em>, пустым
+списком <code><span class="hash">()</span></code> и символом <code><span class="var">NIL</span></code>. Наиболее чёткая позиция по этому вопросу:
+<em class="term">ложь</em> это не <code><span class="hash">()</span></code> (в конце концов, это всего лишь пустой список), и они
+оба тем более не имеют никакого отношения к символу, составленному из букв
+<tt>N</tt>, <tt>I</tt> и <tt>L</tt>.</p>
+
+<p>Такую позицию занимает и Scheme; об этом всё же смогли договориться за пару
+недель до принятия стандарта IEEE <span class="cite">[<a href="z1_bibliography.xhtml#iee91">IEE91</a>]</span>.</p>
+
+<p>Так что в Scheme теперь всё хорошо (разве что <code><span class="hash">()</span></code> по-английски всё ещё
+читается как <em>nil</em>!). В изначальном Лиспе <em class="term">ложь</em>, <code><span class="hash">()</span></code> и <code><span class="var">NIL</span></code>
+— это один и тот же символ. В Le_Lisp <code><span class="var">NIL</span></code> это переменная со
+значением <code><span class="hash">()</span></code>, а пустой список (вместе с пустым символом <code><span class="var">||</span></code>)
+используется в качестве <em class="term">лжи</em>.</p>
+
+
+<h3 id="basics/evaluating-forms/ssect:sequence"><span class="wrap"><span class="seq">1.4.3.</span><span class="title">Последовательность</span></span></h3>
+
+
+<!--\indexC{begin}-->
+<!--\indexC{progn}-->
+<p>Существует специальная форма, позволяющая вычислить группу форм последовательно
+и в определённом порядке. Как и старые добрые блоки <code>begin ... end</code> из
+семейства языков Алгола, в Scheme эта форма называется <code><span class="special">begin</span></code>; в других
+Лиспах она обычно зовётся <code><span class="special">progn</span></code> — обобщенная версия <code><span class="special">prog1</span></code>,
+<code><span class="special">prog2</span></code> и т. д. Собственно организацию последовательности мы перепоручаем
+функции <code><span class="func">eprogn</span></code>.</p>
+
+<!--\indexC{eprogn}-->
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">begin</span>) (<span class="func">eprogn</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>)) ... ) ...
+
+(<span class="special">define</span> (<span class="func">eprogn</span> <span class="var">exps</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">exps</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">exps</span>))
+          (<span class="special">begin</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>)
+                 (<span class="func">eprogn</span> (<span class="func">cdr</span> <span class="var">exps</span>) <span class="var">env</span>) )
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>) )
+      <span class="hash">'()</span> ) )</pre>
+
+<p>Такое определение последовательных вычислений не допускает разночтений. Стоит
+обратить внимание на хвостовую рекурсию при вычислении последней формы
+последовательности. Вычисления построены так, что последний вызов <code><span class="func">evaluate</span></code>
+заменяет собой всю рекурсивную цепочку вызовов <code><span class="func">eprogn</span></code>. (О хвостовой
+рекурсии мы позже поговорим подробнее.
+<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/pr-cont/ssect:tail-recusion">3.6.2</a>]</span>)</p>
+
+
+<!--\indexCS{begin}{возвращаемое значение}-->
+<!--\indexR{возвращаемые значения!формы (begin)@формы \protect<code><span class="func">(begin)</span></code>}-->
+<!--\indexC{empty-begin}-->
+<p>Ещё одним интересным моментом является то, чтó возвращается при вычислении
+формы <code>(<span class="special">begin</span>)</code>. Сейчас это пустой список. Но почему именно <code><span class="hash">()</span></code>, почему
+не что-то другое, вроде <code><span class="var">:3</span></code> или <code>(<span class="var">^_^</span>)</code>? Мы выбрали пустой список по
+привычке, доставшейся в наследство от Лиспа: в любой непонятной ситуации
+возвращай <code><span class="var">nil</span></code>. Но в мире, где <em class="term">ложь</em>, <code><span class="var">nil</span></code> и <code><span class="hash">()</span></code> — это
+совершенно различные вещи, что из них лучше подходит на роль <em>ничего</em>?
+Поэтому пусть в нашем языке вычисление <code>(<span class="special">begin</span>)</code> будет возвращать специальное
+значение <code><span class="var">empty-begin</span></code>, которое определяется как (почти) случайное число
+<code><span class="num">813</span></code> <span class="cite">[<a href="z1_bibliography.xhtml#leb05">Leb05</a>]</span>.</p>
+
+<!--\indexC{eprogn}-->
+<!--\indexC{empty-begin}-->
+<pre>(<span class="special">define</span> (<span class="func">eprogn</span> <span class="var">exps</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">exps</span>)
+      (<span class="special">if</span> (<span class="func">pair?</span> (<span class="func">cdr</span> <span class="var">exps</span>))
+          (<span class="special">begin</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>)
+                 (<span class="func">eprogn</span> (<span class="func">cdr</span> <span class="var">exps</span>) <span class="var">env</span>) )
+          (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>) )
+      <span class="var">empty-begin</span> ) )
+
+(<span class="special">define</span> <span class="var">empty-begin</span> <span class="num">813</span>)</pre>
+
+<!--\indexR{синтаксис!begin@<code><span class="func">(begin)</span></code>}-->
+<!--\indexC*{unspecified}{\#<unspecified>}-->
+<p>Корни нашей проблемы в том, что <code><span class="special">begin</span></code> <em>обязана</em> вернуть какое-то
+значение. Как и Scheme, определяемый язык может не придавать какого-либо смысла
+форме <code>(<span class="special">begin</span>)</code>; мы можем или допускать такое написание и возвращать любое
+удобное значение, или же не допускать и считать ошибкой. Идеальный вариант:
+вообще не использовать <code><span class="special">begin</span></code> без аргументов, так как не определено, что
+именно получится в результате. Некоторые реализации имеют специальный объект:
+<code><span class="hash">#&lt;unspecified&gt;</span></code>, который возвращается в случае, когда нет ничего более
+подходящего. Обычно единственное, что с ним можно сделать — это вывести на
+печать. (Не следует путать этот объект с псевдозначением у неопределённых
+переменных. <span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/ssect:uninitialized">2.6.5</a>]</span>)</p>
+
+<div class="bigskip"/>
+
+<!--\indexR{язык!чисто функциональный}-->
+<!--\indexR{побочные эффекты}-->
+<p>Последовательное вычисление выражений бесполезно в чисто функциональных языках
+(где функции не имеют побочных эффектов). Действительно, какой в таком случае
+смысл что-то вычислять и не использовать возвращаемые значения? Но иногда
+в этом может быть смысл. Представим себе игру, написанную на чисто
+функциональном языке; очевидно, что вычисления занимают какое-то время
+вне зависимости от того, используются ли их результаты или нет; и нас может
+интересовать именно этот «побочный эффект» — замедление работы, — а
+не получаемые результаты. Тогда можно последовательно что-то вычислять,
+например, чтобы скорость игры была адекватна рефлексам игрока (если только
+компилятор не посчитает себя самым умным и не удалит «бесполезный» код).</p>
+
+<!--\indexCS{begin}{необходимость}-->
+<p>Так как в Scheme есть операции ввода-вывода, которые имеют побочные эффекты, то
+для нас есть смысл пользоваться формой <code><span class="special">begin</span></code>, потому как очевидно, что
+лучше сначала задать вопрос (с помощью <code><span class="func">display</span></code>), а потом прочитать ответ
+(с помощью <code><span class="func">read</span></code>), чем сделать наоборот. Здесь-то как раз и нужно
+упорядочить вычисления. Но не только <code><span class="special">begin</span></code> может их упорядочивать.
+Например, условный оператор может:</p>
+
+<pre>(<span class="special">if</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> (<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</pre>
+
+<p id="basics/forms/sequence/par:gensym-puzzle" class="noindent">
+И <code><span class="special">lambda</span></code> тоже может<a class="footref" href="zz_footnotes.xhtml#foot1.7"><sup>7</sup></a>:</p>
+
+<pre>(<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<i>void</i>) <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="ord var">α</span></span>)</pre>
+
+<p>Как видно из этого примера, в Scheme <code><span class="special">begin</span></code> не является необходимой
+специальной формой, так как её поведение можно проэмулировать с помощью
+функций благодаря тому, что при вызове функции её аргументы вычисляются перед
+исполнением тела (передача аргументов <em class="term">по значению</em>).</p>
+
+
+<h3 id="basics/evaluating-forms/ssect:assignment"><span class="wrap"><span class="seq">1.4.4.</span><span class="title">Присваивание</span></span></h3>
+
+<!--\indexC{set"!}-->
+<!--\indexR{присваивание}-->
+<!--\indexR{соглашения именования!побочных эффектов}-->
+<p>Как и во многих других языках, в нашем диалекте значения переменных можно
+менять. Изменение значения переменной называется <em class="term">присваиванием</em>. Так как
+значение переменной надо изменять в её окружении, то мы оставляем эту проблему
+функции <code><span class="func">update!</span></code>.<a class="footref" href="zz_footnotes.xhtml#foot1.8"><sup>8</sup></a>
+Её настоящая суть объясняется позже, в разделе <a href="ch04_assignment_and_side_effects.xhtml#assignment/implementation/ssect:environment">4.3.3</a>.</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">set!</span>) (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>
+                       (<span class="func">evaluate</span> (<span class="func">caddr</span> <span class="var">e</span>) <span class="var">env</span>))) ... ) ...</pre>
+
+<p>Присваивание выполняется в два шага: сначала вычисляется новое значение, потом
+новое значение заменяет старое. Стоит заметить, что обновлённая переменная
+не является значением данной формы. Мы ещё вернёмся к вопросу о возвращаемом
+значении операции присваивания. <span class="see">[см. <a href="ch04_assignment_and_side_effects.xhtml">4 главу</a>]</span>
+Пока только запомните, что стандартом оно не определено.</p>
+
+
+<h3 id="basics/evaluating-forms/ssect:abstraction"><span class="wrap"><span class="seq">1.4.5.</span><span class="title">Абстракция</span></span></h3>
+
+<!--\indexR{абстракция}-->
+<p>Функции (также называемые <em class="term">процедурами</em> в Scheme) являются результатом
+вычисления специальной формы <code><span class="special">lambda</span></code>, чьё имя ссылается на понятие
+<em class="term">абстракции</em> в <span class="math"><span class="ord var">λ</span></span>-исчислении. Работу по созданию функции мы
+поручаем функции <code><span class="func">make-function</span></code>, которой передаём всё необходимое: список
+аргументов, тело функции и текущее окружение.</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      ((<span class="var">lambda</span>) (<span class="func">make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>)) ... ) ...</pre>
+
+
+<h3 id="basics/evaluating-forms/ssect:application"><span class="wrap"><span class="seq">1.4.6.</span><span class="title">Аппликация</span></span></h3>
+
+<!--\indexR{аппликация}-->
+<!--\indexR{комбинация}-->
+<!--\indexR{терм!функциональный}-->
+<!--\indexR{функциональный терм}-->
+<p>Если первый элемент списка не является специальным оператором, то такой список
+означает применение функции, которое в <span class="math"><span class="ord var">λ</span></span>-исчислении называется
+<em class="term">аппликацией</em> или <em class="term">комбинацией</em>. Функция, полученная в результате
+вычисления первого элемента, применяется к аргументам, которые мы получим,
+вычислив остальные элементы списка. Эти действия описываются следующим кодом:</p>
+
+<pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+      (<span class="syntax">else</span> (<span class="func">invoke</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">env</span>)
+                    (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>) )) ) ...</pre>
+
+<p>Вспомогательная функция <code><span class="func">evlis</span></code> принимает список
+выражений и возвращает список соответствующих им значений. Она определяется следующим образом:</p>
+
+<!--\indexC{evlis}-->
+<pre>(<span class="special">define</span> (<span class="func">evlis</span> <span class="var">exps</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">exps</span>)
+      (<span class="func">cons</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>)
+            (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">exps</span>) <span class="var">env</span>) )
+      <span class="hash">'()</span> ) )</pre>
+
+<p>Далее работает функция <code><span class="func">invoke</span></code>, которая применяет свой
+первый аргумент (функцию; если это не так, она сообщает об ошибке) ко второму (списку её
+аргументов) и возвращает результат вычислений. В общем, <code><span class="func">invoke</span></code> похожа на привычную <code><span class="func">apply</span></code>, разве что требует явного
+указания окружения.
+(Далее в разделе <a href="#basics/sect:representing-functions">1.6</a> мы рассмотрим подробнее непростые
+взаимоотношения функций и окружений.)</p>
+
+
+<h4><span class="wrap"><span class="title">Ещё немного об <code><span class="func">evaluate</span></code></span></span></h4>
+
+<!--\indexR{порядок вычислений!термов аппликации}-->
+<p>Рассмотренное описание языка является более-менее точным. Мы не разобрали лишь
+несколько вспомогательных функций: <code><span class="func">lookup</span></code> и <code><span class="func">update!</span></code>, отвечающие за
+окружения, и <code><span class="func">make-function</span></code> вместе с <code><span class="func">invoke</span></code>, занимающиеся функциями.
+Но даже сейчас нам уже многое известно об <code><span class="func">evaluate</span></code>. Например, наш диалект
+имеет единое пространство имён, понятие объекта в нём распространяется вообще
+на всё (как в Lisp<sub>1</sub>  <span class="see">[см. <a href="ch02_lisp_1_2_omega.xhtml">2 главу</a>]</span>), в том числе и на функции.
+Но мы до сих пор не знаем порядок вычисления аргументов.</p>
+
+<p>В нашем случае он зависит от порядка вычисления аргументов у <code><span class="func">cons</span></code>, которая
+используется в <code><span class="func">evlis</span></code>. Но мы легко можем указать любой понравившийся нам
+порядок, например, слева направо:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evlis</span> <span class="var">exps</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">exps</span>)
+      (<span class="syntax">let</span> ((<span class="var">argument1</span> (<span class="func">evaluate</span> (<span class="func">car</span> <span class="var">exps</span>) <span class="var">env</span>)))
+        (<span class="func">cons</span> <span class="var">argument1</span> (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">exps</span>) <span class="var">env</span>)) )
+      <span class="hash">'()</span> ) )</pre>
+
+<p>Без введения новых специальных конструкций<a class="footref" href="zz_footnotes.xhtml#foot1.9"><sup>9</sup></a>
+мы уточнили поведение определяемого языка. Первая часть книги направлена именно на это: уточнение
+определяемого языка с помощью всё более ограниченных возможностей, что снижает зависимость
+описания от языка, используемого для определения.</p>
+
+
+<h2 id="basics/sect:repr-the-env"><span class="wrap"><span class="seq">1.5.</span><span class="title">Представление окружений</span></span></h2>
+
+<!--\indexE{A-список}-->
+<!--\indexR{А-список}-->
+<!--\indexR{ассоциативный список}-->
+<p>Окружения связывают переменные с их значениями. Обычно в Лиспе подобные связи
+представляются <em class="term">ассоциативными списками</em>, также называемыми
+<em class="term">А-списками</em>. Мы тоже будем представлять окружения как А-списки,
+связывающие переменные и значения. Для простоты имена переменных будем
+представлять символами.</p>
+
+<p>Таким образом, функции <code><span class="func">lookup</span></code> и
+<code><span class="func">update!</span></code> определяются элементарно:</p>
+
+<!--\indexC{lookup}-->
+<pre>(<span class="special">define</span> (<span class="func">lookup</span> <span class="var">id</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">env</span>)
+      (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">caar</span> <span class="var">env</span>) <span class="var">id</span>)
+          (<span class="func">cdar</span> <span class="var">env</span>)
+          (<span class="func">lookup</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>)) )
+      (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
+
+<p>Тут мы видим второй тип<a class="footref" href="zz_footnotes.xhtml#foot1.10"><sup>10</sup></a>
+возможных ошибок, появляющихся при попытке узнать значение неизвестной переменной. Мы опять лишь
+вызовем <code><span class="special">wrong</span></code>, чтобы сообщить о проблеме наверх.</p>
+
+<!--\indexR{автоцитирование}-->
+<p>Когда компьютеры были большими, а память была маленькой,<a class="footref" href="zz_footnotes.xhtml#foot1.11"><sup>11</sup></a> для переменных часто применялось
+<em class="term">автоцитирование</em>. Если с переменной не было связано какое-либо значение,
+то этим значением становился символ с именем переменной. Было бы очень обидно
+видеть, как понятия переменной и символа, которые мы так усердно разделяли,
+опять смешиваются и перепутываются.</p>
+
+<p>Хотя это несомненно удобно — никогда не вызывать ошибок, но такой идеальный
+мир имеет большой недостаток: задача программы не в том, чтобы работать без
+ошибок, а в том, чтобы выполнять то, для чего она предназначена. В этом смысле
+ошибки играют роль перил: если мы на них натыкаемся, то это значит, мы идём
+куда-то не туда. Ошибки должны быть обнаружены как можно раньше, чтобы как
+можно быстрее их исправить. Следовательно, использование автоцитирования —
+плохое решение, потому что оно скрывает некоторые ошибки, которые могли бы быть
+исправлены раньше.</p>
+
+<p>Функция <code><span class="func">update!</span></code> изменяет окружение, так что, скорее всего, тоже может
+вызвать такую же ошибку: нельзя изменить значение неизвестной переменной. Мы
+обсудим, следует ли ей так поступать, когда будем говорить о глобальном
+окружении.</p>
+
+<!--\indexC{update"!}-->
+<pre>(<span class="special">define</span> (<span class="func">update!</span> <span class="var">id</span> <span class="var">env</span> <span class="var">value</span>)
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">env</span>)
+      (<span class="special">if</span> (<span class="func">eq?</span> (<span class="func">caar</span> <span class="var">env</span>) <span class="var">id</span>)
+          (<span class="special">begin</span> (<span class="func">set-cdr!</span> (<span class="func">car</span> <span class="var">env</span>) <span class="var">value</span>)
+                 <span class="var">value</span>)
+          (<span class="func">update!</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>) <span class="var">value</span>) )
+      (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
+
+<!--\indexCS{set"!}{возвращаемое значение}-->
+<!--\indexR{присваивание!возвращаемое значение}-->
+<!--\indexR{возвращаемые значения!присваивания}-->
+<p id="basics/s:env/ufo">Возвращаемое значение функции <code><span class="func">update!</span></code> выбрано с учётом того, что это
+значение станет значением всего выражения присваивания. В Scheme это значение
+не определено. Строго говоря, программам не следует полагаться на какое-то
+значение, но, тем не менее, мы вынуждены выбирать, что именно будем возвращать
+в нашем случае. Например:</p>
+
+<ol>
+  <li>только что присвоенное значение (так сделано сейчас);</li>
+
+  <li>предыдущее значение переменной (могут быть проблемы с инициализацией,
+    первым присваиванием);</li>
+
+  <li>объект «неопределённое значение», некий <code><span class="hash">#&lt;UFO&gt;</span></code>,
+    используемый исключительно как индикатор неопределённого
+    значения;</li>
+
+  <li>значение формы с неопределённым значением, вроде
+    <code><span class="func">set-cdr!</span></code> в Scheme.</li>
+</ol>
+
+<!--\indexR{окружение!как тип данных}-->
+<p>Окружения — это составной абстрактный тип данных. Мы уже можем извлекать и
+изменять их части с помощью соответствующих функций; но ещё надо уметь
+создавать новые окружения и добавлять в них новые части.</p>
+
+<!--\indexR{окружение!начальное}-->
+<p>Изначально в окружении ничего нет. Это записывается просто:</p>
+
+<!--\indexC{env.init}-->
+<pre>(<span class="special">define</span> <span class="var">env.init</span> <span class="hash">'()</span>)</pre>
+
+<p>(Чуть позже, в разделе <a href="#basics/sect:representing-functions">1.6</a>, мы сделаем его
+не таким необитаемым.)</p>
+
+<p>Когда вызывается функция, для неё создаётся новое окружение, в котором её
+аргументы связаны со своими фактическими значениями. Функция <code><span class="func">extend</span></code>
+расширяет окружение <code><span class="var">env</span></code> переменными <code><span class="var">variables</span></code> с соответствующими
+значениями <code><span class="var">values</span></code>.</p>
+
+<!--\indexC{extend}-->
+<pre>(<span class="special">define</span> (<span class="func">extend</span> <span class="var">env</span> <span class="var">variables</span> <span class="var">values</span>)
+  (<span class="syntax">cond</span> ((<span class="func">pair?</span> <span class="var">variables</span>)
+         (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">values</span>)
+             (<span class="func">cons</span> (<span class="func">cons</span> (<span class="func">car</span> <span class="var">variables</span>) (<span class="func">car</span> <span class="var">values</span>))
+                   (<span class="func">extend</span> <span class="var">env</span> (<span class="func">cdr</span> <span class="var">variables</span>) (<span class="func">cdr</span> <span class="var">values</span>)) )
+             (<span class="special">wrong</span> <span class="string">"Too few values"</span>) ) )
+        ((<span class="func">null?</span> <span class="var">variables)</span>
+         (<span class="special">if</span> (<span class="func">null?</span> <span class="var">values</span>)
+             <span class="var">env</span>
+             (<span class="special">wrong</span> <span class="string">"Too many values"</span>) ) )
+        ((<span class="func">symbol?</span> <span class="var">variables</span>) (<span class="func">cons</span> (<span class="func">cons</span> <span class="var">variables</span> <span class="var">values</span>) <span class="var">env</span>)) ) )</pre>
+
+<!--\indexR{список аргументов}-->
+<!--\indexR{синтаксис!списка аргументов}-->
+<!--\indexR{переменные!точечные}-->
+<!--\indexR{точечные переменные}-->
+<p>Главная сложность состоит в том, что нам надо проанализировать все варианты
+записи &lt;<i>списка аргументов</i>&gt;, какие разрешены в Scheme.<a class="footref"
+href="zz_footnotes.xhtml#foot1.12"><sup>12</sup></a> Список
+аргументов может быть представлен не только обычным списком символов, но и
+точечным: заканчивающимся не на <code><span class="hash">()</span></code>, а на определённый символ
+(<em class="term">точечную переменную</em>). Более формально список аргументов описывается
+следующей грамматикой:</p>
+
+<table id="ch1-table-grammar" class="nocaption">
+<tbody>
+    <tr><td class="left">&lt;<i>список аргументов</i>&gt;</td>
+        <td class="center">::=</td>
+        <td class="right"><code><span class="hash">()</span></code></td></tr>
+    <tr><td class="left"/>
+        <td class="center">|</td>
+        <td class="right">&lt;<i>переменная</i>&gt;</td></tr>
+    <tr><td class="left"/>
+        <td class="center">|</td>
+        <td class="right"><code>(<span class="normal">&lt;<i>переменная</i>&gt;</span> . <span class="normal">&lt;<i>список аргументов</i>&gt;</span>)</code></td></tr>
+    <tr><td class="left">&lt;<i>переменная</i>&gt;</td>
+        <td class="center"><span class="math"><span class="binop">∈</span></span></td>
+        <td class="right"><span class="math"><span class="Vset">Символы</span></span></td></tr>
+</tbody>
+</table>
+
+<p>Когда мы расширяем окружение, количество значений переменных должно
+соответствовать количеству их имён. Обычно их поровну, но если список
+оканчивается на точечную (или <em class="term"><span class="math"><span class="ord var">n</span></span>-арную</em>) переменную, то она связывается
+со списком всех оставшихся аргументов. Как бы то ни было, возможны две ошибки:
+или значений больше, чем переменных, или наоборот.</p>
+
+
+<h2 id="basics/sect:representing-functions"><span class="wrap"><span class="seq">1.6.</span><span class="title">Представление функций</span></span></h2>
+
+<p>Наверное, проще всего представлять функции с помощью функций. Естественно, это
+не тавтология, и читать следует так: «функции определяемого языка проще всего
+представлять функциями языка определения». Это сильно упрощает механизм вызова:
+функция <code><span class="func">invoke</span></code> должна лишь проверить, действительно ли её первый аргумент
+является функцией: чем-то, что можно вызвать.</p>
+
+<!--\indexC{invoke}-->
+<pre>(<span class="special">define</span> (<span class="func">invoke</span> <span class="var">fn</span> <span class="var">args</span>)
+  (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">fn</span>) (<span class="func">fn</span> <span class="var">args</span>)
+      (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">fn</span>) ) )</pre>
+
+<p>Проще некуда. Даже может возникнуть вопрос, зачем вообще нужна отдельная
+функция, когда весь этот код можно было встроить сразу в <code><span class="func">evaluate</span></code>. Причина,
+по которой так сделано, в том, что мы показываем структуру будущих
+интерпретаторов, а в них <code><span class="func">invoke</span></code> будет уже не такой простой. Кстати,
+попробуйте сейчас выполнить упражнения <a href="#basics/ex:def-call/cc">1.7</a>
+и <a href="#basics/ex:def-apply">1.8</a>.</p>
+
+<!--\indexR{аппликация!порядок вычисления термов}-->
+<!--\indexR{порядок вычислений!термов аппликации}-->
+<p>Также у нас появляется новый тип ошибок, возникающих при попытке вызвать
+невызываемое. Сейчас мы обрабатываем такие ошибки в момент применения функции
+к уже вычисленным аргументам, но мы могли бы предупреждать пользователя раньше.
+В таком случае нам необходимо задать порядок вычисления элементов формы вызова
+функции:</p>
+
+<ol>
+  <li>вычислить элемент на месте функции;</li>
+
+  <li>если это не функция, сообщить об ошибке;</li>
+
+  <li>вычислить аргументы слева направо;</li>
+
+  <li>сравнить количество аргументов с арностью функции
+    и, если они не совпадают, то сообщить об ошибке.</li>
+</ol>
+
+<p>Вычислять аргументы слева направо кажется логичным для людей, читающих слева
+направо. Это и запрограммировать легче, в итоге порядок прост и понятен.
+Сложности возникают только у компилятора, потому что если ему захочется поменять
+этот порядок (например, чтобы эффективнее использовать регистры процессора), то
+он будет вынужден доказать, что это не изменит смысла программы.</p>
+
+<p>Конечно, мы могли бы действовать эффективнее, проверяя арность ещё раньше:</p>
+
+<ol>
+  <li>вычислить элемент на месте функции;</li>
+
+  <li>если это не функция, сообщить об ошибке, иначе запомнить ожидаемое
+    количество аргументов;</li>
+
+  <li>вычислять аргументы слева направо до тех пор, пока их количество
+    согласуется с арностью функции, в случае проблем сообщить об ошибке;</li>
+
+  <li>применить функцию к аргументам.<a class="footref" href="zz_footnotes.xhtml#foot1.13"><sup>13</sup></a></li>
+</ol>
+
+<p>Стандарт <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> требует, чтобы аргументы вычислялись строго слева
+направо, но с целью оптимизации позволяет вычислять функциональный элемент
+списка до или после остальных.</p>
+
+<p>Scheme же не накладывает условий на порядок вычисления всех элементов формы
+вызова функции, включая сам элемент-функцию. Так как ограничений нет, то
+компилятор волен выбирать любой устраивающий его порядок.
+<span class="see">[см. раздел <a href="ch05_denotational_semantics.xhtml#denotational/sect:eval-order">5.5</a>]</span>
+А пользователь, в свою очередь, не может
+рассчитывать на какой-либо определённый порядок вычислений и должен использовать
+<code><span class="special">begin</span></code>, чтобы задать необходимый порядок явно.</p>
+
+<p>Считается плохим стилем использовать вызовы функций, чтобы получить побочные
+эффекты в нужной последовательности. Поэтому следует избегать выражений вроде
+<code>(<span class="func">f</span> (<span class="special">set!</span> <span class="var">f</span> <span class="math"><span class="ord var">π</span></span>) (<span class="special">set!</span> <span class="var">f</span> <span class="math"><span class="ord var">π</span><span class="ord symb">′</span></span>))</code>, где неясно, какая же функция будет
+вызвана на самом деле. Ошибки, возникающие в подобных случаях, очень сложно
+отлавливать.</p>
+
+
+<h3><span class="wrap"><span class="title">Окружение исполнения функций</span></span></h3>
+
+<!--\indexR{окружение!исполнения тела функции}-->
+<p>Применение функции сводится к вычислению выражений, составляющих её тело,
+в окружении, где аргументы функции связаны со значениями, переданными при вызове
+функции. Вспомните, что при вызове <code><span class="func">make-function</span></code> мы передали всё
+необходимое для этого, находящееся в распоряжении <code><span class="func">evaluate</span></code>. В оставшейся
+части этого раздела мы будем разбирать используемые при вычислениях окружения,
+в программах они будут набраны <i>курсивом</i>.</p>
+
+
+<h4><span class="wrap"><span class="title">Минимальное окружение</span></span></h4>
+
+<p>Для начала рассмотрим минимально возможное окружение:</p>
+
+<!--\indexC{make-function}-->
+<pre>(<span class="special">define</span> (<span class="func">make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> (<span class="var">values</span>)
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <i>env.init</i> <span class="var">variables</span> <span class="var">values</span>)) ) )</pre>
+
+<!--\indexE{K@\protect\comb{K}, комбинатор}-->
+<!--\indexR{комбинаторы!K@\protect\comb{K}}-->
+<p>В строгом соответствии с ранее описанным соглашением, тело функции вычисляется
+в окружении, где аргументы функции связаны с переданными значениями. Например,
+получив в результате вызова <code><span class="func">make-function</span></code> комбинатор <span class="comb">K</span>, определяемый
+как <code>(<span class="special">lambda</span> (<span class="var">a</span> <span class="var">b</span>) <span class="var">a</span>)</code>, мы можем его вызвать следующим образом:</p>
+
+<pre>(<span class="func">K</span> <span class="num">1</span> <span class="num">2</span>) <span class="math"><span class="rel">→</span></span> <span class="num">1</span></pre>
+
+<p>Но есть и неприятность: функция может использовать только свои аргументы и
+локальные переменные, потому что мы определили <i>env.init</i> как пустое
+окружение. В нём нет даже базовых функций из глобального окружения вроде
+<code><span class="func">car</span></code> или <code><span class="func">cons</span></code>.</p>
+
+
+<h4><span class="wrap"><span class="title">Улучшенное окружение</span></span></h4>
+
+<p>Хорошо, попробуем улучшить наше определение следующим образом:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> (<span class="var">values</span>)
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <i>env.global</i> <span class="var">variables</span> <span class="var">values</span>)) ) )</pre>
+
+<p>Замечательно, теперь наши функции имеют доступ к глобальному окружению и всем
+его функциям. А что если мы попробуем определить взаимно рекурсивные функции?
+Также, какой результат даст программа слева (справа она же с раскрытыми
+макросами)?</p>
+
+<table id="ch1-table-let-expand" class="nocaption">
+<tbody><tr>
+<td><pre>(<span class="syntax">let</span> ((<span class="var">a</span> <span class="num">1</span>))
+  (<span class="syntax">let</span> ((<span class="var">b</span> (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>)))
+    (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) ) )</pre></td>
+<td class="divider"><span class="math"><span class="rel">≡</span></span></td>
+<td><pre>((<span class="special">lambda</span> (<span class="var">a</span>)
+   ((<span class="special">lambda</span> (<span class="var">b</span>)
+      (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>) )
+    (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>) ) )
+ <span class="num">1</span> )</pre></td>
+</tr></tbody></table>
+
+<p>Давайте рассмотрим по шагам, как вычисляется это выражение:</p>
+
+<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where"><div class="wrap">
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span>  ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where"><div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span>  (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<i>env.global</i>
+</div></div></pre>
+
+<p>Тело внутренней функции <code>(<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))</code> выполняется в окружении,
+полученном расширением глобального окружения переменной <code><span class="var">b</span></code>. Всё верно. Но
+в этом окружении нет необходимой переменной <code><span class="var">a</span></code>!</p>
+
+
+<h4><span class="wrap"><span class="title">Улучшенное окружение (вторая попытка)</span></span></h4>
+
+<p>Так как нам надо видеть переменную <code><span class="var">a</span></code> во внутренней функции, то достаточно
+будет передать <code><span class="func">invoke</span></code> текущее окружение, а она в свою очередь передаст его
+вызываемой функции. Чтобы реализовать эту идею, надо немного подправить
+<code><span class="func">evaluate</span></code> и <code><span class="func">invoke</span></code>; чтобы не путать эти определения с предыдущими,
+пусть они начинаются на <code>d.</code>:</p>
+
+<!--\indexC{d.evaluate}-->
+<!--\indexC{d.invoke}-->
+<!--\indexC{d.make-function}-->
+<pre>(<span class="special">define</span> (<span class="func">d.evaluate</span> <span class="var">e</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>) ...
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ...
+        ((<span class="var">lambda</span>) (<span class="func">d.make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>))
+        (<span class="syntax">else</span>     (<span class="func">d.invoke</span> (<span class="func">d.evaluate</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">env</span>)
+                            (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>)
+                            <span class="var">env</span> )) ) ) )
+
+(<span class="special">define</span> (<span class="func">d.invoke</span> <span class="var">fn</span> <span class="var">args</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">fn</span>)
+      (<span class="func">fn</span> <span class="var">args</span> <span class="var">env</span>)
+      (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">fn</span>) ) )
+
+(<span class="special">define</span> (<span class="func">d.make-function</span> <span class="var">variables</span> <span class="var">body</span> <i>def.env</i>)
+  (<span class="special">lambda</span> (<span class="var">values</span> <i>current.env</i>)
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <i>current.env</i> <span class="var">variables</span> <span class="var">values</span>)) ) )</pre>
+
+<p>В этом определении стоит заметить, что передача окружения определения <code><span class="var">env</span></code>
+через переменную <i>def.env</i> бессмысленна, так как при вызове используется лишь
+текущее окружение <i>current.env</i>.</p>
+
+<!--\indexR{стек!вызовов}-->
+<p>Давайте теперь ещё раз рассмотрим пример, приведённый выше. Сейчас переменные
+не пропадают:</p>
+
+<pre>((<span class="special">lambda</span> (<span class="var">a</span>) ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))) <span class="num">1</span>)<div class="where"><div class="wrap">
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) (<span class="func">+</span> <span class="num">2</span> <span class="var">a</span>))<div class="where"><div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">3</span>
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<i>env.global</i>
+</div></div></pre>
+
+<p>Заодно мы явно видим <em>стек вызовов</em>: каждая связывающая форма сначала
+укладывает свои новые переменные поверх текущего окружения, а потом убирает их
+оттуда после окончания вычислений.</p>
+
+
+<h4><span class="wrap"><span class="title">Исправляем проблему</span></span></h4>
+
+<p>Но даже при таком определении всё ещё есть проблемы. Рассмотрим следующий
+пример:</p>
+
+<pre>(((<span class="special">lambda</span> (<span class="var">a</span>)
+     (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)) )
+  <span class="num">1</span> )
+ <span class="num">2</span> )</pre>
+
+<p>Функция <code>(<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))</code> создаётся в окружении, где <code><span class="var">a</span></code> связана
+со значением <code><span class="num">1</span></code>, но в момент вызова в окружении будет присутствовать
+только <code><span class="var">b</span></code>. Таким образом, мы опять потеряли переменную <code><span class="var">a</span></code>.</p>
+
+<p>Без сомнения, вы заметили, что в определении <code><span class="func">d.make-function</span></code> присутствуют
+два окружения: окружение определения <i>def.env</i> и окружение исполнения
+<i>current.env</i>. В жизни функции есть два важных события: её создание и
+её вызов(ы). Очевидно, что создаётся функция только однажды, а вызываться может
+несколько раз; или вообще никогда не вызываться. Следовательно,
+единственное<a class="footref" href="zz_footnotes.xhtml#foot1.14"><sup>14</sup></a> окружение, которое мы
+однозначно можем связать с функцией, — это окружение, в котором она была
+создана. Вернёмся к исходным определениям функций <code><span class="func">evaluate</span></code> и <code><span class="func">invoke</span></code>,
+но в этот раз функцию <code><span class="func">make-function</span></code> запишем следующим образом:</p>
+
+<!--\indexC{make-function}-->
+<pre id="basics/representing-functions/fixing/src:inject-current-env">(<span class="special">define</span> (<span class="func">make-function</span> <span class="var">variables</span> <span class="var">body</span> <i>env</i>)
+  (<span class="special">lambda</span> (<span class="var">values</span>)
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <i>env</i> <span class="var">variables</span> <span class="var">values</span>)) ) )</pre>
+
+<p>Теперь все приведённые примеры работают нормально. В частности, пример выше
+вычисляется следующим образом:</p>
+
+<pre>(((<span class="special">lambda</span> (<span class="var">a</span>) (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))) <span class="num">1</span>) <span class="num">2</span>)<div class="where"><div class="wrap">
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))<div class="where"><div class="wrap">
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<i>env.global</i>
+</div>
+    <span class="num">2</span> )<div class="where">
+<i>env.global</i>
+</div></div>
+<span class="math"><span class="rel">≡</span></span> (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)<div class="where"><div class="wrap">
+<span class="var">b</span> <span class="math"><span class="rel">→</span></span> <span class="num">2</span>
+<span class="var">a</span> <span class="math"><span class="rel">→</span></span> <span class="num">1</span>
+<i>env.global</i>
+</div></div></pre>
+
+<!--\indexR{абстракция!замыкание}-->
+<!--\indexR{абстракция!значение}-->
+<!--\indexR{возвращаемые значения!абстракций}-->
+<!--\indexR{замыкания (closures)}-->
+<p>Форма <code>(<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>))</code> создаётся в глобальном окружении, расширенном
+переменной <code><span class="var">a</span></code>. Когда эта функция вызывается, она расширяет окружение своего
+создания переменной <code><span class="var">b</span></code>, таким образом, тело функции будет вычисляться
+в окружении, где обе переменные <code><span class="var">a</span></code> и <code><span class="var">b</span></code> присутствуют. После того, как
+функция вернёт результат, исполнение продолжается в глобальном окружении. Мы
+будем называть значение абстракции <em class="term">замыканием</em> (closure), потому что при
+создании этого значения тело функции становится замкнутым в окружении своего
+определения.</p>
+
+<p>Стоит отметить, что сейчас <code><span class="func">make-function</span></code> сама использует замыкания языка
+определения. Это не является обязательным, как мы покажем далее в третьей главе.
+<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/actors/ssect:functions">3.2.7</a>]</span>
+Функция <code><span class="func">make-function</span></code> возвращает
+замыкания, а это — характерная черта функциональных языков программирования.</p>
+
+
+<h3 id="basics/representing-functions/ssect:dynamic-and-lexical-binding"><span class="wrap"><span class="seq">1.6.1.</span><span class="title">Динамическая и лексическая области видимости</span></span></h3>
+
+<p>Из этого разговора об окружениях можно сделать два вывода. Во-первых, ясно,
+что с окружениями не всё так просто. Любое вычисление всегда производится
+в каком-то окружении, следовательно, необходимо эффективно реализовывать их
+использование. В третьей главе рассматриваются более сложные вещи вроде
+раскрутки стека и соответствующей формы <code><span class="special">unwind-protect</span></code>, которые потребуют
+от нас ещё более точного контроля над окружениями.</p>
+
+<!--\indexR{лексическое связывание}-->
+<!--\indexR{динамическое связывание}-->
+<!--\indexR{связывание!лексическое}-->
+<!--\indexR{связывание!динамическое}-->
+<!--\indexR{Лисп!лексический}-->
+<!--\indexR{Лисп!динамический}-->
+<p>Второй момент связан с двумя рассмотренными в предыдущем разделе вариантами,
+которые являются примерами <em class="term">лексического</em> и <em class="term">динамического
+связывания</em><a class="footref" href="zz_footnotes.xhtml#foot1.15"><sup>15</sup></a> (также применяются термины лексическая и
+динамическая область видимости). В <em>лексическом</em> Лиспе функция выполняется
+в окружении своего определения, расширенном собственными переменными, тогда как
+в <em>динамическом</em> — расширяет текущее окружение, окружение своего вызова.</p>
+
+<p>Сейчас в моде лексическое связывание, но это не значит, что у динамического нет
+будущего. С одной стороны, именно динамическое связывание применяется
+в некоторых довольно популярных языках вроде <span class="TeX">Τ<span class="E">e</span>Χ</span> <span class="cite">[<a href="z1_bibliography.xhtml#knu84">Knu84</a>]</span>,
+Emacs Lisp<a class="footref" href="zz_footnotes.xhtml#foot1.tr-1"><sup>*</sup></a> <span class="cite">[<a href="z1_bibliography.xhtml#llst93">LLSt93</a>]</span>, Perl <span class="cite">[<a href="z1_bibliography.xhtml#ws91">WS91</a>]</span>.</p>
+
+<p>С другой стороны, сама идея динамической области видимости является важной
+концепцией программирования. Она соответствует установке связей перед
+выполнением вычислений и гарантированному автоматическому удалению этих связей
+после завершения вычислений.</p>
+
+<!--\indexR{исключения}-->
+<!--\indexR{поиск с возвратом}-->
+<p>Такую стратегию можно эффективно применять, например, в искусственном
+интеллекте. В этом случае сначала выдвигается некая гипотеза, затем из неё
+вырабатываются следствия. Как только система натыкается на противоречие, то
+гипотезу следует отвергнуть и перейти к следующей. Это называется <em class="term">поиском
+с возвратом</em>. Если следствия гипотез хранятся без использования побочных
+эффектов, например, в А-списках, то отвержение гипотезы автоматически и без
+проблем утилизирует и все её следствия. Но если для этого используются
+глобальные переменные, массивы и т. д., то тогда за ненужной гипотезой
+приходится долго убирать, вспоминая, каким же было состояние памяти в момент
+формулировки гипотезы и какие его части можно откатить до старых значений, чтобы
+ничего не сломать! Динамическая область видимости позволяет гарантировать
+существование переменной с определённым значением на время и только во время
+вычислений, независимо от того, будут они успешны или нет. Это свойство также
+широко используется при обработке исключений.</p>
+
+<!--\indexR{область видимости}-->
+<p><em class="term">Область видимости</em> переменной — это, можно сказать, географическое
+понятие в программе: местность, где переменная встречается и её можно
+использовать. В чистом Scheme (не обременённом полезными, но не абсолютно
+необходимыми вещами вроде <code><span class="syntax">let</span></code>) есть только одна связывающая форма:
+<code><span class="special">lambda</span></code>. Это единственная форма, вводящая новые переменные и предоставляющая
+им область видимости в рамках определяемой функции. В динамическом же Лиспе
+область видимости в принципе не может быть ограничена функцией. Рассмотрим
+следующий пример:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">foo</span> <span class="var">x</span>) (<span class="func">list</span> <span class="var">x</span> <span class="var">y</span>))
+(<span class="special">define</span> (<span class="func">bar</span> <span class="var">y</span>) (<span class="func">foo</span> <span class="num">1991</span>))</pre>
+
+<p>В лексическом Лиспе переменная <code><span class="var">y</span></code> в <code><span class="func">foo</span></code><a class="footref" href="zz_footnotes.xhtml#foot1.16"><sup>16</sup></a> — это всегда ссылка на глобальную
+переменную <code><span class="var">y</span></code>, которая не имеет никакого отношения к <code><span class="var">y</span></code> внутри <code><span class="func">bar</span></code>.
+В динамическом же Лиспе переменная <code><span class="var">y</span></code> из <code><span class="func">bar</span></code> будет видима в <code><span class="func">foo</span></code>
+внутри <code><span class="func">bar</span></code>, потому что в момент вызова <code><span class="func">foo</span></code> переменная <code><span class="var">y</span></code> уже
+находилась в текущем окружении. Следовательно, если мы дадим глобальной <code><span class="var">y</span></code>
+значение <code><span class="num">0</span></code>, то получим следующие результаты:</p>
+
+<pre>(<span class="special">define</span> <span class="var">y</span> <span class="num">0</span>)
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в динамическом Лиспе</span>
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">100</span>) (<span class="num">3</span> <span class="num">0</span>)) <span class="comment">; в лексическом Лиспе</span></pre>
+
+<!--\indexR{свободные переменные!и области видимости}-->
+<p>Заметьте, что в динамическом Лиспе <code><span class="func">bar</span></code> понятия не имеет о том, что
+в <code><span class="func">foo</span></code> используется её же локальная переменная <code><span class="var">y</span></code>, а <code><span class="func">foo</span></code> не знает
+о том, в каком именно окружении следует искать значение своей свободной
+переменной <code><span class="var">y</span></code>. Просто <code><span class="func">bar</span></code> при вызове положила в текущее окружение
+переменную <code><span class="var">y</span></code>, а внутренняя функция <code><span class="func">foo</span></code> нашла её в своём
+текущем окружении. Непосредственно перед выходом <code><span class="func">bar</span></code> уберёт свою <code><span class="var">y</span></code> из
+окружения, и глобальная переменная <code><span class="var">y</span></code> снова станет видна.</p>
+
+<p>Конечно, если не использовать свободные переменные, то нет особой разницы между
+динамической и лексической областями видимости.</p>
+
+<p>Лексическое связывание получило своё имя потому, что в данном случае достаточно
+иметь только код функции, чтобы с уверенностью отнести каждую используемую в ней
+переменную к одному из двух классов: или переменная находится внутри связывающей
+формы и является локальной, или же это глобальная переменная. Это чрезвычайно
+просто: достаточно взять исходный код, взять карандаш (или мышку) и поставить
+его кончик на переменную, значение которой нас интересует, после чего следует
+вести карандаш справа налево, снизу вверх до тех пор, пока не встретим первую
+связывающую форму. Динамическое же связывание названо в честь концепции
+<em class="term">динамического времени жизни</em> переменных, которую мы будем рассматривать
+позже.
+<span class="see">[см. раздел <a href="ch03_escape_and_return.xhtml#escape/forms/ssect:dynamic">3.1.3</a>]</span></p>
+
+<p>Scheme поддерживает только лексические переменные. <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> поддерживает
+оба типа с одинаковым синтаксисом. Синтаксис <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> и <span class="sc">ISL<span class="c">isp</span></span> разделяет эти
+два типа переменных, и они находятся в отдельных пространствах имён.
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/sect:namespaces">2.5</a>]</span></p>
+
+<!--\indexR{область видимости!конфликт имён}-->
+<!--\indexR{переменные!сокрытие имён}-->
+<!--\indexR{сокрытие переменных}-->
+<!--\indexR{сокрытие переменных|seealso{области видимости}}-->
+<p>Область видимости переменной может прерываться. Такое случается, когда одна
+переменная <em class="term">скрывает</em> другую из-за того, что обе имеют одинаковое имя.
+Лексические области видимости вкладываются друг в друга, скрывая переменные
+с совпадающими именами из внешних областей. Этот известный «блокирующий»
+порядок разрешения конфликтов унаследован от Алгола 60.</p>
+
+<p>Под влиянием <span class="math"><span class="ord var">λ</span></span>-исчисления, в честь которого названа специальная
+форма <code><span class="special">lambda</span></code> <span class="cite">[<a href="z1_bibliography.xhtml#per79">Per79</a>]</span>, <span class="sc">L<span class="c">isp</span> 1.0</span> был сделан динамическим, но вскоре
+Джон Маккарти осознал, что он ожидал получить от следующего выражения
+<code>(<span class="num">2</span> <span class="num">3</span>)</code>, а не <code>(<span class="num">1</span> <span class="num">3</span>)</code>:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">a</span> <span class="num">1</span>))
+  ((<span class="syntax">let</span> ((<span class="var">a</span> <span class="num">2</span>)) (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">list</span> <span class="var">a</span> <span class="var">b</span>)))
+   <span class="num">3</span> ) )</pre>
+
+<!--\indexCS{function}{для замыканий}-->
+<!--\indexCS{lambda}{как ключевое слово}-->
+<p>Эта аномалия (не осмелюсь назвать её ошибкой) была исправлена введением новой
+специальной формы <code><span class="special">function</span></code>. Она принимала <code><span class="special">lambda</span></code>-форму и создавала
+<em class="term">замыкание</em> — функцию, связанную с окружением, в котором она определена.
+При вызове замыкания вместо текущего окружения расширялось окружение
+определения, замкнутое внутри него. Вместе с изменениями <code><span class="func">d.evaluate</span></code> и
+<code><span class="func">d.invoke</span></code>, форма <code><span class="special">function</span></code><a class="footref" href="zz_footnotes.xhtml#foot1.17"><sup>17</sup></a> выражается так:</p>
+
+
+<!--\indexC{d.invoke}-->
+<!--\indexC{d.make-function}-->
+<!--\indexC{d.make-closure}-->
+<pre id="label=basics/repr-func/dyn-and-lex-bind/src:closure-eval">(<span class="special">define</span> (<span class="func">d.evaluate</span> <span class="var">e</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>) ...
+      (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
+        ...
+        ((<span class="var">function</span>)   <span class="comment">; Синтаксис: <code>(<span class="special">function</span> (<span class="syntax">lambda</span> <i>аргументы</i> <i>тело</i>))</code></span>
+         (<span class="syntax">let*</span> ((<span class="var">f</span>   (<span class="func">cadr</span> <span class="var">e</span>))
+                (<span class="var">fun</span> (<span class="func">d.make-function</span> (<span class="func">cadr</span> <span class="var">f</span>) (<span class="func">cddr</span> <span class="var">f</span>) <span class="var">env</span>)) )
+           (<span class="func">d.make-closure</span> <span class="var">fun</span> <span class="var">env</span>) ) )
+        ((<span class="var">lambda</span>) (<span class="func">d.make-function</span> (<span class="func">cadr</span> <span class="var">e</span>) (<span class="func">cddr</span> <span class="var">e</span>) <span class="var">env</span>))
+        (<span class="syntax">else</span>     (<span class="func">d.invoke</span> (<span class="func">d.evaluate</span> (<span class="func">car</span> <span class="var">e</span>) <span class="var">env</span>)
+                            (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>)
+                            <span class="var">env</span> )) ) ) )
+
+(<span class="special">define</span> (<span class="func">d.invoke</span> <span class="var">fn</span> <span class="var">args</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">procedure?</span> <span class="var">fn</span>)
+      (<span class="func">fn</span> <span class="var">args</span> <span class="var">env</span>)
+      (<span class="special">wrong</span> <span class="string">"Not a function"</span> <span class="var">fn</span>) ) )
+
+(<span class="special">define</span> (<span class="func">d.make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> (<span class="var">values</span> <span class="var">current.env</span>)
+    (<span class="func">eprogn</span> <span class="var">body</span> (<span class="func">extend</span> <span class="var">current.env</span> <span class="var">variables</span> <span class="var">values</span>)) ) )
+
+(<span class="special">define</span> (<span class="func">d.make-closure</span> <span class="var">fun</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> (<span class="var">values</span> <span class="var">current.env</span>)
+    (<span class="func">fun</span> <span class="var">values</span> <span class="var">env</span>) ) )</pre>
+
+
+<!--\indexR{переменные!специальные}-->
+<!--\indexC{special}-->
+<p>Но это ещё не конец всей истории. <code><span class="special">function</span></code> — это лишь костыль, на
+который опиралась хромая реализация Лиспа. С созданием первых компиляторов стало
+ясно, что с точки зрения производительности у лексической области видимости есть
+(ожидаемое при компиляции) преимущество: можно сгенерировать код для более-менее
+прямого доступа к любой переменной, а не динамически отыскивать её значение
+заново каждый раз. Тогда по умолчанию стали делать все переменные лексическими,
+за исключением тех, которые были явно помечены как динамические или, как тогда
+их называли, <em class="term">специальные</em>. Выражение <code>(<span class="special">declare</span> (<span class="syntax">special</span> <i>x</i>))</code>
+являлось командой компиляторам <span class="sc">L<span class="c">isp</span> 1.5</span>, <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>, Maclisp и других,
+говорившей, что переменная <i>x</i> ведёт себя «особенно».</p>
+
+
+<!--\indexR{ссылочная прозрачность}-->
+<p>Эффективность была не единственной причиной принятия такого решения. Другой
+причиной была потеря <em class="term">ссылочной прозрачности</em> (referential
+transparency). Ссылочная прозрачность — это свойство языка, заключающееся
+в том, что замена в программе любого выражения его эквивалентом никак не изменит
+поведение этой программы (оба варианта программы или вернут одно и то же
+значение, или вместе застрянут в бесконечном цикле). Например:</p>
+
+<pre>(<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) (<span class="func">x</span>)) <span class="math"><span class="rel">≡</span></span> ((<span class="syntax">let</span> ((<span class="var">x</span> (<span class="special">lambda</span> () <span class="num">1</span>))) <span class="var">x</span>)) <span class="math"><span class="rel">≡</span></span> <span class="num">1</span></pre>
+
+<p>В общем случае ссылочная прозрачность теряется, если язык позволяет побочные
+эффекты. Чтобы она сохранилась и при наличии побочных эффектов, необходимо
+точнее определить понятие эквивалентных выражений. Scheme обладает ссылочной
+прозрачностью, если не использовать присваивания, функции с побочными эффектами
+и продолжения.
+<span class="see">[см. упр. <a href="ch03_escape_and_return.xhtml#escape/ex:crazy-cc">3.10</a>]</span>
+Это свойство желаемо и в наших
+программах, если мы хотим сделать их по-настоящему повторно используемыми, как
+можно менее зависимыми от контекста использования.</p>
+
+<!--\indexR{переменные!безымянные}-->
+<!--\indexR{альфа@$\alpha$-конверсия}-->
+<p>Локальные переменные функций вроде <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code> иногда называются
+<em>безымянными</em>. Их имена ничего не значат и могут быть абсолютно
+произвольными. Функция <code>(<span class="special">lambda</span> (<span class="var">n347</span>) (<span class="func">+</span> <span class="var">n347</span> <span class="var">n347</span>))</code> — это та же
+самая<a class="footref" href="zz_footnotes.xhtml#foot1.18"><sup>18</sup></a> функция, что и <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code>.</p>
+
+<p>Мы ожидаем, что в языке будет сохраняться этот инвариант. Но это невозможно
+в динамическом Лиспе. Рассмотрим следующий пример:</p>
+
+<!--\indexC{map}-->
+<pre>(<span class="special">define</span> (<span class="func">map</span> <span class="var">fn</span> <span class="var">l</span>)  <span class="comment">; или <code><span class="func">mapcar</span></code>, как кому нравится</span>
+  (<span class="special">if</span> (<span class="func">pair?</span> <span class="var">l</span>)
+      (<span class="func">cons</span> (<span class="var">fn</span> (<span class="func">car</span> <span class="var">l</span>)) (<span class="func">map</span> <span class="var">fn</span> (<span class="func">cdr</span> <span class="var">l</span>)))
+      <span class="hash">'()</span> ) )
+
+(<span class="syntax">let</span> ((<span class="var">l</span> '(<span class="var">a</span> <span class="var">b</span> <span class="var">c</span>)))
+  (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">x</span>) (<span class="func">list-ref</span> <span class="var">l</span> <span class="var">x</span>))
+       '(<span class="num">2</span> <span class="num">1</span> <span class="num">0</span>)))</pre>
+
+<p>(Функция <code>(<span class="func">list-ref</span> <i>l</i> <i>n</i>)</code> возвращает <i>n</i>-й элемент списка <i>l</i>.)</p>
+
+<p>В Scheme мы бы получили <code>(<span class="var">c</span> <span class="var">b</span> <span class="var">a</span>)</code>, но в динамическом Лиспе результатом будет
+<code>(<span class="num">0</span> <span class="num">0</span> <span class="num">0</span>)</code>! Причина: свободная переменная <code><span class="var">l</span></code> в функции <code>(<span class="special">lambda</span> (<span class="var">x</span>)
+(<span class="func">list-ref</span> <span class="var">l</span> <span class="var">x</span>))</code>, имя которой уже занято локальной переменной <code><span class="var">l</span></code>
+в <code><span class="func">map</span></code>.</p>
+
+<p>Это затруднение можно решить, просто изменив конфликтующие имена. Например,
+достаточно будет переименовать какую-нибудь из двух <code><span class="var">l</span></code>. Например, ту,
+которая внутри <code><span class="func">map</span></code>, потому что это более разумно. Но какое имя выбрать,
+чтобы эта проблема не возникла снова? Если приписывать спереди к имени каждой
+переменной номер паспорта программиста, а сзади — текущее UNIX-время, то
+это, конечно, значительно снизит вероятность коллизий, но читабельность программ
+будет оставлять желать лучшего.</p>
+
+<p>В начале восьмидесятых годов сложилась довольно неприятная ситуация: студентов
+учили Лиспу на примере интерпретаторов, но их понимание областей видимости
+отличалось от понимания компиляторов. В 1975 году Scheme <span class="cite">[<a href="z1_bibliography.xhtml#ss75">SS75</a>]</span> показал,
+что интерпретатор и компилятор возможно примирить, поместив обоих в мир, где все
+переменные лексические. <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> забил последний гвоздь в гроб этой
+проблемы, постановив, что <em>хорошее</em> понимание — это понимание
+компилятора, а для него удобнее лексические переменные. Интерпретатор должен
+был подчиниться новым правилам. Растущий успех Scheme и других функциональных
+языков, вроде ML и компании, популяризовал новый подход сначала в языках
+программирования, а затем и в умах людей.</p>
+
+
+<h3 id="basics/representing-functions/ssect:deep-or-shallow"><span class="wrap"><span class="seq">1.6.2.</span><span class="title">Дальнее и ближнее связывание</span></span></h3>
+
+<!--\indexR{дальнее (deep) связывание}-->
+<!--\indexR{связывание!дальнее (deep)}-->
+<!--\indexCS{lookup}{стоимость}-->
+<p>Но не всё так просто заканчивается. Разработчики языков нашли способы ускорить
+поиск значений динамических переменных. Если окружения представлены
+ассоциативными списками, то время на поиск значения переменной (стоимость вызова
+<code><span class="func">lookup</span></code>) линейно зависит от длины списка.<a class="footref" href="zz_footnotes.xhtml#foot1.19"><sup>19</sup></a> Такой подход называется <em class="term">глубоким</em> или
+<em class="term">дальним связыванием</em> (deep binding), так как значения динамических
+переменных обычно располагаются на некотором удалении от текущего локального
+окружения.</p>
+
+<!--\indexR{ближнее (shallow) связывание}-->
+<!--\indexR{связывание!ближнее (shallow)}-->
+<!--\indexE{Cval}-->
+<p>Существует и другой метод, называемый <em class="term">поверхностным</em> или <em class="term">ближним
+связыванием</em> (shallow binding). Суть его в том, что переменная напрямую связана
+с местом, где хранится её значение в текущий момент, без привязки к окружению.
+Проще всего это реализовать, положив это значение в специальное поле символа,
+соответствующего этой переменной; это поле называют <code><span class="var">Cval</span></code> или <em class="term">ячейкой
+значения</em> (value cell). В таком случае стоимость <code><span class="func">lookup</span></code> постоянна или около
+того: требуется лишь одна косвенная адресация и, может быть, сдвиг. Так как
+бесплатный сыр бывает только в мышеловке, то стоит отметить, что вызов функции
+при использовании этого метода выходит дороже, потому что требуется сначала
+где-то сохранить старые значения аргументов, затем записать новые значения
+в поля соответствующих символов. А потом, что самое важное, после выхода из
+функции старые значения в символах необходимо восстановить обратно, а это может
+помешать оптимизации хвостовой рекурсии. (Хотя есть варианты: <span class="cite">[<a href="z1_bibliography.xhtml#sj93">SJ93</a>]</span>.)</p>
+
+<p>Изменив структуру окружений, мы сможем частично проэмулировать<a class="footref" href="zz_footnotes.xhtml#foot1.20"><sup>20</sup></a> ближнее связывание. Но с оговорками: список
+аргументов не может быть точечным (так будет легче его разбирать) и мы не будем
+проверять арность функций. Новые функции будем обозначать префиксом <code>s.</code>,
+чтобы не путать их с другими.</p>
+
+<!--\indexC{s.make-function}-->
+<!--\indexC{s.lookup}-->
+<!--\indexC{s.update"!}-->
+<pre>(<span class="special">define</span> (<span class="func">s.make-function</span> <span class="var">variables</span> <span class="var">body</span> <span class="var">env</span>)
+  (<span class="special">lambda</span> (<span class="var">values</span> <span class="var">current.env</span>)
+    (<span class="syntax">let</span> ((<span class="var">old-bindings</span>
+           (<span class="func">map</span> (<span class="special">lambda</span> (<span class="var">var</span> <span class="var">val</span>)
+                  (<span class="syntax">let</span> ((<span class="var">old-value</span> (<span class="func">getprop</span> <span class="var">var</span> '<span class="var">apval</span>)))
+                    (<span class="func">putprop</span> <span class="var">var</span> '<span class="var">apval</span> <span class="var">val</span>)
+                    (<span class="func">cons</span> <span class="var">var</span> <span class="var">old-value</span>) ) )
+                <span class="var">variables</span>
+                <span class="var">values</span> ) ))
+      (<span class="syntax">let</span> ((<span class="var">result</span> (<span class="func">eprogn</span> <span class="var">body</span> <span class="var">current.env</span>)))
+        (<span class="func">for-each</span> (<span class="special">lambda</span> (<span class="var">b</span>) (<span class="func">putprop</span> (<span class="func">car</span> <span class="var">b</span>) '<span class="var">apval</span> (<span class="func">cdr</span> <span class="var">b</span>)))
+                  <span class="var">old-bindings</span> )
+        <span class="var">result</span> ) ) ) )
+
+(<span class="special">define</span> (<span class="func">s.lookup</span> <span class="var">id</span> <span class="var">env</span>)
+  (<span class="func">getprop</span> <span class="var">id</span> '<span class="var">apval</span>) )
+
+(<span class="special">define</span> (<span class="func">s.update!</span> <span class="var">id</span> <span class="var">env</span> <span class="var">value</span>)
+  (<span class="func">putprop</span> <span class="var">id</span> '<span class="var">apval</span> <span class="var">value</span>) )</pre>
+
+<!--\indexC{putprop}-->
+<!--\indexC{getprop}-->
+<p>В Scheme функции <code><span class="func">putprop</span></code> и <code><span class="func">getprop</span></code> не входят в стандарт, так как здесь
+не любят неэффективные глобальные побочные эффекты, но тем не менее, даже
+в <span class="cite">[<a href="z1_bibliography.xhtml#as85">AS85</a>]</span> есть аналогичные <code><span class="func">put</span></code> и <code><span class="func">get</span></code>.
+<span class="see">[см. упр. <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/ex:write-put/get-prop">2.6</a>]</span></p>
+
+<!--\indexR{списки свойств}-->
+<!--\indexR{символы!списки свойств}-->
+<!--\indexE{P-список}-->
+<!--\indexR{хеш-таблицы}-->
+<p>С помощью этих функций мы эмулируем наличие у символов поля,<a class="footref" href="zz_footnotes.xhtml#foot1.21"><sup>21</sup></a> где хранится
+значение одноимённой переменной. Независимо от их настоящей реализации,<a class="footref" href="zz_footnotes.xhtml#foot1.22"><sup>22</sup></a> будем
+считать, что они выполняются за постоянное время.</p>
+
+<p>Заметьте, что в этой реализации абсолютно не используется окружение определения
+<code><span class="var">env</span></code>. Поэтому для поддержки замыканий нам потребуется изменить реализацию
+<code><span class="func">make-closure</span></code>, так как она теперь не имеет доступа к окружению определения
+(ввиду его отсутствия). При создании замыкания необходимо просмотреть тело
+функции, выделить все свободные переменные и правильно их сохранить внутри
+замыкания. Мы реализуем это позже.</p>
+
+<!--\indexE{rerooting}-->
+<p>Дальнее связывание облегчает смену окружений и многозадачность, теряя в скорости
+поиска переменных. Ближнее связывание ускоряет поиск переменных, но теряет
+в скорости вызова функций. Генри Бейкеру <span class="cite">[<a href="z1_bibliography.xhtml#bak78">Bak78</a>]</span> удалось объединить эти два
+подхода в технику под названием <em class="term">rerooting</em>.</p>
+
+<p>Наконец, не забывайте, что ближнее и дальнее связывание — это лишь способы
+реализации, они никак не влияют на само понятие связывания.</p>
+
+
+<h2 id="basics/sect:global-environment"><span class="wrap"><span class="seq">1.7.</span><span class="title">Глобальное окружение</span></span></h2>
+
+<!--\indexR{библиотека!функций}-->
+<!--\indexR{Лисп!примитивы}-->
+<p>Пустое глобальное окружение — это печально, поэтому большинство лисп-систем
+предоставляют <em>библиотеки</em> функций. Например, в глобальном окружении
+<span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> (CLtL1) около 700 функций, у Le_Lisp их более 1500,
+у <span class="sc">Z<span class="c">eta</span>L<span class="c">isp</span></span> — более 10 000. Без библиотек Лисп был бы лишь прикладным
+<span class="math"><span class="ord var">λ</span></span>-исчислением, в котором нельзя даже распечатать полученные результаты.
+Библиотеки очень важны для конечного пользователя. Специальные формы — это
+строительные кирпичики для разработчиков интерпретаторов, но для конечного
+пользователя такими кирпичиками являются функции библиотек. По-видимому, именно
+отсутствие в чистом Лиспе таких банальных вещей вроде библиотеки
+тригонометрических функций прочно укоренило мысль о непригодности Лиспа для
+«серьёзных программ». Как говорится в <span class="cite">[<a href="z1_bibliography.xhtml#sla61">Sla61</a>]</span>, возможность символьного
+интегрирования или дифференцирования — это, конечно, замечательно, но кому
+нужен язык, где нет даже синуса или тангенса?</p>
+
+<p>Мы ожидаем, что все привычные функции вроде <code><span class="func">cons</span></code>, <code><span class="func">car</span></code> и т. п. будут
+доступны в глобальном окружении. Также можно туда поместить несколько простых
+констант вроде логических значений и пустого списка.</p>
+
+<p>Для этого мы определим пару макросов. Исключительно для удобства, потому что мы
+о них ещё даже не говорили.<a class="footref" href="zz_footnotes.xhtml#foot1.23"><sup>23</sup></a> Макросы — это довольно сложная и важная вещь сами
+по себе, так что им посвящена собственная глава.
+<span class="see">[см. <a href="ch09_macros.xhtml">9 главу</a>]</span></p>
+
+<p>Эти два макроса облегчат наполнение глобального окружения. Само глобальное
+окружение является расширением начального окружения <code><span class="func">env.init</span></code>.</p>
+
+<!--\indexC{env.global}-->
+<!--\indexC{definitial}-->
+<!--\indexC{defprimitive}-->
+<pre>(<span class="special">define</span> <span class="var">env.global</span> <span class="var">env.init</span>)
+
+(<span class="special">define-syntax</span> <span class="var">definitial</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">definitial</span> <span class="var">name</span>)
+     (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">env.global</span> (<span class="func">cons</span> (<span class="func">cons</span> '<span class="var">name</span> '<span class="var">void</span>) <span class="var">env.global</span>))
+            '<span class="var">name</span> ) )
+    ((<span class="syntax">definitial</span> <span class="var">name</span> <span class="var">value</span>)
+     (<span class="special">begin</span> (<span class="special">set!</span> <span class="var">env.global</span> (<span class="func">cons</span> (<span class="func">cons</span> '<span class="var">name</span> <span class="var">value</span>) <span class="var">env.global</span>))
+            '<span class="var">name</span> ) ) ) )
+
+(<span class="special">define-syntax</span> <span class="var">defprimitive</span>
+  (<span class="syntax">syntax-rules</span> ()
+    ((<span class="syntax">defprimitive</span> <span class="var">name</span> <span class="var">value</span> <span class="var">arity</span>)
+     (<span class="syntax">definitial</span> <span class="var">name</span>
+        (<span class="special">lambda</span> (<span class="var">values</span>)
+          (<span class="special">if</span> (<span class="func">=</span> <span class="var">arity</span> (<span class="func">length</span> <span class="var">values</span>))
+              (<span class="func">apply</span> <span class="var">value</span> <span class="var">values</span>)      <span class="comment">; Родная <code><span class="func">apply</span></code> Scheme</span>
+              (<span class="special">wrong</span> <span class="string">"Incorrect arity"</span> (<span class="func">list</span> '<span class="var">name</span> <span class="var">values</span>) ) ) ) ) ) ) )</pre>
+
+<!--\indexC{the-false-value}-->
+<p>Несмотря на то, что стандарт Scheme этого не требует, мы определим несколько
+полезных констант. Заметим, что <code><span class="var">t</span></code> — это переменная в определяемом Лиспе,
+а <code><span class="hash">#t</span></code> — это значение из определяющего Лиспа. Оно подходит, так как любое
+значение, не совпадающее с <code><span class="var">the-false-value</span></code>, является <em class="term">истиной</em>.</p>
+
+<pre>(<span class="syntax">definitial</span> <span class="var">t</span> <span class="hash">#t</span>)
+(<span class="syntax">definitial</span> <span class="var">f</span> <span class="var">the-false-value</span>)
+(<span class="syntax">definitial</span> <span class="var">nil</span> <span class="hash">'()</span>)</pre>
+
+<!--\indexR{синтаксис!для \protect<code><span class="func">\#t</span></code> и <code><span class="func">\#f</span></code>}-->
+<!--\indexR{логические значения}-->
+<p>Хотя это удобно — иметь глобальные переменные с настоящими объектами для
+данных сущностей, но есть и другое решение: особый синтаксис. Scheme использует
+<code><span class="hash">#t</span></code> и <code><span class="hash">#f</span></code>, подставляя вместо них логические <em class="term">истину</em> и
+<em class="term">ложь</em>. В этом есть определённый смысл:</p>
+
+<ol>
+  <li>Они всегда видимы: <code><span class="hash">#t</span></code> означает
+    <em class="term">истину</em> в любом
+    контексте, даже тогда, когда локальная переменная
+    названа <code><span class="var">t</span></code>.</li>
+
+  <li>Значение <code><span class="hash">#t</span></code> невозможно изменить, но многие
+    интерпретаторы
+    позволят изменить значение глобальной переменной <code><span class="var">t</span></code>.</li>
+</ol>
+
+<p>Например, выражение <code>(<span class="special">if</span> <span class="var">t</span> <span class="num">1</span> <span class="num">2</span>)</code> вернёт <code><span class="num">2</span></code>, если оно вычисляется
+в следующем окружении: <code>(<span class="syntax">let</span> ((<span class="var">t</span> <span class="hash">#f</span>)) (<span class="special">if</span> <span class="var">t</span> <span class="num">1</span> <span class="num">2</span>))</code>.</p>
+
+
+<!--\indexC{eq?}-->
+<p>Существует много способов ввести такой синтаксис. Наиболее простой способ —
+это вшить значения <code><span class="var">t</span></code> и <code><span class="var">f</span></code> в вычислитель:</p>
+
+<pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">e</span> <span class="var">env</span>)
+  (<span class="special">if</span> (<span class="func">atom?</span> <span class="var">e</span>)
+      (<span class="syntax">cond</span> ((<span class="func">eq?</span> <span class="var">e</span> '<span class="var">t</span>) <span class="hash">#t</span>)
+            ((<span class="func">eq?</span> <span class="var">e</span> '<span class="var">f</span>) <span class="hash">#f</span>)
+            ...
+            ((<span class="func">symbol?</span> <span class="var">e</span>) (<span class="func">lookup</span> <span class="var">e</span> <span class="var">env</span>))
+            ...
+            (<span class="syntax">else</span> (<span class="special">wrong</span> <span class="string">"Cannot evaluate"</span> <span class="var">exp</span>)) )
+      ... ) )</pre>
+
+<!--\indexR{инлайнинг!функций}-->
+<!--\indexR{встраивание!функций}-->
+<!--\indexR{функции!встраиваемые}-->
+<!--\indexR{связывание!изменяемое}-->
+<!--\indexR{связывание!неизменяемое}-->
+<p>Также мы могли бы ввести понятия <em class="term">изменяемого</em> и <em class="term">неизменяемого</em>
+связывания. Неизменяемые переменные отвергаются присваиванием. Ничто и никогда
+не сможет изменить значение неизменяемой переменной. Такая концепция существует,
+хоть и не всегда явно, во многих системах. Например, существуют так называемые
+<em class="term">инлайн-функции</em> (также известные как <em class="term">подставляемые</em> или
+<em class="term">встраиваемые</em>), вызов которых можно полностью заменить прямой подстановкой
+их тела.
+ <span class="see">[см. раздел <a href="ch06_fast_interpretation.xhtml#fast/fast/integrating/par:inlining">6.1.8</a>]</span></p>
+
+<p>Чтобы можно было спокойно подставить вместо <code>(<span class="func">car</span> <span class="var">x</span>)</code> код функции,
+возвращающей левый элемент точечной пары <code><span class="var">x</span></code>, необходимо быть абсолютно
+уверенным в том, что значение глобальной переменной <code><span class="var">car</span></code> никогда не менялось
+и не поменяется в будущем. Посмотрите, какая беда случается, если это не так:</p>
+
+<pre>(<span class="special">set!</span> <span class="var">my-global</span> (<span class="func">cons</span> '<span class="var">c</span> '<span class="var">d</span>))
+   <span class="math"><span class="rel">→</span></span> (<span class="var">c</span> . <span class="var">d</span>)
+(<span class="special">set!</span> <span class="var">my-test</span> (<span class="special">lambda</span> () (<span class="func">car</span> <span class="var">my-global</span>)))
+   <span class="math"><span class="rel">→</span></span> <span class="hash">#&lt;MY-TEST procedure&gt;</span>
+(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">car</span> <span class="var">cdr</span>)
+       (<span class="special">set!</span> <span class="var">my-global</span> (<span class="func">cons</span> '<span class="var">a</span> '<span class="var">b</span>))
+       (<span class="func">my-test</span>) )
+   <span class="math"><span class="rel">→</span></span> <i>?????</i></pre>
+
+<p>К счастью, в результате может получиться только <code><span class="var">a</span></code> или <code><span class="var">b</span></code>. Если
+<code><span class="func">my-test</span></code> использует значение <code><span class="var">car</span></code> на момент определения, то мы
+получим <code><span class="var">a</span></code>. Если же <code><span class="func">my-test</span></code> будет использовать текущее
+значение <code><span class="var">car</span></code>, то ответом будет <code><span class="var">b</span></code>. Полезным будет также сравнить в этом
+аспекте <code><span class="func">my-test</span></code> и <code><span class="var">my-global</span></code>: обычно первый вариант поведения ожидается
+от <code><span class="func">my-test</span></code> при использовании компилятора, тогда как для <code><span class="var">my-global</span></code>
+нормальным считается именно второй вариант.
+<span class="see">[см. раздел <a href="ch02_lisp_1_2_omega.xhtml#lisp1-2-omega/recusion/simple/code:redefine">2.6.1</a>]</span></p>
+
+<!--\indexC{foo}-->
+<!--\indexC{bar}-->
+<!--\indexC{fib}-->
+<!--\indexC{fact}-->
+<p>Также мы добавим несколько рабочих переменных<a class="footref" href="zz_footnotes.xhtml#foot1.24"><sup>24</sup></a> в глобальное
+окружение, так как сейчас у нас нет способа динамически создавать переменные.
+По статистике, предлагаемые имена составляют приблизительно 96,037 %
+используемых при тестировании свеженаписанных интерпретаторов.</p>
+
+<pre>(<span class="syntax">definitial</span> <span class="var">foo</span>)
+(<span class="syntax">definitial</span> <span class="var">bar</span>)
+(<span class="syntax">definitial</span> <span class="var">fib</span>)
+(<span class="syntax">definitial</span> <span class="var">fact</span>)</pre>
+
+<p>Наконец, определим несколько примитивных функций (не все, потому что такие
+полные списки — это хорошее снотворное). Главная сложность состоит
+в соединении механизмов вызова функций определяемого и определяющего языков.
+Зная, что аргументы собираются нашим интерпретатором в список, достаточно просто
+применить
+к нему <code><span class="func">apply</span></code>.<a class="footref" href="zz_footnotes.xhtml#foot1.25"><sup>25</sup></a> Заметьте, что арность функций будет соблюдаться,
+так как мы включили проверку в определение макроса <code><span class="syntax">defprimitive</span></code>.</p>
+
+<pre>(<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="var">cons</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)
+(<span class="syntax">defprimitive</span> <span class="var">set-cdr!</span> <span class="var">set-cdr!</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">+</span> <span class="var">+</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">eq?</span> <span class="var">eq?</span> <span class="num">2</span>)
+(<span class="syntax">defprimitive</span> <span class="var">&lt;</span> <span class="var">&lt;</span> <span class="num">2</span>)</pre>
+
+
+<h2 id="basics/sect:starting-the-interpreter"><span class="wrap"><span class="seq">1.8.</span><span class="title">Запускаем интерпретатор</span></span></h2>
+
+<p>Нам осталось показать только одну вещь: дверь в наш новый мир.</p>
+
+<!--\indexC{chapter1-scheme}-->
+<pre>(<span class="special">define</span> (<span class="func">chapter1-scheme</span>)
+  (<span class="special">define</span> (<span class="func">toplevel</span>)
+    (<span class="func">display</span> (<span class="func">evaluate</span> (<span class="func">read</span>) <span class="var">env.global</span>))
+    (<span class="func">toplevel</span>) )
+  (<span class="func">toplevel</span>) )</pre>
+
+<p>Поскольку наш интерпретатор ещё мал и неопытен, но подаёт большие надежды,
+предлагаем вам в качестве упражнения написать функцию, позволяющую из него
+выйти.</p>
+
+
+<h2 id="basics/sect:conclusions"><span class="wrap"><span class="seq">1.9.</span><span class="title">Заключение</span></span></h2>
+
+<!--\indexR{язык!и смысл программ}-->
+<p>Действительно ли мы сейчас определили язык?</p>
+
+<!--\indexR{смысл программ}-->
+<!--\indexR{программы!смысл}-->
+<p>Нет никаких сомнений в том, что мы можем запустить <code><span class="func">evaluate</span></code>, передать ей
+выражение, и она вскоре вернёт результат вычислений. Но сама функция
+<code><span class="func">evaluate</span></code> не имеет никакого смысла без языка своего определения, а если
+у нас нет определения языка определения, то мы вообще ни в чём не можем
+быть уверены. Так как каждый лиспер является дальним родственником барона
+Мюнхгаузена, то, наверное, будет достаточно взять в качестве языка определения
+тот, который мы только что определили. Следовательно, у нас есть язык <span class="math"><span class="ord var">L</span></span>,
+определённый функцией <code><span class="func">evaluate</span></code>, написанной на языке <span class="math"><span class="ord var">L</span></span>. Такой язык
+является решением следующего уравнения относительно <span class="math"><span class="ord var">L</span></span>:</p>
+
+<blockquote class="equation math"><span class="ord symb">∀</span><span class="ord var">π</span><span class="binop">∈</span><span class="ord Vset">Программы</span><span class="ord punct">: </span><span class="ord var">L</span><code class="ord">(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <i>env.global</i>)</code><span class="binop">≡</span><span class="ord var">L</span><span class="ord var">π</span></blockquote>
+
+<p>Исполнение любой программы <span class="math"><span class="ord var">π</span></span>, написанной на <span class="math"><span class="ord var">L</span></span> (обозначается как <span class="math"><span class="ord var">L</span><span class="ord var">π</span></span>),
+должно вести себя так же (то есть давать тот же результат или никогда
+не завершаться), как и выражение <code>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)</code> на
+том же языке <span class="math"><span class="ord var">L</span></span>. Одним из занимательных следствий этого утверждения является
+то, что <code><span class="func">evaluate</span></code> способна<a class="footref" href="zz_footnotes.xhtml#foot1.26"><sup>26</sup></a> проинтерпретировать сама себя. Следовательно,
+следующие выражения эквивалентны:</p>
+
+<pre>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>) <span class="math"><span class="rel">≡</span></span>
+  <span class="math"><span class="rel">≡</span></span> (<span class="func">evaluate</span> (<span class="special">quote</span> (<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)) <span class="var">env.global</span>)</pre>
+
+<p>Есть ли ещё решения приведённого уравнения? Да, и их великое множество! Как мы
+видели раньше, определение <code><span class="func">evaluate</span></code> вовсе не обязательно указывает порядок
+вычислений. Множество других свойств языка, используемого для определения,
+бессознательно <em>наследуются</em> определяемым языком. Мы, по сути, ничего
+не можем о них сказать, но все эти варианты претендуют на решение указанного
+уравнения. Вместе с многочисленными тривиальными решениями. Рассмотрим,
+к примеру, язык <span class="math"><span class="ord var">L<sub><span class="ord num">2001</span></sub></span></span>, любая программа на котором возвращает <span class="math"><span class="ord num">2001</span></span>. Даже
+такой язык удовлетворяет этому уравнению. Поэтому для определения настоящих
+языков необходимы другие методы, их мы рассмотрим в следующих главах.</p>
+
+
+<h2 id="basics/sect:exercises"><span class="wrap"><span class="seq">1.10.</span><span class="title">Упражнения</span></span></h2>
+
+<h5 class="exercise" id="basics/ex:tracer">Упражнение <span class="seq">1.1</span></h5>
+<!--\indexR{трассировка}-->
+<p>Модифицируйте функцию <code><span class="func">evaluate</span></code> так, чтобы она стала
+трассировщиком. Все вызовы функций должны выводить на экран фактические аргументы и возвращаемый
+результат. Легко представить себе дальнейшее развитие этого инструмента
+в пошаговый отладчик, вдобавок позволяющий изменять порядок выполнения
+отлаживаемой программы.</p>
+
+
+<h5 class="exercise" id="basics/ex:excess-recursion">Упражнение <span class="seq">1.2</span></h5>
+<p>Если функции <code><span class="func">evlis</span></code> передаётся список из одного
+выражения, она делает один лишний рекурсивный вызов. Придумайте способ, как избавиться от него.</p>
+
+
+<h5 class="exercise" id="basics/ex:new-extend">Упражнение <span class="seq">1.3</span></h5>
+<p>Предположим, новая функция <code><span class="func">extend</span></code> определена так:</p>
+
+<!--\indexC{extend}-->
+<pre>(<span class="special">define</span> (<span class="func">extend</span> <span class="var">env</span> <span class="var">names</span> <span class="var">values</span>)
+  (<span class="func">cons</span> (<span class="func">cons</span> <span class="var">names</span> <span class="var">values</span>) <span class="var">env</span>) )</pre>
+
+<p>Определите соответствующие функции <code><span class="func">lookup</span></code> и <code><span class="func">update!</span></code>. Сравните их с ранее рассмотренными.</p>
+
+
+<h5 class="exercise" id="basics/ex:racks">Упражнение <span class="seq">1.4</span></h5>
+<!--\indexR{ближнее (shallow) связывание}-->
+<!--\indexR{связывание!ближнее (shallow)}-->
+<!--\indexE{rack}-->
+<p>В работе <span class="cite">[<a href="z1_bibliography.xhtml#ss80">SS80</a>]</span> предлагается
+другой механизм ближнего связывания, названный <em class="term">rack</em>. Символ связывается с
+полем, хранящим не единственное значение, а стек значений. В каждый момент времени значением
+переменной является находящаяся на вершине стека величина. Перепишите функции
+<code><span class="func">s.make-function</span></code>,
+<code><span class="func">s.lookup</span></code> и <code><span class="func">s.update!</span></code> для реализации этой идеи.</p>
+
+
+<h5 class="exercise" id="basics/ex:liar-liar!">Упражнение <span class="seq">1.5</span></h5>
+<!--\indexR{представление!логических значений}-->
+<p>Если вы ещё не заметили, то в определение функции <code><span class="func">&lt;</span></code>
+вкралась ошибка! Ведь эта функция должна возвращать логические значения определяемого языка, а
+не определяющего. Исправьте это досадное недоразумение.</p>
+
+
+<h5 class="exercise" id="basics/ex:def-list">Упражнение <span class="seq">1.6</span></h5>
+<p>Определите функцию <code><span class="func">list</span></code>.</p>
+
+
+<h5 class="exercise" id="basics/ex:def-call/cc">Упражнение <span class="seq">1.7</span></h5>
+<p>Для обожающих продолжения: определите <code><span class="func">call/cc</span></code>.</p>
+
+<h5 class="exercise" id="basics/ex:def-apply">Упражнение <span class="seq">1.8</span></h5>
+<p>Определите функцию <code><span class="func">apply</span></code>.</p>
+
+
+<h5 class="exercise" id="basics/ex:def-end">Упражнение <span class="seq">1.9</span></h5>
+<p>Определите функцию <code><span class="func">end</span></code>, позволяющую выйти из
+интерпретатора, разработанного в этой главе.</p>
+
+
+<h5 class="exercise" id="basics/ex:slowpoke">Упражнение <span class="seq">1.10</span></h5>
+<!--\indexR{уровни интерпретации}-->
+<!--\indexR{интерпретация!уровневая}-->
+<p>Сравните скорость Scheme и <code><span class="func">evaluate</span></code>. Затем сравните
+скорость <code><span class="func">evaluate</span></code> и <code><span class="func">evaluate</span></code>, интерпретируемой с помощью <code><span class="func">evaluate</span></code>.</p>
+
+
+<h5 class="exercise" id="basics/ex:no-gensym">Упражнение <span class="seq">1.11</span></h5>
+<p>Ранее мы смогли успешно определить <code><span class="special">begin</span></code> через
+<code><span class="special">lambda</span></code>
+<span class="see">[см. раздел <a href="#basics/forms/sequence/par:gensym-puzzle">1.4.3</a>]</span>,
+но для этого нам потребовалось использовать функцию <code><span class="func">gensym</span></code>,
+чтобы избежать коллизий имён переменных. Переопределите
+<code><span class="special">begin</span></code> в таком же духе, но без использования
+<code><span class="func">gensym</span></code>.</p>
+
+
+<h2><span class="wrap"><span class="title">Рекомендуемая литература</span></span></h2>
+
+<p>Все работы по интерпретаторам, приведённые в начале этой главы, являются
+довольно интересными, но если вы не можете столько читать, то вот наиболее
+стоящие из них:</p>
+
+<ul>
+  <li>среди «<span class="math"><span class="ord var">λ</span></span>-papers»:
+    <span class="cite">[<a href="z1_bibliography.xhtml#ss78a">SS78a</a>]</span>;</li>
+
+  <li>самая короткая в мире статья, которая содержит полный интерпретатор
+    Лиспа: <span class="cite">[<a href="z1_bibliography.xhtml#mcc78b">McC78b</a>]</span>;</li>
+
+  <li>«нестрого формальное» описание интерпретации:
+    <span class="cite">[<a href="z1_bibliography.xhtml#rey72">Rey72</a>]</span>;</li>
+
+  <li>местная книга Бытия:
+    <span class="cite">[<a href="z1_bibliography.xhtml#mae+62">MAE<sup>+</sup>62</a>]</span>.</li>
+</ul>
+
+</body>
+</html>
