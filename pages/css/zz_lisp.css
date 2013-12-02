@@ -968,6 +968,13 @@ table#ch9-table-prepare .arrow { padding: 0 0.75em; }
 table#ch9-table-prepare .right { text-align: left;
                                  vertical-align: middle; }
 
+table#mini-toc { margin-top: 0; width: 16em; }
+table#mini-toc td.lhs { text-align: right; }
+table#mini-toc td.bullet { text-align: center;
+                           padding: 0 0.35em; }
+table#mini-toc td.rhs { text-align: left; }
+table#mini-toc td { padding-bottom: 0.75em; }
+
 /******************************************************************************/
 
 /* Code hightlight */
@@ -1085,9 +1092,57 @@ body {
     border-radius: 4px;
     margin: 0 auto;
     max-width: 47rem;
+    position: relative;
+    z-index: 2;
 }
 
 .body {
     padding: 2rem 0;
     margin: 0 1rem;
+}
+
+.toc-hint {
+    color: #888;
+    display: inline-block;
+    font-size: 75%;
+    left: 0;
+    padding: 1em 1em 1em 2em;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+.toc-hint .active {
+    border-bottom: 1px dashed;
+}
+
+.toc-hidden-content {
+    color: #888;
+    font-size: 75%;
+    left: 0;
+    opacity: 0;
+    padding-left: 1em;
+    position: fixed;
+    top: 3em;
+    -webkit-transition: opacity 0.1s;
+       -moz-transition: opacity 0.1s;
+         -o-transition: opacity 0.1s;
+            transition: opacity 0.1s;
+    visibility: hidden;
+    z-index: 3;
+}
+
+.toc-hidden-content .inner-padding {
+    background: rgba(186, 186, 186, 0.75);
+    border: 1px solid #999;
+    border-radius: 6px;
+    padding: 1em;
+}
+
+.toc-hint:hover + .toc-hidden-content,
+.toc-hidden-content:hover {
+    opacity: 1;
+    padding-right: 10%;
+    padding-bottom: 10%;
+    visibility: visible;
 }
