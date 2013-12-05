@@ -288,8 +288,12 @@ h5 {
     margin-bottom: 1ex;
 }
 
-p {
+p, span.p {
     text-indent: 1.25em;
+}
+
+span.p {
+    display: block;
 }
 
 pre {
@@ -357,6 +361,7 @@ p .initial {
     font-size: 80%;
 }
 
+span.p.noindent,
 p.noindent {
     text-indent: 0;
 }
@@ -812,10 +817,12 @@ table#bibliography td.label { padding-right: 0.5em; }
     margin: 0;
 }
 
+.foot-content p,
 .footnote p {
     text-indent: 0;
 }
 
+.foot-content p + p,
 .footnote p + p {
     text-indent: 1.25em;
 }
@@ -829,6 +836,45 @@ table#bibliography td.label { padding-right: 0.5em; }
 
 .footnote + .footnote {
     padding-top: 0.5em;
+}
+
+.foot-wrap {
+    margin: -3rem 0 0 1.25rem;
+    position: absolute;
+    right: 1.25rem;
+    opacity: 0.0;
+    visibility: hidden;
+}
+
+.foot-wrap.visible {
+    opacity: 1.0;
+    visibility: visible;
+}
+
+.foot-content .close {
+    background: #a66;
+    border: 1px solid #833;
+    border-radius: 40px;
+    color: white;
+    display: block;
+    height: 16px;
+    position: absolute;
+    right: -8px;
+    text-indent: 0;
+    text-align: center;
+    top: -8px;
+    vertical-align: baseline;
+    width: 16px;
+}
+
+.foot-content {
+    background: #dada88;
+    border: 1px solid #656510;
+    border-radius: 5px;
+    font-size: 85%;
+    max-width: 35rem;
+    padding: 0.5rem;
+    position: relative;
 }
 
 /******************************************************************************/
