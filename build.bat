@@ -19,6 +19,12 @@ exit /b 1
     echo == Preparing PDF ==
     cd %ROOT%\book-src
 
+    git 2> NUL
+    if not %ERRORLEVEL%==9009 (
+        git log -1 --format='\newcommand{\GitCommit}{%H}
+\newcommand{\GitCommitDate}{%ci}' > git-version.tex
+    )
+
     pdflatex %LATEX_KEYS% %MAIN_FILE%
     python %ROOT%\makeindex.py %INDEX_FILES% > %JOBNAME%.ind
     pdflatex %LATEX_KEYS% %MAIN_FILE%
@@ -27,7 +33,7 @@ exit /b 1
 
     echo == Done ==
     move %JOBNAME%.pdf %ROOT%
-    del *.aux *.idx *.ind *.log *.out *.toc
+    del /q *.aux *.idx *.ind *.log *.out *.toc git-version.tex
 goto:eof
 
 :prepare_epub

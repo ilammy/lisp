@@ -37,6 +37,16 @@
 С~полным текстом лицензии вы можете ознакомиться на сайте Creative~Commons:
 \url{http://creativecommons.org/licenses/by-nd/3.0}
 
+\vfill
+
+\begin{center}\footnotesize
+\IfFileExists{git-version.tex}{\input{git-version}
+Коммит Git: \texttt{\GitCommit}.\\
+Дата коммита: \texttt{\GitCommitDate}.\\
+Сборка {\today}}{%
+Сборка {\today} Не из Git-репозитория.}
+\end{center}
+
 \endgroup
 
 \clearpage
