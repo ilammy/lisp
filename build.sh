@@ -11,6 +11,12 @@ function prepare_pdf {
     echo "== Preparing PDF =="
     cd $ROOT/book-src
 
+    if command -v git >/dev/null 2>&1
+    then
+        git log -1 --format='\newcommand{\GitCommit}{%H}
+\newcommand{\GitCommitDate}{%ci}' > git-version.tex
+    fi
+
     pdflatex $LATEX_KEYS $MAIN_FILE
     python $ROOT/makeindex.py $INDEX_FILES > $JOBNAME.ind
     pdflatex $LATEX_KEYS $MAIN_FILE
@@ -19,7 +25,7 @@ function prepare_pdf {
 
     echo "== Done =="
     mv $JOBNAME.pdf $ROOT
-    rm *.aux *.idx *.ind *.log *.out *.toc
+    rm -f *.aux *.idx *.ind *.log *.out *.toc git-version.tex
 }
 
 function prepare_epub {
