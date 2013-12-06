@@ -4,6 +4,7 @@
 <head>
     <title>3 – Переходы и возвраты: продолжения</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -115,14 +116,14 @@
 
 <!--\indexC{prog}-->
 <!--\indexC{goto}-->
-<p>История переходов в Лиспе восходит ко временам <span class="sc">L<span class="c">isp</span> 1.5</span> и формы <code><span class="special">prog</span></code>.
+<span class="p">История переходов в Лиспе восходит ко временам <span class="sc">L<span class="c">isp</span> 1.5</span> и формы <code><span class="special">prog</span></code>.
 Сейчас эта форма считается устаревшей, но раньше на неё возлагались большие
 надежды по переманиванию программистов на Алголе в ряды лисперов, так как
 считалось, что для них было более привычным использование <code>goto</code>. Вместо
 этого оказалось, что данная форма больше влияет на самих лисперов, сталкивая их
-с праведного пути хвостовой рекурсии.<a class="footref" href="zz_footnotes.html#foot3.1"><sup>1</sup></a> Тем не менее, форма <code><span class="special">prog</span></code>
+с праведного пути хвостовой рекурсии.<a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap"><div class="foot-content"><p>Например, сравните стили изложения первого и третьего изданий <span class="cite">[<a href="z1_bibliography.html#wh89">WH89</a>]</span>.</p></div></div> Тем не менее, форма <code><span class="special">prog</span></code>
 достойна рассмотрения, потому как обладает несколькими интересными свойствами.
-Например, вот так с её помощью записывается факториал:</p>
+Например, вот так с её помощью записывается факториал:</span>
 
 <!--\indexC{fact}-->
 <pre>(<span class="special">defun</span> <span class="func">fact</span> (<span class="var">n</span>)     <span class="dialect"><span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span></span>
@@ -415,7 +416,10 @@
 <tr><td>Определение</td> <td>запрещено</td></tr>
 </table>
 
-<p>Перепишем<a class="footref" href="zz_footnotes.html#foot3.2"><sup>2</sup></a> наш пример с деревом на новый лад:</p>
+<span class="p">Перепишем<a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap"><div class="foot-content"><p>Нам пришлось воспользоваться <code><span class="syntax">letrec</span></code>, так как в Scheme
+    запрещено располагать <code><span class="special">define</span></code> сразу внутри
+    <code><span class="special">block</span></code>, а <code>(<span class="syntax">let</span> ()
+    (<span class="special">define</span> ...))</code> писать тоже нельзя из-за <code>()</code>.</p></div></div> наш пример с деревом на новый лад:</span>
 
 <!--\indexCS{find-symbol}{с переходами}-->
 <pre>(<span class="special">define</span> (<span class="func">find-symbol</span> <span class="var">id</span> <span class="var">tree</span>)
@@ -435,14 +439,18 @@
 метки <code><span class="var">find</span></code>.</p>
 
 <!--\indexCS{block}{эффективность}-->
-<p>Компилятор может генерировать для <code><span class="special">block</span></code> очень эффективный код. Грубо
+<span class="p">Компилятор может генерировать для <code><span class="special">block</span></code> очень эффективный код. Грубо
 говоря, всё, что надо сделать <code><span class="special">block</span></code>, — это сохранить высоту стека
 вызовов в соответствующей метке. А <code><span class="special">return-from</span></code> надо лишь положить
 возвращаемое значение <code><span class="hash">#t</span></code> туда, где его ждут (в регистр, например), после
 чего вернуть указатель верхушки стека в положение, сохранённое в метке
 <code><span class="var">find</span></code>. Это всего лишь пара-тройка инструкций, а не поиск среди всех
 доступных меток, который устраивает <code><span class="special">catch</span></code>. Отличие станет более заметным,
-когда мы попробуем реализовать <code><span class="special">catch</span></code><a class="footref" href="zz_footnotes.html#foot3.3"><sup>3</sup></a> с помощью <code><span class="special">block</span></code>:</p>
+когда мы попробуем реализовать <code><span class="special">catch</span></code><a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content"><p>Этот вариант <code><span class="special">catch</span></code>
+    использует <code><span class="special">block</span></code> с меткой
+    <code><span class="var">label</span></code>. Естественно, система макросов должна
+    обеспечивать гигиеничность имён (гарантировать отсутствие коллизий) и для
+    окружения меток.</p></div></div> с помощью <code><span class="special">block</span></code>:</span>
 
 <!--\indexC*{active-catchers}{*active-catchers*}-->
 <!--\indexCS{catch}{с лексическими метками}-->
@@ -472,20 +480,21 @@
       (<span class="special">set!</span> <span class="var">*active-catchers*</span> <span class="var">saved-catchers</span>)
       <span class="var">result</span> ) ) ) )</pre>
 
-<p>Здесь практически вся стоимость использования <code><span class="syntax">catch</span></code>/<code><span class="syntax">throw</span></code>
-сосредоточена в вызове <code><span class="func">assv</span></code><a class="footref" href="zz_footnotes.html#foot3.4"><sup>4</sup></a> при раскрытии макроса <code><span class="syntax">throw</span></code>.
+<span class="p">Здесь практически вся стоимость использования <code><span class="syntax">catch</span></code>/<code><span class="syntax">throw</span></code>
+сосредоточена в вызове <code><span class="func">assv</span></code><a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>Кстати, в этом случае равенство меток устанавливается предикатом
+    <code><span class="func">eqv?</span></code>.</p></div></div> при раскрытии макроса <code><span class="syntax">throw</span></code>.
 Рассмотрим, как работает эта реализация. Глобальная переменная (тут она названа
 <code><span class="var">*active-catchers*</span></code>) хранит все активные <code><span class="special">catch</span></code>-формы (выполнение которых
 ещё не завершилось). Переменная обновляется при выходе из <code><span class="syntax">catch</span></code> (как
 нормальном, так и при помощи <code><span class="syntax">throw</span></code>). Значением <code><span class="var">*active-catchers*</span></code>
 является А-список пар «метка — продолжение». Этот список фактически
 соответствует динамическому окружению, которым пользовались исходные <code><span class="special">catch</span></code>
-и <code><span class="special">throw</span></code> для обмена информацией о метках.</p>
+и <code><span class="special">throw</span></code> для обмена информацией о метках.</span>
 
 
 <h3 id="escape/forms/ssect:dynamic"><span class="wrap"><span class="seq">3.1.3.</span><span class="title">Метки с динамическим временем жизни</span></span></h3>
 
-<p>Однако, эта эмуляция не совсем хороша, так как если <code><span class="syntax">catch</span></code> окажется внутри
+<span class="p">Однако, эта эмуляция не совсем хороша, так как если <code><span class="syntax">catch</span></code> окажется внутри
 <code><span class="special">block</span></code>, то значение переменной <code><span class="var">*active-catchers*</span></code> может быть искажено.
 Эмулировать неестественный для языка синтаксис непросто <span class="cite">[<a href="z1_bibliography.html#fel90">Fel90</a>,
 <a href="z1_bibliography.html#bak92c">Bak92c</a>]</span>, так
@@ -493,7 +502,11 @@
 в единоличное пользование (вроде <code><span class="var">*active-catchers*</span></code>). Позже мы покажем, как
 подружить <code><span class="syntax">catch</span></code> и <code><span class="special">block</span></code>, но уже с помощью специального приспособления:
 <code><span class="special">unwind-protect</span></code>.<a class="footref"
-href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
+href="#"><sup>5</sup></a><div class="foot-wrap"><div class="foot-content"><p>Альтернативное решение: эмулировать <code><span class="special">block</span></code>
+    и <code><span class="special">return-from</span></code> с помощью самих себя таким образом,
+    чтобы они учитывали <code><span class="syntax">catch</span></code> и
+    <code><span class="syntax">throw</span></code>. Это сложновато реализовать прямиком в
+    интерпретаторе, но вполне возможно.</p></div></div></span>
 
 <!--\indexR{динамическое связывание}-->
 <!--\indexR{продолжения (continuations)!время жизни!динамическое}-->
@@ -637,17 +650,19 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
                         (<span class="func">not</span> <span class="var">flag</span>) ) ) ) ) )
   (<span class="func">loop</span> <span class="var">L</span> (<span class="func">cons</span> '<span class="var">ignore</span> <span class="var">L</span>) <span class="hash">#t</span>) )</pre>
 
-<p>Функция <code><span class="func">better-map</span></code> интересна тем, что в отличие от <code><span class="func">map</span></code> она не зависает
+<span class="p">Функция <code><span class="func">better-map</span></code> интересна тем, что в отличие от <code><span class="func">map</span></code> она не зависает
 намертво на замкнутых списках (при правильном использовании). Если
 <code>(<span class="func">hack-and-return-list</span>)</code> возвращает следующий список:
-<code><span class="hash">#1=</span>((<span class="var">foo</span> . <span class="var">hack</span>) . <span class="hash">#1#</span>)</code><a class="footref" href="zz_footnotes.html#foot3.6"><sup>6</sup></a>, то <code><span class="func">better-map</span></code> прыгнет на
+<code><span class="hash">#1=</span>((<span class="var">foo</span> . <span class="var">hack</span>) . <span class="hash">#1#</span>)</code><a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Здесь используется нотация <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> для рекурсивных
+    структур данных. Такой список в Scheme возвращает выражение
+    <code>(<span class="syntax">let</span> ((<span class="var">p</span> (<span class="func">list</span> (<span class="func">cons</span> '<span class="var">foo</span> '<span class="var">hack</span>)))) (<span class="func">set-cdr!</span> <span class="var">p</span> <span class="var">p</span>) <span class="var">p</span>)</code>.</p></div></div>, то <code><span class="func">better-map</span></code> прыгнет на
 ближайшую метку <code><span class="var">not-a-pair</span></code> и таким образом избежит бесконечного цикла. Но
 вот незадача: замыканию, переданному в <code><span class="func">better-map</span></code>, эта метка тоже нужна.
 Конечно, если в документации к <code><span class="func">better-map</span></code> будет написано, что она
 использует такую метку, то конфликт имён можно устранить, использовав
 какое-нибудь другое имя для своих целей. Благо, в случае <code><span class="special">catch</span></code> можно
 использовать что угодно в качестве метки, в частности, список, собранный
-специально для этого случая:</p>
+специально для этого случая:</span>
 
 <pre>(<span class="syntax">let</span> ((<span class="var">tag</span> (<span class="func">list</span> '<span class="var">not-a-pair</span>)))
   (<span class="special">catch</span> <span class="var">tag</span>
@@ -709,11 +724,12 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 
 <pre><sub><i>k</i></sub>(<span class="func">call/cc</span> ...)</pre>
 
-<p>Теперь, когда мы захватили <i>k</i>, его нужно как-то передать пользователю.
+<span class="p">Теперь, когда мы захватили <i>k</i>, его нужно как-то передать пользователю.
 Но как? Очевидно, нельзя вернуть <i>k</i> как значение <code><span class="func">call/cc</span></code>, потому что
 это бессмысленно. Оно ожидается внутри какого-то вычисления, так что можно это
-вычисление обернуть в унарную функцию<a class="footref" href="zz_footnotes.html#foot3.7"><sup>7</sup></a>, принимающую <i>k</i>, которую и передать внутрь
-<code><span class="func">call/cc</span></code>:</p>
+вычисление обернуть в унарную функцию<a class="footref" href="#"><sup>7</sup></a><div class="foot-wrap"><div class="foot-content"><p>В Scheme достаточно, чтобы функция могла принять как минимум один аргумент.
+    То есть с <code>(<span class="func">call/cc</span> <span class="var">list</span>)</code> никаких проблем нет.</p></div></div>, принимающую <i>k</i>, которую и передать внутрь
+<code><span class="func">call/cc</span></code>:</span>
 
 <pre><sub><i>k</i></sub>(<span class="func">call/cc</span> (<span class="special">lambda</span> (<span class="var">k</span>) ...))</pre>
 
@@ -830,11 +846,13 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 
 <!--\indexR{возвращаемые значения!многократно}-->
 <!--\indexR{продолжения (continuations)!множественные возвраты}-->
-<p>Если же продолжения живут неограниченно долго, то всё гораздо усложняется.
+<span class="p">Если же продолжения живут неограниченно долго, то всё гораздо усложняется.
 Вспомните форму <code>(<span class="func">call/cc</span> ...)</code> в примере с факториалом: она фактически
 возвращает результат несколько раз. Если допускать такую возможность
-(многократного возврата значений<a class="footref" href="zz_footnotes.html#foot3.8"><sup>8</sup></a>), то уже не получится считать, что выполнение
-функции окончено, когда она вернула значение.</p>
+(многократного возврата значений<a class="footref" href="#"><sup>8</sup></a><div class="foot-wrap"><div class="foot-content"><p>Здесь ударение стоит на слове «<em>возврат</em>», а не «значений».
+    Функция <code><span class="func">values</span></code> не имеет никакого
+    отношения к <code><span class="func">call/cc</span></code>.</p></div></div>), то уже не получится считать, что выполнение
+функции окончено, когда она вернула значение.</span>
 
 <!--\indexR{память!и \protect<code><span class="func">call/cc</span></code>}-->
 <p><code><span class="func">call/cc</span></code> могущественна и в некотором смысле может манипулировать временем.
@@ -888,10 +906,15 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 <!--\indexC{unwind-protect}-->
 <!--\indexC{car}-->
 <!--\indexC{cdr}-->
-<p>Осталось рассмотреть ещё один эффект, относящийся к продолжениям. Связан он
+<span class="p">Осталось рассмотреть ещё один эффект, относящийся к продолжениям. Связан он
 со специальной формой <code><span class="special">unwind-protect</span></code>.
-Названием она обязана принципу первой реализации<a class="footref" href="zz_footnotes.html#foot3.9"><sup>9</sup></a> и задуманному функциональному назначению. Вот синтаксис этой
-формы:</p>
+Названием она обязана принципу первой реализации<a class="footref" href="#"><sup>9</sup></a><div class="foot-wrap"><div class="foot-content"><p>Тут та же ситуация, что и с <code><span class="func">car</span></code> и
+    <code><span class="func">cdr</span></code>, которые являются акронимами от «contents of the
+    address register» и «contents of the decrement register» — с помощью данных
+    примитивов обрабатывались точечные пары в оригинальной реализации Лиспа для
+    IBM 704. Это не имеет ничего общего с текущими реализациями, но названия
+    приклеились.</p></div></div> и задуманному функциональному назначению. Вот синтаксис этой
+формы:</span>
 
 <pre>(<span class="special">unwind-protect</span> <i>форма</i>
   <i>формы-уборщики</i>... )</pre>
@@ -944,11 +967,14 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 <code><span class="syntax">throw</span></code>, так что её состояние всё равно можно исказить (случайно или
 намеренно).</p>
 
-<p>Форма <code><span class="special">unwind-protect</span></code> обеспечивает защиту системы от противоречий, выполняя
+<span class="p">Форма <code><span class="special">unwind-protect</span></code> обеспечивает защиту системы от противоречий, выполняя
 определённые действия после завершения вычислений. Следовательно, эта форма
 обязана знать, когда именно они завершаются. Но в присутствии продолжений
 с неограниченным временем жизни <code><span class="special">unwind-protect</span></code> не может легко ответить на
-этот вопрос<a class="footref" href="zz_footnotes.html#foot3.10"><sup>10</sup></a>.</p>
+этот вопрос<a class="footref" href="#"><sup>10</sup></a><div class="foot-wrap"><div class="foot-content"><p>Правильно работающий аналог <code><span class="special">unwind-protect</span></code> для
+    Scheme — <code><span class="func">dynamic-wind</span></code>, — был описан ещё в
+    <span class="cite">[<a href="z1_bibliography.html#fwh92">FWH92</a>]</span>;
+    см. также <span class="cite">[<a href="z1_bibliography.html#que93c">Que93c</a>]</span>.</p></div></div>.</span>
 
 <p>Как мы уже не раз говорили, семантика управляющих структур далека от точного
 определения. Рассмотрим лишь несколько примеров, где нельзя однозначно сказать,
@@ -1297,12 +1323,19 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
             (<span class="func">if-cont-r</span> <span class="var">k</span>)
             (<span class="func">if-cont-k</span> <span class="var">k</span>) ) )</pre>
 
-<p>Форма вначале вычисляет условие <code><span class="var">ec</span></code> в своём окружении <code><span class="var">r</span></code>, но с новым
+<span class="p">Форма вначале вычисляет условие <code><span class="var">ec</span></code> в своём окружении <code><span class="var">r</span></code>, но с новым
 продолжением. Как только мы заканчиваем вычислять условие, результат передаётся
 <code><span class="func">resume</span></code>, которая вызывает специализацию для нашего класса продолжений.
 В этом продолжении мы выполняем собственно выбор, вычисляем одну их сохранённых
 веток в сохранённом окружении и передаём результат сохранённому продолжению всей
-условной формы.<a class="footref" href="zz_footnotes.html#foot3.11"><sup>11</sup></a></p>
+условной формы.<a class="footref" href="#"><sup>11</sup></a><div class="foot-wrap"><div class="foot-content"><p>С точки зрения реализации можно считать, что
+    <code><span class="func">make-if-cont</span></code> кладёт в стек
+    <code><span class="var">et</span></code> и <code><span class="var">ef</span></code>,
+    а также <code><span class="var">r</span></code>; под ними
+    в стеке лежат аналогичные группы выражений и окружений, которые фактически и
+    есть ничем иным, как продолжением <code><span class="var">k</span></code>.
+    А вызовы вроде <code>(<span class="func">if-cont-et</span> <span class="var">k</span>)</code>
+    лишь снимают с верхушки стека нужные данные.</p></div></div></span>
 
 
 <h3 id="escape/actors/ssect:sequence"><span class="wrap"><span class="seq">3.2.5.</span><span class="title">Последовательность</span></span></h3>
@@ -1327,13 +1360,19 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
                   (<span class="func">begin-cont-r</span> <span class="var">k</span>)
                   (<span class="func">begin-cont-k</span> <span class="var">k</span>) ) )</pre>
 
-<p>Случаи <code>(<span class="special">begin</span>)</code> и <code>(<span class="special">begin</span> <span class="math"><span class="ord var">π</span></span>)</code> тривиальны.
+<span class="p">Случаи <code>(<span class="special">begin</span>)</code> и <code>(<span class="special">begin</span> <span class="math"><span class="ord var">π</span></span>)</code> тривиальны.
 Если же <code><span class="special">begin</span></code>
 передано больше выражений, то вычисление первого из них продолжается
 <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> <span class="var">e*</span> <span class="var">r</span>)</code>. Это продолжение принимает значение
 <code><span class="var">v</span></code> с помощью <code><span class="func">resume</span></code>,
 игнорирует его и продолжает оставшиеся вычисления
-в том же окружении и с тем же продолжением.<a class="footref" href="zz_footnotes.html#foot3.12"><sup>12</sup></a></p>
+в том же окружении и с тем же продолжением.<a class="footref" href="#"><sup>12</sup></a><div class="foot-wrap"><div class="foot-content"><p>Внимательный читатель наверняка заметил странную форму
+    <code>(<span class="func">cdr</span> (<span class="func">begin-cont-e*</span> <span class="var">k</span>))</code> в методе
+    <code><span class="func">resume</span></code>. Конечно, мы могли бы отбросить уже
+    вычисленное выражение ещё в <code><span class="func">evaluate-begin</span></code>:
+    <code>(<span class="func">make-begin-cont</span> <span class="var">k</span> (<span class="func">cdr</span> <span class="var">e*</span>) <span class="var">r</span>)</code>, и получить тот же
+    результат. Причина такого решения в том, что если случится ошибка, то у нас
+    будет на руках её источник.</p></div></div></span>
 
 
 <h3 id="escape/actors/ssect:variables"><span class="wrap"><span class="seq">3.2.6.</span><span class="title">Окружения</span></span></h3>
@@ -1580,13 +1619,15 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 (<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="var">cons</span> <span class="num">2</span>)
 (<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)</pre>
 
-<p>Создаваемые примитивные функции должны вызываться той же функцией <code><span class="func">invoke</span></code>,
+<span class="p">Создаваемые примитивные функции должны вызываться той же функцией <code><span class="func">invoke</span></code>,
 которая обрабатывает обычные функции. Каждый примитив имеет два поля. Первое из
 них служит для упрощения отладки: оно хранит имя примитива. Естественно, это
 лишь подсказка, так как ничто не мешает в дальнейшем связать один и тот же
-примитив с разными именами.<a class="footref" href="zz_footnotes.html#foot3.13"><sup>13</sup></a> Второе поле хранит «адрес» примитива, ссылку на соответствующую
+примитив с разными именами.<a class="footref" href="#"><sup>13</sup></a><div class="foot-wrap"><div class="foot-content"><p>Эта подсказка позволяет также копировать примитивы по значению: выражение
+    <code>(<span class="special">begin</span> (<span class="special">set!</span> <span class="var">foo</span> <span class="var">car</span>) (<span class="special">set!</span> <span class="var">car</span> <span class="num">3</span>) <span class="var">foo</span>)</code>
+    возвращает <code><span class="hash">#&lt;car&gt;</span></code> — собственное имя примитива, связанного с глобальной переменной.</p></div></div> Второе поле хранит «адрес» примитива, ссылку на соответствующую
 функцию языка реализации интерпретатора. В итоге примитивы вызываются с помощью
-<code><span class="func">invoke</span></code> следующим образом:</p>
+<code><span class="func">invoke</span></code> следующим образом:</span>
 
 <!--\indexCS{invoke}{<code><span class="func">primitive</span></code>}-->
 <pre>(<span class="syntax">define-method</span> (<span class="func">invoke</span> (<span class="var">f</span> <span class="class">primitive</span>) <span class="var">v*</span> <span class="var">r</span> <span class="var">k</span>)
@@ -2155,7 +2196,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
   (<span class="func">divide</span> <span class="var">p</span> <span class="var">q</span> (<span class="special">lambda</span> (<span class="var">quotient</span> <span class="var">remainder</span>)
                 (<span class="func">=</span> <span class="var">p</span> (<span class="func">+</span> (<span class="func">*</span> <span class="var">quotient</span> <span class="var">q</span>) <span class="var">remainder</span>)) )) )</pre>
 
-<p>Менее тривиальный пример — вычисление коэффициентов Безу.<a class="footref" href="zz_footnotes.html#foot3.14"><sup>14</sup></a> Соотношение Безу утверждает, что для любых целых чисел
+<span class="p">Менее тривиальный пример — вычисление коэффициентов Безу.<a class="footref" href="#"><sup>14</sup></a><div class="foot-wrap"><div class="foot-content"><p>Фух! Наконец-то мне удалось опубликовать эту функцию! Она с 1981 года валяется у меня без дела.</p></div></div> Соотношение Безу утверждает, что для любых целых чисел
 <span class="math"><span class="ord var">n</span></span>
 и <span class="math"><span class="ord var">p</span></span>
 можно найти такую пару целых <span class="math"><span class="ord var">u</span></span> и
@@ -2163,7 +2204,7 @@ href="zz_footnotes.html#foot3.5"><sup>5</sup></a></p>
 <span class="math"><span class="ord var">u</span><span class="ord var">n</span><span class="binop">+</span><span class="ord var">v</span><span class="ord var">p</span><span class="rel">=</span><span class="ord func">НОД</span><span class="open">(</span><span class="ord var">n</span><span class="punct">,</span><span class="ord var">p</span><span class="close">)</span></span>.
 Для вычисления коэффициентов <span class="math"><span class="ord var">u</span></span> и
 <span class="math"><span class="ord var">v</span></span> можно использовать расширенный алгоритм
-Евклида.</p>
+Евклида.</span>
 
 <!--\indexC{bezout}-->
 <pre>(<span class="special">define</span> (<span class="func">bezout</span> <span class="var">n</span> <span class="var">p</span> <span class="var">k</span>)  <span class="comment">; пусть <span class="math"><span class="ord var">n</span><span class="rel">&gt;</span><span class="ord var">p</span></span></span>

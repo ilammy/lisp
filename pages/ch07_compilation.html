@@ -4,6 +4,7 @@
 <head>
     <title>7 – Компиляция</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -832,8 +833,10 @@
   <li>зная текущее значение счётчика команд и помня сохранённое ранее,
     вычислить величину смещения для <code><span class="func">GOTO</span></code>;</li>
 
-  <li>записать это число на зарезервированное<a class="footref"
-    href="zz_footnotes.html#foot7.1"><sup>1</sup></a> внутри
+  <li>записать это число на зарезервированное<a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap"><div class="foot-content"><p>Вот здесь могут возникнуть некоторые проблемы, потому что смещение может оказаться
+    как меньшим 256, так и превышать это значение, то есть занимать
+    один или два байта. Это может оказаться причиной определённых
+    потерь производительности.</p></div></div> внутри
     <code><span class="func">GOTO</span></code> место.</li>
 </ol>
 
@@ -1146,17 +1149,30 @@
 <!--\indexC{LAMBDA-PARAMETERS-LIMIT}-->
 <!--\indexC{check-byte}-->
 <!--\indexR{функции!максимальное количество аргументов}-->
-<p>Пожалуй, давайте начнём с <code><span class="func">SHALLOW-ARGUMENT-REF</span></code>. Эта инструкция имеет один
+<span class="p">Пожалуй, давайте начнём с <code><span class="func">SHALLOW-ARGUMENT-REF</span></code>. Эта инструкция имеет один
 операнд: <span class="math"><span class="ord var">j</span></span>, а её действие заключается в том, что регистр <code><span class="var">*val*</span></code> получает
 значение <span class="math"><span class="ord var">j</span></span>-й локальной переменной текущей записи активации, хранящейся
 в регистре <code><span class="var">*env*</span></code>. Здесь можно ввести специализации для случаев <span class="math"><span class="ord var">j</span><span class="rel">=</span><span class="ord num">0</span><span class="punct">,</span><span class="ord num">1</span><span class="punct">,</span><span class="ord num">2</span><span class="punct">,</span><span class="ord num">3</span></span>, сделав каждый из них отдельной инструкцией со своим кодом. Также для
-простоты можно ввести ограничение<a class="footref" href="zz_footnotes.html#foot7.2"><sup>2</sup></a> в 256 аргументов
+простоты можно ввести ограничение<a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap"><div class="foot-content"><p>В <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> даже есть специальная
+    константа <code><span class="func">LAMBDA-PARAMETERS-LIMIT</span></code>,
+    хранящая максимально возможно количество
+    аргументов функции. По стандарту оно не может быть меньше 50. Стандарт Scheme
+    ничего не говорит о подобных ограничениях, но его молчание можно толковать
+    по-разному.</p><p>Как бы то ни было, вопрос представления чисел интересен сам по
+    себе. В большинстве систем, поддерживающих длинную арифметику, максимально
+    представимое число немного меньше, чем <span class="math">256<sup><span class="ord num">2<sup><span class="ord num">32</span></sup></span></sup></span>.
+    (Чуть-чуть не хватило до бесконечности.) Хитрость в том, что перед длинным
+    числом записывается его длина в байтах. Аналогичное решение можно применить и здесь.</p></div></div> в 256 аргументов
 функции — это позволит всегда кодировать индекс аргумента одним-единственным
-байтом. Функция <code><span class="func">check-byte</span></code><a class="footref" href="zz_footnotes.html#foot7.3"><sup>3</sup></a> убеждается в соблюдении этого
+байтом. Функция <code><span class="func">check-byte</span></code><a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content"><p>В последующих определениях мы не будем упоминать
+    <code><span class="func">check-byte</span></code> ради краткости.</p></div></div> убеждается в соблюдении этого
 ограничения. Итак, вот определение <code><span class="func">SHALLOW-ARGUMENT-REF</span></code>. Эта инструкция
-является генератором байт-кодов — она возвращает список<a class="footref" href="zz_footnotes.html#foot7.4"><sup>4</sup></a> байтов,
+является генератором байт-кодов — она возвращает список<a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>Да-да, <code><span class="func">list</span></code>,
+    <code><span class="func">append</span></code>, неэффективно,
+    раздел <a href="ch07_compilation.html#compilation/lang-and-target/par:slowpoke">7.2</a>.
+    Извините.</p></div></div> байтов,
 соответствующих кодируемой инструкции. Этот список состоит из одного или двух
-байтов, в зависимости от операнда.</p>
+байтов, в зависимости от операнда.</span>
 
 <!--\indexCS{SHALLOW-ARGUMENT-REF}{специализация}-->
 <!--\indexC{check-byte}-->
@@ -1170,7 +1186,8 @@
   (<span class="syntax">unless</span> (<span class="func">&lt;=</span> <span class="num">0</span> <span class="var">j</span> <span class="num">255</span>)
     (<span class="func">static-wrong</span> <span class="string">"Cannot pack a number within a byte"</span> <span class="var">j</span>) ) )</pre>
 
-<p>А вот определения собственно пяти<a class="footref" href="zz_footnotes.html#foot7.5"><sup>5</sup></a> специализаций:</p>
+<span class="p">А вот определения собственно пяти<a class="footref" href="#"><sup>5</sup></a><div class="foot-wrap"><div class="foot-content"><p>Инструкции с кодом <code><span class="num">0</span></code> не существует —
+    бедный ноль и без того особенный.</p></div></div> специализаций:</span>
 
 <pre>(<span class="syntax">define-instruction</span> (<span class="func">SHALLOW-ARGUMENT-REF0</span>) <span class="num">1</span>
   (<span class="special">set!</span> <span class="var">*val*</span> (<span class="func">activation-frame-argument</span> <span class="var">*env*</span> <span class="num">0</span>)) )
@@ -1200,8 +1217,12 @@
 
 <!--\indexCS{DEEP-ARGUMENT-REF}{специализация}-->
 <!--\indexCS{SET-DEEP-ARGUMENT"!}{специализация}-->
-<p>Что касается свободных переменных, то мы предполагаем<a class="footref" href="zz_footnotes.html#foot7.6"><sup>6</sup></a>, что их индексы равновероятны, поэтому для них специализаций
-не будет:</p>
+<span class="p">Что касается свободных переменных, то мы предполагаем<a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Вообще-то это не совсем верное предположение, ведь мы только что убедились в том,
+    что <i>j</i> чаще
+    всего оказывается меньше четырёх. Но так как свободные переменные используются
+    значительно реже локальных и глобальных, то можно не особо спешить с ускорением
+    доступа к ним.</p></div></div>, что их индексы равновероятны, поэтому для них специализаций
+не будет:</span>
 
 <pre>(<span class="special">define</span> (<span class="func">DEEP-ARGUMENT-REF</span> <span class="var">i</span> <span class="var">j</span>) (<span class="func">list</span> <span class="num">6</span> <span class="var">i</span> <span class="var">j</span>))
 (<span class="special">define</span> (<span class="func">SET-DEEP-ARGUMENT!</span> <span class="var">i</span> <span class="var">j</span>) (<span class="func">list</span> <span class="num">26</span> <span class="var">i</span> <span class="var">j</span>))
@@ -1275,14 +1296,14 @@
 <pre>(<span class="special">define</span> (<span class="func">quotation-fetch</span> <span class="var">i</span>)
   (<span class="func">vector-ref</span> <span class="var">*constants*</span> <span class="var">i</span>) )</pre>
 
-<p>Комбинатор <code><span class="func">CONSTANT</span></code> собирает все цитаты в переменной <code><span class="var">*quotations*</span></code>
+<span class="p">Комбинатор <code><span class="func">CONSTANT</span></code> собирает все цитаты в переменной <code><span class="var">*quotations*</span></code>
 во время компиляции. Перед исполнением программы все используемые цитаты
 загружаются в регистр <code><span class="var">*constants*</span></code>. Цитаты не равновероятны: некоторые из
 них используются чаще других, поэтому им будут выданы собственные инструкции.
 Часть из них по очевидным причинам совпадает с предопределёнными константами
 вроде <code><span class="func">PREDEFINED0</span></code>. Наконец, мы предположим, что цитировать напрямую
 в машинном коде можно только целые числа от 0 до 255, остальные будут на общих
-правах размещаться в <code><span class="var">*constants*</span></code>.<a class="footref" href="zz_footnotes.html#foot7.7"><sup>7</sup></a></p>
+правах размещаться в <code><span class="var">*constants*</span></code>.<a class="footref" href="#"><sup>7</sup></a><div class="foot-wrap"><div class="foot-content"><p>Это досадно, но где-то же должна проходить граница между обычными числами и длинными.</p></div></div></span>
 
 <!--\indexCS{CONSTANT}{специализация}-->
 <!--\indexC{SHORT-NUMBER}-->
@@ -1316,14 +1337,19 @@
 <h3 id="compilation/instruction/ssect:jumps"><span class="wrap"><span class="seq">7.4.3.</span><span class="title">Переходы</span></span></h3>
 
 <!--\indexR{переходы (jumps)!произвольная дальность}-->
-<p>Если вы думаете, что расставленные то тут, то там ограничения чересчур суровы,
+<span class="p">Если вы думаете, что расставленные то тут, то там ограничения чересчур суровы,
 тогда этот раздел для вас. Очевидно, что не стоит ограничивать
 <code><span class="func">GOTO</span></code> или
-<code><span class="func">JUMP-FORWARD</span></code> прыжками максимум на 256 байтов вперёд<a class="footref" href="zz_footnotes.html#foot7.8"><sup>8</sup></a>, так как код без проблем может превысить эти размеры. Поэтому мы
+<code><span class="func">JUMP-FORWARD</span></code> прыжками максимум на 256 байтов вперёд<a class="footref" href="#"><sup>8</sup></a><div class="foot-wrap"><div class="foot-content"><p>На некоторых старых машинах, основанных на процессоре i8086, такое ограничение действительно
+    существовало.</p></div></div>, так как код без проблем может превысить эти размеры. Поэтому мы
 будем различать случаи, когда длина прыжка записывается одним или двумя байтами.
-Введём две отдельные инструкции<a class="footref" href="zz_footnotes.html#foot7.9"><sup>9</sup></a>: <code><span class="func">SHORT-GOTO</span></code> и <code><span class="func">LONG-GOTO</span></code>. Думаем, этого будет
+Введём две отдельные инструкции<a class="footref" href="#"><sup>9</sup></a><div class="foot-wrap"><div class="foot-content"><p>Очевидно, что подобное разделение на <code>SHORT</code>- и
+    <code>LONG</code>-версию может быть применено, например, к
+    <code><span class="func">GLOBAL-REF</span></code>
+    с компанией, чтобы количество изменяемых глобальных переменных больше не было
+    ограничено 256-ю.</p></div></div>: <code><span class="func">SHORT-GOTO</span></code> и <code><span class="func">LONG-GOTO</span></code>. Думаем, этого будет
 достаточно на время; наш компилятор пока не метит в олимпийские чемпионы, чтобы
-прыгать дальше 64 килобайт.</p>
+прыгать дальше 64 килобайт.</span>
 
 <!--\indexCS{GOTO}{специализация}-->
 <!--\indexCS{JUMP-FALSE}{специализация}-->
@@ -1749,12 +1775,15 @@
 <!--\indexR{стек!контекст исполнения}-->
 <!--\indexR{контекст вычислений}-->
 <!--\indexR{вычисления!контекст}-->
-<p>Контекст исполнения программы — это стек и ничего, кроме стека.
+<span class="p">Контекст исполнения программы — это стек и ничего, кроме стека.
 Действительно, регистры <code><span class="var">*fun*</span></code>, <code><span class="var">*arg1*</span></code> и <code><span class="var">*arg2*</span></code> используются лишь для
 хранения промежуточных результатов вычислений, их значения лишены смысла между
-выражениями компилируемого языка. (Нельзя<a class="footref" href="zz_footnotes.html#foot7.10"><sup>10</sup></a> вызвать <code><span class="func">call/cc</span></code> или
+выражениями компилируемого языка. (Нельзя<a class="footref" href="#"><sup>10</sup></a><div class="foot-wrap"><div class="foot-content"><p>Говоря в общем, это всё же возможно при обработке асинхронных вызовов вроде сигналов UNIX.
+    В таком случае, очевидно, следует использовать время от времени проверяемый флаг, как
+    в <span class="cite">[<a href="z1_bibliography.html#dev85">Dev85</a>]</span>,
+    или иной механизм синхронизации.</p></div></div> вызвать <code><span class="func">call/cc</span></code> или
 что-нибудь ещё во время процесса обработки вызова функции, когда эти регистры
-используются.)</p>
+используются.)</span>
 
 <p>Регистр <code><span class="var">*val*</span></code> используется для передачи значений самим продолжениям, так
 что тут нечего сохранять. Регистр <code><span class="var">*env*</span></code> тоже бессмысленно
@@ -2915,7 +2944,7 @@
 
 <!--\indexC{show-exception}-->
 <!--\indexR{дескрипторы!исключений}-->
-<p>Прежде всего, конечно же, необходимо прочитать файл с загружаемой программой.
+<span class="p">Прежде всего, конечно же, необходимо прочитать файл с загружаемой программой.
 Входной порт закрывается сразу же, как становится ненужным. Далее, подобно
 <code><span class="func">run-machine</span></code>, инициализируются переменные состояния машины. После
 установки терминального обработчика исключений в стек заталкиваются точки входа
@@ -2924,10 +2953,10 @@
 исключений останавливает исполнение программы при возникновении исключительной
 ситуации; для этого захватывается продолжение функции <code><span class="func">run-application</span></code> и
 сохраняется в переменной <code><span class="var">*exit*</span></code>. Функция <code><span class="func">show-exception</span></code> отвечает за
-вывод понятных и выразительных<a class="footref" href="zz_footnotes#foot7.11"><sup>11</sup></a> сообщений об ошибках на основе дескриптора исключения, находящегося
+вывод понятных и выразительных<a class="footref" href="#"><sup>11</sup></a><div class="foot-wrap"><div class="foot-content"><p>Вроде <code><span class="string">"Bus error: core not dumped"</span></code>.</p></div></div> сообщений об ошибках на основе дескриптора исключения, находящегося
 в тот момент в регистре <code><span class="var">*val*</span></code>. Остаётся только не забыть об инструкции
 <code><span class="func">RETURN</span></code> в конце каждого объектного файла, которая обеспечивает передачу
-управления следующему файлу в цепочке.</p>
+управления следующему файлу в цепочке.</span>
 
 <!--\indexR{стек!обработка переполнения}-->
 <p>Функция <code><span class="func">run-application</span></code> принимает максимальный размер стека как аргумент.

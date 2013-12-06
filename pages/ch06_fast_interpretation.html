@@ -4,6 +4,7 @@
 <head>
     <title>6 – Быстрая интерпретация</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -478,12 +479,13 @@
                   (<span class="func">wrong</span> <span class="string">"Not a function"</span> <span class="var">f</span>) ) )) ) ) )</pre>
 
 <!--\indexR{записи активации!момент создания}-->
-<p id="fast/fast/begin/application/par:call/cc">В наших интересах выполнить как
+<span class="p" id="fast/fast/begin/application/par:call/cc">В наших интересах выполнить как
 можно больше вычислений на этапе
-предобработки.<a class="footref" href="zz_footnotes.html#foot6.1"><sup>1</sup></a> Например, определить
+предобработки.<a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap"><div class="foot-content"><p>Именно ради этого разработчики языков программирования стараются
+    сделать как можно больше вещей доступными статически.</p></div></div> Например, определить
 размер необходимой записи активации. Сейчас это сделать элементарно, зная длину
 списка аргументов. В противоположность этому, гораздо сложнее сказать,
-<em>когда</em> создавать запись. Есть два возможных момента времени:</p>
+<em>когда</em> создавать запись. Есть два возможных момента времени:</span>
 
 <ol>
   <li>Создавать запись активации до вычисления аргументов. В этом
@@ -497,7 +499,7 @@
 <!--\indexR{записи активации!и call/cc@и \protect<code><span class="func">call/cc</span></code>}-->
 <!--\indexR{продолжения (continuations)!множественные возвраты}-->
 <!--\indexR{возвращаемые значения!многократно}-->
-<p id="fast/fast/begin/application/par:act-rec-before">Первый вариант кажется более эффективным,
+<span class="p" id="fast/fast/begin/application/par:act-rec-before">Первый вариант кажется более эффективным,
 так как потребляет меньше памяти. К сожалению, в Scheme есть
 <code><span class="func">call/cc</span></code>, из-за которой этот вариант может
 работать неверно. Он работает правильно только в Лиспе. Причина лежит в том,
@@ -508,7 +510,10 @@
 продолжения будут пользоваться физически одной и той же записью, — а ведь каждый вызов функции
 должен иметь свою собственную. Для пояснения проблемы рассмотрим следующий
 пример. Ожидается, что эта программа вернёт <code>(<span class="num">2</span> <span class="num">1</span>)</code>, но фактически она
-возвращает <code>(<span class="num">2</span> <span class="num">2</span>)</code> в случае разделяемых записей активаций.<a class="footref" href="zz_footnotes.html#foot6.2"><sup>2</sup></a></p>
+возвращает <code>(<span class="num">2</span> <span class="num">2</span>)</code> в случае разделяемых записей активаций.<a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap"><div class="foot-content"><p>Мануэль Серрано (Manuel Serrano) обнаружил, что данная программа зависит от
+    порядка вычисления аргументов: форма <code><span class="func">cons</span></code>
+    должна вычисляться слева направо.
+    Поэтому и используется <code><span class="syntax">let</span></code>.</p></div></div></span>
 
 
 <pre>(<span class="syntax">let</span> ((<span class="var">k</span> '<span class="var">wait</span>)
@@ -659,12 +664,13 @@
     (<span class="special">set!</span> <span class="var">g.init</span> (<span class="func">cons</span> (<span class="func">cons</span> <span class="var">n</span> `(<span class="var">predefined</span> . ,<span class="var">level</span>)) <span class="var">g.init</span>))
     <span class="var">level</span> ) )</pre>
 
-<p>Окружения <code><span class="var">g.current</span></code> и <code><span class="var">g.init</span></code> содержат лишь адреса, собственно значения
+<span class="p">Окружения <code><span class="var">g.current</span></code> и <code><span class="var">g.init</span></code> содержат лишь адреса, собственно значения
 будут располагаться в специально отведённом месте для глобальных переменных —
 двух векторах, доступных посредством переменных <code><span class="var">sg.current</span></code> и <code><span class="var">sg.init</span></code>.
 Префикс <code>s</code> здесь потому, что данные векторы — это всё же кусочек памяти.
-Теперь определим эти контейнеры<a class="footref" href="zz_footnotes.html#foot6.3"><sup>3</sup></a> и функции-аксессоры к ним.
-(Конечно, без <code><span class="func">predefined-update!</span></code>, так как примитивы неизменяемы.)</p>
+Теперь определим эти контейнеры<a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content"><p>Для простоты количество глобальных переменных пока что ограничено одной сотней.
+    Данное ограничение будет снято в разделе <a href="ch06_fast_interpretation.html#fast/fast/ssect:variations">6.1.9</a>.</p></div></div> и функции-аксессоры к ним.
+(Конечно, без <code><span class="func">predefined-update!</span></code>, так как примитивы неизменяемы.)</span>
 
 <!--\indexC{sg.current}-->
 <!--\indexC{sg.init}-->
@@ -827,7 +833,7 @@
 <p class="noindent">Как говорится, и рыбку съели, и косточкой не подавились.</p>
 
 <!--\indexR{глобальные переменные!инициализированность}-->
-<p id="fast/fast/classify/static-err/par:self-modify">Кстати, вспомните, что при
+<span class="p" id="fast/fast/classify/static-err/par:self-modify">Кстати, вспомните, что при
 доступе к глобальным переменным необходимо проверять
 их инициализированность, чего не требуется делать для локальных и
 предопределённых. Следовательно, есть некоторая дополнительная стоимость
@@ -836,9 +842,13 @@
 (<span class="func">compile-and-run</span> (<span class="func">read</span>)))</code>)
 мы могли бы немного оптимизировать обращения к инициализированным
 глобальным переменным. В действительности, у нас даже сейчас есть подобная
-оптимизация<a class="footref" href="zz_footnotes.html#foot6.4"><sup>4</sup></a>
+оптимизация<a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>Если бы у нас была возможность изменять скомпилированный
+    код на лету, то можно было бы пойти и дальше: после инициализации переменной
+    просто выкинуть код проверок на инициализированность изо всех обращений к ней.
+    Например, так делает Bigloo
+    <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span>.</p></div></div>
 в <code><span class="func">meaning-reference</span></code>.
-<span class="see">[см. упр. <a href="ch07_compilation.html#compilation/ex:unchecked-ref">7.4</a>]</span></p>
+<span class="see">[см. упр. <a href="ch07_compilation.html#compilation/ex:unchecked-ref">7.4</a>]</span></span>
 
 
 <h3 id="fast/fast/ssest:starting"><span class="wrap"><span class="seq">6.1.5.</span><span class="title">Запускаем интерпретатор</span></span></h3>
@@ -958,7 +968,7 @@
 <!--\indexR{приводимые!формы}-->
 <!--\indexR{форма!приводимая}-->
 <!--\indexR{функции!переменной арности}-->
-<p>Давайте реализуем в нашем интерпретаторе известную оптимизацию, касающуюся
+<span class="p">Давайте реализуем в нашем интерпретаторе известную оптимизацию, касающуюся
 приводимых форм (редексов): аппликаций, первым термом которых является
 <code><span class="special">lambda</span></code>-форма. В этом случае не требуется создавать замыкание, достаточно
 только ввести на время новые локальные переменные как в блоках Алгола. В конце
@@ -966,9 +976,11 @@
 это не что иное, как <code><span class="syntax">let</span></code>-форма:
 всего лишь блок кода с локальными переменными. И снова, для функций
 фиксированной арности всё легко и просто, чего не скажешь об арности
-переменной<a class="footref" href="zz_footnotes.html#foot6.5"><sup>5</sup></a>.
+переменной<a class="footref" href="#"><sup>5</sup></a><div class="foot-wrap"><div class="foot-content"><p>Это уже который раз мы такое говорим? Надеюсь, теперь вам
+    понятно, почему во многих языках подобные функции не реализованы вообще,
+    несмотря на всю их полезность.</p></div></div>.
 Кстати, в этом случае неправильное количество
-аргументов является статически обнаруживаемой ошибкой.</p>
+аргументов является статически обнаруживаемой ошибкой.</span>
 
 <!--\indexC{meaning-closed-application}-->
 <!--\indexC{meaning-fix-closed-application}-->
@@ -1099,7 +1111,7 @@
 <!--\indexR{встраивание}-->
 <!--\indexR{проверки типов}-->
 <!--\indexR{миграция!проверок типов}-->
-<p id="fast/fast/integrating/par:inlining">Подобный способ использования примитивов —
+<span class="p" id="fast/fast/integrating/par:inlining">Подобный способ использования примитивов —
 прямое исполнение кода в обход
 протокола вызова функций — называется <em class="term">инлайнинг</em>. В этом случае
 остаётся выполнить только шаги 2 и 7. Вдобавок, хороший компилятор будет
@@ -1111,12 +1123,16 @@
 макросом, раскрывающимся в <code>(<span class="syntax">let</span> ((<i>v</i> <i>x</i>))
 (<span class="special">if</span> (<span class="func">pair?</span> <i>v</i>)
 (<span class="func">unsafe-car</span> <i>v</i>) (<span class="func">error</span> ...)))</code>,
-где <code><span class="func">unsafe-car</span></code><a class="footref" href="zz_footnotes.html#foot6.6"><sup>6</sup></a> работает как <code><span class="func">car</span></code>,
+где <code><span class="func">unsafe-car</span></code><a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Большинство реализаций предоставляют подобные небезопасные примитивы, оказывающиеся весьма
+    полезными для различных преобразований программ. Естественно, эти преобразования
+    должны гарантировать использование <code><span class="func">unsafe</span></code>-примитивов
+    только в безопасном контексте. Компилятор часто способен уследить за типами значений, хранимых
+    в переменных, поэтому данные примитивы очень важны для эффективной компиляции.</p></div></div> работает как <code><span class="func">car</span></code>,
 если её аргумент это точечная пара, и имеет
 неопределённое поведение в противном случае. Теперь остаётся только перенести
 все проверки типов как можно выше, оставив таким образом лишь неизбежные и
 избавившись от очевидных повторений. С миграцией проверок типов проблем нет, так
-как сами по себе они не вызывают ошибок и бесконечных циклов.</p>
+как сами по себе они не вызывают ошибок и бесконечных циклов.</span>
 
 <!--\indexC{desc.init}-->
 <!--\indexR{дескрипторы!примитивов}-->

@@ -4,6 +4,7 @@
 <head>
     <title>8 – Вычисления и рефлексия</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -250,7 +251,7 @@
 <!--\indexR{ошибки!статические}-->
 <!--\indexR{ошибки!динамические}-->
 <!--\indexR{цитаты!запрещённые}-->
-<p>Кстати, вспомните наш разговор о статических и динамических ошибках.
+<span class="p">Кстати, вспомните наш разговор о статических и динамических ошибках.
 <span class="see">[см. раздел <a href="ch06_fast_interpretation.html#fast/fast/classify/sssect:static-err">6.1.4</a>]</span>
 Где именно проводить границу
 между ними? Наиболее либеральная позиция: допускать любые синтаксические
@@ -265,13 +266,15 @@
 инструкций без циклов. Что касается цитат, то мы разрешим только цитаты,
 состоящие из конечного числа атомов, имеющих внешнее представление. Таким
 образом, под запретом цитирования оказываются замыкания, продолжения, порты,
-а также циклические<a class="footref" href="zz_footnotes.html#foot8.1"><sup>1</sup></a>
-конструкции.</p>
+а также циклические<a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap"><div class="foot-content"><p>Вот именно их можно и разрешить: это не так сложно сделать, а они могли бы быть полезными,
+    например, при реализации <span class="sc">M<span class="c">eroonet</span></span>.</p></div></div>
+конструкции.</span>
 
 <!--\indexR{синтаксис!проверка}-->
-<p>Правила, формализующие понятие синтаксически корректной программы, можно
+<span class="p">Правила, формализующие понятие синтаксически корректной программы, можно
 записать в виде следующих предикатов. Они проверяют синтаксис выражений и
-обнаруживают<a class="footref" href="zz_footnotes.html#foot8.2"><sup>2</sup></a> циклы.</p>
+обнаруживают<a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap"><div class="foot-content"><p>Как думаете, значение <code>(<span class="syntax">let</span> ((<span class="var">e</span> '(<span class="var">x</span>))) `(<span class="special">lambda</span>
+    ,<span class="var">e</span> ,<span class="var">e</span>))</code> считается допустимой программой?</p></div></div> циклы.</span>
 
 <!--\indexC{program"?}-->
 <!--\indexC{variables-list"?}-->
@@ -389,7 +392,7 @@
 
 <!--\indexC{load}-->
 <!--\indexC{transcode-back}-->
-<p>В этом интерпретаторе вычисленное значение первого аргумента формы <code><span class="special">eval</span></code>
+<span class="p">В этом интерпретаторе вычисленное значение первого аргумента формы <code><span class="special">eval</span></code>
 дополнительно преобразуется (с помощью <code><span class="func">transcode-back</span></code>) из внутреннего
 представления во внешнее. Затем проверяется правильность записи программы, после
 чего она исполняется. Переменные <code><span class="var">e</span></code> и <code><span class="var">ee</span></code> хранят описания программ, а
@@ -399,7 +402,10 @@
 где нет <code><span class="special">eval</span></code>, но есть функция <code><span class="func">load</span></code>: записываем программу в файл,
 задачу <code><span class="func">transcode-back</span></code> в этом случае выполняет <code><span class="func">display</span></code>; читаем и
 исполняем программу из файла с помощью <code><span class="func">load</span></code>. Таким образом, программа
-«компилируется»<a class="footref" href="zz_footnotes.html#foot8.3"><sup>3</sup></a> в имя этого файла.</p>
+«компилируется»<a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content"><p>Правда, такой способ определения <code><span class="special">eval</span></code> позволяет
+    её использовать только на глобальном уровне, воспользоваться локальным
+    окружением функций загружаемые программы не смогут. К вопросам управления
+    окружениями при явных вычислениях мы вернёмся чуть позже.</p></div></div> в имя этого файла.</span>
 
 <p>Наконец, давайте рассмотрим также быстрый интерпретатор из <a href="ch06_fast_interpretation.html">шестой главы</a>. Там обнаружится ещё несколько интересных моментов. В нём
 значения интерпретируемого языка представляются родными значениями Scheme, так
@@ -547,13 +553,16 @@
 
 <!--\indexR{компиляция!на лету}-->
 <!--\indexR{загрузчик!динамический}-->
-<p>При компиляции на лету, естественно, потребуются все глобальные переменные,
+<span class="p">При компиляции на лету, естественно, потребуются все глобальные переменные,
 используемые при обычной компиляции: <code><span class="var">g.current</span></code> (окружение изменяемых
-глобальных переменных), <code><span class="var">*quotations*</span></code> и <code><span class="var">*dynamic-variables*</span></code><a class="footref" href="zz_footnotes.html#foot8.4"><sup>4</sup></a>. Откомпилированный код заканчивается инструкцией <code><span class="func">RETURN</span></code>,
+глобальных переменных), <code><span class="var">*quotations*</span></code> и <code><span class="var">*dynamic-variables*</span></code><a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>В отличие от остальных, переменная <code><span class="var">*dynamic-variables*</span></code>
+    общая дл компилятора и машины-исполнителя. Сейчас подобные присваивания ей бессмысленны,
+    но они напоминают, что их необходимо проводить, если данная переменная не будет
+    разделяемой.</p></div></div>. Откомпилированный код заканчивается инструкцией <code><span class="func">RETURN</span></code>,
 возвращающей управление обратно вызывающей программе. После завершения
 компиляции окружение исполнения расширяется новыми цитатами, а также глобальными
 и динамическими переменными, созданными в процессе. В конце концов полученный
-фрагмент кода загружается в память и начинается его исполнение.</p>
+фрагмент кода загружается в память и начинается его исполнение.</span>
 
 
 <!--\indexCS{eval}{реализация в Си}-->
@@ -611,16 +620,18 @@
 
 <!--\indexCS{eval}{и побочные эффекты}-->
 <!--\indexR{побочные эффекты!и eval@и <code><span class="func">eval</span></code>}-->
-<p>Это замечание сделано для того, чтобы вы поняли, что уравнения
+<span class="p">Это замечание сделано для того, чтобы вы поняли, что уравнения
 (<a href="#reflection/eq:eval-idemp">1</a>) и (<a href="#reflection/eq:eval-idemp-context">2</a>)
 касаются не только значений <span class="math"><span class="ord var">π</span></span> и
 <code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code>, а и всех иных побочных
 эффектов вроде создания новых переменных, изменения значений старых, переходов
 и т. д. Именно в таком смысле надо понимать эквивалентность выражений
 в уравнении (<a href="#reflection/eq:eval-idemp-context">2</a>): они должны быть одинаковы
-во всём, везде и всегда. Должно быть абсолютно невозможным<a class="footref" href="zz_footnotes.html#foot8.5"><sup>5</sup></a> составить программу, которая смогла бы различить
+во всём, везде и всегда. Должно быть абсолютно невозможным<a class="footref" href="#"><sup>5</sup></a><div class="foot-wrap"><div class="foot-content"><p>Это утверждение носит слегка теоретический характер, так как с практической точки
+    зрения можно засечь время выполнения обеих программ. Более медленная, очевидно,
+    использует <code><span class="special">eval</span></code>.</p></div></div> составить программу, которая смогла бы различить
 <span class="math"><span class="ord var">π</span></span> и
-<code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code> по поведению.</p>
+<code>(<span class="special">eval</span> '<span class="math"><span class="ord var">π</span></span>)</code> по поведению.</span>
 
 
 <h2 id="reflection/sect:eval-as-func"><span class="wrap"><span class="seq">8.3.</span><span class="title"><code><span class="func">eval</span></code> как функция</span></span></h2>
@@ -853,7 +864,7 @@
 
 <!--\indexR{глобальное окружение!и eval@и \protect<code><span class="func">eval</span></code>!в автономных приложениях}-->
 <!--\indexR{автономные приложения}-->
-<p>Компиляторы вроде Scheme<span class="math"><span class="rel">→</span></span>C <span class="cite">[<a href="z1_bibliography.html#bar89">Bar89</a>]</span> или Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span> работают
+<span class="p">Компиляторы вроде Scheme<span class="math"><span class="rel">→</span></span>C <span class="cite">[<a href="z1_bibliography.html#bar89">Bar89</a>]</span> или Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span> работают
 с файлами, в которых хранится фиксированный исходный код. Получаемые таким
 образом автономные приложения принципиально не могут пользоваться переменными,
 которые не были явно упомянуты в исходном коде. Следовательно, переменные,
@@ -862,8 +873,10 @@
 программы. Ответственной за это будет пара функций <code><span class="func">global-value</span></code> и
 <code><span class="func">set-global-value!</span></code>. Компилятор автоматически формирует эти функции
 в процессе чтения программы. <span class="see">[см. упр. <a href="ch07_compilation.html#compilation/ex:global-value">7.3</a>]</span> По окончании
-обработки они будут содержать все используемые<a class="footref" href="zz_footnotes.html#foot8.6"><sup>6</sup></a> глобальные переменные. Этот список является
-статическим, неизменным во время работы скомпилированного приложения.</p>
+обработки они будут содержать все используемые<a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Конечно же, переменные вроде <code><span class="var">car</span></code> не включаются
+    в определение <code><span class="func">set-global-value!</span></code> для
+    обеспечения их неизменяемости.<</p></div></div> глобальные переменные. Этот список является
+статическим, неизменным во время работы скомпилированного приложения.</span>
 
 <!--\indexC{global-value}-->
 <!--\indexC{set-global-value"!}-->
@@ -1248,17 +1261,21 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{letrec}-->
 <!--\indexC{enrich}-->
 <!--\indexR{окружение!операции!расширение}-->
-<p>Так как окружения расширяются на каждом шагу, то будет нелишним дать такую
+<span class="p">Так как окружения расширяются на каждом шагу, то будет нелишним дать такую
 возможность и пользователям языка. Для этого мы определим функцию <code><span class="func">enrich</span></code>,
 принимающую окружение и список добавляемых имён. Возвращаемым значением будет
 <em>новое</em> расширенное окружение. <code><span class="func">enrich</span></code> — это чисто функциональный
 модификатор, она не изменяет свои аргументы. Рассмотрим пример её использования
-— ручную эмуляцию <code><span class="syntax">letrec</span></code>. Сначала захватывается глобальная привязка<a class="footref" href="zz_footnotes.html#foot8.7"><sup>7</sup></a>,
+— ручную эмуляцию <code><span class="syntax">letrec</span></code>. Сначала захватывается глобальная привязка<a class="footref" href="#"><sup>7</sup></a><div class="foot-wrap"><div class="foot-content"><p>А вот и архитектурная ошибочка нашлась: <code><span class="special">export</span></code>
+    не позволяет захватить <em>пустое</em> окружение! Поэтому мы захватываем хоть что-нибудь —
+    в данном случае функцию умножения, — чтобы получить начальное окружение для
+    манипуляций (аналогичный костыль применён в
+    <span class="cite">[<a href="z1_bibliography.html#qd96">QD96</a>]</span>).</p></div></div>,
 затем к ней добавляются привязки двух локальных переменных
 <code><span class="var">odd?</span></code> и
 <code><span class="var">even?</span></code>, после
 чего определяется пара взаимно рекурсивных функций и, наконец, выполняются
-вычисления с их помощью.</p>
+вычисления с их помощью.</span>
 
 <!--\indexC{odd"?}-->
 <!--\indexC{even"?}-->
@@ -1459,10 +1476,12 @@ P-списков, но нередко в этой роли можно встре
 <span class="caption">Рис. 8.4. Рефлексивная абстракция.</span>
 </div>
 
-<p>Реализация данной идеи тривиальна<a class="footref" href="zz_footnotes.html#foot8.8"><sup>8</sup></a>. Для нужд <code><span class="func">procedure-&gt;environment</span></code> и
+<span class="p">Реализация данной идеи тривиальна<a class="footref" href="#"><sup>8</sup></a><div class="foot-wrap"><div class="foot-content"><p><code><span class="func">EXPLICIT-CONSTANT</span></code> используется
+    для того, чтобы не получить <code>(<span class="func">PREDEFINED0</span>)</code>
+    вместо ожидаемого <code>(<span class="func">CONSTANT</span> <span class="hash">'()</span>)</code>.</p></div></div>. Для нужд <code><span class="func">procedure-&gt;environment</span></code> и
 <code><span class="func">procedure-&gt;definition</span></code> в кодогенераторы абстракций
 необходимо передавать определения соответствующих функций и их окружения.
-<i>n</i>-арный вариант данной функции легко написать по аналогии:</p>
+<i>n</i>-арный вариант данной функции легко написать по аналогии:</span>
 
 <!--\indexC{meaning-fix-abstraction}-->
 <!--\indexC{REFLECTIVE-FIX-CLOSURE}-->
@@ -1589,25 +1608,27 @@ P-списков, но нередко в этой роли можно встре
 <pre>(<span class="special">import</span> (<i>переменные</i>...) <i>окружение</i>
   <i>формы</i>... )</pre>
 
-<p><i>Формы</i>, составляющие тело <code><span class="special">import</span></code>, вычисляются в специальном окружении.
-Свободные <i>переменные</i>, присутствующие<a class="footref" href="zz_footnotes.html#foot8.9"><sup>9</sup></a> в переданном списке,
+<span class="p"><i>Формы</i>, составляющие тело <code><span class="special">import</span></code>, вычисляются в специальном окружении.
+Свободные <i>переменные</i>, присутствующие<a class="footref" href="#"><sup>9</sup></a><div class="foot-wrap"><div class="foot-content"><p>Пустой список, подобно <code><span class="special">export</span></code>,
+    может означать все возможные переменные.</p></div></div> в переданном списке,
 берутся из <i>окружения</i>, а остальные, как обычно, извлекаются из лексического
 окружения самой формы <code><span class="special">import</span></code>. Список заменяемых переменных статический,
 их имена не могут быть вычислены; сначала вычисляется <i>окружение</i>, затем
-<i>формы</i>.</p>
+<i>формы</i>.</span>
 
 
 <!--\indexR{представление!обобщённых функций}-->
 <!--\indexR{замыкания (closures)!и объекты}-->
-<p>Рассмотрим пример её использования, вдохновлённый <span class="sc">M<span class="c">eroonet</span></span>.
+<span class="p">Рассмотрим пример её использования, вдохновлённый <span class="sc">M<span class="c">eroonet</span></span>.
 Там возникли затруднения с представлением обобщённых функций, которые одновременно должны
 быть и функциями, и объектами. Если разрешить доступ к замкнутым свободным
 переменным извне, то замыкания можно считать объектами, полями которых являются
-свободные переменные. На этой идее основывается<a class="footref" href="zz_footnotes.html#foot8.10"><sup>10</sup></a> отождествление замыканий с объектами. В <span class="sc">M<span class="c">eroonet</span></span> для
+свободные переменные. На этой идее основывается<a class="footref" href="#"><sup>10</sup></a><div class="foot-wrap"><div class="foot-content"><p>Помимо этого необходимы ещё многие другие возможности, вроде механизма диспетчеризации
+    методов по классам объектов.</p></div></div> отождествление замыканий с объектами. В <span class="sc">M<span class="c">eroonet</span></span> для
 добавления метода обобщённой функции его необходимо разместить по определённому
 индексу в векторе методов. Если обобщённая функция замыкает в себе этот вектор
 под именем <code><span class="var">methods</span></code>,
-то данное действие можно записать прямо:</p>
+то данное действие можно записать прямо:</span>
 
 <!--\indexC{add-method"!}-->
 <pre>(<span class="special">define</span> (<span class="func">add-method!</span> <span class="var">generic</span> <span class="var">class</span> <span class="var">method</span>)
@@ -1799,7 +1820,8 @@ P-списков, но нередко в этой роли можно встре
       (<span class="func">signal-exception</span> <span class="hash">#f</span> (<span class="func">list</span> <span class="string">"No such variable"</span>)) ) )</pre>
 
 <!--\indexCS{import}{как макрос}-->
-<p>Функция <code><span class="func">shadowable-fetch</span></code> использует статически известный промежуточный
+<span class="p">Функция <code><span class="func">shadowable-fetch</span></code> использует
+статически известный промежуточный
 адрес, чтобы получить динамический адрес, по которому фактически располагается
 искомая переменная. При этом необходимо различать все возможные типы фактических
 адресов, а именно: <code><span class="var">local</span></code> и <code><span class="var">checked-local</span></code>, <code><span class="var">global</span></code> и
@@ -1807,7 +1829,8 @@ P-списков, но нередко в этой роли можно встре
 Функция <code><span class="func">variable-value-lookup</span></code> выполняет эту работу. В некотором смысле
 <code><span class="special">import</span></code> можно понимать как макрос, преобразующий ссылки на плавающие
 переменные в вызовы <code><span class="func">eval/b</span></code>. Например, форма <code>(<span class="special">import</span> (<span class="var">x</span> <span class="var">y</span>) <span class="var">env</span> (<span class="func">list</span>
-(<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>))</code> из предыдущего примера эквивалентна<a class="footref" href="zz_footnotes.html#foot8.11"><sup>11</sup></a> следующей:</p>
+(<span class="special">set!</span> <span class="var">x</span> <span class="var">y</span>) <span class="var">z</span>))</code> из предыдущего примера эквивалентна<a class="footref" href="#"><sup>11</sup></a><div class="foot-wrap"><div class="foot-content"><p>Чтобы избежать потенциально ошибочного цитирования присваиваемого значения, используется
+    промежуточное замыкание, принимающее это значение.</p></div></div> следующей:</span>
 
 <pre>(<span class="func">list</span> ((<span class="func">eval/b</span> '(<span class="special">lambda</span> (<span class="var">v</span>) (<span class="special">set!</span> <span class="var">x</span> <span class="var">v</span>)) <span class="var">env</span>)
        (<span class="func">eval/b</span> '<span class="var">y</span> <span class="var">env</span>) )
@@ -1831,22 +1854,34 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexR{связывание!динамическое}-->
 <!--\indexC{dynamic-let}-->
 <!--\indexC{dynamic-set"!}-->
-<p>Форма <code><span class="special">dynamic-let</span></code> создаёт динамические привязки —
-связи имён со значениями<a class="footref" href="zz_footnotes.html#foot8.12"><sup>12</sup></a>,
+<span class="p">Форма <code><span class="special">dynamic-let</span></code> создаёт динамические привязки —
+связи имён со значениями<a class="footref" href="#"><sup>12</sup></a><div class="foot-wrap"><div class="foot-content"><p>Рассмотренная реализация <code><span class="special">dynamic-let</span></code> не позволяет
+    напрямую изменять такие связи; не существует соответствующей
+    <code><span class="special">dynamic-set!</span></code>.
+    Но ничто не мешает связать с именем изменяемый объект и таким образом обойти
+    данное ограничение.</p></div></div>,
 устанавливая их на время определённых вычислений. Область
 видимости данных привязок не ограничена, однако они перестают существовать
-с окончанием соответствующих вычислений.</p>
+с окончанием соответствующих вычислений.</span>
 
 <!--\indexR{привязки (bindings)!квазистатические}-->
 <!--\indexR{квазистатические привязки}-->
 <!--\indexR{связывание!квазистатическое}-->
 <!--\indexC{reflective-lambda}-->
 <!--\indexR{альфа@$\alpha$-конверсия}-->
-<p>Квазистатические привязки являются альтернативными именами уже существующих
-привязок. Подобная множественность имён несовместима с <span class="math"><span class="ord var">α</span></span>-конверсией<a class="footref" href="zz_footnotes.html#foot8.tr-1"><sup>*</sup></a>. Почему? Потому что даже ограниченные способы<a class="footref" href="zz_footnotes.html#foot8.13"><sup>13</sup></a> реификации окружений,
+<span class="p">Квазистатические привязки являются альтернативными именами уже существующих
+привязок. Подобная множественность имён несовместима с <span class="math"><span class="ord var">α</span></span>-конверсией.<a class="footref" href="#"><sup>*</sup></a><div class="foot-wrap"><div class="foot-content"><p>В <span class="math"><span class="ord var">λ</span></span>-исчислении <span class="math"><span class="ord var">α</span></span>-конверсией называется правило
+<span class="math"><span class="ord var">λ</span><span class="ord var">x</span><span class="ord">.</span><span class="ord var">N</span><span class="rel">≡</span><span class="ord var">λ</span><span class="ord var">y</span><span class="ord">.</span><span class="ord var">N</span><span class="open">[</span>x<span class="rel">→</span><span class="ord var">y</span><span class="close">]</span></span>,
+    которое даёт возможность свободно переименовывать связанные переменные абстракции
+    при условии, что новое имя <span class="math"><span class="ord var">y</span></span>
+    не встречается в <span class="math"><span class="ord var">N</span></span>.</p></div></div> Почему? Потому что даже ограниченные способы<a class="footref" href="#"><sup>13</sup></a><div class="foot-wrap"><div class="foot-content"><p>Кстати, можно улучшить <code><span class="special">reflective-lambda</span></code>,
+    дав ей возможность указывать операции, допустимые над экспортируемыми привязками; например,
+    разрешать только чтение, но не изменение значений. Также можно,
+    подобно <span class="cite">[<a href="z1_bibliography.html#lf93">LF93</a>]</span>, реализовать механизм переименования экспортируемых
+    переменных.</p></div></div> реификации окружений,
 не такие всеобъемлющие, как <code><span class="func">procedure-&gt;environment</span></code>,
 дают возможность пользоваться привязками в совершенно произвольных местах, без учёта их
-нормальной области видимости и изначального имени.</p>
+нормальной области видимости и изначального имени.</span>
 
 
 <h3 id="reflection/reify-env/ssect:simplified"><span class="wrap"><span class="seq">8.6.6.</span><span class="title">Упрощённый доступ к окружениям</span></span></h3>
@@ -2008,9 +2043,10 @@ P-списков, но нередко в этой роли можно встре
 функции доступными интерпретируемым программам. Функция <code><span class="func">the-environment</span></code>
 будет ответственной за помещение данных функций в глобальное окружение.</p>
 
-<p>Итак, вот он — рефлексивный интерпретатор. Он занимает всего лишь 1362 байта<a class="footref" href="zz_footnotes.html#foot8.14"><sup>14</sup></a> —
+<span class="p">Итак, вот он — рефлексивный интерпретатор. Он занимает всего лишь 1362 байта<a class="footref" href="#"><sup>14</sup></a><div class="foot-wrap"><div class="foot-content"><p>В откомпилированном виде, конечно же, потому как его исходный код
+    содержит чуть менее 3000 символов, плюс ещё столько же пробелов.</p></div></div> —
 достаточно мало, чтобы с лёгкостью поместиться в стандартную библиотеку.
-Интерпретатор написан языком, доступным нашему компилятору в байт-код.</p>
+Интерпретатор написан языком, доступным нашему компилятору в байт-код.</span>
 
 <pre>(<span class="func">apply</span>
  (<span class="special">lambda</span> (<span class="var">make-toplevel</span> <span class="var">make-flambda</span> <span class="var">flambda?</span> <span class="var">flambda-apply</span>)
@@ -2131,10 +2167,12 @@ P-списков, но нередко в этой роли можно встре
           (<span class="special">lambda</span> (<span class="var">f</span> <span class="var">r</span> <span class="var">params</span>) (<span class="func">apply</span> (<span class="func">cdr</span> <span class="var">f</span>) <span class="var">r</span> <span class="var">params</span>)) ) )
   <span class="num">98127634</span> ) )</pre>
 
-<p>Как сказала бы Юлия Кристева<a class="footref" href="zz_footnotes.html#8.15"><sup>15</sup></a>,
+<span class="p">Как сказала бы Юлия Кристева,<a class="footref" href="#"><sup>15</sup></a><div class="foot-wrap"><div class="foot-content"><p>Ну, она сказала нечто подобное на радио
+    France Musique тем воскресным утром 19 сентября 1993 года, когда я писал эти
+    строки.</p></div></div>
 данное определение пропитано изощрённостью как минимум в плане используемых обозначений.
 Вероятно, вам придётся сначала немного поработать с этим интерпретатором,
-прежде чем вы уверуете в него.</p>
+прежде чем вы уверуете в него.</span>
 
 <!--\indexC{==}-->
 <!--\indexC{??}-->
@@ -2153,9 +2191,11 @@ P-списков, но нередко в этой роли можно встре
 <!--\indexC{it}-->
 <!--\indexC{extend}-->
 <!--\indexC{exit}-->
-<p>Перед началом инициализации захватывается продолжение — оно будет
+<span class="p">Перед началом инициализации захватывается продолжение — оно будет
 активировано в случае возникновения ошибки или при прямом вызове функции
-<code><span class="func">exit</span></code>.<a class="footref" href="zz_footnotes.html#foot8.16"><sup>16</sup></a> Данное продолжение также доступно
+<code><span class="func">exit</span></code>.<a class="footref" href="#"><sup>16</sup></a><div class="foot-wrap"><div class="foot-content"><p>Наконец-то у нас есть Лисп, из которого можно нормально
+    выйти! Можете самостоятельно убедиться в том, что <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span>,
+    Scheme и даже Dylan лишены такого удобства.</p></div></div> Данное продолжение также доступно
 интерпретируемым программам. Цикл, реализующий интерактивную сессию, защищён от
 необработанных исключений формой <code><span class="special">monitor</span></code>.
 <span class="see">[см. раздел <a href="ch07_compilation.html#compilation/exception/par:monitor">7.9</a>]</span>
@@ -2164,7 +2204,7 @@ P-списков, но нередко в этой роли можно встре
 со значением последней вычисленной формы. Функция <code><span class="func">extend</span></code>,
 конечно же, расширяет окружение новыми привязками. Функция
 <code><span class="func">error</span></code> печатает сообщение об ошибке и завершает работу
-программы, вызывая <code><span class="func">exit</span></code>.</p>
+программы, вызывая <code><span class="func">exit</span></code>.</span>
 
 <!--\indexC{toplevel}-->
 <!--\indexC{eval}-->

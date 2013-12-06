@@ -4,6 +4,7 @@
 <head>
     <title>1 – Основы интерпретации</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -198,11 +199,13 @@
 записать в частности на том же самом Лиспе. В этом нет никаких противоречий,
 точно так же, к примеру, можно реализовать Фортран на Фортране.</p>
 
-<p>Но что делает Лисп уникальным (и оправдывает явное описание <code><span class="func">eval</span></code>), так это
+<span class="p">Но что делает Лисп уникальным (и оправдывает явное описание <code><span class="func">eval</span></code>), так это
 небольшой размер кода интерпретатора: обычно от одной до двадцати страниц
-в зависимости от детализации.<a class="footref" href="zz_footnotes.html#foot1.1"><sup>1</sup></a> Это результат желания сделать язык последовательным,
+в зависимости от детализации.<a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap">
+<div class="foot-content"><p>Интерпретатор, описываемый в этой главе, занимает около 150 строк.</p>
+</div></div> Это результат желания сделать язык последовательным,
 с минимальным количеством исключений из правил, и, что самое главное, с простым,
-но выразительным синтаксисом.</p>
+но выразительным синтаксисом.</span>
 
 <!--\indexCS{eval}{свойства}-->
 <p>Сам факт существования <code><span class="func">eval</span></code>, а также возможность её описания на Лиспе
@@ -263,14 +266,21 @@
 <!--\indexR{форма!связывающая}-->
 <!--\indexR{окружение}-->
 <!--\indexC{evaluate}-->
-<p>Будем различать в программе <em class="term">свободные</em> и <em class="term">связанные переменные</em>.
+<span class="p">Будем различать в программе <em class="term">свободные</em> и <em class="term">связанные переменные</em>.
 Переменная свободна, если ни одна связывающая форма (вроде <code><span class="special">let</span></code> или
 <code><span class="special">lambda</span></code>) не связывает её с каким-либо значением. В противном случае она
 называется связанной. Соответственно, свободные переменные могут иметь любое
 значение, и нельзя определённо сказать, какое именно, не выходя за рамки
 функции. Структура данных, которая связывает переменные с их значениями,
-называется <em class="term">окружением</em>. Таким образом, функция <code><span class="func">evaluate</span></code><a class="footref" href="zz_footnotes.html#foot1.2"><sup>2</sup></a> имеет два аргумента: программу и окружение, в котором она
-должна быть исполнена:</p>
+называется <em class="term">окружением</em>. Таким образом, функция <code><span class="func">evaluate</span></code><a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap">
+<div class="foot-content">
+  <p>Как вы знаете, «родная» функция-вычислитель Scheme называется <code><span
+    class="func">eval</span></code>. Чтобы их
+    не путать, нашу функцию мы назовём <code><span class="func">evaluate</span></code>.
+    По тем же причинам местный аналог <code><span class="func">apply</span></code>
+    будет называться <code><span class="func">invoke</span></code>. Меньше перекрытий имён —
+    меньше проблем.</p></div></div>
+имеет два аргумента: программу и окружение, в котором она должна быть исполнена:</span>
 
 <pre>(<span class="special">define</span> (<span class="func">evaluate</span> <span class="var">exp</span> <span class="var">env</span>) ... )</pre>
 
@@ -329,9 +339,16 @@
 
 <!--\indexR{приведение типов}-->
 <!--\indexR{объекты!второго класса}-->
-<p>В таком случае мы явно говорим, что символ <code><span class="var">exp</span></code>, чьим значением является имя
+<span class="p">В таком случае мы явно говорим, что символ <code><span class="var">exp</span></code>, чьим значением является имя
 переменной, должен быть превращён в переменную. Также это подчёркивает тот факт,
-что функция <code><span class="func">symbol-&gt;variable</span></code><a class="footref" href="zz_footnotes.html#foot1.3"><sup>3</sup></a> вовсе не переводит <code><span class="func">exp</span></code> сам
+что функция <code><span class="func">symbol-&gt;variable</span></code><a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content">
+  <p>Лично я не люблю называть функции приведения типов
+    <code><span class="func"><i>x</i>-&gt;<i>y</i></span></code>,
+    потому что так сложнее понимать цепочки преобразований. Запись
+    <code>(<span class="func"><i>y</i>-&gt;<i>z</i></span>(<span class="func"><i>x</i>-&gt;<i>y</i></span> ...))}</code> не так очевидна, как <code>(<span class="func"><i>z</i>&lt;-<i>y</i></span>(<span class="func"><i>y</i>&lt;-<i>x</i></span> ...))</code>.
+    Хотя, с другой стороны, одиночная запись <code><span class="func"><i>z</i>&lt;-<i>y</i></span></code> не так легко читается, как <code><span class="func"><i>y</i>-&gt;<i>z</i></span></code>.
+    Приходится выбирать.</p></div></div>
+вовсе не переводит <code><span class="func">exp</span></code> сам
 в себя; она превращает синтаксическую сущность (символ) в семантическую
 (переменную). В действительности, переменные — это лишь воображаемые объекты,
 которым язык и программист дали какие-то имена, и которые ради удобства
@@ -340,7 +357,7 @@
 <code><span class="func">symbol-&gt;variable</span></code> ничего не делает, хотя на самом деле могла бы применяться
 какая-нибудь другая форма записи имени переменной, например: строка, состоящая
 из знака доллара и имени переменной; в этом случае, конечно же,
-<code><span class="func">symbol-&gt;variable</span></code> будет сложнее.</p>
+<code><span class="func">symbol-&gt;variable</span></code> будет сложнее.</span>
 
 <p>Если бы переменные действительно были лишь воображаемыми, то <code><span class="func">lookup</span></code>
 не знала бы как обрабатывать свой первый аргумент, так как она ожидает нечто
@@ -399,10 +416,13 @@ class="var">car</span></code> является
 
 <!--\indexR{ошибки!варианты обработки}-->
 <!--\indexC{wrong}-->
-<p id="basic/atoms/para:the-first-error">В этом фрагменте кода виден первый случай,
+<span class="p" id="basic/atoms/para:the-first-error">В этом фрагменте кода виден первый случай,
 когда могут возникнуть ошибки. Большая часть лисп-систем имеет свои собственные механизмы
 обработки исключительных ситуаций, которые непросто сделать переносимыми. В случае ошибки
-мы вызываем <code><span class="special">wrong</span></code><a class="footref" href="zz_footnotes.html#foot1.4"><sup>4</sup></a> и передаём ей первым аргументом строку. В строке находится
+мы вызываем <code><span class="special">wrong</span></code><a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content">
+<p>Заметьте, не «функцию <code><span class="func">wrong</span></code>». Варианты её
+    реализации подробнее рассматриваются в разделе <a href="ch07_compilation.html#compilation/sect:exception">7.9</a>.</p></div></div>
+и передаём ей первым аргументом строку. В строке находится
 текстовое описание ошибки, а следующие за ней аргументы несут дополнительную информацию о том, что
 вызвало проблему. Системы с зачаточным механизмом обработки ошибок обычно
 в случае проблем выдают какие-то непонятные надписи вроде <code><span class="string">"Bus
@@ -413,7 +433,7 @@ error: core dumped"</span></code> и умирают. Другие останав
 <span class="see">[см. раздел <a href="ch07_compilation.html#compilation/sect:exception">7.9</a>]</span>
 В некоторых случаях даже реализуется подобие экспертной системы, которая анализирует ошибку,
 вызвавший её код и выдаёт пользователю варианты её исправления. В общем, сложно сказать однозначно,
-что следует делать в случае ошибки.</p>
+что следует делать в случае ошибки.</span>
 
 
 <h2 id="basics/sect:evaluating-forms"><span class="wrap"><span class="seq">1.4.</span><span class="title">Вычисляем формы</span></span></h2>
@@ -474,12 +494,22 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
                           (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">e</span>) <span class="var">env</span>) )) ) ) )</pre>
 
 <!--\indexR{синтаксис!if@\protect<code><span class="func">if</span></code>}-->
-<p>Чтобы упростить определение, синтаксический анализ оставлен минимальным: мы
+<span class="p">Чтобы упростить определение, синтаксический анализ оставлен минимальным: мы
 не проверяем, правильно ли записаны цитаты, действительно ли
 <code><span class="special">if</span></code> передано
-три аргумента<a class="footref" href="zz_footnotes.html#foot1.5"><sup>5</sup></a>
-и так далее. Мы априори считаем
-интерпретируемые программы синтаксически корректными.</p>
+три аргумента<a class="footref" href="#"><sup>5</sup></a><div class="foot-wrap">
+<div class="foot-content"><p><code><span class="special">if</span></code>
+    не обязательно принимает условие и ровно две
+    альтернативы. К примеру, в Scheme и <span class="sc">C<span class="c">ommon</span>
+    L<span class="c">isp</span></span> <code><span
+    class="special">if</span></code> может принимать как
+    два, так и три аргумента; <code><span class="special">if</span></code> в
+    <span class="sc">E<span class="c">u</span>L<span class="c">isp</span></span> и
+    <span class="sc">ISL<span class="c">isp</span></span> исключительно
+    тернарный; Le_Lisp в случае, если условие ложно, вычисляет остаток
+    формы <code><span class="special">if</span></code>, обернув его в
+    <code><span class="special">begin</span></code>.</p></div></div>
+и так далее. Мы априори считаем интерпретируемые программы синтаксически корректными.</span>
 
 
 <h3 id="basics/evaluating-forms/ssect:quoting"><span class="wrap"><span class="seq">1.4.1.</span><span class="title">Цитирование</span></span></h3>
@@ -511,8 +541,8 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
 
 
 <!--\indexR{цитаты!явные и неявные}-->
-<p>Также интересен вопрос: а есть ли разница между явным и неявным цитированием,
-например, между <code><span class="num">33</span></code> и <code>'<span class="num">33</span></code>, или между<a class="footref" href="zz_footnotes.html#foot1.6"><sup>6</sup></a> <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> и
+<span class="p">Также интересен вопрос: а есть ли разница между явным и неявным цитированием,
+например, между <code><span class="num">33</span></code> и <code>'<span class="num">33</span></code>, или между<a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Напомним: в Scheme запись <code>#(...)</code> означает процитированный вектор.</p></div></div> <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> и
 <code>'#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>? Если первое сравнение происходит между непосредственными
 значениями и тут вроде бы всё очевидно, то во втором случае сравниваются
 составные объекты (хоть для Лиспа они и являются формально атомами). Можно легко
@@ -520,7 +550,7 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
 возвращает аргумент как значение, но сама запись <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> могла бы
 возвращать каждый раз новый вектор из трёх символов. Другими словами, <code>#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code> могла бы быть просто сокращённой записью выражения <code>(<span class="func">vector</span> <span class="var">'fa</span> <span class="var">'do</span> <span class="var">'sol</span>)</code>, которое, конечно же, будет означать совсем иное, нежели <code>'#(<span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>, и тем более <code>(<span class="func">vector</span> <span class="var">fa</span> <span class="var">do</span> <span class="var">sol</span>)</code>. Мы вернёмся к этой проблеме позже
 <span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.html#assignment/sect:quotation">4.5</a>]</span>, потому что, как видите, не так просто
-определиться, какой именно смысл придавать цитированию.</p>
+определиться, какой именно смысл придавать цитированию.</span>
 
 
 <h3 id="basics/evaluating-forms/ssect:alternatives"><span class="wrap"><span class="seq">1.4.2.</span><span class="title">Ветвление</span></span></h3>
@@ -682,8 +712,14 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
 
 <pre>(<span class="special">if</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> (<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>)</pre>
 
-<p id="basics/forms/sequence/par:gensym-puzzle" class="noindent">
-И <code><span class="special">lambda</span></code> тоже может<a class="footref" href="zz_footnotes.html#foot1.7"><sup>7</sup></a>:</p>
+<span id="basics/forms/sequence/par:gensym-puzzle" class="noindent">
+И <code><span class="special">lambda</span></code> тоже может<a class="footref" href="#"><sup>7</sup></a><div class="foot-wrap"><div class="foot-content"><p>Переменная <i>void</i> не должна быть
+    свободной в <span class="math"><span class="var">β</span></span>. Это условие выполняется,
+    если <i>void</i> никогда не встречается
+    в <span class="math"><span class="var">β</span></span>. Обычно в таком случае используется
+    <code><span class="func">gensym</span></code>, чтобы получить
+    гарантированно уникальное имя переменной.
+    <span class="see">[см. упр. <a href="ch01_basics.html#basics/ex:no-gensym">1.11</a>]</span></p></div></div>:</span>
 
 <pre>(<span class="special">begin</span> <span class="math"><span class="ord var">α</span></span> <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="rel">≡</span></span> ((<span class="special">lambda</span> (<i>void</i>) <span class="math"><span class="ord var">β</span></span>) <span class="math"><span class="ord var">α</span></span>)</pre>
 
@@ -698,11 +734,12 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
 <!--\indexC{set"!}-->
 <!--\indexR{присваивание}-->
 <!--\indexR{соглашения именования!побочных эффектов}-->
-<p>Как и во многих других языках, в нашем диалекте значения переменных можно
+<span class="p">Как и во многих других языках, в нашем диалекте значения переменных можно
 менять. Изменение значения переменной называется <em class="term">присваиванием</em>. Так как
 значение переменной надо изменять в её окружении, то мы оставляем эту проблему
-функции <code><span class="func">update!</span></code>.<a class="footref" href="zz_footnotes.html#foot1.8"><sup>8</sup></a>
-Её настоящая суть объясняется позже, в разделе <a href="ch04_assignment_and_side_effects.html#assignment/implementation/ssect:environment">4.3.3</a>.</p>
+функции <code><span class="func">update!</span></code><a class="footref" href="#"><sup>8</sup></a><div class="foot-wrap"><div class="foot-content"><p>В соответствии с принятым в Scheme соглашением, имена функций с побочными эффектами
+    оканчиваются на восклицательный знак.</p></div></div>.
+Её настоящая суть объясняется позже, в разделе <a href="ch04_assignment_and_side_effects.html#assignment/implementation/ssect:environment">4.3.3</a>.</span>
 
 <pre>... (<span class="syntax">case</span> (<span class="func">car</span> <span class="var">e</span>)
       ((<span class="var">set!</span>) (<span class="func">update!</span> (<span class="func">cadr</span> <span class="var">e</span>) <span class="var">env</span>
@@ -783,10 +820,19 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
         (<span class="func">cons</span> <span class="var">argument1</span> (<span class="func">evlis</span> (<span class="func">cdr</span> <span class="var">exps</span>) <span class="var">env</span>)) )
       <span class="hash">'()</span> ) )</pre>
 
-<p>Без введения новых специальных конструкций<a class="footref" href="zz_footnotes.html#foot1.9"><sup>9</sup></a>
+<span class="p">Без введения новых специальных конструкций<a class="footref" href="#"><sup>9</sup></a><div class="foot-wrap"><div class="foot-content">
+  <p>Как известно, <code><span class="syntax">let</span></code> —
+    это всего лишь простой макрос: <code>(<span class="syntax">let</span>
+    ((<span class="math"><span class="var">x</span></span>
+    <span class="math"><span class="var">π</span><sub>1</sub></span>))
+    <span class="math"><span class="var">π</span><sub>2</sub></span>)
+    <span class="math"><span class="binop">≡</span></span>
+    ((<span class="special">lambda</span> (<span class="math"><span class="var">x</span></span>)
+    <span class="math"><span class="var">π</span><sub>2</sub></span>)
+    <span class="math"><span class="var">π</span><sub>1</sub></span>)</code>.</p></div></div>
 мы уточнили поведение определяемого языка. Первая часть книги направлена именно на это: уточнение
 определяемого языка с помощью всё более ограниченных возможностей, что снижает зависимость
-описания от языка, используемого для определения.</p>
+описания от языка, используемого для определения.</span>
 
 
 <h2 id="basics/sect:repr-the-env"><span class="wrap"><span class="seq">1.5.</span><span class="title">Представление окружений</span></span></h2>
@@ -811,16 +857,20 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
           (<span class="func">lookup</span> <span class="var">id</span> (<span class="func">cdr</span> <span class="var">env</span>)) )
       (<span class="special">wrong</span> <span class="string">"No such binding"</span> <span class="var">id</span>) ) )</pre>
 
-<p>Тут мы видим второй тип<a class="footref" href="zz_footnotes.html#foot1.10"><sup>10</sup></a>
+<span class="p">Тут мы видим второй тип<a class="footref" href="#"><sup>10</sup></a><div class="foot-wrap">
+<div class="foot-content"><p>Первый — это синтаксические ошибки (раздел
+<a href="ch01_basics.html#basic/atoms/para:the-first-error">1.3</a>).</p></div></div>
 возможных ошибок, появляющихся при попытке узнать значение неизвестной переменной. Мы опять лишь
-вызовем <code><span class="special">wrong</span></code>, чтобы сообщить о проблеме наверх.</p>
+вызовем <code><span class="special">wrong</span></code>, чтобы сообщить о проблеме наверх.</span>
 
 <!--\indexR{автоцитирование}-->
-<p>Когда компьютеры были большими, а память была маленькой,<a class="footref" href="zz_footnotes.html#foot1.11"><sup>11</sup></a> для переменных часто применялось
+<span class="p">Когда компьютеры были большими, а память была маленькой<a class="footref" href="#"><sup>11</sup></a><div class="foot-wrap"><div class="foot-content">
+<p>Память (вместе с подсистемами ввода-вывода) всё ещё остаётся одной из наиболее дорогих
+  частей компьютера, хоть и постоянно дешевеет.</p></div></div>, для переменных часто применялось
 <em class="term">автоцитирование</em>. Если с переменной не было связано какое-либо значение,
 то этим значением становился символ с именем переменной. Было бы очень обидно
 видеть, как понятия переменной и символа, которые мы так усердно разделяли,
-опять смешиваются и перепутываются.</p>
+опять смешиваются и перепутываются.</span>
 
 <p>Хотя это несомненно удобно — никогда не вызывать ошибок, но такой идеальный
 мир имеет большой недостаток: задача программы не в том, чтобы работать без
@@ -904,13 +954,21 @@ href="z1_bibliography.html#ste90">Ste90</a>]</span>) определяет бол
 <!--\indexR{синтаксис!списка аргументов}-->
 <!--\indexR{переменные!точечные}-->
 <!--\indexR{точечные переменные}-->
-<p>Главная сложность состоит в том, что нам надо проанализировать все варианты
-записи &lt;<i>списка аргументов</i>&gt;, какие разрешены в Scheme.<a class="footref"
-href="zz_footnotes.html#foot1.12"><sup>12</sup></a> Список
-аргументов может быть представлен не только обычным списком символов, но и
+<span class="p">Главная сложность состоит в том, что нам надо проанализировать все варианты
+записи &lt;<i>списка аргументов</i>&gt;, какие разрешены в Scheme.<a class="footref" href="#"><sup>12</sup></a><div class="foot-wrap"><div class="foot-content">
+  <p>Некоторые лисп-системы, вроде <span class="sc">C<span class="c">ommon</span>
+    L<span class="c">isp</span></span>, поддались соблазну
+    расширить синтаксис перечня аргументов ключевыми словами вроде
+    <code><span class="syntax">&amp;aux</span></code>,
+    <code><span class="syntax">&amp;key</span></code>,
+    <code><span class="syntax">&amp;rest</span></code>.
+    Но это сильно усложняет синтаксический разбор и связывание. Иные системы позволяют
+    даже обобщённое указание аргументов с помощью шаблонов
+    <span class="cite">[<a href="z1_bibliography.html#sj93">SJ93</a>]</span>.</p></div></div>
+Список аргументов может быть представлен не только обычным списком символов, но и
 точечным: заканчивающимся не на <code><span class="hash">()</span></code>, а на определённый символ
 (<em class="term">точечную переменную</em>). Более формально список аргументов описывается
-следующей грамматикой:</p>
+следующей грамматикой:</span>
 
 <table id="ch1-table-grammar" class="nocaption">
 <tbody>
@@ -992,7 +1050,7 @@ href="zz_footnotes.html#foot1.12"><sup>12</sup></a> Список
   <li>вычислять аргументы слева направо до тех пор, пока их количество
     согласуется с арностью функции, в случае проблем сообщить об ошибке;</li>
 
-  <li>применить функцию к аргументам.<a class="footref" href="zz_footnotes.html#foot1.13"><sup>13</sup></a></li>
+  <li>применить функцию к аргументам.<a class="footref" href="#"><sup>13</sup></a><div class="foot-wrap"><div class="foot-content"><p>Функция могла бы потом ещё проверять на правильность типы переданных аргументов, но это не имеет отношения к механизму вызова.</p></div></div></li>
 </ol>
 
 <p>Стандарт <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> требует, чтобы аргументы вычислялись строго слева
@@ -1163,15 +1221,19 @@ href="zz_footnotes.html#foot1.12"><sup>12</sup></a> Список
 со значением <code><span class="num">1</span></code>, но в момент вызова в окружении будет присутствовать
 только <code><span class="var">b</span></code>. Таким образом, мы опять потеряли переменную <code><span class="var">a</span></code>.</p>
 
-<p>Без сомнения, вы заметили, что в определении <code><span class="func">d.make-function</span></code> присутствуют
+<span class="p">Без сомнения, вы заметили, что в определении
+<code><span class="func">d.make-function</span></code> присутствуют
 два окружения: окружение определения <i>def.env</i> и окружение исполнения
 <i>current.env</i>. В жизни функции есть два важных события: её создание и
 её вызов(ы). Очевидно, что создаётся функция только однажды, а вызываться может
 несколько раз; или вообще никогда не вызываться. Следовательно,
-единственное<a class="footref" href="zz_footnotes.html#foot1.14"><sup>14</sup></a> окружение, которое мы
+единственное<a class="footref" href="#"><sup>14</sup></a><div class="foot-wrap">
+<div class="foot-content"><p>На самом деле, здесь можно использовать любое необходимое
+    окружение. См. про форму <code><span class="special">closure</span></code> в разделе
+    <a href="ch04_assignment_and_side_effects.html#assignement/assignement/para:closure">4.1</a>.</p></div></div> окружение, которое мы
 однозначно можем связать с функцией, — это окружение, в котором она была
 создана. Вернёмся к исходным определениям функций <code><span class="func">evaluate</span></code> и <code><span class="func">invoke</span></code>,
-но в этот раз функцию <code><span class="func">make-function</span></code> запишем следующим образом:</p>
+но в этот раз функцию <code><span class="func">make-function</span></code> запишем следующим образом:</span>
 
 <!--\indexC{make-function}-->
 <pre id="basics/representing-functions/fixing/src:inject-current-env">(<span class="special">define</span> (<span class="func">make-function</span> <span class="var">variables</span> <span class="var">body</span> <i>env</i>)
@@ -1232,17 +1294,23 @@ href="zz_footnotes.html#foot1.12"><sup>12</sup></a> Список
 <!--\indexR{связывание!динамическое}-->
 <!--\indexR{Лисп!лексический}-->
 <!--\indexR{Лисп!динамический}-->
-<p>Второй момент связан с двумя рассмотренными в предыдущем разделе вариантами,
+<span class="p">Второй момент связан с двумя рассмотренными в предыдущем разделе вариантами,
 которые являются примерами <em class="term">лексического</em> и <em class="term">динамического
-связывания</em><a class="footref" href="zz_footnotes.html#foot1.15"><sup>15</sup></a> (также применяются термины лексическая и
-динамическая область видимости). В <em>лексическом</em> Лиспе функция выполняется
+связывания</em><a class="footref" href="#"><sup>15</sup></a><div class="foot-wrap">
+<div class="foot-content"><p>В объектно-ориентированных языках под динамическим
+    связыванием обычно понимается механизм выбора метода объекта на основе его
+    реального типа во время исполнения программы, в противоположность статическому
+    связыванию, при котором метод выбирается компилятором исходя из типа переменной,
+    которая хранит рассматриваемый объект.</p></div></div>
+(также применяются термины лексическая и динамическая область видимости).
+В <em>лексическом</em> Лиспе функция выполняется
 в окружении своего определения, расширенном собственными переменными, тогда как
-в <em>динамическом</em> — расширяет текущее окружение, окружение своего вызова.</p>
+в <em>динамическом</em> — расширяет текущее окружение, окружение своего вызова.</span>
 
-<p>Сейчас в моде лексическое связывание, но это не значит, что у динамического нет
+<span class="p">Сейчас в моде лексическое связывание, но это не значит, что у динамического нет
 будущего. С одной стороны, именно динамическое связывание применяется
 в некоторых довольно популярных языках вроде <span class="TeX">Τ<span class="E">e</span>Χ</span> <span class="cite">[<a href="z1_bibliography.html#knu84">Knu84</a>]</span>,
-Emacs Lisp<a class="footref" href="zz_footnotes.html#foot1.tr-1"><sup>*</sup></a> <span class="cite">[<a href="z1_bibliography.html#llst93">LLSt93</a>]</span>, Perl <span class="cite">[<a href="z1_bibliography.html#ws91">WS91</a>]</span>.</p>
+Emacs Lisp<a class="footref" href="#"><sup>*</sup></a><div class="foot-wrap"><div class="foot-content"><p>Начиная с Emacs Lisp v. 24 и Perl 5, эти языки имеют и лексические переменные.</p></div></div> <span class="cite">[<a href="z1_bibliography.html#llst93">LLSt93</a>]</span>, Perl <span class="cite">[<a href="z1_bibliography.html#ws91">WS91</a>]</span>.</span>
 
 <p>С другой стороны, сама идея динамической области видимости является важной
 концепцией программирования. Она соответствует установке связей перед
@@ -1279,12 +1347,14 @@ Emacs Lisp<a class="footref" href="zz_footnotes.html#foot1.tr-1"><sup>*</sup></a
 <pre>(<span class="special">define</span> (<span class="func">foo</span> <span class="var">x</span>) (<span class="func">list</span> <span class="var">x</span> <span class="var">y</span>))
 (<span class="special">define</span> (<span class="func">bar</span> <span class="var">y</span>) (<span class="func">foo</span> <span class="num">1991</span>))</pre>
 
-<p>В лексическом Лиспе переменная <code><span class="var">y</span></code> в <code><span class="func">foo</span></code><a class="footref" href="zz_footnotes.html#foot1.16"><sup>16</sup></a> — это всегда ссылка на глобальную
+<span class="p">В лексическом Лиспе переменная <code><span class="var">y</span></code> в
+<code><span class="func">foo</span></code><a class="footref" href="#"><sup>16</sup></a><div class="foot-wrap">
+<div class="foot-content"><p>О происхождении <em>foo</em> см. <span class="cite">[<a href="z1_bibliography.html#ray91">Ray91</a>]</span>.</p></div></div> — это всегда ссылка на глобальную
 переменную <code><span class="var">y</span></code>, которая не имеет никакого отношения к <code><span class="var">y</span></code> внутри <code><span class="func">bar</span></code>.
 В динамическом же Лиспе переменная <code><span class="var">y</span></code> из <code><span class="func">bar</span></code> будет видима в <code><span class="func">foo</span></code>
 внутри <code><span class="func">bar</span></code>, потому что в момент вызова <code><span class="func">foo</span></code> переменная <code><span class="var">y</span></code> уже
 находилась в текущем окружении. Следовательно, если мы дадим глобальной <code><span class="var">y</span></code>
-значение <code><span class="num">0</span></code>, то получим следующие результаты:</p>
+значение <code><span class="num">0</span></code>, то получим следующие результаты:</span>
 
 <pre>(<span class="special">define</span> <span class="var">y</span> <span class="num">0</span>)
 (<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в динамическом Лиспе</span>
@@ -1340,12 +1410,18 @@ Emacs Lisp<a class="footref" href="zz_footnotes.html#foot1.tr-1"><sup>*</sup></a
 
 <!--\indexCS{function}{для замыканий}-->
 <!--\indexCS{lambda}{как ключевое слово}-->
-<p>Эта аномалия (не осмелюсь назвать её ошибкой) была исправлена введением новой
+<span class="p">Эта аномалия (не осмелюсь назвать её ошибкой) была исправлена введением новой
 специальной формы <code><span class="special">function</span></code>. Она принимала <code><span class="special">lambda</span></code>-форму и создавала
 <em class="term">замыкание</em> — функцию, связанную с окружением, в котором она определена.
 При вызове замыкания вместо текущего окружения расширялось окружение
 определения, замкнутое внутри него. Вместе с изменениями <code><span class="func">d.evaluate</span></code> и
-<code><span class="func">d.invoke</span></code>, форма <code><span class="special">function</span></code><a class="footref" href="zz_footnotes.html#foot1.17"><sup>17</sup></a> выражается так:</p>
+<code><span class="func">d.invoke</span></code>, форма <code><span class="special">function</span></code><a class="footref" href="#"><sup>17</sup></a><div class="foot-wrap"><div class="foot-content"><p>Наша имитация не совсем точна, так как существует немало диалектов Лиспа (вроде CLtL1
+    <span class="cite">[<a href="z1_bibliography.html#ste84">Ste84</a>]</span>), где
+    <code><span class="special">lambda</span></code> — это не специальный оператор, а только ключевое слово-маркер
+    вроде <code><span class="syntax">else</span></code> внутри <code><span class="syntax">cond</span></code> и <code><span class="syntax">case</span></code>. В этом случае <code><span class="func">d.evaluate</span></code>
+    может вообще не знать ни о какой <code><span class="special">lambda</span></code>. Иногда даже накладываются
+    ограничения на положение <code><span class="special">lambda</span></code>-форм, разрешающие им находиться только
+    внутри <code><span class="special">function</span></code> и в определениях функций.</p></div></div> выражается так:</span>
 
 
 <!--\indexC{d.invoke}-->
@@ -1414,10 +1490,10 @@ transparency). Ссылочная прозрачность — это свойс
 
 <!--\indexR{переменные!безымянные}-->
 <!--\indexR{альфа@$\alpha$-конверсия}-->
-<p>Локальные переменные функций вроде <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code> иногда называются
+<span class="p">Локальные переменные функций вроде <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code> иногда называются
 <em>безымянными</em>. Их имена ничего не значат и могут быть абсолютно
 произвольными. Функция <code>(<span class="special">lambda</span> (<span class="var">n347</span>) (<span class="func">+</span> <span class="var">n347</span> <span class="var">n347</span>))</code> — это та же
-самая<a class="footref" href="zz_footnotes.html#foot1.18"><sup>18</sup></a> функция, что и <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code>.</p>
+самая<a class="footref" href="#"><sup>18</sup></a><div class="foot-wrap"><div class="foot-content"><p>В терминах <span class="math"><span class="ord var">λ</span></span>-исчисления подобная замена имён называется <span class="math"><span class="ord var">α</span></span>-конверсией.</p></div></div> функция, что и <code>(<span class="special">lambda</span> (<span class="var">u</span>) (<span class="func">+</span> <span class="var">u</span> <span class="var">u</span>))</code>.</span>
 
 <p>Мы ожидаем, что в языке будет сохраняться этот инвариант. Но это невозможно
 в динамическом Лиспе. Рассмотрим следующий пример:</p>
@@ -1464,13 +1540,17 @@ transparency). Ссылочная прозрачность — это свойс
 <!--\indexR{дальнее (deep) связывание}-->
 <!--\indexR{связывание!дальнее (deep)}-->
 <!--\indexCS{lookup}{стоимость}-->
-<p>Но не всё так просто заканчивается. Разработчики языков нашли способы ускорить
+<span class="p">Но не всё так просто заканчивается. Разработчики языков нашли способы ускорить
 поиск значений динамических переменных. Если окружения представлены
 ассоциативными списками, то время на поиск значения переменной (стоимость вызова
-<code><span class="func">lookup</span></code>) линейно зависит от длины списка.<a class="footref" href="zz_footnotes.html#foot1.19"><sup>19</sup></a> Такой подход называется <em class="term">глубоким</em> или
+<code><span class="func">lookup</span></code>) линейно зависит от длины списка.<a class="footref" href="#"><sup>19</sup></a><div class="foot-wrap"><div class="foot-content"><p>К счастью, статистика показывает, что переменные, располагающиеся ближе к началу списка,
+    используются чаще тех, что находятся глубоко внутри. Кстати, ещё стоит отметить, что
+    лексические окружения в среднем меньше по размеру, чем динамические, так как
+    последним необходимо хранить все переменные, участвующие в вычислениях, включая
+    одноимённые <span class="cite">[<a href="z1_bibliography.html#bak92a">Bak92a</a>]</span>.</p></div></div> Такой подход называется <em class="term">глубоким</em> или
 <em class="term">дальним связыванием</em> (deep binding), так как значения динамических
 переменных обычно располагаются на некотором удалении от текущего локального
-окружения.</p>
+окружения.</span>
 
 <!--\indexR{ближнее (shallow) связывание}-->
 <!--\indexR{связывание!ближнее (shallow)}-->
@@ -1489,10 +1569,11 @@ transparency). Ссылочная прозрачность — это свойс
 функции старые значения в символах необходимо восстановить обратно, а это может
 помешать оптимизации хвостовой рекурсии. (Хотя есть варианты: <span class="cite">[<a href="z1_bibliography.html#sj93">SJ93</a>]</span>.)</p>
 
-<p>Изменив структуру окружений, мы сможем частично проэмулировать<a class="footref" href="zz_footnotes.html#foot1.20"><sup>20</sup></a> ближнее связывание. Но с оговорками: список
+<span class="p">Изменив структуру окружений, мы сможем частично проэмулировать<a class="footref" href="#"><sup>20</sup></a><div class="foot-wrap"><div class="foot-content"><p>Здесь мы не реализуем присваивание переменным, захваченным замыканиями. Об этом можно
+    почитать в <span class="cite">[<a href="z1_bibliography.html#bcsj86">BCSJ86</a>]</span>.</p></div></div> ближнее связывание. Но с оговорками: список
 аргументов не может быть точечным (так будет легче его разбирать) и мы не будем
 проверять арность функций. Новые функции будем обозначать префиксом <code>s.</code>,
-чтобы не путать их с другими.</p>
+чтобы не путать их с другими.</span>
 
 <!--\indexC{s.make-function}-->
 <!--\indexC{s.lookup}-->
@@ -1528,9 +1609,14 @@ transparency). Ссылочная прозрачность — это свойс
 <!--\indexR{символы!списки свойств}-->
 <!--\indexE{P-список}-->
 <!--\indexR{хеш-таблицы}-->
-<p>С помощью этих функций мы эмулируем наличие у символов поля,<a class="footref" href="zz_footnotes.html#foot1.21"><sup>21</sup></a> где хранится
-значение одноимённой переменной. Независимо от их настоящей реализации,<a class="footref" href="zz_footnotes.html#foot1.22"><sup>22</sup></a> будем
-считать, что они выполняются за постоянное время.</p>
+<span class="p">С помощью этих функций мы эмулируем наличие у символов поля,<a class="footref" href="#"><sup>21</sup></a><div class="foot-wrap"><div class="foot-content"><p>Это поле названо в честь <code><span class="var">apval</span></code> из
+    <span class="cite">[<a href="z1_bibliography.html#mae+62">MAE<sup>+</sup>62</a>]</span>.
+    <span class="see">[см. <a href="ch02_lisp_1_2_omega.html#lisp1-2-omega/par:apval">2 главу</a>]</span>
+    Тогда значения полей действительно хранились в наивных P-списках.</p></div></div> где хранится
+значение одноимённой переменной. Независимо от их настоящей реализации,<a class="footref" href="#"><sup>22</sup></a><div class="foot-wrap"><div class="foot-content"><p>Эти функции проходят по списку свойств символа (его P-списку,
+    от property) до тех пор, пока не найдут нужное. Скорость поиска, соответственно,
+    линейно зависит от длины списка, если только не применяются хеш-таблицы.</p></div></div> будем
+считать, что они выполняются за постоянное время.</span>
 
 <p>Заметьте, что в этой реализации абсолютно не используется окружение определения
 <code><span class="var">env</span></code>. Поэтому для поддержки замыканий нам потребуется изменить реализацию
@@ -1571,10 +1657,10 @@ transparency). Ссылочная прозрачность — это свойс
 доступны в глобальном окружении. Также можно туда поместить несколько простых
 констант вроде логических значений и пустого списка.</p>
 
-<p>Для этого мы определим пару макросов. Исключительно для удобства, потому что мы
-о них ещё даже не говорили.<a class="footref" href="zz_footnotes.html#foot1.23"><sup>23</sup></a> Макросы — это довольно сложная и важная вещь сами
+<span class="p">Для этого мы определим пару макросов. Исключительно для удобства, потому что мы
+о них ещё даже не говорили.<a class="footref" href="#"><sup>23</sup></a><div class="foot-wrap"><div class="foot-content"><p>Согласитесь, было бы странным втискивать всю книгу в первую главу.</p></div></div> Макросы — это довольно сложная и важная вещь сами
 по себе, так что им посвящена собственная глава.
-<span class="see">[см. <a href="ch09_macros.html">9 главу</a>]</span></p>
+<span class="see">[см. <a href="ch09_macros.html">9 главу</a>]</span></span>
 
 <p>Эти два макроса облегчат наполнение глобального окружения. Само глобальное
 окружение является расширением начального окружения <code><span class="func">env.init</span></code>.</p>
@@ -1689,23 +1775,25 @@ transparency). Ссылочная прозрачность — это свойс
 <!--\indexC{bar}-->
 <!--\indexC{fib}-->
 <!--\indexC{fact}-->
-<p>Также мы добавим несколько рабочих переменных<a class="footref" href="zz_footnotes.html#foot1.24"><sup>24</sup></a> в глобальное
+<span class="p">Также мы добавим несколько рабочих переменных<a class="footref" href="#"><sup>24</sup></a><div class="foot-wrap"><div class="foot-content"><p>К сожалению, сейчас они ещё и инициализируются. Эта ошибка будет исправлена позже.</p></div></div> в глобальное
 окружение, так как сейчас у нас нет способа динамически создавать переменные.
 По статистике, предлагаемые имена составляют приблизительно 96,037 %
-используемых при тестировании свеженаписанных интерпретаторов.</p>
+используемых при тестировании свеженаписанных интерпретаторов.</span>
 
 <pre>(<span class="syntax">definitial</span> <span class="var">foo</span>)
 (<span class="syntax">definitial</span> <span class="var">bar</span>)
 (<span class="syntax">definitial</span> <span class="var">fib</span>)
 (<span class="syntax">definitial</span> <span class="var">fact</span>)</pre>
 
-<p>Наконец, определим несколько примитивных функций (не все, потому что такие
+<span class="p">Наконец, определим несколько примитивных функций (не все, потому что такие
 полные списки — это хорошее снотворное). Главная сложность состоит
 в соединении механизмов вызова функций определяемого и определяющего языков.
 Зная, что аргументы собираются нашим интерпретатором в список, достаточно просто
 применить
-к нему <code><span class="func">apply</span></code>.<a class="footref" href="zz_footnotes.html#foot1.25"><sup>25</sup></a> Заметьте, что арность функций будет соблюдаться,
-так как мы включили проверку в определение макроса <code><span class="syntax">defprimitive</span></code>.</p>
+к нему <code><span class="func">apply</span></code>.<a class="footref" href="#"><sup>25</sup></a><div class="foot-wrap"><div class="foot-content"><p>Можно только порадоваться за наш выбор не называть
+    <code><span class="func">invoke</span></code>
+    «<code><span class="func">apply</span></code>».</p></div></div> Заметьте, что арность функций будет соблюдаться,
+так как мы включили проверку в определение макроса <code><span class="syntax">defprimitive</span></code>.</span>
 
 <pre>(<span class="syntax">defprimitive</span> <span class="var">cons</span> <span class="var">cons</span> <span class="num">2</span>)
 (<span class="syntax">defprimitive</span> <span class="var">car</span> <span class="var">car</span> <span class="num">1</span>)
@@ -1750,12 +1838,17 @@ transparency). Ссылочная прозрачность — это свойс
 
 <blockquote class="equation math"><span class="ord symb">∀</span><span class="ord var">π</span><span class="binop">∈</span><span class="ord Vset">Программы</span><span class="ord punct">: </span><span class="ord var">L</span><code class="ord">(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <i>env.global</i>)</code><span class="binop">≡</span><span class="ord var">L</span><span class="ord var">π</span></blockquote>
 
-<p>Исполнение любой программы <span class="math"><span class="ord var">π</span></span>, написанной на <span class="math"><span class="ord var">L</span></span> (обозначается как <span class="math"><span class="ord var">L</span><span class="ord var">π</span></span>),
+<span class="p">Исполнение любой программы <span class="math"><span class="ord var">π</span></span>, написанной на <span class="math"><span class="ord var">L</span></span> (обозначается как <span class="math"><span class="ord var">L</span><span class="ord var">π</span></span>),
 должно вести себя так же (то есть давать тот же результат или никогда
 не завершаться), как и выражение <code>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)</code> на
 том же языке <span class="math"><span class="ord var">L</span></span>. Одним из занимательных следствий этого утверждения является
-то, что <code><span class="func">evaluate</span></code> способна<a class="footref" href="zz_footnotes.html#foot1.26"><sup>26</sup></a> проинтерпретировать сама себя. Следовательно,
-следующие выражения эквивалентны:</p>
+то, что <code><span class="func">evaluate</span></code> способна<a class="footref" href="#"><sup>26</sup></a><div class="foot-wrap"><div class="foot-content"><p>После того, как мы раскроем все
+    используемые макросы и сокращения вроде <code><span class="syntax">let</span></code>,
+    <code><span class="syntax">case</span></code>, <code><span class="special">define</span></code>
+    и т. д. Потом надо будет ещё поместить в глобальное окружение функции
+    <code><span class="func">evaluate</span></code>,
+    <code><span class="func">evlis</span></code> и др.</p></div></div> проинтерпретировать сама себя. Следовательно,
+следующие выражения эквивалентны:</span>
 
 <pre>(<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>) <span class="math"><span class="rel">≡</span></span>
   <span class="math"><span class="rel">≡</span></span> (<span class="func">evaluate</span> (<span class="special">quote</span> (<span class="func">evaluate</span> (<span class="special">quote</span> <span class="math"><span class="ord var">π</span></span>) <span class="var">env.global</span>)) <span class="var">env.global</span>)</pre>

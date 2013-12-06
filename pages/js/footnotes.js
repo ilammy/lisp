@@ -66,6 +66,14 @@ function showFootnote(event)
     footwrap = findInNextSiblings(footref, 'DIV', 'foot-wrap')
 
     addClass(footwrap, 'visible')
+
+    /*
+
+
+TODO: hide if already visible
+
+
+    */
 }
 
 function hideFootnote(event)
@@ -91,8 +99,10 @@ function setupFootnotes()
         var footwrap = findInNextSiblings(footrefs[i], 'DIV', 'foot-wrap'),
             footcontent = findInChildren(footwrap, 'DIV', 'foot-content')
 
+        if (!footcontent) continue
+
         var hideButton = document.createElement('a')
-        hideButton.className = 'close'
+        hideButton.className = 'close-button'
         hideButton.href = '#'
         hideButton.textContent = '✕'
         addEventHandler(hideButton, 'click', hideFootnote)

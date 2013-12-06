@@ -4,6 +4,7 @@
 <head>
     <title>10 – Компиляция в Си</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
+    <script type="text/javascript" src="js/footnotes.js"></script>
 </head>
 
 <body>
@@ -299,16 +300,17 @@ Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span
   (<span class="func">make-Box-Write</span> (<span class="func">Local-Assignment-reference</span> <span class="var">o</span>)
                   (<span class="func">insert-box!</span> (<span class="func">Local-Assignment-form</span> <span class="var">o</span>)) ) )</pre>
 
-<p>В данный момент программа считает, что все изменяемые переменные уже разложены
+<span class="p">В данный момент программа считает, что все изменяемые переменные уже разложены
 по коробкам; нам остаётся лишь оправдать её ожидания. Локальные изменяемые
 переменные создаются исключительно <code><span class="special">lambda</span></code>- и <code><span class="syntax">let</span></code>-формами, то есть
-узлами классов <code><span class="class">Function</span></code> и <code><span class="class">Fix-Let</span></code><a class="footref" href="zz_footnotes.html#foot10.1"><sup>1</sup></a>.
+узлами классов <code><span class="class">Function</span></code> и <code><span class="class">Fix-Let</span></code><a class="footref" href="#"><sup>1</sup></a><div class="foot-wrap"><div class="foot-content"><p>Даже если сейчас в дереве нет <code><span class="class">Fix-Let</span></code>-узлов,
+    соответствующих приводимым формам, метод их обработки должен существовать.</p></div></div>.
 Идея состоит в том, чтобы поместить создание коробок перед
 телом этих форм. <span class="see">[см. раздел <a href="ch04_assignment_and_side_effects.html#ch4-box-transform">4.1.1</a>]</span> Просто и
 понятно, так что приступаем к написанию соответствующих специализаций функции
 <code><span class="func">insert-box!</span></code>. Каждая из них заказывает у вспомогательной функции необходимое
 количество коробок, после чего вставляет полученные экземпляры <code><span class="class">Box-Creation</span></code>
-куда следует.</p>
+куда следует.</span>
 
 <!--\indexC{boxify-mutable-variables}-->
 <pre>(<span class="syntax">define-method</span> (<span class="func">insert-box!</span> (<span class="var">o</span> <span class="class">Function</span>))
@@ -632,7 +634,7 @@ Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span
 
 <h2 id="cc/sect:tmp"><span class="wrap"><span class="seq">10.6.</span><span class="title">Собираем временные переменные</span></span></h2>
 
-<p>У автора всегда есть решительное преимущество перед читателем в том, что он
+<span class="p">У автора всегда есть решительное преимущество перед читателем в том, что он
 знает, что хочет получить, а вы пока ещё не знаете, что получится в результате.
 В надежде на оригинальность, выражения Scheme было решено переводить
 в выражения Си. Это выглядит немного эксцентричным, так как язык Си вообще-то
@@ -640,10 +642,11 @@ Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span
 представление позволяет сохранить структуру Scheme в получаемой на выходе
 программе. Правда, в этом случае возникает проблема с переводом узлов типа
 <code><span class="class">Fix-Let</span></code>, так как в языке Си нельзя
-создавать локальные переменные внутри выражений<a class="footref" href="zz_footnotes.html#foot10.2"><sup>2</sup></a>, только с помощью
+создавать локальные переменные внутри выражений<a class="footref" href="#"><sup>2</sup></a><div class="foot-wrap"><div class="foot-content"><p>Однако, например, <code>gcc</code> расширяет язык формой
+    <code>({ ... })</code>, позволяющей вводить переменные где угодно.</p></div></div>, только с помощью
 отдельных инструкций. Поэтому мы вынуждены будем пробежаться по всем
 <code><span class="class">Fix-Let</span></code> и провести учёт всех локальных переменных, вводимых ими, чтобы
-впоследствии корректно их объявить.</p>
+впоследствии корректно их объявить.</span>
 
 <p>Естественно, для этого выполняется ещё один проход по коду. Задачей данного
 прохода будет сбор всех локальных переменных форм
@@ -864,12 +867,13 @@ Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span
 <span class="see">[см. раздел <a href="ch07_compilation.html#compilation/sect:separate">7.10</a>]</span>
 Мы не будем их рассматривать повторно, дабы не раздувать эту главу в пару раз.)</p>
 
-<p>Для облегчения понимания и повышения читабельности кода, генератор щедро
+<span class="p">Для облегчения понимания и повышения читабельности кода, генератор щедро
 использует макросы Си. Например, глобальные переменные объявляются макросом
 <code class="c"><span class="pre">SCM_DefineGlobalVariable</span></code>.
 Вторым аргументом этот макрос принимает строку
-с изначальным именем<a class="footref" href="zz_footnotes.html#foot10.3"><sup>3</sup></a> переменной на Scheme. Это может
-оказаться полезным при отладке.</p>
+с изначальным именем<a class="footref" href="#"><sup>3</sup></a><div class="foot-wrap"><div class="foot-content"><p>Используемая в этой главе функция <code><span class="func">read</span></code>
+    переводит все имена символов в верхний регистр.</p></div></div> переменной на Scheme. Это может
+оказаться полезным при отладке.</span>
 
 <!--\indexC{generate-global-environment}-->
 <!--\indexC{generate-global-variable}-->
@@ -1449,7 +1453,7 @@ Bigloo <span class="cite">[<a href="z1_bibliography.html#ser94">Ser94</a>]</span
 
 <!--\indexR{стековые фреймы!объединение}-->
 <!--\indexR{фреймы стека!объединение}-->
-<p>Приводимые формы просто переводятся в последовательность выражений Си,
+<span class="p">Приводимые формы просто переводятся в последовательность выражений Си,
 соответствующих их телу. Наконец-то усилия по предварительному анализу кода
 и идентификации временных переменных начинают приносить плоды. Благодаря им
 становится возможным выполнить так называемое <em class="term">объединение фреймов</em> (frame
@@ -1459,7 +1463,9 @@ coalescing); это известная оптимизация <span class="cite"
 переменные уже выделена память, то связывание их со значениями сводится лишь
 к присваиваниям. В терминах Лиспа данное преобразование приводит к объединению
 локальных <code><span class="syntax">let</span></code>-форм, переносу их на уровень выше и возможному переименованию
-соответствующих переменных.<a class="footref" href="zz_footnotes.html#foot10.4"><sup>4</sup></a></p>
+соответствующих переменных.<a class="footref" href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>Конечно, при этом можно применять и более агрессивные оптимизации. Например, в приведённом
+    примере переменные <code><span class="var">x1</span></code> и <code><span class="var">x2</span></code> невозможно использовать одновременно, так что они могут физически
+    совпадать в памяти.</p></div></div></span>
 
 <table class="nocaption code"><tbody><tr>
 <td><pre>(<span class="special">begin</span>
@@ -1665,12 +1671,15 @@ coalescing); это известная оптимизация <span class="cite"
 
 <!--\indexC*{function}{function\_}-->
 <!--\indexR{таблица символов}-->
-<p>Для повышения удобочитаемости генерируемого кода снова используются макросы,
+<span class="p">Для повышения удобочитаемости генерируемого кода снова используются макросы,
 чтобы скрыть детали реализации. Для каждого замыкания генерируется функция,
 содержащая его тело, а также структура данных, которая будет хранить
 замкнутые переменные. Имена создаваемых сущностей строятся по простому
 принципу: корень <code class="c"><span class="func">function_</span></code> + номерной суффикс, взятый из поля
-<code><span class="var">index</span></code> объекта <code><span class="class">Function-Definition</span></code><a class="footref" href="zz_footnotes.html#foot10.5"><sup>5</sup></a>.</p>
+<code><span class="var">index</span></code> объекта <code><span class="class">Function-Definition</span></code><a class="footref" href="#"><sup>5</sup></a><div class="foot-wrap"><div class="foot-content"><p>Имена функций вида <code class="c"><span class="func">function_<i>i</i></span></code>,
+    очевидно, никак не связаны с именами соответствующих им
+    глобальных переменных. Если не пренебрегать таблицей символов, как это сделано
+    здесь, то вполне можно выводить более понятные имена.</p></div></div>.</span>
 
 <p>Внутренняя структура замыканий формируется макросом
 <code class="c"><span class="macro">SCM_DefineClosure</span></code>.
@@ -1961,10 +1970,14 @@ coalescing); это известная оптимизация <span class="cite"
     <span class="keyword">return</span> <span class="func">SCM_close</span>(((<span class="type">SCM</span>(*)(<span class="type">void</span>)) <span class="func">function_1</span>), <span class="num">-1</span>, <span class="num">1</span>, <span class="var">I</span>);
 }</pre>
 
-<p>Если откомпилировать получившуюся программу любым компилятором, поддерживающим
+<span class="p">Если откомпилировать получившуюся программу любым компилятором, поддерживающим
 стандарт C90 (например, <code>gcc</code>), подключив к ней необходимые библиотеки,
 о которых мы упоминали, то получится (весьма небольшой) исполнимый файл,
-который (весьма быстро<a class="footref" href="zz_footnotes.html#foot10.6"><sup>6</sup></a>) выдаёт ожидаемый результат.<a class="footref" href="zz_footnotes.html#foot10.7"><sup>7</sup></a></p>
+который (весьма быстро<a class="footref" href="#"><sup>6</sup></a><div class="foot-wrap"><div class="foot-content"><p>Большая часть потраченного времени уходит на
+    загрузку; собственно исполнение занимает пренебрежимо малую его часть. Если
+    данные вычисления повторить 10000 раз, то время выполнения программы
+    увеличится всего до одной секунды.</p></div></div>)
+выдаёт ожидаемый результат.<a class="footref" href="#"><sup>7</sup></a><div class="foot-wrap"><div class="foot-content"><p>Замеры производились на Sony News 3200 с процессором MIPS R3000 на борту.</p></div></div></span>
 
 <pre class="shell"><span class="prompt">%</span> <span class="cmd">gcc</span> <span class="opt">-ansi</span> <span class="opt">-pedantic</span> <span class="arg">chap10ex.c</span> <span class="arg">scheme.o</span> <span class="arg">schemelib.o</span>
 <span class="prompt">%</span> <span class="cmd">time</span> <span class="arg">a.out</span>
@@ -2015,14 +2028,16 @@ text    data    bss     dec     hex
 варианты, неплохую их подборку можно найти в <span class="cite">[<a href="z1_bibliography.html#gud93">Gud93</a>]</span>.</p>
 
 <!--\indexR{представление!объектов Scheme на Си}-->
-<p>Возвращаемся к насущному; взгляните на рисунок <a href="#cc/data/pic:tagptr">10.5</a>.
+<span class="p">Возвращаемся к насущному; взгляните на рисунок <a href="#cc/data/pic:tagptr">10.5</a>.
 Значения Scheme представляются такими значениями Си, что если их младший бит
 равен единице, то остальные биты считаются представлением некоторого целого
 числа. Например, на 32-битных машинах получаются 31-битные числа. Если же
 младший бит нулевой, то это адрес первого поля соответствующего значения Scheme.
-Тип этого значения расположен <em>перед</em><a class="footref" href="zz_footnotes.html#foot10.8"><sup>8</sup></a> его полями, как у <span class="cite">[<a href="z1_bibliography.html#dps94a">DPS94a</a>]</span>. Сами значения представляются
+Тип этого значения расположен <em>перед</em><a class="footref" href="#"><sup>8</sup></a><div class="foot-wrap"><div class="foot-content"><p>Пустой указатель в Си (<code class="c"><span class="macro">NULL</span></code>) чаще всего
+    численно равен нулю. Естественно, он не является допустимым значением Scheme, так как
+    нелегко будет отыскать в памяти адрес <span class="math"><span class="ord">−</span><span class="ord num">1</span></span>.</p></div></div> его полями, как у <span class="cite">[<a href="z1_bibliography.html#dps94a">DPS94a</a>]</span>. Сами значения представляются
 обычными структурами данных Си. Их тип — как вы уже, наверное, догадались
-— называется <code class="c"><span class="type">SCM</span></code>.</p>
+— называется <code class="c"><span class="type">SCM</span></code>.</span>
 
 <!--\indexC{SCM}-->
 <pre class="c"><span class="keyword">typedef</span> <span class="keyword">union</span> <span class="type">SCM_object</span> *<span class="type">SCM</span>;</pre>
@@ -2043,11 +2058,15 @@ text    data    bss     dec     hex
 <span class="pre">#define</span> <span class="macro">SCM_Fixnum2Int</span>(<span class="var">x</span>) ((<span class="type">long</span>)(<span class="var">x</span>) &gt;&gt; <span class="num">1</span>)
 <span class="pre">#define</span> <span class="macro">SCM_Int2Fixnum</span>(<span class="var">i</span>) ((<span class="type">SCM</span>)(((<span class="var">i</span>) &lt;&lt; <span class="num">1</span>) | <span class="num">1UL</span>))</pre>
 
-<p>Если значение <code class="c"><span class="type">SCM</span></code> не является числом, то это указатель на объект типа
+<span class="p">Если значение <code class="c"><span class="type">SCM</span></code> не является числом, то это указатель на объект типа
 <code class="c"><span class="type">SCM_object</span></code>. Данное объединение все типы данных, поддерживаемые языком.
 Некоторых типов там нет, в частности: чисел с плавающей запятой, векторов,
-портов. Но самое важное в Scheme — точечные пары<a class="footref" href="zz_footnotes.html#foot10.9"><sup>9</sup></a>, замыкания и продолжения — мы
-обязательно реализуем.</p>
+портов. Но самое важное в Scheme — точечные пары<a class="footref" href="#"><sup>9</sup></a><div class="foot-wrap"><div class="foot-content"><p>Как вы помните, <code><span class="var">cdr</span></code> лучше располагать перед
+    <code><span class="var">car</span></code>, потому что пары — это всё же
+    основной элемент связных списков, а <code><span class="var">cdr</span></code> при обходе
+    списка просматривается чаще, как утверждается
+    <span class="cite">[<a href="z1_bibliography.html#cla79">Cla79</a>]</span>.</p></div></div>, замыкания и продолжения — мы
+обязательно реализуем.</span>
 
 <!--\indexC*{SCM_object}{SCM\_object}-->
 <pre class="c"><span class="keyword">union</span> <span class="type">SCM_object</span> {
@@ -2258,18 +2277,20 @@ text    data    bss     dec     hex
 <span class="pre">#define</span> <span class="macro">SCM_StringP</span>(<span class="var">x</span>) \
   ((!<span class="macro">SCM_FixnumP</span>(<span class="var">x</span>)) &amp;&amp; (<span class="macro">SCM_2tag</span>(<span class="var">x</span>) == <span class="var">SCM_STRING_TAG</span>))</pre>
 
-<p id="cc/data/values/par:macros">Естественно, макросы вроде
+<span class="p" id="cc/data/values/par:macros">Естественно, макросы вроде
 <code class="c"><span class="macro">SCM_Car</span></code> и
 <code class="c"><span class="macro">SCM_Cdr</span></code> будут использоваться
 исключительно в тех случаях, когда компилятор <em>знает</em>, что значение имеет
 подходящий тип. Следующие макросы для арифметических действий, например, этого
 заранее знать не могут, поэтому в них проверки типов выполняются явно. Конечно,
 таким образом мы лишаемся возможной оптимизации в случае, если типы всё же
-будут известны<a class="footref" href="zz_footnotes.html#foot10.10"><sup>10</sup></a>,
+будут известны<a class="footref" href="#"><sup>10</sup></a><div class="foot-wrap"><div class="foot-content"><p>Некоторые компиляторы Си <em>достаточно сообразительны</em>,
+    чтобы избавиться от части ненужных проверок, но, как известно, хочешь сделать
+    хорошо — сделай это сам.</p></div></div>,
 но этот вопрос уже обсуждался: с точки зрения
 педагогики важнее показать всю массу вариантов, нежели рассмотреть в деталях
 пару-тройку лучших. Если бы мы хотели добиться максимальной эффективности,
-компилятор был бы устроен совсем не так и выдавал бы совершенно иной код.</p>
+компилятор был бы устроен совсем не так и выдавал бы совершенно иной код.</span>
 
 <!--\indexC*{SCM_Plus}{SCM\_Plus}-->
 <!--\indexC*{SCM_GtP}{SCM\_GtP}-->
@@ -2448,11 +2469,14 @@ text    data    bss     dec     hex
 
 <h3 id="cc/runtime/ssect:alloc"><span class="wrap"><span class="seq">10.10.1.</span><span class="title">Выделение памяти</span></span></h3>
 
-<p>В Си за управление памятью отвечает лично программист, так что сборщика мусора
+<span class="p">В Си за управление памятью отвечает лично программист, так что сборщика мусора
 у нас не будет, потому как его написание с нуля заняло бы слишком много времени.
 За информацией об этом можете обратиться, например, к <span class="cite">[<a href="z1_bibliography.html#spi90">Spi90</a>,
-<a href="z1_bibliography.html#wil92">Wil92</a>]</span><a class="footref" href="zz_footnotes.html#foot10.tr-1"><sup>*</sup></a>. Интеграцию с Бёмовским сборщиком мусора <span class="cite">[<a href="z1_bibliography.html#bw88">BW88</a>]</span> оставляем
-вам в качестве упражнения.</p>
+<a href="z1_bibliography.html#wil92">Wil92</a>]</span><a class="footref" href="#"><sup>*</sup></a><div class="foot-wrap"><div class="foot-content"><p>Или к более современной книге:
+    <i>Richard Jones, Antony Hosking, Eliot Moss.</i> The Garbage Collection
+    Handbook: The Art of Automatic Memory Management. — Chapman &amp; Hall/CRC,
+    2012. — 511 p.</p></div></div>. Интеграцию с Бёмовским сборщиком мусора <span class="cite">[<a href="z1_bibliography.html#bw88">BW88</a>]</span> оставляем
+вам в качестве упражнения.</span>
 
 <p>Наиболее очевидная функция, требующая выделения памяти, — это <code><span class="func">cons</span></code>. Она
 должна создать новую точечную пару, заполнить её поля (включая поле типа) и
@@ -2737,17 +2761,19 @@ text    data    bss     dec     hex
 
 <!--\indexR{переменная арность!в Си}-->
 <!--\indexC{CALL-ARGUMENTS-LIMIT}-->
-<p>Реализация примитива <code><span class="func">apply</span></code> имеет сравнимые размеры. Так как это примитив
+<span class="p">Реализация примитива <code><span class="func">apply</span></code> имеет сравнимые размеры. Так как это примитив
 переменной арности, то свои аргументы он получает в виде <code class="c"><span class="type">va_list</span></code>,
 содержащего применяемую функцию и список аргументов для неё. Но здесь возникает
-проблема с тем, что в C90 отсутствует<a class="footref" href="zz_footnotes.html#foot10.tr-2"><sup>**</sup></a> способ передать другой
+проблема с тем, что в C90 отсутствует<a class="footref" href="#"><sup>**</sup></a><div class="foot-wrap"><div class="foot-content"><p>В C99 появился макрос <code class="c"><span class="macro">va_copy</span></code>,
+    позволяющий сделать это безопасно.</p></div></div> способ передать другой
 функции аргументы, оставшиеся в <code class="c"><span class="type">va_list</span></code>. Что ж, придётся с этим смириться
 и разбирать все возможные арности вручную. Печально, конечно, но нам придётся
 ограничить максимальное количество аргументов <code><span class="func">apply</span></code>. Стандартизацией
 <span class="sc">C<span class="c">ommon</span> L<span class="c">isp</span></span> однозначно руководили реалисты, поэтому там определена специальная
 константа <code><span class="var">CALL-ARGUMENTS-LIMIT</span></code>, хранящая максимально допустимое количество
-аргументов. По стандарту она не может быть меньше 50. Мы ограничимся<a class="footref" href="zz_footnotes.html#foot10.11"><sup>11</sup></a> всего 14, из которых здесь покажем обработку
-лишь первых четырёх.</p>
+аргументов. По стандарту она не может быть меньше 50. Мы ограничимся<a class="footref" href="#"><sup>11</sup></a><div class="foot-wrap"><div class="foot-content"><p>Если вам здесь видится нечеловеческое ущемление прав, то сперва узнайте предел
+    вашей любимой реализации Scheme.</p></div></div> всего 14, из которых здесь покажем обработку
+лишь первых четырёх.</span>
 
 <!--\indexC{apply}-->
 <!--\indexC*{SCM_apply}{SCM\_apply}-->

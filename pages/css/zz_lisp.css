@@ -631,8 +631,8 @@ table.numbered-source pre {
 }
 
 .math .sem-brace {
-    letter-spacing: -0.225em;
-    margin-right: 0.225em;
+    letter-spacing: -0.23rem;
+    margin-right: 0.23rem;
 }
 
 span.quad-stub {
@@ -844,6 +844,7 @@ table#bibliography td.label { padding-right: 0.5em; }
     right: 1.25rem;
     opacity: 0.0;
     visibility: hidden;
+    z-index: 10;
 }
 
 .foot-wrap.visible {
@@ -851,7 +852,7 @@ table#bibliography td.label { padding-right: 0.5em; }
     visibility: visible;
 }
 
-.foot-content .close {
+.foot-content .close-button {
     background: #a66;
     border: 1px solid #833;
     border-radius: 40px;
@@ -871,11 +872,20 @@ table#bibliography td.label { padding-right: 0.5em; }
     background: #dada88;
     border: 1px solid #656510;
     border-radius: 5px;
-    font-size: 85%;
+    font-size: 0.85rem;
     max-width: 35rem;
     padding: 0.5rem;
     position: relative;
 }
+
+.foot-content code {
+    font-size: 0.85rem;
+}
+
+.foot-content .math {
+    font-size: 1.1rem;
+}
+
 
 /******************************************************************************/
 
