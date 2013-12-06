@@ -3,6 +3,11 @@ function addClass(element, className)
     element.className = element.className + ' ' + className
 }
 
+function hasClass(element, className)
+{
+    return (element.className.indexOf(className) !== -1)
+}
+
 function removeClass(element, className)
 {
     var r = new RegExp('\\s+\\b' + className + '\\b', 'g')
@@ -12,7 +17,7 @@ function removeClass(element, className)
 
 function findInParents(element, nodeName, nodeClass)
 {
-    while (element && (element.nodeName != nodeName || element.className != nodeClass))
+    while (element && (element.nodeName != nodeName || !hasClass(element, nodeClass)))
     {
         element = element.parentNode
     }
@@ -22,7 +27,7 @@ function findInParents(element, nodeName, nodeClass)
 
 function findInNextSiblings(element, nodeName, nodeClass)
 {
-    while (element && (element.nodeName != nodeName || element.className != nodeClass))
+    while (element && (element.nodeName != nodeName || !hasClass(element, nodeClass)))
     {
         element = element.nextSibling
     }
@@ -34,7 +39,7 @@ function findInChildren(element, nodeName, nodeClass)
 {
     if (element)
     {
-        if (element.nodeName == nodeName && element.className == nodeClass)
+        if (element.nodeName == nodeName && hasClass(element, nodeClass))
         {
             return element
         }
@@ -65,15 +70,14 @@ function showFootnote(event)
     footref = findInParents(event.target, 'A', 'footref')
     footwrap = findInNextSiblings(footref, 'DIV', 'foot-wrap')
 
-    addClass(footwrap, 'visible')
-
-    /*
-
-
-TODO: hide if already visible
-
-
-    */
+    if (hasClass(footwrap, 'visible'))
+    {
+        removeClass(footwrap, 'visible')
+    }
+    else
+    {
+        addClass(footwrap, 'visible')
+    }
 }
 
 function hideFootnote(event)

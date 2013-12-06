@@ -868,6 +868,10 @@ table#bibliography td.label { padding-right: 0.5em; }
     width: 16px;
 }
 
+.foot-content .close-button:active {
+    background: #c88;
+}
+
 .foot-content {
     background: #dada88;
     border: 1px solid #656510;
