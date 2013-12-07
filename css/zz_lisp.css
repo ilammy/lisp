@@ -162,6 +162,7 @@ body {
     font-family: 'DejaVu Serif', serif;
     line-height: 1.4;
     padding: 2em 0;
+    position: relative;
 }
 
 code, pre {
@@ -342,6 +343,15 @@ blockquote.equation {
     margin: 0.6em auto;
     max-width: 95%;
     text-align: center;
+}
+
+.cc-notice {
+    bottom: 0;
+    color: #444;
+    font-size: 60%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
 }
 
 /******************************************************************************/
