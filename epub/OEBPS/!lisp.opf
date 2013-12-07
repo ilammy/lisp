@@ -64,6 +64,7 @@
     <item id="png29" href="images/png29.png" media-type="image/png"/>
     <item id="png30" href="images/png30.png" media-type="image/png"/>
 
+    <item id="frs-cl" href="fonts/FreeSerif-mathcal.ttf"         media-type="application/x-font-ttf"/>
     <item id="djv-sc" href="fonts/DejaVuSansCondensed.ttf"       media-type="application/x-font-ttf"/>
     <item id="djv-mb" href="fonts/DejaVuSansMono-Bold.ttf"       media-type="application/x-font-ttf"/>
     <item id="djv-m"  href="fonts/DejaVuSansMono.ttf"            media-type="application/x-font-ttf"/>

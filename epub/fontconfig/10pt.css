@@ -24,7 +24,8 @@ table + .caption code,
 table#ch5-dynamic-denotation-transform,
 table.disasm code,
 code .comment code,
-pre .comment code
+pre .comment code,
+.math code
                                             { font-size: 9pt; }
 blockquote.equation span.eqno,
 .math .Vset,
