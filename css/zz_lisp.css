@@ -1174,6 +1174,7 @@ pre span.highlight { background: #DDDDDD; }
 
 body {
     background-color: #ccc;
+    overflow-x: hidden;
 }
 
 .substrate {
@@ -1189,6 +1190,25 @@ body {
 .body {
     padding: 2rem 0;
     margin: 0 1rem;
+}
+
+.prev-chapter, .next-chapter {
+    font-size: 75%;
+    position: absolute;
+}
+
+.prev-chapter {
+    left: -10.5em;
+    text-align: right;
+    top: 0.5em;
+    width: 10em;
+}
+
+.next-chapter {
+    bottom: 0.5em;
+    right: -7.5em;
+    text-align: left;
+    width: 7em;
 }
 
 .toc-hint {
