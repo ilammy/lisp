@@ -57,6 +57,17 @@
 }
 
 @font-face {
+    font-family: FreeSerif;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/freeserif-mathcal.eot');
+    src: url('../fonts/freeserif-mathcal.eot?#iefix')      format('embedded-opentype'),
+         url('../fonts/freeserif-mathcal.woff')            format('woff'),
+         url('../fonts/freeserif-mathcal.ttf')             format('truetype'),
+         url('../fonts/freeserif-mathcal.svg#stixregular') format('svg');
+}
+
+@font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: normal;
@@ -198,7 +209,8 @@ table + .caption code,
 table#ch5-dynamic-denotation-transform,
 table.disasm code,
 code .comment code,
-pre .comment code
+pre .comment code,
+.math code
                                             { font-size: 0.9rem; }
 blockquote.equation span.eqno,
 .math .Vset,
@@ -386,7 +398,7 @@ span.fbox {
 }
 
 span.see {
-    font-family: 'DejaVu Serif Condensed';
+    font-family: 'DejaVu Serif Condensed', serif;
     font-weight: bold;
 }
 
@@ -612,7 +624,12 @@ table.numbered-source pre {
 
 .math .cal {
     color: black;
-    font-family: 'DejaVu Serif';
+    font-family: FreeSerif, STIX, serif;
+}
+
+.math .cal sup {
+    color: black;
+    font-family: STIX, serif;
 }
 
 .math .num {
@@ -641,8 +658,8 @@ table.numbered-source pre {
 }
 
 .math .sem-brace {
-    letter-spacing: -0.23rem;
-    margin-right: 0.23rem;
+    letter-spacing: -0.25rem;
+    margin-right: 0.25rem;
 }
 
 span.quad-stub {
@@ -868,6 +885,7 @@ table#bibliography td.label { padding-right: 0.5em; }
     border-radius: 40px;
     color: white;
     display: block;
+    font-size: 11px;
     height: 16px;
     position: absolute;
     right: -8px;
