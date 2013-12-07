@@ -700,8 +700,15 @@ span.quad-stub {
 
 .math sub + sup {
     display: inline-block;
-    left: -0.8ex;
+    left: -1.0ex;
+    text-indent: 0;
     width: 0;
+}
+
+.math sup.prime {
+    font-size: 100%;
+    top: 0;
+    left: -0.8ex;
 }
 
 .math .syntax {
