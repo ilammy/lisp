@@ -230,7 +230,7 @@ h2 code, h3 .math
 h2 .math
                                             { font-size: 1.6rem; }
 #cover h2
-                                            { font-size: 2.2rem; }
+                                            { font-size: 1.75rem; }
 h1
                                             { font-size: 2.5rem; }
 p .initial
@@ -1146,26 +1146,17 @@ pre span.highlight { background: #DDDDDD; }
 
 /* Cover page */
 
-#cover {
-    text-align: center;
-}
-
 #cover h1 {
     font-weight: bold;
-    line-height: 0.87;
-    margin: 0 0 0.8em 0;
-    text-align: center;
-}
-
-#cover img {
     margin: 0;
+    text-align: center;
 }
 
 #cover h2 {
     font-style: italic;
     font-weight: normal;
-    line-height: 1;
-    margin: 0.8em 0 0 0;
+    margin-top: 0.75em;
+    text-align: center;
 }
 
 /******************************************************************************/
