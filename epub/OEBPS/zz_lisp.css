@@ -39,6 +39,13 @@
 }
 
 @font-face {
+    font-family: FreeSerif;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/FreeSerif-mathcal.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: normal;
@@ -464,7 +471,7 @@ table.numbered-source pre {
 
 .math .cal {
     color: black;
-    font-family: 'DejaVu Serif';
+    font-family: FreeSerif, STIX, serif;
 }
 
 .math .num {
