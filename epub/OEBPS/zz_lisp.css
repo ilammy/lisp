@@ -39,6 +39,13 @@
 }
 
 @font-face {
+    font-family: FreeSerif;
+    font-style: normal;
+    font-weight: normal;
+    src: url('fonts/FreeSerif-mathcal.ttf') format('truetype');
+}
+
+@font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: normal;
@@ -130,7 +137,6 @@ h1 {
 
 h1 .seq {
     display: block;
-    font-variant: small-caps;
     font-weight: normal;
     margin-bottom: 1.0715em;
 }
@@ -249,10 +255,6 @@ p .initial {
 
 p.noindent {
     text-indent: 0;
-}
-
-span.logo {
-    font-variant: small-caps;
 }
 
 span.fbox {
@@ -469,7 +471,7 @@ table.numbered-source pre {
 
 .math .cal {
     color: black;
-    font-family: 'DejaVu Serif';
+    font-family: FreeSerif, STIX, serif;
 }
 
 .math .num {
@@ -545,8 +547,15 @@ span.quad-stub {
 
 .math sub + sup {
     display: inline-block;
-    left: -0.8ex;
+    left: -1ex;
+    text-indent: 0;
     width: 0;
+}
+
+.math sup.prime {
+    font-size: 100%;
+    top: 0;
+    left: -0.8ex;
 }
 
 .math .syntax {
