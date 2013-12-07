@@ -130,7 +130,6 @@ h1 {
 
 h1 .seq {
     display: block;
-    font-variant: small-caps;
     font-weight: normal;
     margin-bottom: 1.0715em;
 }
@@ -249,10 +248,6 @@ p .initial {
 
 p.noindent {
     text-indent: 0;
-}
-
-span.logo {
-    font-variant: small-caps;
 }
 
 span.fbox {
