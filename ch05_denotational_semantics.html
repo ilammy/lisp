@@ -5,6 +5,7 @@
     <title>5 – Денотационная семантика</title>
     <link rel="stylesheet" type="text/css" href="css/zz_lisp.css">
     <script type="text/javascript" src="js/footnotes.js"></script>
+    <meta charset="utf-8">
 </head>
 
 <body>
@@ -85,9 +86,10 @@
 </div>
 
 <div class="substrate">
+<div class="prev-chapter"><a href="ch04_assignment_and_side_effects.html">Предыдущая глава</a></div>
 <div class="body">
 
-<h1 id="chapter:denotational"><span class="wrap"><span class="seq">Глава 5.</span><span class="title">Денотационная семантика</span></span></h1>
+<h1 id="chapter:denotational"><span class="wrap"><span class="seq"><span class="sc">Г<span class="c">лава</span> 5.</span></span><span class="title">Денотационная семантика</span></span></h1>
 
 <p class="noindent"><span class="initial">Э</span><span class="sc"><span class="c">та глава</span></span> начинается кратким обзором
 <span class="math"><span class="ord var">λ</span></span>-исчисления, после чего переходит к денотационной семантике во всей её
@@ -1403,9 +1405,9 @@ href="#"><sup>4</sup></a><div class="foot-wrap"><div class="foot-content"><p>Д�
 <p>Теперь необходимо переопределить аппликацию функций так, чтобы получать все
 возможные результаты. Если порядок случаен, то это фактически значит, что
 аппликация выполняется так: сначала выбирается случайный терм, обозначим
-его <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub><sup>′</sup></span></span>, он вычисляется в <span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup>′</sup></span></span>, потом из оставшихся выбирается следующий
-терм <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub><sup>′</sup></span></span>, который вычисляется в <span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup>′</sup></span></span>, и так далее. Затем значения
-<span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup>′</sup></span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord num">1</span></sub><sup>′</sup></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord var">n</span></sub><sup>′</sup></span></span>
+его <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub><sup class="prime">′</sup></span></span>, он вычисляется в <span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup class="prime">′</sup></span></span>, потом из оставшихся выбирается следующий
+терм <span class="math"><span class="ord var">π<sub><span class="ord num">0</span></sub><sup class="prime">′</sup></span></span>, который вычисляется в <span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup class="prime">′</sup></span></span>, и так далее. Затем значения
+<span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub><sup class="prime">′</sup></span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord num">1</span></sub><sup class="prime">′</sup></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord var">n</span></sub><sup class="prime">′</sup></span></span>
 переупорядочиваются так, как они шли в исходной форме:
 <span class="math"><span class="ord var">ε<sub><span class="ord num">0</span></sub></span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord num">1</span></sub></span><span class="punct">,</span><span class="ord">…</span><span class="punct">,</span><span class="ord var">ε<sub><span class="ord var">n</span></sub></span></span>, и, наконец, первое значение-функция
 применяется к последовательности из всех остальных. При таком подходе порядок
@@ -2356,6 +2358,11 @@ style). Очевидно, что мы можем транслировать лю
 классическую книгу <span class="cite">[<a href="z1_bibliography.html#bar84">Bar84</a>]</span>.</p>
 
 </div>
+<div class="next-chapter"><a href="ch06_fast_interpretation.html">Следующая глава</a></div>
+</div>
+
+<div class="cc-notice">
+    Данный перевод распространяется на условиях <a href="http://creativecommons.org/licenses/by-nd/3.0">CC BY-ND 3.0</a> | Оригинальный репозиторий: <a href="https://github.com/ilammy/lisp">https://github.com/ilammy/lisp</a>
 </div>
 
 </body>

@@ -57,6 +57,17 @@
 }
 
 @font-face {
+    font-family: FreeSerif;
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/freeserif-mathcal.eot');
+    src: url('../fonts/freeserif-mathcal.eot?#iefix')      format('embedded-opentype'),
+         url('../fonts/freeserif-mathcal.woff')            format('woff'),
+         url('../fonts/freeserif-mathcal.ttf')             format('truetype'),
+         url('../fonts/freeserif-mathcal.svg#stixregular') format('svg');
+}
+
+@font-face {
     font-family: 'DejaVu Serif';
     font-style: normal;
     font-weight: normal;
@@ -162,6 +173,7 @@ body {
     font-family: 'DejaVu Serif', serif;
     line-height: 1.4;
     padding: 2em 0;
+    position: relative;
 }
 
 code, pre {
@@ -197,7 +209,8 @@ table + .caption code,
 table#ch5-dynamic-denotation-transform,
 table.disasm code,
 code .comment code,
-pre .comment code
+pre .comment code,
+.math code
                                             { font-size: 0.9rem; }
 blockquote.equation span.eqno,
 .math .Vset,
@@ -240,7 +253,6 @@ h1 {
 
 h1 .seq {
     display: block;
-    font-variant: small-caps;
     font-weight: normal;
     margin-bottom: 1.0715em;
 }
@@ -344,6 +356,15 @@ blockquote.equation {
     text-align: center;
 }
 
+.cc-notice {
+    bottom: 0;
+    color: #444;
+    font-size: 60%;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
 /******************************************************************************/
 
 /* Accidental */
@@ -366,17 +387,13 @@ p.noindent {
     text-indent: 0;
 }
 
-span.logo {
-    font-variant: small-caps;
-}
-
 span.fbox {
     border: 1px solid black;
     padding: 0.2222em;
 }
 
 span.see {
-    font-family: 'DejaVu Serif Condensed';
+    font-family: 'DejaVu Serif Condensed', serif;
     font-weight: bold;
 }
 
@@ -602,7 +619,12 @@ table.numbered-source pre {
 
 .math .cal {
     color: black;
-    font-family: 'DejaVu Serif';
+    font-family: FreeSerif, STIX, serif;
+}
+
+.math .cal sup {
+    color: black;
+    font-family: STIX, serif;
 }
 
 .math .num {
@@ -631,8 +653,8 @@ table.numbered-source pre {
 }
 
 .math .sem-brace {
-    letter-spacing: -0.23rem;
-    margin-right: 0.23rem;
+    letter-spacing: -0.25rem;
+    margin-right: 0.25rem;
 }
 
 span.quad-stub {
@@ -678,8 +700,15 @@ span.quad-stub {
 
 .math sub + sup {
     display: inline-block;
-    left: -0.8ex;
+    left: -1.0ex;
+    text-indent: 0;
     width: 0;
+}
+
+.math sup.prime {
+    font-size: 100%;
+    top: 0;
+    left: -0.8ex;
 }
 
 .math .syntax {
@@ -858,6 +887,7 @@ table#bibliography td.label { padding-right: 0.5em; }
     border-radius: 40px;
     color: white;
     display: block;
+    font-size: 12px;
     height: 16px;
     position: absolute;
     right: -8px;
@@ -1144,6 +1174,7 @@ pre span.highlight { background: #DDDDDD; }
 
 body {
     background-color: #ccc;
+    overflow-x: hidden;
 }
 
 .substrate {
@@ -1159,6 +1190,25 @@ body {
 .body {
     padding: 2rem 0;
     margin: 0 1rem;
+}
+
+.prev-chapter, .next-chapter {
+    font-size: 75%;
+    position: absolute;
+}
+
+.prev-chapter {
+    left: -10.5em;
+    text-align: right;
+    top: 0.5em;
+    width: 10em;
+}
+
+.next-chapter {
+    bottom: 0.5em;
+    right: -7.5em;
+    text-align: left;
+    width: 7em;
 }
 
 .toc-hint {
