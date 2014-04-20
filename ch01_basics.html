@@ -1359,8 +1359,8 @@ Emacs Lisp<a class="footref" href="#"><sup>*</sup></a><div class="foot-wrap"><di
 значение <code><span class="num">0</span></code>, то получим следующие результаты:</span>
 
 <pre>(<span class="special">define</span> <span class="var">y</span> <span class="num">0</span>)
-(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в динамическом Лиспе</span>
-(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">100</span>) (<span class="num">3</span> <span class="num">0</span>)) <span class="comment">; в лексическом Лиспе</span></pre>
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">0</span>) (<span class="num">3</span> <span class="num">0</span>))   <span class="comment">; в лексическом Лиспе</span>
+(<span class="func">list</span> (<span class="func">bar</span> <span class="num">100</span>) (<span class="func">foo</span> <span class="num">3</span>)) <span class="math"><span class="rel">→</span></span> ((<span class="num">1991</span> <span class="num">100</span>) (<span class="num">3</span> <span class="num">0</span>)) <span class="comment">; в динамическом Лиспе</span></pre>
 
 <!--\indexR{свободные переменные!и области видимости}-->
 <p>Заметьте, что в динамическом Лиспе <code><span class="func">bar</span></code> понятия не имеет о том, что
