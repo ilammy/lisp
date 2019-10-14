@@ -7,3 +7,6 @@
 *.pdf
 *.toc
 /epub/OEBPS/images/
+
+# mdBook output
+/book

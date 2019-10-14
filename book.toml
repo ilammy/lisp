@@ -1,0 +1,6 @@
+[book]
+title = "Интерпретация Лиспа и Scheme"
+authors = ["Christian Queinnec"]
+description = "Интерпретация Лиспа и Scheme («Lisp in Small Pieces», «Les Langages Lisp», «Principes d’implantation de Scheme et Lisp») — основы построения интерпретаторов и компиляторов Лиспа (в первую очередь его диалекта Scheme), а также разнообразие вариантов понимания семантики его конструкций и возможностей вроде окружений, замыканий, исключений, продолжений, рефлексии и макросов"
+language = "ru"
+multilingual = false
