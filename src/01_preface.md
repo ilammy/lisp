@@ -378,7 +378,7 @@ IS-Lisp, Le-Lisp, Scheme и т. д.
 Программы (интерпретируемые и скомпилированные), приведённые в этой книге,
 объектную систему и тесты для них можно забрать по следующему адресу:
 
-> [https://github.com/ilammy/lisp/blob/master/scm-src.zip](https://github.com/ilammy/lisp/blob/master/scm-src.zip)
+> [https://github.com/ilammy/lisp/archive/scm-src.zip](https://github.com/ilammy/lisp/archive/scm-src.zip)
 
 Электронный адрес автора книги:
 [Christian.Queinnec@lip6.fr](mailto:Christian.Queinnec@lip6.fr)
