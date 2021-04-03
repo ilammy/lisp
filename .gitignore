@@ -7,3 +7,4 @@
 *.pdf
 *.toc
 /epub/OEBPS/images/
+/book-src/compiled
