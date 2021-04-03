@@ -1,0 +1,32 @@
+image: debian/stable
+secrets:
+  - a8abc366-c5af-4a21-8e42-60967f2a3e8b
+tasks:
+  # Make sure that "github.com" leads where it should and we're pushing
+  # into the repo. Make SSH acquainted with the expected server.
+  - setup-github-ssh: |
+      ssh-keyscan -H -t rsa github.com > github.known_host
+      ssh-keygen -F github.com -f github.known_host -l > github.fingerprint
+      fingerprint=$(awk '/^github.com/ {print $3}' github.fingerprint)
+      expected="SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8"
+      if [ "$fingerprint" != "$expected" ]
+      then
+          echo "github.com key fingerprint invalid"
+          exit 1
+      fi
+      cat github.known_host >> ~/.ssh/known_hosts
+      rm github.known_host github.fingerprint
+
+  # Make sure that SSH will use the right key for mirroring.
+  - setup-deploy-key: |
+      ln -s ~/.ssh/:a8abc366-c5af-4a21-8e42-60967f2a3e8b ~/.ssh/id_ed25519
+
+  # Clone the source repository. Do it manually for mirroring.
+  - src-repo-clone: |
+      git clone --quiet --mirror https://git.sr.ht/~ilammy/lisp
+
+  # Mirror the repo to GitHub.
+  - dst-repo-push: |
+      cd lisp.git
+      git remote set-url --push origin git@github.com:ilammy/lisp
+      git push --quiet --mirror
