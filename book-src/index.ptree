@@ -1,3 +1,6 @@
 #lang pollen
 
 01_preface.poly
+◊ch01_basics/00_intro.poly{
+ ch01_basics/01_evaluation.poly
+}
