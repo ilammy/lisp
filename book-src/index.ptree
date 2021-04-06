@@ -3,4 +3,6 @@
 01_preface.poly
 ◊ch01_basics/00_intro.poly{
  ch01_basics/01_evaluation.poly
+ ch01_basics/02_basic-evaluator.poly
+ ch01_basics/03_evaluating-atoms.poly
 }
