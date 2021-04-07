@@ -5,4 +5,5 @@
  ch01_basics/01_evaluation.poly
  ch01_basics/02_basic-evaluator.poly
  ch01_basics/03_evaluating-atoms.poly
+ ch01_basics/04_evaluating-forms.poly
 }
