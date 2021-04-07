@@ -72,6 +72,7 @@
 (define (EuLisp) "EuLisp")
 (define (ISLisp) "ISLisp")
 (define (LeLisp) "Le_Lisp")
+(define (TeX) "TeX")
 
 ;; TODO: Unicode
 (define (is) "->")
