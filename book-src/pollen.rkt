@@ -41,7 +41,8 @@
 (define section  (default-tag-function 'h2))
 (define section* (default-tag-function 'h2))
 
-(define subsection  (default-tag-function 'h3))
+(define subsection (default-tag-function 'h3))
+(define subsubsection (default-tag-function 'h4))
 
 (define term (default-tag-function 'i))
 (define emph (default-tag-function 'em))

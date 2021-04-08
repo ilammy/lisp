@@ -11,4 +11,6 @@
  ch01_basics/04~03_sequence.poly
  ch01_basics/04~04_assignment.poly
  ch01_basics/04~05_abstraction.poly
+ ch01_basics/04~06_application.poly
+ ch01_basics/04~06~01_more-about-evaulate.poly
 }
