@@ -5,12 +5,13 @@
  ch01_basics/01_evaluation.poly
  ch01_basics/02_basic-evaluator.poly
  ch01_basics/03_evaluating-atoms.poly
- ch01_basics/04_evaluating-forms.poly
+◊ch01_basics/04_evaluating-forms.poly{
  ch01_basics/04~01_quoting.poly
  ch01_basics/04~02_alternatives.poly
  ch01_basics/04~03_sequence.poly
  ch01_basics/04~04_assignment.poly
  ch01_basics/04~05_abstraction.poly
- ch01_basics/04~06_application.poly
- ch01_basics/04~06~01_more-about-evaulate.poly
+◊ch01_basics/04~06_application.poly{
+ ch01_basics/04~06~01_more-about-evaluate.poly}}
+ ch01_basics/05_representing-environments.poly
 }

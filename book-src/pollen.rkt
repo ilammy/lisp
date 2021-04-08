@@ -52,16 +52,21 @@
 (define textit (default-tag-function 'i))
 
 (define itemize (default-tag-function 'ul))
+(define enumerate (default-tag-function 'ol))
 (define item (default-tag-function 'li))
 
 (define-tag-function ($ attrs elems)
   `(code ,attrs "$" ,@elems "$") )
+
+(define-tag-function ($$ attrs elems)
+  `(pre ,attrs "$$\n" ,@elems "\n$$") )
 
 (define code:lisp (default-tag-function 'pre))
 
 (define-tag-function (indexC attrs elems) "")
 (define-tag-function (indexR attrs elems) "")
 (define-tag-function (indexE attrs elems) "")
+(define-tag-function (phantomlabel attrs elems) "")
 
 ;; TODO: стиль
 (define (UNIX) "UN*X")
