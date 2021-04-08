@@ -1,18 +1,3 @@
-◊subsection{Абстракция}◊label{basics/evaluating-forms/ssect:abstraction}
-
-◊indexR{абстракция}
-Функции (также называемые ◊term{процедурами} в~Scheme) являются результатом
-вычисления специальной формы ◊ic{lambda}, чьё имя ссылается на понятие
-◊term{абстракции} в~$◊lambda$"=исчислении. Работу по созданию функции мы
-поручаем функции~◊ic{make-function}, которой передаём всё необходимое: список
-аргументов, тело функции и текущее окружение.
-
-◊begin{code:lisp}
-... (case (car e)
-      ((lambda) (make-function (cadr e) (cddr e) env)) ... ) ...
-◊end{code:lisp}
-
-
 ◊subsection{Аппликация}◊label{basics/evaluating-forms/ssect:application}
 
 ◊indexR{аппликация}
