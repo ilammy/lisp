@@ -16,5 +16,7 @@
  ch01_basics/05_representing-environments.poly
 ◊ch01_basics/06_representing-functions.poly{
  ch01_basics/06~01~01_minimal-environment.poly
+ ch01_basics/06~01~02_improved-environment.poly
+ ch01_basics/06~01~03_improved-environment-v2.poly
  }
 }
