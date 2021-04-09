@@ -101,11 +101,13 @@
 
 ◊phantomlabel{basics/forms/sequence/par:gensym-puzzle}
 ◊noindent{И~◊ic{lambda} тоже может:
-◊footnote{Переменная ◊ii{void} не~должна быть свободной в~◊${\beta}.
-Это условие выполняется, если ◊ii{void} никогда не~встречается в~◊${\beta}.
-Обычно в~таком случае используется ◊ic{gensym}, чтобы получить
-гарантированно уникальное имя переменной.
-◊seeEx{basics/ex:no-gensym}}}
+◊footnote{
+  Переменная ◊ii{void} не~должна быть свободной в~◊${\beta}.
+  Это условие выполняется, если ◊ii{void} никогда не~встречается в~◊${\beta}.
+  Обычно в~таком случае используется ◊ic{gensym}, чтобы получить
+  гарантированно уникальное имя переменной.
+  ◊seeEx{basics/ex:no-gensym}
+}}
 
 ◊code:lisp{
 (begin ◊${\alpha} ◊${\beta}) ◊(eq) ((lambda (◊ii{void}) ◊${\beta}) ◊${\alpha})

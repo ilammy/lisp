@@ -188,9 +188,11 @@
 Жаном-Мари~Жеффруа, Кристианом~Жюльеном, Жан-Жаком~Лакрампом, Мишелем~Леметром,
 Люком~Моро, Жаном-Франсуа~Перро, Дэниелом~Риббенсом, Бернардом~Серпеттом,
 Мануэлем~Серрано, Пьером~Ве, а~также перед моей музой, Клэр~Н.
-◊trnote*{Sophie~Anglade, Josy~Byron, Kathleen~Callaway, Jérôme~Chaillox, Jean-Marie Geffroy,
-Christian~Jullien, Jean-Jacques~Lacrampe, Michel~Lemaître, Luc~Moreau, Jean-François~Perrot,
-Daniel~Ribbens, Bernard~Serpette, Manuel~Serrano, Pierre~Weis, Claire~N. — ◊emph{Прим.~перев.}}
+◊trnote{
+  Sophie~Anglade, Josy~Byron, Kathleen~Callaway, Jérôme~Chaillox, Jean-Marie Geffroy,
+  Christian~Jullien, Jean-Jacques~Lacrampe, Michel~Lemaître, Luc~Moreau, Jean-François~Perrot,
+  Daniel~Ribbens, Bernard~Serpette, Manuel~Serrano, Pierre~Weis, Claire~N.
+}
 
 Конечно~же, все ошибки, которые, к~сожалению, неизбежно присутствуют в~тексте, являются моими~собственными.
 
@@ -245,7 +247,7 @@ Daniel~Ribbens, Bernard~Serpette, Manuel~Serrano, Pierre~Weis, Claire~N. — ◊
 
 Некоторые выражения имеют смысл только для какого-то из диалектов Лиспа вроде
 ◊(CommonLisp), ◊(Dylan), ◊(EuLisp), ◊(ISLisp), ◊(LeLisp),
-◊footnote*{◊(LeLisp) является торговой маркой INRIA.}
+◊footnote{◊(LeLisp) является торговой маркой INRIA.}
 Scheme и~т.~д.
 В~этом случае мы будем писать рядом название диалекта:
 
@@ -273,8 +275,10 @@ Scheme и~т.~д.
 те~черты, которые потом будут подробно проанализированы по мере улучшения нашего понимания языка.
 
 В~Scheme можно использовать символы, знаки,
-◊trnote*{Если возможны разночтения, то слово ◊term{знак} будет использоваться в~смысле «печатный символ» (character),
-а~слово ◊term{символ} — в~привычном для Лиспа значении (symbol). — ◊emph{Прим.~перев.}}
+◊trnote{
+  Если возможны разночтения, то слово ◊term{знак} будет использоваться в~смысле «печатный символ» (◊english{character}),
+  а~слово ◊term{символ} — в~привычном для Лиспа значении (◊english{symbol}).
+}
 строки, списки, числа, логические значения, векторы, порты,
 и~функции (или процедуры, как их принято называть в~Scheme).
 
@@ -430,12 +434,14 @@ T~◊cite{ram84},
 Talk~◊cite{ilo94}.
 
 Наконец, для лучшего понимания языков программирования в~целом будет полезной книга~◊cite{bg94}.
-◊trnote*{Кроме того, лично я хотел~бы посоветовать замечательную книгу
-◊textit{Franklyn~Turbak and David~Gifford with Mark~A.~Sheldon.}
-Design~Concepts in Programming Languages. —
-The~MIT~Press,~2008. — ◊emph{Прим.~перев.}}
+◊trnote{
+  Кроме того, лично я хотел~бы посоветовать замечательную книгу
+  ◊textit{Franklyn~Turbak and David~Gifford with Mark~A.~Sheldon.}
+  Design~Concepts in Programming Languages. — The~MIT~Press,~2008.
+}
 
 ◊; - неразрвные пробелы перед тире
 ◊; - даже если тире - это первый символ в строке
 ◊; - тонкие пробелы вокруг тире (особенно после точки)
 ◊; - запрет переносов "из-за", "какого-то", и прочих комбинаций даже без nobr
+◊; - правильные пробелы перед сносками после пунктуации (\footnote vs. \footnote*)
