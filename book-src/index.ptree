@@ -16,5 +16,6 @@
  ch01_basics/05_representing-environments.poly
 ◊ch01_basics/06_representing-functions.poly{
  ch01_basics/06~00_execution-environment.poly
+ ch01_basics/06~01_dynamic-and-lexical-binding.poly
  }
 }
