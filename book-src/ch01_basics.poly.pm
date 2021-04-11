@@ -1,21 +1,3 @@
-◊section{Запускаем интерпретатор}◊label{basics/sect:starting-the-interpreter}
-
-Нам осталось показать только одну вещь: дверь в~наш новый мир.
-
-◊indexC{chapter1-scheme}
-◊begin{code:lisp}
-(define (chapter1-scheme)
-  (define (toplevel)
-    (display (evaluate (read) env.global))
-    (toplevel) )
-  (toplevel) )
-◊end{code:lisp}
-
-Поскольку наш интерпретатор ещё мал и неопытен, но подаёт большие надежды,
-предлагаем вам в~качестве упражнения написать функцию, позволяющую из него
-выйти.
-
-
 ◊section{Заключение}◊label{basics/sect:conclusions}
 
 ◊indexR{язык!и смысл программ}

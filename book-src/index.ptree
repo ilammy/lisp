@@ -19,4 +19,5 @@
  ch01_basics/06~01_dynamic-and-lexical-binding.poly
  ch01_basics/06~02_deep-or-shallow-binding.poly}
  ch01_basics/07_global-environment.poly
+ ch01_basics/08_starting-the-interpreter.poly
 }
