@@ -17,5 +17,6 @@
 ◊ch01_basics/06_representing-functions.poly{
  ch01_basics/06~00_execution-environment.poly
  ch01_basics/06~01_dynamic-and-lexical-binding.poly
+ ch01_basics/06~02_deep-or-shallow-binding.poly
  }
 }
