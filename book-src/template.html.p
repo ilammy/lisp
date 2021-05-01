@@ -9,6 +9,15 @@
         margin-left: auto;
         margin-right: auto;
     }
+
+    span.sidenote {
+        float: left;
+        clear: left;
+        text-align: right;
+        font-size: 0.9em;
+        width: 50%;
+        margin-left: -60%;
+    }
   </style>
 </head>
 <body>

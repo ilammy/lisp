@@ -68,6 +68,22 @@
 (define-tag-function (indexE attrs elems) "")
 (define-tag-function (phantomlabel attrs elems) "")
 
+(define-tag-function (footnote attrs elems)
+  ;; TODO: улучшить сноски
+  ;; <span> очень плохо работает с выделением, а ещё, как оказывается, в <p>
+  ;; НЕЛЬЗЯ вкладывать блочные элементы, потому что так сказал W3C и теперь
+  ;; все парсеры HTML в браузерох автоматически закрывают теги <p>, когда видят
+  ;; открывающий тег любого блочного элемента.
+  ;; В общем, лучше сделать какую-то магию, чтобы переносить текст сносок
+  ;; куда-то сразу после текущего абзаца, но чтобы сноска показывалась где-то
+  ;; рядом с ним, а не после него.
+  ;; Пока что -- как временное решение -- сойдёт и вот так:
+  `(@ (label ,attrs "*")
+      (span ((class "sidenote")) ,@elems) ) )
+
+(define-tag-function (seePage attrs elems)
+  `(span ((class "sidenote")) "[" ,@elems "]") )
+
 ;; TODO: стиль
 (define (UNIX) "UN*X")
 (define (Meroon) "Meroon")
