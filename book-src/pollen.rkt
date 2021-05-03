@@ -41,7 +41,8 @@
 (define section  (default-tag-function 'h2))
 (define section* (default-tag-function 'h2))
 
-(define subsection (default-tag-function 'h3))
+(define subsection    (default-tag-function 'h3))
+(define subsection*   (default-tag-function 'h3))
 (define subsubsection (default-tag-function 'h4))
 
 (define term (default-tag-function 'i))
@@ -50,6 +51,15 @@
 (define ii (default-tag-function 'i))
 (define textcd (default-tag-function 'tt))
 (define textit (default-tag-function 'i))
+
+(define-tag-function (math-ii attrs elems)
+  `(@ "\\textit{" ,@elems "}") )
+
+(define-tag-function (math-ic attrs elems)
+  `(@ "\\texttt{" ,@elems "}") )
+
+(define-tag-function (Vset attrs elems)
+  `(@ "\\boldsymbol{" ,@elems "}") )
 
 (define itemize (default-tag-function 'ul))
 (define enumerate (default-tag-function 'ol))
