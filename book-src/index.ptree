@@ -13,7 +13,10 @@
  ch01_basics/04~05_abstraction.poly
 ◊ch01_basics/04~06_application.poly{
  ch01_basics/04~06~01_more-about-evaluate.poly}}
- ch01_basics/05_representing-environments.poly
+◊ch01_basics/05_representing-environments.poly{
+ ch01_basics/05~01_environment-lookup.poly
+ ch01_basics/05~02_environment-update.poly
+ ch01_basics/05~03_environment-extend.poly}
 ◊ch01_basics/06_representing-functions.poly{
  ch01_basics/06~00_execution-environment.poly
  ch01_basics/06~01_dynamic-and-lexical-binding.poly
