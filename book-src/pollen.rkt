@@ -91,12 +91,20 @@
   `(@ (label "*")
       (span ((class "sidenote")) ,@elems) ) )
 
+(define-tag-function (trnote attrs elems)
+  `(@ (label "*")
+      (span ((class "sidenote")) ,@elems " — " ,(emph "Прим.~перев.")) ) )
+
 (define-tag-function (seePage attrs elems)
+  `(span ((class "sidenote")) "[" ,@elems "]") )
+
+(define-tag-function (seeEx attrs elems)
   `(span ((class "sidenote")) "[" ,@elems "]") )
 
 ;; TODO: стиль
 (define (UNIX) "UN*X")
 (define (Meroon) "Meroon")
+(define (LISP) "Lisp")
 (define (Lisp1) '(span "Lisp" (sub "1")))
 (define (Lisp2) '(span "Lisp" (sub "2")))
 (define (CommonLisp) "Common Lisp")
