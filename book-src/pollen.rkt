@@ -112,8 +112,11 @@
 (define (EuLisp) "EuLisp")
 (define (ISLisp) "ISLisp")
 (define (LeLisp) "Le_Lisp")
+(define (ZetaLisp) "ZetaLisp")
 (define (TeX) "TeX")
 
 ;; TODO: Unicode
 (define (is) "->")
 (define (eq) "==")
+
+(define (thinsp) 'thinsp)
