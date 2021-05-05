@@ -1,32 +1,32 @@
 #lang pollen
 
-01_preface.poly
-◊ch01_basics/00_intro.poly{
- ch01_basics/01_evaluation.poly
- ch01_basics/02_basic-evaluator.poly
- ch01_basics/03_evaluating-atoms.poly
-◊ch01_basics/04_evaluating-forms.poly{
- ch01_basics/04~01_quoting.poly
- ch01_basics/04~02_alternatives.poly
- ch01_basics/04~03_sequence.poly
- ch01_basics/04~04_assignment.poly
- ch01_basics/04~05_abstraction.poly
-◊ch01_basics/04~06_application.poly{
- ch01_basics/04~06~01_more-about-evaluate.poly}}
-◊ch01_basics/05_representing-environments.poly{
- ch01_basics/05~01_environment-lookup.poly
- ch01_basics/05~02_environment-update.poly
- ch01_basics/05~03_environment-extend.poly}
-◊ch01_basics/06_representing-functions.poly{
- ch01_basics/06~00_execution-environment.poly
- ch01_basics/06~01_dynamic-and-lexical-binding.poly
- ch01_basics/06~02_deep-or-shallow-binding.poly}
- ch01_basics/07_global-environment.poly
- ch01_basics/08_starting-the-interpreter.poly
- ch01_basics/z1_conclusions.poly
- ch01_basics/z2_exercises.poly
- ch01_basics/z3_recommended-reading.poly
+01-preface.poly
+◊ch01-basics/00-intro.poly{
+ ch01-basics/01-evaluation.poly
+ ch01-basics/02-basic-evaluator.poly
+ ch01-basics/03-evaluating-atoms.poly
+◊ch01-basics/04-evaluating-forms.poly{
+ ch01-basics/04.01-quoting.poly
+ ch01-basics/04.02-alternatives.poly
+ ch01-basics/04.03-sequence.poly
+ ch01-basics/04.04-assignment.poly
+ ch01-basics/04.05-abstraction.poly
+◊ch01-basics/04.06-application.poly{
+ ch01-basics/04.06.01-more-about-evaluate.poly}}
+◊ch01-basics/05-representing-environments.poly{
+ ch01-basics/05.01-environment-lookup.poly
+ ch01-basics/05.02-environment-update.poly
+ ch01-basics/05.03-environment-extend.poly}
+◊ch01-basics/06-representing-functions.poly{
+ ch01-basics/06.00-execution-environment.poly
+ ch01-basics/06.01-dynamic-and-lexical-binding.poly
+ ch01-basics/06.02-deep-or-shallow-binding.poly}
+ ch01-basics/07-global-environment.poly
+ ch01-basics/08-starting-the-interpreter.poly
+ ch01-basics/z1-conclusions.poly
+ ch01-basics/z2-exercises.poly
+ ch01-basics/z3-recommended-reading.poly
 }
-◊z0_answers-to-exercises/00_index.poly{
- z0_answers-to-exercises/ch01_basics.poly
+◊z0-answers-to-exercises/00-index.poly{
+ z0-answers-to-exercises/ch01-basics.poly
 }
