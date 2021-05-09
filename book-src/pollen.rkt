@@ -118,5 +118,6 @@
 ;; TODO: Unicode
 (define (is) "->")
 (define (eq) "==")
+(define (dots) `(nobr "." thinsp "." thinsp "."))
 
 (define (thinsp) 'thinsp)

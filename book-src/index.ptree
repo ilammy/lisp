@@ -27,6 +27,8 @@
  ch01-basics/z2-exercises.poly
  ch01-basics/z3-recommended-reading.poly
 }
+◊ch02-lisp-1-2-omega/00-intro.poly{
+}
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
 }
