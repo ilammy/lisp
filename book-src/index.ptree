@@ -30,6 +30,7 @@
 ◊ch02-lisp-1-2-omega/00-intro.poly{
  ch02-lisp-1-2-omega/01-lisp-1.poly
  ch02-lisp-1-2-omega/02-lisp-2.poly
+ ch02-lisp-1-2-omega/02.01-evaluating-function-term.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
