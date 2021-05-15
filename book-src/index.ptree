@@ -33,6 +33,7 @@
  ch02-lisp-1-2-omega/02.01-evaluating-function-term.poly
  ch02-lisp-1-2-omega/02.02-duality.poly
  ch02-lisp-1-2-omega/02.03-using-lisp-2.poly
+ ch02-lisp-1-2-omega/02.04-enriching-environment.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
