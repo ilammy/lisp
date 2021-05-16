@@ -35,6 +35,7 @@
  ch02-lisp-1-2-omega/02.03-using-lisp-2.poly
  ch02-lisp-1-2-omega/02.04-enriching-environment.poly
  ch02-lisp-1-2-omega/03-other-extensions.poly
+ ch02-lisp-1-2-omega/04-comparison.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
