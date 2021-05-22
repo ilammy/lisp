@@ -52,6 +52,8 @@
 (define textcd (default-tag-function 'tt))
 (define textit (default-tag-function 'i))
 
+(define envtable (default-tag-function 'table))
+
 (define-tag-function (math-ii attrs elems)
   `(@ "\\textit{" ,@elems "}") )
 
