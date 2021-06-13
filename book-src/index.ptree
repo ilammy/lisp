@@ -37,6 +37,7 @@
  ch02-lisp-1-2-omega/03-other-extensions.poly
  ch02-lisp-1-2-omega/04-comparison.poly
  ch02-lisp-1-2-omega/05-namespaces.poly
+ ch02-lisp-1-2-omega/05.01-dyn-vars.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly

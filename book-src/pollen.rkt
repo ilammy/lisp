@@ -109,6 +109,7 @@
 (define (LISP) "Lisp")
 (define (Lisp1) '(span "Lisp" (sub "1")))
 (define (Lisp2) '(span "Lisp" (sub "2")))
+(define (Lisp3) '(span "Lisp" (sub "3")))
 (define (CommonLisp) "Common Lisp")
 (define (Dylan) "Dylan")
 (define (EuLisp) "EuLisp")
