@@ -40,6 +40,7 @@
  ch02-lisp-1-2-omega/05.01-dyn-vars.poly
  ch02-lisp-1-2-omega/05.02-dyn-vars-cl.poly
  ch02-lisp-1-2-omega/05.03-dyn-vars-no-special.poly
+ ch02-lisp-1-2-omega/05.04-conclusions.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly

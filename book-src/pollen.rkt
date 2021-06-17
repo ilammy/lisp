@@ -107,9 +107,9 @@
 (define (UNIX) "UN*X")
 (define (Meroon) "Meroon")
 (define (LISP) "Lisp")
-(define (Lisp1) '(span "Lisp" (sub "1")))
-(define (Lisp2) '(span "Lisp" (sub "2")))
-(define (Lisp3) '(span "Lisp" (sub "3")))
+(define (Lisp1) (Lisp "1"))
+(define (Lisp2) (Lisp "2"))
+(define (Lisp3) (Lisp "3"))
 (define (CommonLisp) "Common Lisp")
 (define (Dylan) "Dylan")
 (define (EuLisp) "EuLisp")
@@ -117,6 +117,9 @@
 (define (LeLisp) "Le_Lisp")
 (define (ZetaLisp) "ZetaLisp")
 (define (TeX) "TeX")
+
+(define-tag-function (Lisp attrs elems)
+  `(span ,attrs "Lisp" (sub ,@elems)) )
 
 ;; TODO: Unicode
 (define (is) "->")
