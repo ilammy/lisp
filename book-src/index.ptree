@@ -42,6 +42,7 @@
  ch02-lisp-1-2-omega/05.03-dyn-vars-no-special.poly
  ch02-lisp-1-2-omega/05.04-conclusions.poly}
  ch02-lisp-1-2-omega/06-recursion.poly
+ ch02-lisp-1-2-omega/06.01-simple.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
