@@ -44,6 +44,7 @@
  ch02-lisp-1-2-omega/06-recursion.poly
  ch02-lisp-1-2-omega/06.01-simple.poly
  ch02-lisp-1-2-omega/06.02-mutual.poly
+ ch02-lisp-1-2-omega/06.03-local-lisp-2.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
