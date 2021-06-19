@@ -47,6 +47,7 @@
  ch02-lisp-1-2-omega/06.03-local-lisp-2.poly
  ch02-lisp-1-2-omega/06.04-local-lisp-1.poly
  ch02-lisp-1-2-omega/06.04.00-letrec-equations.poly
+ ch02-lisp-1-2-omega/06.05-uninitialized.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
