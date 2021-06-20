@@ -51,6 +51,7 @@
  ch02-lisp-1-2-omega/06.06-no-assignment.poly
  ch02-lisp-1-2-omega/06.07-letrec-and-lexical-global-environment.poly
  ch02-lisp-1-2-omega/06.08-paradoxical-combinator.poly}
+ ch02-lisp-1-2-omega/z1-conclusions.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
