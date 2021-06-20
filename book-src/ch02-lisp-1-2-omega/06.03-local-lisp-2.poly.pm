@@ -54,7 +54,8 @@
   (fact 6) ) ◊(is) 720
 }
 
-◊noindent{и~взаимно рекурсивные ◊ic{odd?} и~◊ic{even?}:}
+◊noindent
+и~взаимно рекурсивные ◊ic{odd?} и~◊ic{even?}:
 
 ◊code:lisp{
 (funcall (labels ((even? (n) (if (= n 0) #t (odd? (- n 1))))

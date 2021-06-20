@@ -11,9 +11,8 @@
 (define (function f) f)
 }
 
-◊noindent{
+◊noindent
 Или то~же самое с~помощью макросов:
-}
 
 ◊code:lisp{
 (define-syntax funcall
@@ -224,9 +223,8 @@
     (d d) ) )
 }
 
-◊noindent{
+◊noindent
 После этого довольно легко догадаться, как сделать ◊${n}-арную версию:
-}
 
 ◊code:lisp{
 (define fixN

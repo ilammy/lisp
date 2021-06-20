@@ -135,6 +135,5 @@
         (* n ((f f) (- n 1))) ) ) )
 }
 
-◊noindent{
+◊noindent
 то что вернёт ◊ic{((hyper-fact hyper-fact)~5)}?
-}

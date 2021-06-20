@@ -131,4 +131,4 @@
 (define (thinsp) 'thinsp)
 
 ;; TODO: реализовать как положено (если надо?) пока оставь просто маркером абзацев
-;; (define noindent '(@))
+(define noindent '(@))

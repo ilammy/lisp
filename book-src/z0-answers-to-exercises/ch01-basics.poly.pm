@@ -78,7 +78,8 @@
       (wrong "No such binding" id) ) )
 }
 
-◊noindent{Реализация ◊ic{update!} аналогична по структуре.}
+◊noindent
+Реализация ◊ic{update!} аналогична по структуре.
 
 
 ◊exanswer{basics/ex:racks}

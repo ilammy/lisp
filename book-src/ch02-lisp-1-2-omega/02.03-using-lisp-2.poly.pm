@@ -36,7 +36,8 @@
 (defprimitive cons cons 2)
 }
 
-◊noindent{И~наконец:}
+◊noindent
+И~наконец:
 
 ◊code:lisp{
 (define (◊fbox{◊ii{определённый ◊(Lisp2)}})
