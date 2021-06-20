@@ -6,7 +6,7 @@
 ◊; TODO: сменить на опциональный аргумент: ◊exercise[#:label "..."], для унификации
 ◊exercise{lisp1-2-omega/ex:funcall}
 
-Следующее выражение записано на ◊(CommonLisp).
+Следующее выражение записано на ◊|CommonLisp|.
 Как бы вы его перевели на~Scheme?
 
 ◊code:lisp{
@@ -16,7 +16,7 @@
 
 ◊exercise{lisp1-2-omega/ex:lexical}
 
-Что вернёт данная программа на псевдо-◊(CommonLisp) из этой главы?
+Что вернёт данная программа на псевдо-◊CommonLisp из этой главы?
 О~чём она вам напоминает?
 
 ◊code:lisp{
@@ -64,12 +64,12 @@
 
 ◊exercise{lisp1-2-omega/ex:label}
 
-Определите специальную форму ◊ic{label} на ◊(Lisp1).
+Определите специальную форму ◊ic{label} на ◊|Lisp-1|.
 
 
 ◊exercise{lisp1-2-omega/ex:labels}
 
-Определите специальную форму ◊ic{labels} на ◊(Lisp2).
+Определите специальную форму ◊ic{labels} на ◊|Lisp-2|.
 
 
 ◊exercise{lisp1-2-omega/ex:orderless-letrec}

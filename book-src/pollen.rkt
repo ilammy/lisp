@@ -105,23 +105,24 @@
 (define-tag-function (seeEx attrs elems)
   `(span ((class "sidenote")) "[" ,@elems "]") )
 
-;; TODO: стиль
-(define (UNIX) "UN*X")
-(define (Meroon) "Meroon")
-(define (LISP) "Lisp")
-(define (Lisp1) (Lisp "1"))
-(define (Lisp2) (Lisp "2"))
-(define (Lisp3) (Lisp "3"))
-(define (CommonLisp) "Common Lisp")
-(define (Dylan) "Dylan")
-(define (EuLisp) "EuLisp")
-(define (ISLisp) "ISLisp")
-(define (LeLisp) "Le_Lisp")
-(define (ZetaLisp) "ZetaLisp")
-(define (TeX) "TeX")
-
 (define-tag-function (Lisp attrs elems)
   `(span ,attrs "Lisp" (sub ,@elems)) )
+
+;; TODO: стиль
+(define UNIX       "UN*X")
+(define Meroon     "Meroon")
+(define LISP-1.0   "Lisp~1.0")
+(define LISP-1.5   "Lisp~1.5")
+(define Lisp-1     (Lisp "1"))
+(define Lisp-2     (Lisp "2"))
+(define Lisp-3     (Lisp "3"))
+(define CommonLisp "Common Lisp")
+(define Dylan      "Dylan")
+(define EuLisp     "EuLisp")
+(define ISLisp     "ISLisp")
+(define LeLisp     "Le_Lisp")
+(define ZetaLisp   "ZetaLisp")
+(define TeX        "TeX")
 
 ;; TODO: Unicode
 (define (is) "->")
