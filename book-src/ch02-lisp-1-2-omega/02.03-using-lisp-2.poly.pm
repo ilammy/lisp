@@ -39,9 +39,8 @@
 ◊noindent
 И~наконец:
 
-◊; TODO: точно нужна эта коробочка?
 ◊code:lisp{
-(define (◊fbox{◊ii{определённый ◊Lisp-2}})
+(define (chapter2-lisp-2)
   (define (toplevel)
     (display (f.evaluate (read) env.global fenv.global))
     (toplevel) )
