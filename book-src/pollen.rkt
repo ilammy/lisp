@@ -105,6 +105,15 @@
 (define-tag-function (seeEx attrs elems)
   `(span ((class "sidenote")) "[" ,@elems "]") )
 
+(define-tag-function (cite attrs elems)
+  `(span "[" ,@elems "]") )
+
+;; TODO: сделай так, чтобы эта штука делала предыдущее слово гиперссылкой
+;; (или группу с неразрывным пробелами, или всё выражение в скобках)
+;; а ещя если "текст~◊seeCite{XXX} текст", то в HTML не должно быть лишнего неразрывного пробела
+(define-tag-function (seeCite attrs elems)
+  `(span ((class "sidenote")) "[" ,@elems "]") )
+
 (define-tag-function (Lisp attrs elems)
   `(span ,attrs "Lisp" (sub ,@elems)) )
 
