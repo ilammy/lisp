@@ -55,6 +55,8 @@
  ch02-lisp-1-2-omega/z2-exercises.poly
  ch02-lisp-1-2-omega/z3-recommended-reading.poly
 }
+◊ch03-escape-and-return/00-intro.poly{
+}
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
  z0-answers-to-exercises/ch02-lisp-1-2-omega.poly
