@@ -58,6 +58,7 @@
 ◊ch03-escape-and-return/00-intro.poly{
 ◊ch03-escape-and-return/01-handling-continuations.poly{
  ch03-escape-and-return/01.01-catch-throw.poly
+ ch03-escape-and-return/01.02-block-return-from.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
