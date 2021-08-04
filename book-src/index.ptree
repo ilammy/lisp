@@ -61,6 +61,7 @@
  ch03-escape-and-return/01.02-block-return-from.poly
  ch03-escape-and-return/01.03-dynamic-extent.poly
  ch03-escape-and-return/01.04-catch-vs-block.poly
+ ch03-escape-and-return/01.05-indefinite-extent.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{

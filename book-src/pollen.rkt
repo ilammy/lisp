@@ -54,6 +54,8 @@
 (define textcd (default-tag-function 'tt))
 (define textit (default-tag-function 'i))
 
+(define cont (default-tag-function 'sub))
+
 (define envtable (default-tag-function 'table))
 
 (define-tag-function (math-ii attrs elems)
