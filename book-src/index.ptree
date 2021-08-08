@@ -69,6 +69,7 @@
  ch03-escape-and-return/02.01.01-defining-classes.poly
  ch03-escape-and-return/02.01.02-defining-generics.poly
  ch03-escape-and-return/02.01.03-defining-methods.poly}}
+ ch03-escape-and-return/02.02-the-interpreter.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
