@@ -1,17 +1,5 @@
 % -*- coding: utf-8 -*-
 
-◊subsection[#:label "escape/actors/ssect:quoting"]{Цитирование}
-
-Специальная форма цитирования всё так~же является наиболее простой, её задача
-сводится к~передаче значения в~неизменной форме текущему продолжению:
-
-◊indexC{evaluate-quotation}
-◊code:lisp{
-(define (evaluate-quotation v r k)
-  (resume k v) )
-}
-
-
 ◊subsection[#:label "escape/actors/ssect:alternatives"]{Ветвление}
 
 Условный оператор использует два продолжения: текущее и продолжение вычисления
