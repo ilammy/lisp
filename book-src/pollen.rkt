@@ -128,12 +128,14 @@
 (define Lisp-2     (Lisp "2"))
 (define Lisp-3     (Lisp "3"))
 (define CommonLisp "Common Lisp")
+(define CommonLoops "Common LOOPS")
 (define Dylan      "Dylan")
 (define EuLisp     "EuLisp")
 (define ISLisp     "ISLisp")
 (define LeLisp     "Le_Lisp")
 (define ZetaLisp   "ZetaLisp")
 (define TeX        "TeX")
+(define TELOS      "ΤΕΛΟΣ")
 
 ;; TODO: Unicode
 (define (is) "->")

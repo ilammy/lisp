@@ -65,7 +65,10 @@
 ◊ch03-escape-and-return/01.06-unwind-protect.poly{
  ch03-escape-and-return/01.06.01-unwind-and-dynamic-variables.poly}}
 ◊ch03-escape-and-return/02-actors-in-computation.poly{
-}
+◊ch03-escape-and-return/02.01-review-of-objects.poly{
+ ch03-escape-and-return/02.01.01-defining-classes.poly
+ ch03-escape-and-return/02.01.02-defining-generics.poly
+ ch03-escape-and-return/02.01.03-defining-methods.poly}}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
