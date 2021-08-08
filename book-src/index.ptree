@@ -64,6 +64,8 @@
  ch03-escape-and-return/01.05-indefinite-extent.poly
 ◊ch03-escape-and-return/01.06-unwind-protect.poly{
  ch03-escape-and-return/01.06.01-unwind-and-dynamic-variables.poly}}
+◊ch03-escape-and-return/02-actors-in-computation.poly{
+}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
