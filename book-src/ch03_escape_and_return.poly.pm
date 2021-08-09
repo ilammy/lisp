@@ -1,45 +1,5 @@
 % -*- coding: utf-8 -*-
 
-◊subsection[#:label "escape/actors/ssect:sequence"]{Последовательность}
-
-Здесь нам тоже потребуются два продолжения: текущее и продолжение вычисления
-оставшихся форм.
-
-◊indexC{begin-cont}
-◊indexC{evaluate-begin}
-◊indexCS{resume}{◊ic{begin-cont}}
-◊code:lisp{
-(define-class begin-cont continuation (e* r))
-
-(define (evaluate-begin e* r k)
-  (if (pair? e*)
-    (if (pair? (cdr e*))
-        (evaluate (car e*) r (make-begin-cont k e* r))
-        (evaluate (car e*) r k) )
-    (resume k empty-begin-value) ) )
-
-(define-method (resume (k begin-cont) v)
-  (evaluate-begin (cdr (begin-cont-e* k))
-                  (begin-cont-r k)
-                  (begin-cont-k k) ) )
-}
-
-Случаи ◊ic{(begin)} и ◊ic{(begin~◊${◊pi})} тривиальны.
-Если~же ◊ic{begin}
-передано больше выражений, то вычисление первого из них продолжается
-◊ic{(make-begin-cont k~e*~r)}.
-Это продолжение принимает значение~◊ic{v}
-с~помощью ◊ic{resume}, игнорирует его и продолжает оставшиеся вычисления
-в~том~же окружении и с~тем~же продолжением.◊footnote*{Внимательный читатель
-наверняка заметил странную форму ◊ic{(cdr (begin-cont-e* k))} в~методе
-◊ic{resume}.
-Конечно, мы могли~бы отбросить уже вычисленное выражение ещё
-в~◊ic{evaluate-begin}: ◊ic{(make-begin-cont k (cdr~e*) r)}, и получить тот~же
-результат.
-Причина такого решения в~том, что если случится ошибка, то у~нас
-будет на руках её источник.}
-
-
 ◊subsection[#:label "escape/actors/ssect:variables"]{Окружения}
 
 Значения переменных хранятся в~окружениях.
