@@ -73,6 +73,7 @@
  ch03-escape-and-return/02.03-quoting.poly
  ch03-escape-and-return/02.04-alternative.poly
  ch03-escape-and-return/02.05-sequence.poly
+ ch03-escape-and-return/02.06-environments.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
