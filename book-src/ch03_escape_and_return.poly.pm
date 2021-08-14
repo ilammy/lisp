@@ -1,50 +1,5 @@
 % -*- coding: utf-8 -*-
 
-◊subsection{◊texorpdfstring%
-{Реализация ◊protect◊ic{call/cc}}%
-{Реализация call/cc}}%
-◊label{escape/implementation/ssect:call/cc}
-
-◊indexCS{call/cc}{реализация}
-Функция ◊ic{call/cc} берёт текущее продолжение~◊ii{k}, превращает его в~объект,
-понятный ◊ic{invoke}, и применяет к~нему свой аргумент~— унарную функцию.
-Следующий код чуть~ли не~буквально записывает это определение:
-
-◊indexC{call/cc}
-◊code:lisp{
-(definitial call/cc
-  (make-primitive
-   'call/cc
-   (lambda (v* r k)
-     (if (= 1 (length v*))
-         (invoke (car v*) (list k) r k)
-         (wrong "Incorrect arity" 'call/cc v*) ) ) ) )
-}
-
-Хоть тут и немного строчек, всё~же стоит кое-что объяснить.
-◊ic{call/cc} это
-функция, но мы определяем её с~помощью ◊ic{defprimitive}, так как это
-единственный способ для функции добраться до~◊ic{k}.
-Переменная ◊ic{call/cc}
-(это всё~же ◊Lisp1) связывается с~объектом класса ◊ic{primitive}.
-Для вызова
-объектов этого класса необходим «адрес» функции, которому у~нас соответствуют
-функции языка определения вида ◊ic{(lambda (v*~r~k) ...)}.
-После проверки на
-арность первый аргумент ◊ic{call/cc} применяется к~захваченному продолжению.
-Само продолжение мы никак не~трогаем, оно остаётся объектом языка определения.
-Так как сохранённые «сырые» продолжения могут быть впоследствии переданы
-◊ic{invoke} напрямую, то её надо научить обращаться с~ними:
-
-◊indexCS{invoke}{◊ic{continuation}}
-◊code:lisp{
-(define-method (invoke (f continuation) v* r k)
-  (if (= 1 (length v*))
-      (resume f (car v*))
-      (wrong "Continuations expect one argument" v* r k) ) )
-}
-
-
 ◊subsection{◊texorpdfstring{Реализация ◊protect◊ic{catch}}{Реализация catch}}%
 ◊label{escape/implementation/ssect:catch}
 
