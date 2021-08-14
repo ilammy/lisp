@@ -68,13 +68,14 @@
 ◊ch03-escape-and-return/02.01-review-of-objects.poly{
  ch03-escape-and-return/02.01.01-defining-classes.poly
  ch03-escape-and-return/02.01.02-defining-generics.poly
- ch03-escape-and-return/02.01.03-defining-methods.poly}}
+ ch03-escape-and-return/02.01.03-defining-methods.poly}
  ch03-escape-and-return/02.02-the-interpreter.poly
  ch03-escape-and-return/02.03-quoting.poly
  ch03-escape-and-return/02.04-alternative.poly
  ch03-escape-and-return/02.05-sequence.poly
  ch03-escape-and-return/02.06-environments.poly
- ch03-escape-and-return/02.07-functions.poly
+ ch03-escape-and-return/02.07-functions.poly}
+ ch03-escape-and-return/03-initializing-interpreter.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
