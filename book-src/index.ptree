@@ -78,6 +78,7 @@
  ch03-escape-and-return/03-initializing-interpreter.poly
 ◊ch03-escape-and-return/04-control-forms.poly{
  ch03-escape-and-return/04.01-implementing-call-cc.poly
+ ch03-escape-and-return/04.02-implementing-catch.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
