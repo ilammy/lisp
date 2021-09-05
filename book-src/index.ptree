@@ -79,6 +79,7 @@
 ◊ch03-escape-and-return/04-control-forms.poly{
  ch03-escape-and-return/04.01-implementing-call-cc.poly
  ch03-escape-and-return/04.02-implementing-catch.poly
+ ch03-escape-and-return/04.03-implementing-block.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
