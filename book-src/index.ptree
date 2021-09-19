@@ -82,6 +82,7 @@
  ch03-escape-and-return/04.03-implementing-block.poly
  ch03-escape-and-return/04.04-implementing-unwind-protect.poly}
  ch03-escape-and-return/05-comparing-call-cc-to-catch.poly
+ ch03-escape-and-return/06-programming-by-continuations.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
