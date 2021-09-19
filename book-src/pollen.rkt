@@ -137,6 +137,8 @@
 (define TeX        "TeX")
 (define TELOS      "ΤΕΛΟΣ")
 
+(define GCD "НОД")
+
 ;; TODO: Unicode
 (define (is) "->")
 (define (eq) "==")
