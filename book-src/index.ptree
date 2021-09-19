@@ -85,6 +85,7 @@
 ◊ch03-escape-and-return/06-programming-by-continuations.poly{
  ch03-escape-and-return/06.01-multiple-values.poly
  ch03-escape-and-return/06.02-tail-recursion.poly}
+ ch03-escape-and-return/07-partial-continuations.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
