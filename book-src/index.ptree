@@ -87,6 +87,7 @@
  ch03-escape-and-return/06.02-tail-recursion.poly}
  ch03-escape-and-return/07-partial-continuations.poly
  ch03-escape-and-return/z1-conclusions.poly
+ ch03-escape-and-return/z2-exercises.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
