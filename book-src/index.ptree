@@ -93,6 +93,8 @@
 ◊ch04-assignment-and-side-effects/00-intro.poly{
 ◊ch04-assignment-and-side-effects/01-assignment.poly{
  ch04-assignment-and-side-effects/01.01-boxes.poly
+◊ch04-assignment-and-side-effects/01.02-free-variables.poly{
+}
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
