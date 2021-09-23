@@ -90,6 +90,10 @@
  ch03-escape-and-return/z2-exercises.poly
  ch03-escape-and-return/z3-recommended-reading.poly
 }
+◊ch04-assignment-and-side-effects/00-intro.poly{
+◊ch04-assignment-and-side-effects/01-assignment.poly{
+}
+}
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
  z0-answers-to-exercises/ch02-lisp-1-2-omega.poly
