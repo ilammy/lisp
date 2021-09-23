@@ -148,3 +148,8 @@
 
 ;; TODO: реализовать как положено (если надо?) пока оставь просто маркером абзацев
 (define noindent '(@))
+
+;; TODO: определить правильно
+(define (box #:var [var ($ "v")] . elems)
+  `(@ (span ((class "box")) ,@elems)
+      (sup ,var) ) )
