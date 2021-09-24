@@ -115,7 +115,7 @@
   ◊tr{
     ◊td{◊box{◊ic{(lambda (... ◊${x} ...) ◊${\pi})}}}
     ◊td{◊ic{◊(is)}}
-    ◊td{если ◊${v \in {... x ...}},◊(br)
+    ◊td{если ◊${v \in {\dots x \dots}},◊(br)
         тогда ◊ic{(lambda (... ◊${x} ...) ◊${\pi})},◊(br)
         иначе ◊ic{(lambda (... ◊${x} ...) ◊box{◊${\pi}})}}
   }
