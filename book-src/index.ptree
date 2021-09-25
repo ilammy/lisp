@@ -96,6 +96,7 @@
 ◊ch04-assignment-and-side-effects/01.02-free-variables.poly{
  ch04-assignment-and-side-effects/01.02.01-universal-global-environment.poly
  ch04-assignment-and-side-effects/01.02.02-frozen-global-environment.poly
+ ch04-assignment-and-side-effects/01.02.03-extensible-global-environment.poly
 }
 }
 }
