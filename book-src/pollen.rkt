@@ -78,6 +78,7 @@
   `(pre ,attrs "$$\n" ,@elems "\n$$") )
 
 (define code:lisp (default-tag-function 'pre))
+(define code:ml   (default-tag-function 'pre))
 
 (define-tag-function (indexC attrs elems) "")
 (define-tag-function (indexR attrs elems) "")
