@@ -99,6 +99,8 @@
  ch04-assignment-and-side-effects/01.02.03-extensible-global-environment.poly
  ch04-assignment-and-side-effects/01.02.04-hyperstatic-global-environment.poly}
  ch04-assignment-and-side-effects/01.03-assigning-predefined-variables.poly}
+◊ch04-assignment-and-side-effects/02-side-effects.poly{
+}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
