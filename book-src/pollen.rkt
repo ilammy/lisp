@@ -98,6 +98,7 @@
   `(@ (label "*")
       (span ((class "sidenote")) ,@elems) ) )
 
+;; TODO: неразрывный пробел перед тире? или *здесь* это допустимо?
 (define-tag-function (trnote attrs elems)
   `(@ (label "*")
       (span ((class "sidenote")) ,@elems " — " ,(emph "Прим.~перев.")) ) )
@@ -143,6 +144,8 @@
 ;; TODO: Unicode
 (define (is) "->")
 (define (eq) "==")
+;; TODO: не превращай это в юникод, но и не вставляй пробелы,
+;; чтобы когда копировалось, что получалось "...", а не " . . ."
 (define (dots) `(nobr "." thinsp "." thinsp "."))
 
 (define (thinsp) 'thinsp)
