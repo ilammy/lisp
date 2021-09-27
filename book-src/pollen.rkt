@@ -99,6 +99,7 @@
       (span ((class "sidenote")) ,@elems) ) )
 
 ;; TODO: неразрывный пробел перед тире? или *здесь* это допустимо?
+;; TODO: может вообще засунешь собственную важность куда-то подальше и не будешь вставлять эти примперевы?
 (define-tag-function (trnote attrs elems)
   `(@ (label "*")
       (span ((class "sidenote")) ,@elems " — " ,(emph "Прим.~перев.")) ) )
@@ -129,6 +130,7 @@
 (define Lisp-1     (Lisp "1"))
 (define Lisp-2     (Lisp "2"))
 (define Lisp-3     (Lisp "3"))
+;; TODO: здесь должен быть *неразрывный* пробел, но ◊code:lisp[#:dialect CommonLisp] ломается, сделай так, чтобы не ломался
 (define CommonLisp "Common Lisp")
 (define CommonLoops "Common LOOPS")
 (define Dylan      "Dylan")
