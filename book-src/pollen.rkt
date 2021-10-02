@@ -125,6 +125,7 @@
 ;; TODO: стиль
 (define UNIX       "UN*X")
 (define Meroon     "Meroon")
+(define Meroonet   "Meroonet")
 (define LISP-1.0   "Lisp~1.0")
 (define LISP-1.5   "Lisp~1.5")
 (define Lisp-1     (Lisp "1"))
@@ -140,6 +141,8 @@
 (define ZetaLisp   "ZetaLisp")
 (define TeX        "TeX")
 (define TELOS      "ΤΕΛΟΣ")
+;; TODO: где-то ты используешь ◊(RnRS)?
+(define R5RS       '(@ "R" (sup "5") "RS"))
 
 (define GCD "НОД")
 

@@ -102,7 +102,7 @@
  ch04-assignment-and-side-effects/01.03-assigning-predefined-variables.poly}
 ◊ch04-assignment-and-side-effects/02-side-effects.poly{
  ch04-assignment-and-side-effects/02.01-equality.poly
-}
+ ch04-assignment-and-side-effects/02.02-function-equality.poly}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
