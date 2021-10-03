@@ -104,6 +104,8 @@
  ch04-assignment-and-side-effects/02.01-equality.poly
  ch04-assignment-and-side-effects/02.02-function-equality.poly}
 ◊ch04-assignment-and-side-effects/03-implementation.poly{
+ ch04-assignment-and-side-effects/03.01-alternative.poly
+ ch04-assignment-and-side-effects/03.02-sequence.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
