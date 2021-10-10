@@ -108,6 +108,7 @@
  ch04-assignment-and-side-effects/03.02-sequence.poly
  ch04-assignment-and-side-effects/03.03-environment.poly
  ch04-assignment-and-side-effects/03.04-reference.poly
+ ch04-assignment-and-side-effects/03.05-assignment.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
