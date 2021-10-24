@@ -111,6 +111,7 @@
  ch04-assignment-and-side-effects/03.05-assignment.poly
  ch04-assignment-and-side-effects/03.06-application.poly
  ch04-assignment-and-side-effects/03.07-abstraction.poly
+ ch04-assignment-and-side-effects/03.08-memory.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
