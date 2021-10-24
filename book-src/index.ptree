@@ -113,6 +113,7 @@
  ch04-assignment-and-side-effects/03.07-abstraction.poly
  ch04-assignment-and-side-effects/03.08-memory.poly
  ch04-assignment-and-side-effects/03.09-values.poly
+ ch04-assignment-and-side-effects/03.10-comparison-to-oop.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
