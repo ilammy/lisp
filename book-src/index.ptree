@@ -115,6 +115,7 @@
  ch04-assignment-and-side-effects/03.09-values.poly
  ch04-assignment-and-side-effects/03.10-comparison-to-oop.poly
  ch04-assignment-and-side-effects/03.11-initial-environment.poly
+ ch04-assignment-and-side-effects/03.12-dotted-pairs.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{
