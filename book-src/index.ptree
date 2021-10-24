@@ -118,6 +118,7 @@
  ch04-assignment-and-side-effects/03.12-dotted-pairs.poly
  ch04-assignment-and-side-effects/03.13-comparisons.poly
  ch04-assignment-and-side-effects/03.14-starting-the-interpreter.poly}
+ ch04-assignment-and-side-effects/04-input-output.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
