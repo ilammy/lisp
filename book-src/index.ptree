@@ -127,4 +127,5 @@
  z0-answers-to-exercises/ch01-basics.poly
  z0-answers-to-exercises/ch02-lisp-1-2-omega.poly
  z0-answers-to-exercises/ch03-escape-and-return.poly
+ z0-answers-to-exercises/ch04-assignment-and-side-effects.poly
 }
