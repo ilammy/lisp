@@ -74,7 +74,7 @@
 (Не~следует путать ◊ic{#<unspecified>} с~псевдозначением у~неопределённых переменных.)
 ◊seePage{lisp1-2-omega/recusion/ssect:uninitialized}
 
-◊(bigskip)
+◊bigskip
 
 ◊indexR{язык!чисто функциональный}
 ◊indexR{побочные эффекты}

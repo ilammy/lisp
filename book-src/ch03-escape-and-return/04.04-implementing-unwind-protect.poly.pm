@@ -100,7 +100,7 @@
 в~том случае, когда между ◊ic{block} и соответствующей ◊ic{return-from} не~стоят формы ◊ic{unwind-protect} или~◊ic{lambda},
 переходы выполняются эффективнее.
 
-◊(bigskip)
+◊bigskip
 
 ◊; TODO: index: бесконечный цикл, этот прикол точно должен попасть в указатель
 ◊indexC{unwind-protect!ограничения ◊CommonLisp}
