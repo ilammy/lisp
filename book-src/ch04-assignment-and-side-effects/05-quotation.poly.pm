@@ -168,7 +168,7 @@
 
 ◊code:lisp{
 (define vowel1<=
-  (let ((vowels '(#◊a #◊e)))
+  (let ((vowels '(#\a #\e)))
     (lambda (c1 c2)
       (memq c2 (memq c1 vowels)) ) ) )
 }
