@@ -123,6 +123,8 @@
  ch04-assignment-and-side-effects/z1-conclusions.poly
  ch04-assignment-and-side-effects/z2-exercises.poly
 }
+◊ch05-denotational-semantics/00-intro.poly{
+}
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
  z0-answers-to-exercises/ch02-lisp-1-2-omega.poly
