@@ -125,6 +125,8 @@
 }
 ◊ch05-denotational-semantics/00-intro.poly{
  ch05-denotational-semantics/01-lambda-calculus-review.poly
+◊ch05-denotational-semantics/02-semantics-of-scheme.poly{
+}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly

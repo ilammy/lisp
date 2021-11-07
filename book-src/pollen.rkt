@@ -167,3 +167,22 @@
 (define (box #:var [var ($ "v")] . elems)
   `(@ (span ((class "box")) ,@elems)
       (sup ,var) ) )
+
+; только для математического режима
+(define a "\\alpha")
+(define e "\\varepsilon")
+(define r "\\rho")
+(define s "\\sigma")
+(define n "\\nu")
+(define p "\\pi")
+(define k "\\kappa")
+(define f "\\varphi")
+
+; TODO: нотация для инъекции и проекции доменов, как только ты вспомнишь, что это означает, и перечитаешь пейперы
+(define-tag-function (Inj attrs elems)
+  (apply Vset (cons '() elems)) )
+(define-tag-function (Prj attrs elems)
+  `(@ "|" ,(apply Vset (cons '() elems))) )
+
+; TODO: настоящие TeX-опредления сюда
+(define Eval "\\mathcal{E}")
