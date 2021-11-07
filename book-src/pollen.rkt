@@ -51,6 +51,7 @@
 (define emph (default-tag-function 'em))
 (define ic (default-tag-function 'code))
 (define ii (default-tag-function 'i))
+(define sc (default-tag-function 'span)) ; TODO: small caps
 (define textcd (default-tag-function 'tt))
 (define textit (default-tag-function 'i))
 
