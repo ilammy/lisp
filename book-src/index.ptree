@@ -7,7 +7,7 @@
  ch01-basics/03-evaluating-atoms.poly
 ◊ch01-basics/04-evaluating-forms.poly{
  ch01-basics/04.01-quoting.poly
- ch01-basics/04.02-alternatives.poly
+ ch01-basics/04.02-alternative.poly
  ch01-basics/04.03-sequence.poly
  ch01-basics/04.04-assignment.poly
  ch01-basics/04.05-abstraction.poly
