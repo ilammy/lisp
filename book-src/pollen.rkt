@@ -68,6 +68,17 @@
 (define-tag-function (Vset attrs elems)
   `(@ "\\boldsymbol{" ,@elems "}") )
 
+(define-tag-function (gate attrs elems)
+  `(@ "\\mathbf{" ,@elems "}") )
+
+(define-tag-function (comb attrs elems)
+  `(@ "\\mathsf{" ,@elems "}") )
+
+(define-tag-function (fn attrs elems)
+  `(@ "\\textit{" ,@elems "}") )
+
+(define switch "[]")
+
 (define itemize (default-tag-function 'ul))
 (define enumerate (default-tag-function 'ol))
 (define item (default-tag-function 'li))
