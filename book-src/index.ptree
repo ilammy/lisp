@@ -132,7 +132,8 @@
  ch05-denotational-semantics/02.04-assignment.poly
  ch05-denotational-semantics/02.05-abstraction.poly
  ch05-denotational-semantics/02.06-application.poly
-}
+ ch05-denotational-semantics/02.07-call-cc.poly
+ ch05-denotational-semantics/02.08-tentative-conclusions.poly}
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly
