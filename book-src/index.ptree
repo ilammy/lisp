@@ -131,6 +131,7 @@
  ch05-denotational-semantics/02.03-alternative.poly
  ch05-denotational-semantics/02.04-assignment.poly
  ch05-denotational-semantics/02.05-abstraction.poly
+ ch05-denotational-semantics/02.06-application.poly
 }
 }
 ◊z0-answers-to-exercises/00-index.poly{

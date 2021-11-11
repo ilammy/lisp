@@ -1,34 +1,5 @@
 % -*- coding: utf-8 -*-
 
-◊subsection[#:label "denotational/semantics/ssect:application"]{Аппликация}
-
-◊indexR{интерпретатор!Eseq@◊${◊Eval^*}}
-◊indexE{E-seq@◊${◊Eval^*}, интерпретатор}
-Функции создаются для того, чтобы их применяли, поэтому на очереди аппликация.
-Как~обычно, нам потребуется вспомогательный интерпретатор: ◊${◊Eval^*},
-аналог~◊ic{evlis}.
-
-◊begin{denotation}
-◊${◊Eval◊sem*{(}◊p◊${ }◊p^*$)}◊r◊k◊s =
-    (◊Eval◊sem{◊p}◊ ◊r◊ \lambda ◊f◊s_1.
-        (◊Eval^*◊sem{◊p^*}◊ ◊r◊ \lambda ◊e^*◊s_2.
-            (◊f◊Prj{Функции}◊ ◊e^*◊ ◊k◊ ◊s_2)◊ ◊s_1)◊ ◊s)$  ◊|
-◊${◊Eval^*◊sem{◊,}◊r◊k◊s = (◊k◊ ◊seq{}◊ ◊s)}                  ◊|
-$◊Eval^*◊sem{◊p◊ ◊p^*}◊r◊k◊s =
-    (◊Eval◊sem{◊p}◊ ◊r◊ \lambda ◊e◊s_1.
-        (◊Eval^*◊sem{◊p^*}◊ ◊r◊ \lambda ◊e^*◊s_2.
-            (◊k◊ ◊seq{◊e} ◊append ◊e^*◊ ◊s_2)◊ ◊s_1)◊ ◊s)$
-◊end{denotation}
-
-Продолжения, которые принимает ◊${◊Eval^*}◊!, работают со~списками значений, а
-не~с~отдельными значениями.
-Это отличает ◊${◊Eval^*} от~◊${◊Eval^+}.
-Данные
-продолжения~◊${◊k} имеют тип
-%
-◊[ ◊Vset{Значения}^* ◊times ◊Vset{Память} ◊to ◊Vset{Значение} ◊]
-
-
 ◊subsection{◊texorpdfstring{◊ic{call/cc}}{call/cc}}%
 ◊label{denotational/semantics/ssect:call/cc}
 
