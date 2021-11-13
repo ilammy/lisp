@@ -199,3 +199,4 @@
 
 ; TODO: настоящие TeX-опредления сюда
 (define Eval "\\mathcal{E}")
+(define Lain "\\mathcal{L}")
