@@ -91,6 +91,7 @@
           s1 )
          (wrong "Incorrect arity" 'call/cc) ) ) ) )
 }
+◊; TODO: мне не нравится эта подпись, "суть Scheme"? "ядро scheme"?
 ◊caption{Сущность Scheme}
 }
 

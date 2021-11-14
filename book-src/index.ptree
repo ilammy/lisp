@@ -135,6 +135,7 @@
  ch05-denotational-semantics/02.07-call-cc.poly
  ch05-denotational-semantics/02.08-tentative-conclusions.poly}
  ch05-denotational-semantics/03-semantics-of-lambda-calculus.poly
+ ch05-denotational-semantics/04-dotted-arguments.poly
 }
 ◊z0-answers-to-exercises/00-index.poly{
  z0-answers-to-exercises/ch01-basics.poly

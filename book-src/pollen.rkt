@@ -195,8 +195,20 @@
 (define-tag-function (Inj attrs elems)
   (apply Vset (cons '() elems)) )
 (define-tag-function (Prj attrs elems)
-  `(@ "|" ,(apply Vset (cons '() elems))) )
+  `(@ "|_" ,(apply Vset (cons '() elems))) )
+
+(define (d:car . elems) `(@ "\\downarrow_{" ,@elems "}"))
+(define (d:cdr . elems) `(@ "\\dagger_{" ,@elems "}"))
+(define (d:length . elems) `(@ "#{" ,@elems "}"))
+(define d:append "\\S")
+
 
 ; TODO: настоящие TeX-опредления сюда
 (define Eval "\\mathcal{E}")
 (define Lain "\\mathcal{L}")
+(define Bind "\\mathcal{B}")
+
+(define WHERE "\\mathbf{where}")
+(define AND   "\\mathbf{and}")
+(define LET   "\\mathbf{let}")
+(define IN    "\\mathbf{in}")
