@@ -207,6 +207,7 @@
 (define Eval "\\mathcal{E}")
 (define Lain "\\mathcal{L}")
 (define Bind "\\mathcal{B}")
+(define Noir "\\mathcal{N}")
 
 (define WHERE "\\mathbf{where}")
 (define AND   "\\mathbf{and}")
