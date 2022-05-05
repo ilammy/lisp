@@ -1,8 +1,10 @@
 #lang racket/base
 
 (require pollen/decode)
+(require pollen/setup)
 (require pollen/tag)
 (require racket/string)
+(require "katex.rkt")
 (provide (all-defined-out))
 
 (module setup racket/base
@@ -84,10 +86,14 @@
 (define item (default-tag-function 'li))
 
 (define-tag-function ($ attrs elems)
-  `(code ,attrs "$" ,@elems "$") )
+  (if (eq? 'html (current-poly-target))
+      (render-katex attrs elems)
+      `(code ,attrs "$" ,@elems "$") ) )
 
 (define-tag-function ($$ attrs elems)
-  `(pre ,attrs "$$\n" ,@elems "\n$$") )
+  (if (eq? 'html (current-poly-target))
+      (render-katex attrs elems #:display? #t)
+      `(pre ,attrs "$$\n" ,@elems "\n$$") ) )
 
 (define code:lisp (default-tag-function 'pre))
 (define code:ml   (default-tag-function 'pre))

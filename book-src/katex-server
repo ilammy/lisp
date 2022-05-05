@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+// KaTeX rendering server
+//
+// Reads requests from stdin as JSON, one per line:
+//
+//     "2 + 2 = 4"
+//     {"tex":"n! = 1 \times 2 \times \cdots \times n"}
+//     {"tex":"\sum_{n = 1}^\infty \frac{1}{2^n} = 2","displayMode":true}
+//
+// For each request, write rendered HTML to stdout (as JSON string).
+
+const katex = require('katex')
+const process = require('process')
+
+function renderKaTeX(rawRequest) {
+    let tex
+    let displayMode = false
+    let request = JSON.parse(rawRequest)
+    if (typeof(request) === 'object') {
+        tex = request.tex
+        if ('displayMode' in request) {
+            displayMode = request.displayMode
+        }
+    } else {
+        tex = request
+    }
+    let response = katex.renderToString(tex, {
+        displayMode: displayMode,
+        throwOnError: false,
+        trust: true,
+    })
+    return JSON.stringify(response) + '\n'
+}
+
+let buffer = ""
+
+process.stdin.setEncoding('UTF-8')
+process.stdin.on('data', function(chunk) {
+    buffer += chunk
+    let newline = buffer.indexOf('\n')
+    if (newline != -1) {
+        let request = buffer.substr(0, newline)
+        buffer = buffer.substr(newline + 1)
+
+        let response = renderKaTeX(request)
+        process.stdout.write(response)
+    }
+})
