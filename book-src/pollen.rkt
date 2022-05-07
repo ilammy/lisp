@@ -68,7 +68,7 @@
   `(@ "\\texttt{" ,@elems "}") )
 
 (define-tag-function (Vset attrs elems)
-  `(@ "\\boldsymbol{" ,@elems "}") )
+  `(@ "\\textbf{" ,@elems "}") )
 
 (define-tag-function (gate attrs elems)
   `(@ "\\mathbf{" ,@elems "}") )
@@ -78,6 +78,9 @@
 
 (define-tag-function (fn attrs elems)
   `(@ "\\textit{" ,@elems "}") )
+
+(define-tag-function (non-term attrs elems)
+  `(@ "\\langle\\textit{" ,@elems "}\\rangle") )
 
 (define switch "[]")
 

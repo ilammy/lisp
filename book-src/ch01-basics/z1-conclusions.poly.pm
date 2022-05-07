@@ -18,7 +18,7 @@
 
 ◊$${
 \begin{equation*}
-  \forall\pi \in ◊Vset{Программы}\colon L◊math-ic{(evaluate (quote \pi) env.global)} \equiv L\pi
+  \forall\pi \in ◊Vset{Программы}\colon L◊math-ic{(evaluate (quote }\pi◊math-ic{) env.global)} \equiv L\pi
 \end{equation*}
 }
 
@@ -34,11 +34,13 @@
 проинтерпретировать сама себя.
 Таким образом, следующие выражения эквивалентны:
 
+◊; TODO: точно *нужно* делать формулой?
 ◊$${
-\begin{equation*}
-◊left{◊math-ic{(evaluate (quote \pi) env.global)} \equiv {}} \\
-◊right{{} \equiv ◊math-ic{(evaluate (quote (evaluate (quote \pi) env.global)) env.global)}}
-\end{equation*}
+\begin{gathered}
+◊math-ic{(evaluate (quote }\pi◊math-ic{) env.global)} \\
+\equiv \\
+◊math-ic{(evaluate (quote (evaluate (quote }\pi◊math-ic{) env.global)) env.global)}
+\end{gathered}
 }
 
 Есть~ли другие решения приведённого выше уравнения?
