@@ -74,7 +74,7 @@
   `(@ "\\mathbf{" ,@elems "}") )
 
 (define-tag-function (comb attrs elems)
-  `(@ "\\mathsf{" ,@elems "}") )
+  (apply $ `("\\mathsf{" ,@elems "}")) )
 
 (define-tag-function (fn attrs elems)
   `(@ "\\textit{" ,@elems "}") )
