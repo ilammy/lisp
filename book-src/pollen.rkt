@@ -168,7 +168,7 @@
 (define R5RS       '(@ "R" (sup "5") "RS"))
 (define PL/I       "PL/I") ; TODO: красивая капитель
 
-(define GCD "НОД")
+(define GCD "\\mathop{\\text{НОД}}")
 
 ;; TODO: Unicode
 (define (is) "->")
