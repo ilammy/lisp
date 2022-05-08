@@ -57,15 +57,15 @@
 Более формально список аргументов определяется следующей грамматикой:
 
 ◊$${
-\def\is{\mathrel{\coloncolonequals}}
-\def\or{\mathrel{\,\,\,|\,\,\,}}
-\def\IN{\mathrel{\,\,\in\,\,}}
-\begin{align*}
-◊non-term{список аргументов} & \is ◊math-ic{()}           \\
-                             & \or ◊non-term{переменная}  \\
-                             & \or ◊math-ic{(}◊non-term{переменная}◊math-ic{ . }◊non-term{список аргументов}◊math-ic{)} \\
-       ◊non-term{переменная} & \IN ◊Vset{Символы}
-\end{align*}
+\def\is{\coloncolonequals}
+\def\slim#1{\kern{-0.5em}#1\kern{-0.5em}}
+\begin{array}{rcl}
+◊non-term{список аргументов} & \slim\is & ◊math-ic{()}           \\
+                             &     |    & ◊non-term{переменная}  \\
+                             &     |    & ◊math-ic{(}◊non-term{переменная}◊math-ic{ . }◊non-term{список аргументов}◊math-ic{)} \\
+\\
+       ◊non-term{переменная} & \slim\in & ◊Vset{Символы}
+\end{array}
 }
 
 Когда мы расширяем окружение, количество значений переменных должно соответствовать количеству их имён.

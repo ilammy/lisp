@@ -74,7 +74,7 @@
   `(@ "\\mathbf{" ,@elems "}") )
 
 (define-tag-function (comb attrs elems)
-  (apply $ `("\\mathsf{" ,@elems "}")) )
+  `(@ "\\mathsf{" ,@elems "}") )
 
 (define-tag-function (fn attrs elems)
   `(@ "\\textit{" ,@elems "}") )
@@ -82,7 +82,10 @@
 (define-tag-function (non-term attrs elems)
   `(@ "\\langle\\textit{" ,@elems "}\\rangle") )
 
-(define switch "[]")
+(define-tag-function (sem attrs elems)
+  `(@ "\\mathopen{[\\![}" ,@elems "\\mathclose{]\\!]}") )
+
+(define switch "\\mathrel{[\\,]}")
 
 (define itemize (default-tag-function 'ul))
 (define enumerate (default-tag-function 'ol))
@@ -204,13 +207,15 @@
 (define-tag-function (Inj attrs elems)
   (apply Vset (cons '() elems)) )
 (define-tag-function (Prj attrs elems)
-  `(@ "|_" ,(apply Vset (cons '() elems))) )
+  `(@ "\\mathclose{|_" ,(apply Vset (cons '() elems)) "}") )
 
-(define (d:car . elems) `(@ "\\downarrow_{" ,@elems "}"))
-(define (d:cdr . elems) `(@ "\\dagger_{" ,@elems "}"))
-(define (d:length . elems) `(@ "#{" ,@elems "}"))
+(define-tag-function (to* attrs elems)
+  `(@ "\\stackrel{" ,@elems "}{\\longrightarrow}") )
+
+(define (d:car . elems) `(@ "\\mathclose{\\downarrow_{" ,@elems "}}"))
+(define (d:cdr . elems) `(@ "\\mathclose{\\dagger_{" ,@elems "}}"))
+(define (d:length . elems) `(@ "\\#{" ,@elems "}"))
 (define d:append "\\S")
-
 
 ; TODO: настоящие TeX-опредления сюда
 (define Eval "\\mathcal{E}")

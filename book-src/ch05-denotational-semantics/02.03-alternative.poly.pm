@@ -17,7 +17,7 @@
 
 ◊$${
 ◊comb{T} = \lambda xy.x
-\quad ◊text{и} \quad
+\quad \text{и} \quad
 ◊comb{F} = \lambda xy.y
 }
 
@@ -27,7 +27,7 @@
 
 ◊$${
 ◊gate{IF}(◊math-ii{истина}, p, q) = p
-\quad ◊text{и} \quad
+\quad \text{и} \quad
 ◊gate{IF}(◊math-ii{ложь}, p, q) = q
 }
 
@@ -37,7 +37,7 @@
 Её~можно определить с~помощью таблицы истинности или~же через логические операции:
 
 ◊$${
-◊gate{IF}(c, p, q) = (\neg c \lor p) \land (c \lor q)
+◊gate{IF}(c, p, q) = (\neg\, c \lor p) \land (c \lor q)
 }
 
 ◊indexR{комбинаторы!IF@◊${◊comb{IF}}}
@@ -150,7 +150,7 @@
 ◊$${
 (◊fn{boolify}\ ◊|e|) \to (◊Eval ◊sem{◊|p|_1}\ ◊|r|\ ◊|k|\ ◊|s|) ◊switch (◊Eval ◊sem{◊|p|_2}\ ◊|r|\ ◊|k|\ ◊|s|)
 \equiv
-((◊fn{boolify}\ ◊|e|) \to ◊Eval ◊sem{◊|p|_1} ◊switch ◊Eval ◊sem{◊|p|_2}\ ◊|r|\ ◊|k|\ ◊|s|)
+\big((◊fn{boolify}\ ◊|e|) \to ◊Eval ◊sem{◊|p|_1} ◊switch ◊Eval ◊sem{◊|p|_2}\ ◊|r|\ ◊|k|\ ◊|s|\big)
 }
 
 Это тождество очевидно ложно в~Scheme из-за аппликативного порядка вычислений,

@@ -25,11 +25,12 @@
 ◊${\Lambda}~индуктивно определяется следующим образом:
 
 ◊; TODO: это всё надо красиво рендерить, всю пятую главу вычитывай внимательно
+◊; конкретно здесь \in следует чуть віше поднять
 ◊$${
 \begin{array}{rll}
-  ◊text{◊ii{переменные}:} & \forall x \in ◊Vset{Переменные} \colon                & x \in \Lambda             \\
-  ◊text{◊ii{абстракции}:} & \forall x \in ◊Vset{Переменные}, M \in \Lambda \colon & \lambda x . M \in \Lambda \\
-  ◊text{◊ii{аппликации}:} & \forall M, N \in \Lambda \colon                       & (M\ N) \in \Lambda        \\
+  ◊math-ii{переменные}\colon & \forall x \in ◊Vset{Переменные} \colon                & x \in \Lambda             \\
+  ◊math-ii{абстракции}\colon & \forall x \in ◊Vset{Переменные}, M \in \Lambda \colon & \lambda x . M \in \Lambda \\
+  ◊math-ii{аппликации}\colon & \forall M, N \in \Lambda \colon                       & (M\ N) \in \Lambda        \\
 \end{array}
 }
 
@@ -42,7 +43,7 @@
 которые используют лишь одну специальную форму — ◊ic{lambda}:
 
 ◊$${
-x \qquad\qquad ◊text{◊ic{(lambda (◊${x}) ◊${M})}} \qquad\qquad ◊text{◊ic{(◊${M} ◊${N})}}
+x \qquad\qquad ◊math-ic{(lambda (}x◊math-ic{) }M◊math-ic{)} \qquad\qquad ◊math-ic{(}M◊math-ic{ }N◊math-ic{)}
 }
 
 ◊indexR{абстракция!редукция}
@@ -60,9 +61,8 @@ x \qquad\qquad ◊text{◊ic{(lambda (◊${x}) ◊${M})}} \qquad\qquad ◊text{�
 Именно так проводятся вычисления в~программах на~Scheme, принадлежащих вышеупомянутому подмножеству
 (без~побочных эффектов, с~одной специальной формой).
 
-◊; TODO: \to* -- это разве не твоё изобретение?
 ◊$${
-◊text{◊${\beta}-редукция:} \quad (\lambda x . M\ N) \to*{\beta} M[x \to N]
+\beta\text{-редукция}\colon \quad (\lambda x . M\ N) ◊to*{\beta} M[x \to N]
 }
 
 ◊indexR{лексическое связывание!в лямбда-исчислении@в~◊${\lambda}-исчислении}
@@ -76,10 +76,10 @@ x \qquad\qquad ◊text{◊ic{(lambda (◊${x}) ◊${M})}} \qquad\qquad ◊text{�
 ◊$${
 \begin{align*}
   &  x[x \to N] = N                                     \\
-  &  y[x \to N] = y \quad ◊text{если ◊${x \ne y}}       \\
+  &  y[x \to N] = y \quad \text{если} \ x \ne y           \\
   &  (\lambda x . M)[x \to N] = \lambda x . M           \\
   &  (\lambda y . M)[x \to N] = \lambda z . \big(M[y \to z][x \to N]\big)
-     \quad ◊text{где ◊${x \ne y} и ◊${z} не~свободна в~◊${M} и~◊${N}} \\
+     \quad \text{где} \ x \ne y \ \text{и} \ z \ \text{не~свободна~в} \ M \ \text{и} \ N \\
   &  (M_1\ M_2)[x \to N] = (M_1[x \to N]\ M_2[x \to N]) \\
 \end{align*}
 }
@@ -120,14 +120,21 @@ x \qquad\qquad ◊text{◊ic{(lambda (◊${x}) ◊${M})}} \qquad\qquad ◊text{�
 В~этом случае функция применяется лишь после вычисления аргументов.
 
 Рассмотрим несколько примеров.
+
 Вот~терм, который не~имеет нормальной~формы:
 
 ◊$${
 (\omega\ \omega)
-\quad ◊text{где}\ \omega = \lambda x . (x\ x)
-\quad ◊text{так как}\ (\omega\ \omega) \to*{\beta} (\omega\ \omega)
-                                       \to*{\beta} (\omega\ \omega)
-                                       \to*{\beta} \dots
+\quad \text{где} \ \omega = \lambda x . (x\ x)
+}
+
+◊noindent
+так как
+
+◊$${
+(\omega\ \omega) ◊to*{\beta} (\omega\ \omega)
+                 ◊to*{\beta} (\omega\ \omega)
+                 ◊to*{\beta} \dots
 }
 
 ◊noindent
@@ -136,7 +143,7 @@ x \qquad\qquad ◊text{◊ic{(lambda (◊${x}) ◊${M})}} \qquad\qquad ◊text{�
 А~вот пример терма, который имеет нормальную форму, но~правило вычислений, принятое в~Scheme, не~позволяет её~достичь.
 
 ◊$${
-  \big((\lambda x . \lambda y . y\ (\omega\ \omega))\ z\big) \to*{\beta} (\lambda y . y\ z) \to*{\beta} z
+  \big((\lambda x . \lambda y . y\ (\omega\ \omega))\ z\big) ◊to*{\beta} (\lambda y . y\ z) ◊to*{\beta} z
 }
 
 ◊noindent

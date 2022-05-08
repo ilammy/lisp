@@ -117,10 +117,13 @@
 для~которой ◊${◊Bind} подготавливает аргументы, а~для контекста вычислений используем букву~◊${\tau}:
 
 ◊$${
-\tau \equals ◊Vset{Значения}^* \times ◊Vset{Окружение} \times ◊Vset{Продолжение} \times ◊Vset{Память}
+\tau \equiv ◊Vset{Значения}^* \times ◊Vset{Окружение} \times ◊Vset{Продолжение} \times ◊Vset{Память}
+}
+
+◊$${
 \begin{align*}
 ◊Eval \colon \quad & ◊Vset{Программа} \to (\tau \to ◊Vset{Значение}) \\
-◊Bind \colon \quad & ◊Vset{СписокАргументов} \to \big( \underbrace{(\tau \to ◊Vset{Значение})}_{\displaystyle\mu} \times \tau \to ◊Vset{Значение} \big) \\
+◊Bind \colon \quad & ◊Vset{СписокАргументов} \to \big(\,\underbrace{(\tau \to ◊Vset{Значение})}_{\displaystyle\mu} \times \tau \to ◊Vset{Значение} \big) \\
 \end{align*}
 }
 

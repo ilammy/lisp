@@ -20,9 +20,9 @@
 ◊$${
   x
   \qquad\qquad
-  ◊text{◊ic{(lambda (◊${x}) ◊${M})}}
+  ◊math-ic{(lambda (}x◊math-ic{) }M◊math-ic{)}
   \qquad\qquad
-  ◊text{◊ic{(◊${M} ◊${N})}}
+  ◊math-ic{(}M◊math-ic{ }N◊math-ic{)}
 }
 
 Далее определим домены.
