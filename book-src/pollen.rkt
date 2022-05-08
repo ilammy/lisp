@@ -57,7 +57,8 @@
 (define textcd (default-tag-function 'tt))
 (define textit (default-tag-function 'i))
 
-(define cont (default-tag-function 'sub))
+(define-tag-function (cont attrs elems)
+  `(@ "\\mathopen{\\raisebox{-0.5ex}{$" ,@elems "$}}") )
 
 (define envtable (default-tag-function 'table))
 
