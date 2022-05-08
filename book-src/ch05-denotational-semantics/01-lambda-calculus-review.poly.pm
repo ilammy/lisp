@@ -43,7 +43,7 @@
 которые используют лишь одну специальную форму — ◊ic{lambda}:
 
 ◊$${
-x \qquad\qquad ◊math-ic{(lambda (}x◊math-ic{) }M◊math-ic{)} \qquad\qquad ◊math-ic{(}M◊math-ic{ }N◊math-ic{)}
+x \qquad\qquad ◊math-ic{(lambda ($x$) $M$)} \qquad\qquad ◊math-ic{($M$ $N$)}
 }
 
 ◊indexR{абстракция!редукция}
